@@ -18,8 +18,8 @@ WriteMakefile(
                         'repos_id.pm'   => '$(INST_LIBDIR)/IDL/repos_id.pm',
                         'symbtab.pm'    => '$(INST_LIBDIR)/IDL/symbtab.pm',
     },
-    'EXE_FILES'     => ['idl'],
-    'AUTHOR'        => "Francois PERRAD (perrad\@besancon.sema.slb.com)",
+    'EXE_FILES'     => ['idl.pl'],
+    'AUTHOR'        => "Francois PERRAD (francois.perrad\@gadz.org)",
     'dist'          => {
                         'COMPRESS'      => 'gzip',
                         'SUFFIX'        => '.gz',

@@ -7,7 +7,7 @@ use UNIVERSAL;
 
 package node;
 use vars qw($VERSION);
-$VERSION = '1.03';
+$VERSION = '1.04';
 
 sub new {
 	my $proto = shift;
@@ -110,9 +110,11 @@ sub new {
 	$parser->YYData->{symbtab}->Insert($self->{idf},new Dummy($self));
 	$self->line_stamp($parser);
 	if ($parser->YYData->{doc} ne '') {
-		$self->{doc} = $parser->YYData->{doc};
+		$self->{doc} = $parser->YYData->{doc}
+				unless (exists $self->{doc});
 		$parser->YYData->{doc} = '';
 	}
+	$parser->YYData->{curr_node} = $self;
 	return $self;
 }
 
@@ -191,6 +193,7 @@ sub new {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
+	$parser->YYData->{curr_node} = $self;
 	return $self;
 }
 
@@ -267,6 +270,7 @@ sub new {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
+	$parser->YYData->{curr_node} = $self;
 	return $self;
 }
 
@@ -434,6 +438,7 @@ sub new {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
+	$parser->YYData->{curr_node} = $self;
 	return $self;
 }
 
@@ -464,6 +469,7 @@ sub new {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
+	$parser->YYData->{curr_node} = $self;
 	return $self;
 }
 
@@ -504,6 +510,7 @@ sub new {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
+	$parser->YYData->{curr_node} = $self;
 	return $self;
 }
 
@@ -542,6 +549,7 @@ sub new {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
+	$parser->YYData->{curr_node} = $self;
 	return $self;
 }
 
@@ -1053,6 +1061,7 @@ sub new {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
+	$parser->YYData->{curr_node} = $self;
 	return $self;
 }
 
@@ -1237,6 +1246,7 @@ sub new {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
+	$parser->YYData->{curr_node} = $self;
 	return $self;
 }
 
@@ -1507,6 +1517,7 @@ sub new {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
+	$parser->YYData->{curr_node} = $self;
 	return $self;
 }
 
@@ -1579,6 +1590,7 @@ sub new {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
+	$parser->YYData->{curr_node} = $self;
 	return $self;
 }
 
@@ -1598,6 +1610,7 @@ sub new {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
+	$parser->YYData->{curr_node} = $self;
 	return $self;
 }
 
@@ -1624,6 +1637,7 @@ sub new {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
+	$parser->YYData->{curr_node} = $self;
 	return $self;
 }
 
@@ -1781,6 +1795,7 @@ sub new {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
+	$parser->YYData->{curr_node} = $self;
 	return $self;
 }
 
@@ -1828,6 +1843,7 @@ sub new {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
+	$parser->YYData->{curr_node} = $self;
 	return $self;
 }
 
@@ -1954,6 +1970,7 @@ sub new {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
+	$parser->YYData->{curr_node} = $self;
 	return $self;
 }
 
@@ -2019,6 +2036,7 @@ sub new {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
+	$parser->YYData->{curr_node} = $self;
 	return $self;
 }
 
@@ -2087,6 +2105,7 @@ sub new {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
+	$parser->YYData->{curr_node} = $self;
 	return $self;
 }
 
@@ -2156,6 +2175,7 @@ sub new {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
+	$parser->YYData->{curr_node} = $self;
 	my $op = new Operation($parser,
 			type				=>	$self->{type},
 			idf					=>	'_get_' . $self->{idf}
@@ -2179,7 +2199,7 @@ sub new {
 										new Parameter($parser,
 												attr	=>	'in',
 												type	=>	$self->{type},
-												idf		=>	$self->{idf}
+												idf		=>	'new' . ucfirst $self->{idf}
 										)
 									]
 		);

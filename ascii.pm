@@ -226,7 +226,7 @@ sub visitBoxedValue {
 	$self->inc_tab();
 	print $self->get_tab(), "doc: $node->{doc}\n"
 			if (exists $node->{doc});
-	$node->{expr}->visit($self);
+	$node->{type}->visit($self);
 	$self->dec_tab();
 }
 

@@ -364,7 +364,7 @@ value_box_dcl
 		{
 			new BoxedValue($_[0],
 					'idf'				=>	$_[2],
-					'expr'				=>	$_[3]
+					'type'				=>	$_[3]
 			);
 		}
 ;

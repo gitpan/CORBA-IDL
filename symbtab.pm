@@ -182,6 +182,7 @@ sub OpenModule {
 		if ($prev->isa('Module')) {
 			# reopen
 			$node->{coll} = $g_name;
+			$node->{doc} = $prev->{doc} if (exists $prev->{doc});
 			return;
 		} else {
 			$self->{msg} ||= "Identifier '$name' already exists.\n";

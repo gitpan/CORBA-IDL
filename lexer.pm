@@ -84,6 +84,7 @@ sub _StringLexer {
 	while ($parser->YYData->{INPUT}) {
 
 		for ($parser->YYData->{INPUT}) {
+			study;
 
 			s/^\"//
 				and return($token,$str);
@@ -147,6 +148,7 @@ sub _CharLexer {
 	my($token) = @_;
 
 	$_ = $parser->YYData->{INPUT};
+	study;
 	s/^([^'\\])\'//
 		and return ($token,$1);		# any character except single quote or backslash
 
@@ -259,6 +261,7 @@ sub _CommentLexer {
 		or  return;
 
 		for ($parser->YYData->{INPUT}) {
+			study;
 			s/^\n//
 					and $parser->YYData->{lineno} ++,
 					last;
@@ -281,6 +284,7 @@ sub _DocLexer {
 		or  return;
 
 		for ($parser->YYData->{INPUT}) {
+			study;
 			s/^(\n)//
 					and $parser->YYData->{lineno} ++,
 						$parser->YYData->{doc} .= $1,
@@ -309,6 +313,7 @@ sub _PragmaLexer {						#	10.6.5	Pragma Directives for RepositoryId
 	my($line) = @_;
 
 	for ($line) {
+		study;
 		s/^ID[ \t]+([0-9A-Za-z_:]+)[ \t]+\"([^\s">]+)\"//
 				and $parser->YYData->{symbtab}->PragmaID($1,$2),
 				    return;
@@ -321,6 +326,19 @@ sub _PragmaLexer {						#	10.6.5	Pragma Directives for RepositoryId
 
 		$parser->Info("Non standard pragma.\n");
 		return;
+	}
+}
+
+sub _AttachDoc {
+	my $parser = shift;
+	my($comment) = @_;
+
+	if (defined $parser->YYData->{curr_node}) {
+		if (exists $parser->YYData->{curr_node}->{doc}) {
+			$parser->YYData->{curr_node}->{doc} .= $comment;
+		} else {
+			$parser->YYData->{curr_node}->{doc} = $comment;
+		}
 	}
 }
 
@@ -347,35 +365,45 @@ sub _Lexer {
 		}
 
 		for ($parser->YYData->{INPUT}) {
+			study;
 			s/^# ([\d]+) ["<]([^\s">]+)[">] ([\d]+)\n//		# cccp
 					and $parser->YYData->{lineno} = $1,
 					    $parser->YYData->{filename} = $2,
 					    $parser->YYData->{doc} = '',
+					    $parser->YYData->{curr_node} = undef,
 					    last;
 
 			s/^# ([\d]+) ["<]([^\s">]+)[">]\n//				# cccp
 					and $parser->YYData->{lineno} = $1,
 					    $parser->YYData->{filename} = $2,
 					    $parser->YYData->{doc} = '',
+					    $parser->YYData->{curr_node} = undef,
 					    last;
 			s/^#line ([\d]+) ["<]([^\s">]+)[">]\n//			# CL.EXE Microsoft VC
 					and $parser->YYData->{lineno} = $1,
 					    $parser->YYData->{filename} = $2,
 					    $parser->YYData->{doc} = '',
+					    $parser->YYData->{curr_node} = undef,
 					    last;
 
 			s/^[ \r\t\f\013]+//;							# whitespaces
 			s/^\n//
 					and $parser->YYData->{lineno} ++,
+					    $parser->YYData->{curr_node} = undef,
 					    last;
 
 			s/^#pragma[ \t]+(.*)\n//
 					and $parser->_PragmaLexer($1),
 					    $parser->YYData->{lineno} ++,
+					    $parser->YYData->{curr_node} = undef,
 					    last;
 
 			s/^\/\*\*//										# documentation
 					and $parser->_DocLexer(),
+					    last;
+			s/^\/\/\/(.*)\n//								# single line documentation
+					and $parser->_AttachDoc($1),
+					and $parser->YYData->{lineno} ++,
 					    last;
 
 			s/^\/\*//										# multiple line comment
@@ -383,6 +411,7 @@ sub _Lexer {
 					    last;
 			s/^\/\/(.*)\n//									# single line comment
 					and $parser->YYData->{lineno} ++,
+					    $parser->YYData->{curr_node} = undef,
 					    last;
 
 			s/^([0-9]+)([Dd])//
@@ -537,15 +566,57 @@ sub _InitLexico {
 	$parser->YYData->{keyword} = \%keywords;
 }
 
+sub getopts {			# from Getopt::Std
+	no strict;
+	my $parser = shift;
+	local($argumentative) = @_;
+	local(@args,$_,$first,$rest);
+
+	$parser->YYData->{args} = [];
+	@args = split( / */, $argumentative );
+	while (@ARGV && ($_ = $ARGV[0]) =~ /^-(.)(.*)/) {
+		($first,$rest) = ($1,$2);
+		if (/^--$/) {	# early exit if --
+			shift(@ARGV);
+			last;
+		}
+		$pos = index($argumentative,$first);
+		if ($pos >= 0) {
+			if (defined($args[$pos+1]) and ($args[$pos+1] eq ':')) {
+				shift(@ARGV);
+				if ($rest eq '') {
+					$rest = shift(@ARGV);
+				}
+				$parser->YYData->{"opt_$first"} = $rest;
+			} else {
+				$parser->YYData->{"opt_$first"} = 1;
+				if ($rest eq '') {
+					shift(@ARGV);
+				} else {
+					$ARGV[0] = "-$rest";
+				}
+			}
+		} else {
+			push @{$parser->YYData->{args}}, shift(@ARGV);
+		}
+	}
+}
+
 sub Run {
 	my $parser = shift;
 	my $preprocessor = $parser->YYData->{preprocessor};
+	my @args;
 
-	open(YYIN,"$preprocessor @_|")
+	@args = @{$parser->YYData->{args}}
+			if (exists $parser->YYData->{args});
+	push @args, @_;
+
+	open(YYIN,"$preprocessor @args|")
 		|| die "can't open @_ ($!).\n";
 
 	$parser->_InitLexico();
 	$parser->YYData->{doc} = '';
+	$parser->YYData->{curr_node} = undef;
 	$parser->YYData->{curr_itf} = undef;
 	$parser->YYParse(
 			yylex	=> \&_Lexer,

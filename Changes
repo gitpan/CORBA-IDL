@@ -1,5 +1,11 @@
 Revision history for Perl extension CORBA::IDL.
 
+1.04  Tue Sep 17 08:30:00 2002
+	- add single line doc comment (/// comment)
+	- add getopts function
+	- add TypeCode.idl file
+	- use yapp version 1.05
+
 1.03  Tue May 21 09:30:00 2002
 	- bug when reopen a module
 

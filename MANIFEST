@@ -14,7 +14,8 @@ parser21.yp
 parser22.yp
 parser23.yp
 parser24.yp
-idl
+idl.pl
+TypeCode.idl
 makefile.yapp
 Makefile.PL
 MANIFEST
