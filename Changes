@@ -1,5 +1,8 @@
 Revision history for Perl extension CORBA::IDL.
 
+2.02  Fri Aug 01 18:30:00 2003
+	- lexer.pm : better handling C-preprocessor
+
 2.01  Fri Mar 14 12:30:00 2003
 	- lexer.pm : add patch for SUN C-preprocessor (thanks to Chad Elliott)
 

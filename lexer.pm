@@ -20,9 +20,13 @@ sub Error {
 		$parser->YYData->{nb_error} = 1;
 	}
 
-	print STDOUT '#',$parser->YYData->{filename},':',$parser->YYData->{lineno},'#Error: ',$msg
-			if (		exists $parser->YYData->{verbose_error}
-					and $parser->YYData->{verbose_error});
+	unless (exists $parser->YYData->{filename}) {
+		print STDOUT "#No parsed input : ",$msg;
+	} else {
+		print STDOUT '#',$parser->YYData->{filename},':',$parser->YYData->{lineno},'#Error: ',$msg
+				if (		exists $parser->YYData->{verbose_error}
+						and $parser->YYData->{verbose_error});
+	}
 }
 
 sub Warning {
@@ -380,7 +384,7 @@ sub _Lexer {
 					    $parser->YYData->{curr_node} = undef,
 					    last;
 
-			s/^[\s\r\f\013]+//;							# whitespaces
+			s/^[ \r\t\f\013]+//;							# whitespaces
 			s/^\n//
 					and $parser->YYData->{lineno} ++,
 					    $parser->YYData->{curr_node} = undef,
