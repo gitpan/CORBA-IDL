@@ -7,7 +7,7 @@ use UNIVERSAL;
 
 package node;
 use vars qw($VERSION);
-$VERSION = '1.0';
+$VERSION = '1.01';
 
 sub new {
 	my $proto = shift;
@@ -616,41 +616,41 @@ sub _EvalBinop {
 		my $left = _Eval($parser,$type,$list_expr);
 		return undef unless (defined $left);
 		if (	  $elt->{op} eq '|' ) {
-			my $value = new Math::BigInt($left->bior($right));
-			return _CheckRange($parser,$type,$value);
+			my $value = $left->bior($right);
+			return _CheckRange($parser,$type,new Math::BigInt($value));
 		} elsif ( $elt->{op} eq '^' ) {
-			my $value = new Math::BigInt($left->bxor($right));
-			return _CheckRange($parser,$type,$value);
+			my $value = $left->bxor($right);
+			return _CheckRange($parser,$type,new Math::BigInt($value));
 		} elsif ( $elt->{op} eq '&' ) {
-			my $value = new Math::BigInt($left->band($right));
-			return _CheckRange($parser,$type,$value);
+			my $value = $left->band($right);
+			return _CheckRange($parser,$type,new Math::BigInt($value));
 		} elsif ( $elt->{op} eq '+' ) {
-			my $value = new Math::BigInt($left->badd($right));
-			return _CheckRange($parser,$type,$value);
+			my $value = $left->badd($right);
+			return _CheckRange($parser,$type,new Math::BigInt($value));
 		} elsif ( $elt->{op} eq '-' ) {
-			my $value = new Math::BigInt($left->bsub($right));
-			return _CheckRange($parser,$type,$value);
+			my $value = $left->bsub($right);
+			return _CheckRange($parser,$type,new Math::BigInt($value));
 		} elsif ( $elt->{op} eq '*' ) {
-			my $value = new Math::BigInt($left->bmul($right));
-			return _CheckRange($parser,$type,$value);
+			my $value = $left->bmul($right);
+			return _CheckRange($parser,$type,new Math::BigInt($value));
 		} elsif ( $elt->{op} eq '/' ) {
-			my $value = new Math::BigInt($left->bdiv($right));
-			return _CheckRange($parser,$type,$value);
+			my ($value) = $left->bdiv($right);
+			return _CheckRange($parser,$type,new Math::BigInt($value));
 		} elsif ( $elt->{op} eq '%' ) {
-			my $value = new Math::BigInt($left->bmod($right));
-			return _CheckRange($parser,$type,$value);
+			my $value = $left->bmod($right);
+			return _CheckRange($parser,$type,new Math::BigInt($value));
 		} elsif ( $elt->{op} eq '>>' ) {
 			if (0 <= $right and $right < 64) {
-				my $value = new Math::BigInt($left->brsft($right));
-				return _CheckRange($parser,$type,$value);
+				my $value = $left->brsft($right);
+				return _CheckRange($parser,$type,new Math::BigInt($value));
 			} else {
 				$parser->Error("shift operation out of range.\n");
 				return undef;
 			}
 		} elsif ( $elt->{op} eq '<<' ) {
 			if (0 <= $right and $right < 64) {
-				my $value = new Math::BigInt($left->blsft($right));
-				return _CheckRange($parser,$type,$value);
+				my $value = $left->blsft($right);
+				return _CheckRange($parser,$type,new Math::BigInt($value));
 			} else {
 				$parser->Error("shift operation out of range.\n");
 				return undef;
@@ -665,17 +665,17 @@ sub _EvalBinop {
 		my $left = _Eval($parser,$type,$list_expr);
 		return undef unless (defined $left);
 		if (      $elt->{op} eq '+' ) {
-			my $value = new Math::BigFloat($left->fadd($right));
-			return _CheckRange($parser,$type,$value);
+			my $value = $left->fadd($right);
+			return _CheckRange($parser,$type,new Math::BigFloat($value));
 		} elsif ( $elt->{op} eq '-' ) {
-			my $value = new Math::BigFloat($left->fsub($right));
-			return _CheckRange($parser,$type,$value);
+			my $value = $left->fsub($right);
+			return _CheckRange($parser,$type,new Math::BigFloat($value));
 		} elsif ( $elt->{op} eq '*' ) {
-			my $value = new Math::BigFloat($left->fmul($right));
-			return _CheckRange($parser,$type,$value);
+			my $value = $left->fmul($right);
+			return _CheckRange($parser,$type,new Math::BigFloat($value));
 		} elsif ( $elt->{op} eq '/' ) {
-			my $value = new Math::BigFloat($left->fdiv($right));
-			return _CheckRange($parser,$type,$value);
+			my $value = $left->fdiv($right);
+			return _CheckRange($parser,$type,new Math::BigFloat($value));
 		} elsif (  $elt->{op} eq '|'
 				or $elt->{op} eq '^'
 				or $elt->{op} eq '&'
@@ -693,17 +693,17 @@ sub _EvalBinop {
 		my $left = _Eval($parser,$type,$list_expr);
 		return undef unless (defined $left);
 		if (      $elt->{op} eq '+' ) {
-			my $value = new Math::BigFloat($left->fadd($right));
-			return _CheckRange($parser,$type,$value);
+			my $value = $left->fadd($right);
+			return _CheckRange($parser,$type,new Math::BigFloat($value));
 		} elsif ( $elt->{op} eq '-' ) {
-			my $value = new Math::BigFloat($left->fsub($right));
-			return _CheckRange($parser,$type,$value);
+			my $value = $left->fsub($right);
+			return _CheckRange($parser,$type,new Math::BigFloat($value));
 		} elsif ( $elt->{op} eq '*' ) {
-			my $value = new Math::BigFloat($left->fmul($right));
-			return _CheckRange($parser,$type,$value);
+			my $value = $left->fmul($right);
+			return _CheckRange($parser,$type,new Math::BigFloat($value));
 		} elsif ( $elt->{op} eq '/' ) {
-			my $value = new Math::BigFloat($left->fdiv($right));
-			return _CheckRange($parser,$type,$value);
+			my $value = $left->fdiv($right);
+			return _CheckRange($parser,$type,new Math::BigFloat($value));
 		} elsif (  $elt->{op} eq '|'
 				or $elt->{op} eq '^'
 				or $elt->{op} eq '&'
@@ -731,11 +731,22 @@ sub _EvalUnop {
 		if (	  $elt->{op} eq '+' ) {
 			return _CheckRange($parser,$type,$right);
 		} elsif ( $elt->{op} eq '-' ) {
-			my $value = new Math::BigInt($right->bneg());
-			return _CheckRange($parser,$type,$value);
+			my $value = $right->bneg();
+			return _CheckRange($parser,$type,new Math::BigInt($value));
 		} elsif ( $elt->{op} eq '~' ) {
-			my $value = new Math::BigInt($right->bnot());
-			return _CheckRange($parser,$type,$value);
+			my $value;
+			if      ($type->{value} eq 'unsigned short') {
+				$value = USHORT_MAX->bsub($right);
+			} elsif ($type->{value} eq 'unsigned long') {
+				$value = ULONG_MAX->bsub($right);
+			} elsif ($type->{value} eq 'unsigned long long') {
+				$value = ULLONG_MAX->bsub($right);
+			} elsif ($type->{value} eq 'octet') {
+				$value = UCHAR_MAX->bsub($right);
+			} else {	# signed
+				$value = $right->badd(1)->bneg();
+			}
+			return _CheckRange($parser,$type,new Math::BigInt($value));
 		} else {
 			$parser->Error("_EvalUnop (int) : INTERNAL ERROR.\n");
 			return undef;
@@ -746,8 +757,8 @@ sub _EvalUnop {
 		if (	  $elt->{op} eq '+' ) {
 			return _CheckRange($parser,$type,$right);
 		} elsif ( $elt->{op} eq '-' ) {
-			my $value = new Math::BigFloat($right->fneg());
-			return _CheckRange($parser,$type,$value);
+			my $value = $right->fneg();
+			return _CheckRange($parser,$type,new Math::BigFloat($value));
 		} elsif (  $elt->{op} eq '~' ) {
 			$parser->Error("'$elt->{op}' is not valid for '$type'.\n");
 			return undef;
@@ -761,8 +772,8 @@ sub _EvalUnop {
 		if (	  $elt->{op} eq '+' ) {
 			return _CheckRange($parser,$type,$right);
 		} elsif ( $elt->{op} eq '-' ) {
-			my $value = new Math::BigFloat($right->fneg());
-			return _CheckRange($parser,$type,$value);
+			my $value = $right->fneg();
+			return _CheckRange($parser,$type,new Math::BigFloat($value));
 		} elsif (  $elt->{op} eq '~' ) {
 			$parser->Error("'$elt->{op}' is not valid for '$type'.\n");
 			return undef;
@@ -1977,11 +1988,11 @@ sub Configure {
 	my @list_out = ();
 	foreach ( @{$self->{list_param}} ) {
 		if      ($_->{attr} eq 'in') {
-			unshift @list_in, $_;
+			push @list_in, $_;
 		} elsif ($_->{attr} eq 'inout') {
-			unshift @list_inout, $_;
+			push @list_inout, $_;
 		} elsif ($_->{attr} eq 'out') {
-			unshift @list_out, $_;
+			push @list_out, $_;
 		}
 	}
 	$self->{list_in} = \@list_in;
