@@ -200,6 +200,7 @@ sub _Identifier {
 	if (exists $parser->YYData->{keyword}{$key}) {
 		my $keywd = $parser->YYData->{keyword}{$key}[0];
 		my $version = $parser->YYData->{keyword}{$key}[1];
+		my $lang = $parser->YYData->{keyword}{$key}[2];
 		if ($Parser::IDL_version ge $version) {
 			if ($ident eq $keywd) {
 				return ($key, $ident);
@@ -208,10 +209,18 @@ sub _Identifier {
 				return ('IDENTIFIER', $ident);
 			}
 		} else {
-			if ($ident eq $keywd) {
-				$parser->Info("'$ident' is a future keyword.\n");
+			if (defined $lang) {
+				if ($ident eq $keywd) {
+					$parser->Info("'$ident' is a keyword of $lang.\n");
+				} else {
+					$parser->Info("'$ident' collides with keyword '$keywd' of $lang.\n");
+				}
 			} else {
-				$parser->Info("'$ident' collides with future keyword '$keywd'.\n");
+				if ($ident eq $keywd) {
+					$parser->Info("'$ident' is a future keyword.\n");
+				} else {
+					$parser->Info("'$ident' collides with future keyword '$keywd'.\n");
+				}
 			}
 			return ('IDENTIFIER', $ident);
 		}
@@ -326,7 +335,7 @@ sub _CodeLexer {
 					and $parser->YYData->{lineno} ++,
 						$frag .= $1,
 						last;
-			s/^%\}//
+			s/^%\}.*//
 					and return ('CODE_FRAGMENT', $frag);
 			s/^(.)//
 					and $frag .= $1,
@@ -562,6 +571,7 @@ sub _InitLexico {
 		'ANY'			=> [ 'any',			'2.0' ],
 		'ATTRIBUTE'		=> [ 'attribute',	'2.0' ],
 		'BOOLEAN'		=> [ 'boolean',		'2.0' ],
+		'BYTE'			=> [ 'byte',		'9.9',	"MIDL/MODL" ],
 		'CASE'			=> [ 'case',		'2.0' ],
 		'CHAR'			=> [ 'char',		'2.0' ],
 		'COMPONENT'		=> [ 'component',	'3.0' ],

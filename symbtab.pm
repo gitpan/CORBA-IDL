@@ -635,7 +635,7 @@ sub CheckID {
 	} elsif ($id =~ /^DCE:/) {
 		#	10.7.3		DCE UUID Format
 		$self->{parser}->Error("Bad DCE format for Repository ID '$id'.\n")
-				unless ($id =~ /^DCE:[0-9A-Fa-f\-]+:[0-9]+/);
+				unless ($id =~ /^DCE:[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}(:[0-9]+)?/);
 	} elsif ($id =~ /^LOCAL:/) {
 		# 	10.7.4		LOCAL Format
 		# followed by an arbitrary string.

@@ -8,7 +8,7 @@ use UNIVERSAL;
 package CORBA::IDL::node;
 
 use vars qw($VERSION);
-$VERSION = '2.22';
+$VERSION = '2.40';
 
 sub _Build {
 	my $proto = shift;
@@ -89,6 +89,14 @@ sub getProperty {
 	return undef unless (exists $self->{props});
 	return undef unless (exists $self->{props}->{$key});
 	return $self->{props}->{$key};
+}
+
+sub hasProperty {
+	my $self = shift;
+	my ($key) = @_;
+	return 0 unless (exists $self->{props});
+	return 0 unless (exists $self->{props}->{$key});
+	return 1;
 }
 
 sub visit {
@@ -298,11 +306,12 @@ sub Configure {
 sub Lookup {
 	my $proto = shift;
 	my $class = ref($proto) || $proto;
-	my ($parser, $name) = @_;
+	my ($parser, $name, $bypass) = @_;
 	my $defn = $parser->YYData->{symbtab}->Lookup($name);
 	if (defined $defn) {
 	 	if ($defn->isa('Forward' . $class)) {
-			$parser->Error("'$name' is declared, but not defined.\n");
+			$parser->Error("'$name' is declared, but not defined.\n")
+					unless ($bypass);
 	 	} elsif (! $defn->isa($class)) {
 			$parser->Error("'$name' is not a $class.\n");
 		}
@@ -1373,6 +1382,7 @@ use base qw(CORBA::IDL::node);
 sub _Init {
 	my $self = shift;
 	my ($parser) = @_;
+	$self->line_stamp($parser);
 	my @list;
 	foreach (@{$self->{list_expr}}) {
 		my @array_size = @{$_};
@@ -1416,10 +1426,8 @@ sub _Init {
 	}
 	$parser->YYData->{symbtab}->Insert($self);
 	$parser->YYData->{curr_node} = $self;
-	if (exists $self->{type}) {
-		$self->{local_type} = 1 if (TypeDeclarator->IsaLocal($parser, $self->{type}));
-		$self->{deprecated} = 1 if (TypeDeclarator->IsDeprecated($parser, $self->{type}));
-	}
+	$self->{local_type} = 1 if (TypeDeclarator->IsaLocal($parser, $self->{type}));
+	$self->{deprecated} = 1 if (TypeDeclarator->IsDeprecated($parser, $self->{type}));
 }
 
 sub Lookup {
@@ -1429,6 +1437,7 @@ sub Lookup {
 	my $defn = $parser->YYData->{symbtab}->Lookup($name);
 	if (defined $defn) {
 		if (	    ! $defn->isa($class)
+				and ! $defn->isa('NativeType')
 				and ! $defn->isa('_ConstructedType')
 				and ! $defn->isa('_ForwardConstructedType')
 				and ! $defn->isa('BaseInterface')
@@ -1516,7 +1525,6 @@ sub CheckForward {
 	while (		   $defn->isa('SequenceType')
 				or $defn->isa('TypeDeclarator') ) {
 		last if (exists $defn->{array_size});
-		last if (exists $defn->{modifier});		# native
 		$defn = TypeDeclarator->GetDefn($parser, $defn->{type});
 		return unless (defined $defn);
 	}
@@ -1535,6 +1543,24 @@ sub IsaLocal {
 	return exists $defn->{local_type} if ($defn);
 	$parser->Error(__PACKAGE__ . "::IsaLocal ERROR_INTERNAL ($type).\n");
 	return undef;
+}
+
+package NativeType;
+
+use base qw(CORBA::IDL::node);
+
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
+	$self->{prefix} = $parser->YYData->{symbtab}->GetPrefix();
+	$self->{_typeprefix} = $parser->YYData->{symbtab}->GetTypePrefix();
+	$self->line_stamp($parser);
+	if ($parser->YYData->{doc} ne '') {
+		$self->{doc} = $parser->YYData->{doc};
+		$parser->YYData->{doc} = '';
+	}
+	$parser->YYData->{symbtab}->Insert($self);
+	$parser->YYData->{curr_node} = $self;
 }
 
 #
@@ -2508,6 +2534,7 @@ sub _Init {
 			BooleanLiteral -
 		TypeDeclarator
 		TypeDeclarators
+		NativeType
 		(BasicType)
 			FloatingPtType -
 			IntegerType -

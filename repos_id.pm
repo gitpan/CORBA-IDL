@@ -135,9 +135,13 @@ sub visitTypeDeclarator {
 	my $self = shift;
 	my ($node) = @_;
 	$self->_set_repos_id($node);
-	unless (exists $node->{modifier}) {		# native IDL2.2
-		$self->visitType($node->{type});
-	}
+	$self->visitType($node->{type});
+}
+
+sub visitNativeType {
+	my $self = shift;
+	my ($node) = @_;
+	$self->_set_repos_id($node);
 }
 
 #

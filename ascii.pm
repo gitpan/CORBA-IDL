@@ -425,24 +425,26 @@ sub visitTypeDeclarators {
 sub visitTypeDeclarator {
 	my $self = shift;
 	my ($node) = @_;
-	if (exists $node->{modifier}) {		# native IDL2.2
-		print $self->get_tab(), "type declarator $node->{idf}\n";
-		$self->inc_tab();
-		$self->_xp($node);
-		print $self->get_tab(), "modifier $node->{modifier}\n";
-	} else {
-		print $self->get_tab(), "type declarator $node->{idf} '$node->{repos_id}'\n";
-		$self->inc_tab();
-		$self->_xp($node);
-		print $self->get_tab(), "doc: $node->{doc}\n"
-			if ($self->{doc} and exists $node->{doc});
-		$self->visitType($node->{type});
-		if (exists $node->{array_size}) {
-			foreach (@{$node->{array_size}}) {
-				$_->visit($self);				# expression
-			}
+	print $self->get_tab(), "type declarator $node->{idf} '$node->{repos_id}'\n";
+	$self->inc_tab();
+	$self->_xp($node);
+	print $self->get_tab(), "doc: $node->{doc}\n"
+		if ($self->{doc} and exists $node->{doc});
+	$self->visitType($node->{type});
+	if (exists $node->{array_size}) {
+		foreach (@{$node->{array_size}}) {
+			$_->visit($self);				# expression
 		}
 	}
+	$self->dec_tab();
+}
+
+sub visitNativeType {
+	my $self = shift;
+	my ($node) = @_;
+	print $self->get_tab(), "native $node->{idf}\n";
+	$self->inc_tab();
+	$self->_xp($node);
 	$self->dec_tab();
 }
 

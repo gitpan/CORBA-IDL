@@ -153,7 +153,7 @@ definition
 			# when IDENTIFIER is a future keyword
 			$_[0]->Error("'$_[1]' unexpected.\n");
 			$_[0]->YYErrok();
-			new node($_[0],
+			new CORBA::IDL::node($_[0],
 					'idf'					=>	$_[1]
 			);
 		}
@@ -183,18 +183,21 @@ module
 			$_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
 			$_[0]->Error("definition declaration expected.\n");
 			$_[0]->YYErrok();
+			$_[1];
 		}
 |	module_header	'{'	'}'
 		{
 			$_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
 			$_[0]->Error("Empty module.\n");
 			$_[0]->YYErrok();
+			$_[1];
 		}
 |	module_header	error	'}'
 		{
 			$_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
 			$_[0]->Error("'\x7b' expected.\n");
 			$_[0]->YYErrok();
+			$_[1];
 		}
 ;
 
@@ -245,6 +248,7 @@ interface_dcl
 			$_[0]->YYData->{curr_itf} = undef;
 			$_[0]->Error("export declaration expected.\n");
 			$_[0]->YYErrok();
+			$_[1];
 		}
 ;
 
@@ -522,6 +526,7 @@ value_abs_dcl
 			$_[0]->YYData->{curr_itf} = undef;
 			$_[0]->Error("export declaration expected.\n");
 			$_[0]->YYErrok();
+			$_[1];
 		}
 ;
 
@@ -571,6 +576,7 @@ value_dcl
 			$_[0]->YYData->{curr_itf} = undef;
 			$_[0]->Error("value_element expected.\n");
 			$_[0]->YYErrok();
+			$_[1];
 		}
 ;
 
@@ -748,6 +754,7 @@ init_header_param
 					if (exists $_[0]->YYData->{unnamed_symbtab});
 			$_[0]->Error("init_param_decls expected.\n");
 			$_[0]->YYErrok();
+			$_[1];
 		}
 |	init_header	error
 		{
@@ -755,6 +762,7 @@ init_header_param
 					if (exists $_[0]->YYData->{unnamed_symbtab});
 			$_[0]->Error("'(' expected.\n");
 			$_[0]->YYErrok();
+			$_[1];
 		}
 ;
 
@@ -1114,9 +1122,8 @@ type_dcl_def
 										#default action
 |	props	NATIVE	simple_declarator
 		{
-			new TypeDeclarator($_[0],
+			new NativeType($_[0],
 					'props'				=>	$_[1],
-					'modifier'			=>	$_[2],
 					'idf'				=>	$_[3],
 			);
 		}
@@ -1127,9 +1134,8 @@ type_dcl_def
 											NATIVE_TYPE
 		{
 			$_[0]->YYData->{native} = 0;
-			new TypeDeclarator($_[0],
+			new NativeType($_[0],
 					'props'				=>	$_[1],
-					'modifier'			=>	$_[2],
 					'idf'				=>	$_[3],
 					'native'			=>	$_[6],
 			);
@@ -1454,6 +1460,7 @@ struct_type
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->Error("member expected.\n");
 			$_[0]->YYErrok();
+			$_[1];
 		}
 ;
 
@@ -1511,24 +1518,28 @@ union_type
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->Error("switch_body expected.\n");
 			$_[0]->YYErrok();
+			$_[1];
 		}
 |	union_header	SWITCH	'('	switch_type_spec	')'	error
 		{
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->Error("'\x7b' expected.\n");
 			$_[0]->YYErrok();
+			$_[1];
 		}
 |	union_header	SWITCH	'('	error				')'
 		{
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->Error("switch_type_spec expected.\n");
 			$_[0]->YYErrok();
+			$_[1];
 		}
 |	union_header	SWITCH	error
 		{
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->Error("'(' expected.\n");
 			$_[0]->YYErrok();
+			$_[1];
 		}
 ;
 
@@ -1651,11 +1662,13 @@ enum_type
 		{
 			$_[0]->Error("enumerator expected.\n");
 			$_[0]->YYErrok();
+			$_[1];
 		}
 |	enum_header	error
 		{
 			$_[0]->Error("'\x7b' expected.\n");
 			$_[0]->YYErrok();
+			$_[1];
 		}
 ;
 
@@ -1845,12 +1858,14 @@ except_dcl
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->Error("'members expected.\n");
 			$_[0]->YYErrok();
+			$_[1];
 		}
 |	exception_header	error
 		{
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->Error("'\x7b' expected.\n");
 			$_[0]->YYErrok();
+			$_[1];
 		}
 ;
 
@@ -1887,6 +1902,7 @@ op_dcl
 					if (exists $_[0]->YYData->{unnamed_symbtab});
 			$_[0]->Error("parameters declaration expected.\n");
 			$_[0]->YYErrok();
+			$_[1];
 		}
 ;
 
@@ -2054,7 +2070,7 @@ exception_names
 exception_name
 :	scoped_name
 		{
-			Exception->Lookup($_[0],$_[1]);
+			Interface->Lookup($_[0],$_[1],1);
 		}
 ;
 

@@ -1,5 +1,8 @@
 Revision history for Perl extension CORBA::IDL.
 
+2.40  Tue May 18 18:30:00 2004
+	- modification of the AST (not compatible with 2.2x version) : add NativeType node
+
 2.22  Wed Mar 31 12:30:00 2004
 	- prerequest Math::BigInt 1.66 (incompatible with 0.01)
 	- symbtab.pm : add a flag 'collision_allowed'
