@@ -1,6 +1,10 @@
 use strict;
 use UNIVERSAL;
 
+#
+#			Interface Definition Language (OMG IDL CORBA v3.0)
+#
+
 package asciiVisitor;
 
 sub new {
@@ -10,13 +14,14 @@ sub new {
 	bless($self, $class);
 	my($parser) = @_;
 	$self->{srcname} = $parser->YYData->{srcname};
-	$self->{seq} = [];					# recursion prevention
+	$self->{symbtab} = $parser->YYData->{symbtab};
 	my $filename = $self->{srcname};
 	$filename =~ s/^([^\/]+\/)+//;
 	$filename =~ s/\.idl$//i;
 	$filename .= '.ast';
 	open(STDOUT, "> $filename")
 			or die "can't open $filename ($!).\n";
+	$self->{num_key} = 'num_ascii';
 	return $self;
 }
 
@@ -40,6 +45,27 @@ sub get_tab {
 	return $self->{tab};
 }
 
+sub _get_defn {
+	my $self = shift;
+	my($defn) = @_;
+	if (ref $defn) {
+		return $defn;
+	} else {
+		return $self->{symbtab}->Lookup($defn);
+	}
+}
+
+sub visitType {
+	my $self = shift;
+	my ($type) = @_;
+
+	if (ref $type) {
+		$type->visit($self);
+	} else {
+		print $self->get_tab(), "type $type\n";
+	}
+}
+
 #
 #	3.5		OMG IDL Specification
 #
@@ -50,80 +76,122 @@ sub visitSpecification {
 	$self->reset_tab();
 	print "source $self->{srcname} \n\n";
 	foreach (@{$node->{list_decl}}) {
-		$_->visit($self);
+		$self->_get_defn($_)->visit($self);
 	}
 }
 
 #
-#	3.6		Module Declaration
+#	3.6		Import Declaration
 #
+
+sub visitImport {
+	my $self = shift;
+	my($node) = @_;
+	print $self->get_tab(), "import $node->{value}\n";
+}
+
+#
+#	3.7		Module Declaration
+#
+
+sub visitModules {
+	my $self = shift;
+	my($node) = @_;
+	print $self->get_tab(), "module $node->{idf} '$node->{repos_id}'\n";
+	unless (exists $node->{$self->{num_key}}) {
+		$node->{$self->{num_key}} = 0;
+	}
+	my $module = ${$node->{list_decl}}[$node->{$self->{num_key}}];
+	$module->visit($self);
+	$node->{$self->{num_key}} ++;
+}
 
 sub visitModule {
 	my $self = shift;
 	my($node) = @_;
-	print $self->get_tab(), "module $node->{idf} '$node->{repos_id}'\n";
 	$self->inc_tab();
 	print $self->get_tab(), "doc: $node->{doc}\n"
 			if (exists $node->{doc});
 	foreach (@{$node->{list_decl}}) {
-		$_->visit($self);
+		$self->_get_defn($_)->visit($self);
 	}
 	$self->dec_tab();
 }
 
 #
-#	3.7		Interface Declaration
+#	3.8		Interface Declaration
 #
 
-sub visitInterface {
+sub visitRegularInterface {
 	my $self = shift;
 	my($node) = @_;
 	print $self->get_tab(), "interface $node->{idf} '$node->{repos_id}'\n";
 	$self->inc_tab();
 	print $self->get_tab(), "doc: $node->{doc}\n"
 			if (exists $node->{doc});
-	my $found = 0;						# recursion prevention
-	foreach (@{$self->{seq}}) {
-		if ($_ == $node) {
-			$found = 1;
-			last;
-		}
+	if (exists $node->{inheritance}) {
+		$node->{inheritance}->visit($self);
 	}
-	if ($found) {
-		print $self->get_tab(), "recursion \n";
-	} else {
-		push @{$self->{seq}}, $node;
-		if (exists $node->{modifier}) {		# abstract or local
-			print $self->get_tab(), "modifier $node->{modifier}\n";
-		}
-		if (exists $node->{list_inheritance}) {
-			foreach (@{$node->{list_inheritance}}) {
-				print $self->get_tab(), "inheritance $_->{idf}\n";
-			}
-		}
-		foreach (@{$node->{list_decl}}) {
-			$_->visit($self);
-		}
-		pop @{$self->{seq}};
+	foreach (@{$node->{list_decl}}) {
+		$self->_get_defn($_)->visit($self);
 	}
 	$self->dec_tab();
 }
 
-sub visitForwardInterface {
+sub visitAbstractInterface {
+	my $self = shift;
+	my($node) = @_;
+	print $self->get_tab(), "interface $node->{idf} '$node->{repos_id}'\n";
+	$self->inc_tab();
+	print $self->get_tab(), "doc: $node->{doc}\n"
+			if (exists $node->{doc});
+	if (exists $node->{inheritance}) {
+		$node->{inheritance}->visit($self);
+	}
+	foreach (@{$node->{list_decl}}) {
+		$self->_get_defn($_)->visit($self);
+	}
+	$self->dec_tab();
+}
+
+sub visitLocalInterface {
+	my $self = shift;
+	my($node) = @_;
+	print $self->get_tab(), "local interface $node->{idf} '$node->{repos_id}'\n";
+	$self->inc_tab();
+	print $self->get_tab(), "doc: $node->{doc}\n"
+			if (exists $node->{doc});
+	if (exists $node->{inheritance}) {
+		$node->{inheritance}->visit($self);
+	}
+	foreach (@{$node->{list_decl}}) {
+		$self->_get_defn($_)->visit($self);
+	}
+	$self->dec_tab();
+}
+
+sub visitForwardRegularInterface {
 	my $self = shift;
 	my($node) = @_;
 	print $self->get_tab(), "forward interface $node->{idf}\n";
-	$self->inc_tab();
-	if (exists $node->{modifier}) {		# abstract or local
-		print $self->get_tab(), "modifier $node->{modifier}\n";
-	}
-	$self->dec_tab();
+}
+
+sub visitForwardAbstractInterface {
+	my $self = shift;
+	my($node) = @_;
+	print $self->get_tab(), "forward abstract interface $node->{idf}\n";
+}
+
+sub visitForwardLocalInterface {
+	my $self = shift;
+	my($node) = @_;
+	print $self->get_tab(), "forward local interface $node->{idf}\n";
 }
 
 #
-#	3.8		Value Declaration
+#	3.9		Value Declaration
 #
-#	3.8.1	Regular Value Type
+#	3.9.1	Regular Value Type
 #
 
 sub visitRegularValue {
@@ -133,27 +201,14 @@ sub visitRegularValue {
 	$self->inc_tab();
 	print $self->get_tab(), "doc: $node->{doc}\n"
 			if (exists $node->{doc});
-	my $found = 0;						# recursion prevention
-	foreach (@{$self->{seq}}) {
-		if ($_ == $node) {
-			$found = 1;
-			last;
-		}
+	if (exists $node->{modifier}) {		# custom
+		print $self->get_tab(), "modifier $node->{modifier}\n";
 	}
-	if ($found) {
-		print $self->get_tab(), "recursion \n";
-	} else {
-		push @{$self->{seq}}, $node;
-		if (exists $node->{modifier}) {		# custom
-			print $self->get_tab(), "modifier $node->{modifier}\n";
-		}
-		if (exists $node->{inheritance}) {
-			$node->{inheritance}->visit($self);
-		}
-		foreach (@{$node->{list_decl}}) {
-			$_->visit($self);
-		}
-		pop @{$self->{seq}};
+	if (exists $node->{inheritance}) {
+		$node->{inheritance}->visit($self);
+	}
+	foreach (@{$node->{list_decl}}) {
+		$self->_get_defn($_)->visit($self);
 	}
 	$self->dec_tab();
 }
@@ -168,12 +223,12 @@ sub visitInheritanceSpec {
 	}
 	if (exists $node->{list_value}) {
 		foreach (@{$node->{list_value}}) {
-			print $self->get_tab(), "value $_->{idf}\n";
+			print $self->get_tab(), "value $_\n";
 		}
 	}
 	if (exists $node->{list_interface}) {
 		foreach (@{$node->{list_interface}}) {
-			print $self->get_tab(), "interface $_->{idf}\n";
+			print $self->get_tab(), "interface $_\n";
 		}
 	}
 	$self->dec_tab();
@@ -184,8 +239,8 @@ sub visitStateMembers {
 	my($node) = @_;
 	print $self->get_tab(), "state members\n";
 	$self->inc_tab();
-	foreach (@{$node->{list_value}}) {
-		$_->visit($self);
+	foreach (@{$node->{list_decl}}) {
+		$self->_get_defn($_)->visit($self);
 	}
 	$self->dec_tab();
 }
@@ -193,16 +248,18 @@ sub visitStateMembers {
 sub visitStateMember {
 	my $self = shift;
 	my($node) = @_;
-	print $self->get_tab(), "$node->{modifier} $node->{idf}";
+	print $self->get_tab(), "$node->{modifier} $node->{idf}\n";
 	$self->inc_tab();
-	$node->{type}->visit($self);
-	foreach (@{$node->{array_size}}) {
-		$_->visit($self);				# expression
+	$self->visitType($node->{type});
+	if (exists $node->{array_size}) {
+		foreach (@{$node->{array_size}}) {
+			$_->visit($self);			# expression
+		}
 	}
 	$self->dec_tab();
 }
 
-sub visitFactory {
+sub visitInitializer {
 	my $self = shift;
 	my($node) = @_;
 	print $self->get_tab(), "factory $node->{idf}\n";
@@ -212,11 +269,16 @@ sub visitFactory {
 	foreach (@{$node->{list_param}}) {
 		$_->visit($self);
 	}
+	if (exists $node->{list_raise}) {
+		foreach (@{$node->{list_raise}}) {		# exception
+			print $self->get_tab(), "raise $_\n";
+		}
+	}
 	$self->dec_tab();
 }
 
 #
-#	3.8.2	Boxed Value Type
+#	3.9.2	Boxed Value Type
 #
 
 sub visitBoxedValue {
@@ -226,12 +288,12 @@ sub visitBoxedValue {
 	$self->inc_tab();
 	print $self->get_tab(), "doc: $node->{doc}\n"
 			if (exists $node->{doc});
-	$node->{type}->visit($self);
+	$self->visitType($node->{type});
 	$self->dec_tab();
 }
 
 #
-#	3.8.3	Abstract Value Type
+#	3.9.3	Abstract Value Type
 #
 
 sub visitAbstractValue {
@@ -244,11 +306,14 @@ sub visitAbstractValue {
 	if (exists $node->{inheritance}) {
 		$node->{inheritance}->visit($self);
 	}
+	foreach (@{$node->{list_decl}}) {
+		$self->_get_defn($_)->visit($self);
+	}
 	$self->dec_tab();
 }
 
 #
-#	3.8.4	Value Forward Declaration
+#	3.9.4	Value Forward Declaration
 #
 
 sub visitForwardRegularValue {
@@ -264,7 +329,7 @@ sub visitForwardAbstractValue {
 }
 
 #
-#	3.9		Constant Declaration
+#	3.10		Constant Declaration
 #
 
 sub visitConstant {
@@ -274,7 +339,7 @@ sub visitConstant {
 	$self->inc_tab();
 	print $self->get_tab(), "doc: $node->{doc}\n"
 			if (exists $node->{doc});
-	$node->{type}->visit($self);
+	$self->visitType($node->{type});
 	$node->{value}->visit($self);		# expression
 	$self->dec_tab();
 }
@@ -284,11 +349,15 @@ sub visitExpression {
 	my($node) = @_;
 	print $self->get_tab(), "expression value $node->{value}\n";
 	$self->inc_tab();
-	foreach (@{$node->{list_expr}}) {
-		if ($_->isa('Constant')) {
-			print $self->get_tab(), "constant $_->{idf}\n";
+	foreach my $elt (@{$node->{list_expr}}) {
+		if (ref $elt) {
+			if ($elt->isa('Constant')) {
+				print $self->get_tab(), "constant $elt->{idf}\n";
+			} else {
+				$elt->visit($self);			# literal, unop, binop
+			}
 		} else {
-			$_->visit($self);			# literal, unop, binop
+			print $self->get_tab(), "entry $elt\n";
 		}
 	}
 	$self->dec_tab();
@@ -313,7 +382,7 @@ sub visitLiteral {
 }
 
 #
-#	3.10	Type Declaration
+#	3.11	Type Declaration
 #
 
 sub visitTypeDeclarators {
@@ -321,8 +390,8 @@ sub visitTypeDeclarators {
 	my($node) = @_;
 	print $self->get_tab(), "type declarators\n";
 	$self->inc_tab();
-	foreach (@{$node->{list_value}}) {
-		$_->visit($self);
+	foreach (@{$node->{list_decl}}) {
+		$self->_get_defn($_)->visit($self);
 	}
 	$self->dec_tab();
 }
@@ -339,7 +408,7 @@ sub visitTypeDeclarator {
 		$self->inc_tab();
 		print $self->get_tab(), "doc: $node->{doc}\n"
 				if (exists $node->{doc});
-		$node->{type}->visit($self);
+		$self->visitType($node->{type});
 		if (exists $node->{array_size}) {
 			foreach (@{$node->{array_size}}) {
 				$_->visit($self);				# expression
@@ -350,7 +419,7 @@ sub visitTypeDeclarator {
 }
 
 #
-#	3.10.1	Basic Types
+#	3.11.1	Basic Types
 #
 
 sub visitBasicType {
@@ -360,9 +429,9 @@ sub visitBasicType {
 }
 
 #
-#	3.10.2	Constructed Types
+#	3.11.2	Constructed Types
 #
-#	3.10.2.1	Structures
+#	3.11.2.1	Structures
 #
 
 sub visitStructType {
@@ -376,7 +445,7 @@ sub visitStructType {
 			$_->visit($self);				# members
 		}
 #		foreach (@{$node->{list_value}}) {
-#			$_->visit($self);				# single or array
+#			$self->_get_defn($_)->visit($self);		# single or array
 #		}
 		pop @{$self->{seq}};
 		$self->dec_tab();
@@ -391,7 +460,7 @@ sub visitMembers {
 	print $self->get_tab(), "members\n";
 	$self->inc_tab();
 	foreach (@{$node->{list_value}}) {
-		$_->visit($self);				# single or array
+		$self->_get_defn($_)->visit($self);		# single or array
 	}
 	$self->dec_tab();
 }
@@ -401,7 +470,7 @@ sub visitArray {
 	my($node) = @_;
 	print $self->get_tab(), "array $node->{idf}\n";
 	$self->inc_tab();
-	$node->{type}->visit($self);
+	$self->visitType($node->{type});
 	foreach (@{$node->{array_size}}) {
 		$_->visit($self);				# expression
 	}
@@ -413,11 +482,11 @@ sub visitSingle {
 	my($node) = @_;
 	print $self->get_tab(), "single $node->{idf}\n";
 	$self->inc_tab();
-	$node->{type}->visit($self);
+	$self->visitType($node->{type});
 	$self->dec_tab();
 }
 
-#	3.10.2.2	Discriminated Unions
+#	3.11.2.2	Discriminated Unions
 #
 
 sub visitUnionType {
@@ -460,10 +529,25 @@ sub visitDefault {
 sub visitElement {
 	my $self = shift;
 	my($node) = @_;
-	$node->{value}->visit($self);		# array or single
+	$self->_get_defn($node->{value})->visit($self);		# single or array
 }
 
-#	3.10.2.3	Enumerations
+#	3.11.2.3	Constructed Recursive Types and Forward Declarations
+#
+
+sub visitForwardStructType {
+	my $self = shift;
+	my($node) = @_;
+	print $self->get_tab(), "forward struct $node->{idf}\n";
+}
+
+sub visitForwardUnionType {
+	my $self = shift;
+	my($node) = @_;
+	print $self->get_tab(), "forward union $node->{idf}\n";
+}
+
+#	3.11.2.4	Enumerations
 #
 
 sub visitEnumType {
@@ -486,23 +570,7 @@ sub visitEnum {
 }
 
 #
-#	3.10.3	Constructed Recursive Types and Forward Declarations
-#
-
-sub visitForwardStructType {
-	my $self = shift;
-	my($node) = @_;
-	print $self->get_tab(), "forward struct $node->{idf}\n";
-}
-
-sub visitForwardUnionType {
-	my $self = shift;
-	my($node) = @_;
-	print $self->get_tab(), "forward union $node->{idf}\n";
-}
-
-#
-#	3.10.4	Template Types
+#	3.11.3	Template Types
 #
 
 sub visitSequenceType {
@@ -518,10 +586,10 @@ sub visitSequenceType {
 		}
 	}
 	if ($found) {
-		print $self->get_tab(), "recursion $node->{type}->{idf}\n";
+		print $self->get_tab(), "recursion $node->{type}\n";
 	} else {
 		push @{$self->{seq}}, $node;
-		$node->{type}->visit($self);
+		$self->visitType($node->{type});
 		pop @{$self->{seq}};
 	}
 	if (exists $node->{max}) {
@@ -557,15 +625,19 @@ sub visitFixedPtType {
 	my($node) = @_;
 	print $self->get_tab(), "fixed\n";
 	$self->inc_tab();
-	if (exists $node->{d}) {
-		$node->{d}->visit($self);
-		$node->{s}->visit($self);
-	}
+	$node->{d}->visit($self);
+	$node->{s}->visit($self);
 	$self->dec_tab();
 }
 
+sub visitFixedPtConstType {
+	my $self = shift;
+	my($node) = @_;
+	print $self->get_tab(), "fixed\n";
+}
+
 #
-#	3.11	Exception Declaration
+#	3.12	Exception Declaration
 #
 
 sub visitException {
@@ -581,13 +653,13 @@ sub visitException {
 		}
 	}
 #	foreach (@{$node->{list_value}}) {
-#		$_->visit($self);				# single or array
+#			$self->_get_defn($_)->visit($self);		# single or array
 #	}
 	$self->dec_tab();
 }
 
 #
-#	3.12	Operation Declaration
+#	3.13	Operation Declaration
 #
 
 sub visitOperation {
@@ -600,13 +672,13 @@ sub visitOperation {
 	if (exists $node->{attr}) {			# oneway
 		print $self->get_tab(), "attribute $node->{attr}\n";
 	}
-	$node->{type}->visit($self);
+	$self->visitType($node->{type});
 	foreach (@{$node->{list_param}}) {
 		$_->visit($self);				# parameter
 	}
 	if (exists $node->{list_raise}) {
 		foreach (@{$node->{list_raise}}) {		# exception
-			print $self->get_tab(), "raise $_->{idf}\n";
+			print $self->get_tab(), "raise $_\n";
 		}
 	}
 	if (exists $node->{list_context}) {
@@ -624,7 +696,7 @@ sub visitParameter {
 	$self->inc_tab();
 	# in, out, inout
 	print $self->get_tab(), "attribute $node->{attr}\n";
-	$node->{type}->visit($self);
+	$self->visitType($node->{type});
 	$self->dec_tab();
 }
 
@@ -635,7 +707,7 @@ sub visitVoidType {
 }
 
 #
-#	3.13	Attribute Declaration
+#	3.14	Attribute Declaration
 #
 
 sub visitAttributes {
@@ -643,8 +715,8 @@ sub visitAttributes {
 	my($node) = @_;
 	print $self->get_tab(), "attributes\n";
 	$self->inc_tab();
-	foreach (@{$node->{list_value}}) {
-		$_->visit($self);				# attribute
+	foreach (@{$node->{list_decl}}) {
+		$self->_get_defn($_)->visit($self);
 	}
 	$self->dec_tab();
 }
@@ -659,7 +731,219 @@ sub visitAttribute {
 	if (exists $node->{modifier}) {		# readonly
 		print $self->get_tab(), "modifier $node->{modifier}\n";
 	}
-	$node->{type}->visit($self);
+	if (exists $node->{list_getraise}) {
+		foreach (@{$node->{list_getraise}}) {		# exception
+			print $self->get_tab(), "getraise $_\n";
+		}
+	}
+	if (exists $node->{list_setraise}) {
+		foreach (@{$node->{list_setraise}}) {		# exception
+			print $self->get_tab(), "setraise $_\n";
+		}
+	}
+	$self->visitType($node->{type});
+	$self->dec_tab();
+}
+
+#
+#	3.15	Repository Identity Related Declarations
+#
+
+sub visitTypeId {
+	my $self = shift;
+	my($node) = @_;
+	print $self->get_tab(), "typeid $node->{idf} '$node->{value}'\n";
+}
+
+sub visitTypePrefix {
+	my $self = shift;
+	my($node) = @_;
+	print $self->get_tab(), "typeprefix $node->{idf} '$node->{value}'\n";
+}
+
+#
+#	3.16	Event Declaration
+#
+
+sub visitRegularEvent {
+	my $self = shift;
+	my($node) = @_;
+	print $self->get_tab(), "regular event $node->{idf} '$node->{repos_id}'\n";
+	$self->inc_tab();
+	print $self->get_tab(), "doc: $node->{doc}\n"
+			if (exists $node->{doc});
+	if (exists $node->{modifier}) {		# custom
+		print $self->get_tab(), "modifier $node->{modifier}\n";
+	}
+	if (exists $node->{inheritance}) {
+		$node->{inheritance}->visit($self);
+	}
+	foreach (@{$node->{list_decl}}) {
+		$self->_get_defn($_)->visit($self);
+	}
+	$self->dec_tab();
+}
+
+sub visitAbstractEvent {
+	my $self = shift;
+	my($node) = @_;
+	print $self->get_tab(), "abstract event $node->{idf} '$node->{repos_id}'\n";
+	$self->inc_tab();
+	print $self->get_tab(), "doc: $node->{doc}\n"
+			if (exists $node->{doc});
+	if (exists $node->{inheritance}) {
+		$node->{inheritance}->visit($self);
+	}
+	foreach (@{$node->{list_decl}}) {
+		$self->_get_defn($_)->visit($self);
+	}
+	$self->dec_tab();
+}
+
+sub visitForwardRegularEvent {
+	my $self = shift;
+	my($node) = @_;
+	print $self->get_tab(), "forward regular event $node->{idf}\n";
+}
+
+sub visitForwardAbstractEvent {
+	my $self = shift;
+	my($node) = @_;
+	print $self->get_tab(), "forward abstract event $node->{idf}\n";
+}
+
+#
+#	3.17	Component Declaration
+#
+
+sub visitComponent {
+	my $self = shift;
+	my($node) = @_;
+	print $self->get_tab(), "component $node->{idf} '$node->{repos_id}'\n";
+	$self->inc_tab();
+	print $self->get_tab(), "doc: $node->{doc}\n"
+			if (exists $node->{doc});
+	if (exists $node->{inheritance}) {
+		$node->{inheritance}->visit($self);
+	}
+	if (exists $node->{list_support}) {
+		print $self->get_tab(), "supports \n";
+		foreach (@{$node->{list_support}}) {
+			$_->visit($self);
+		}
+	}
+	print $self->get_tab(), "exports \n";
+	foreach (@{$node->{list_decl}}) {
+		$self->_get_defn($_)->visit($self);
+	}
+	$self->dec_tab();
+}
+
+sub visitForwardComponent {
+	my $self = shift;
+	my($node) = @_;
+	print $self->get_tab(), "forward component $node->{idf}\n";
+}
+
+sub visitProvides {
+	my $self = shift;
+	my($node) = @_;
+	print $self->get_tab(), "provides $node->{idf} $node->{type}\n";
+}
+
+sub visitUses {
+	my $self = shift;
+	my($node) = @_;
+	print $self->get_tab(), "uses $node->{idf} $node->{type}\n";
+	$self->inc_tab();
+	if (exists $node->{modifier}) {		# multiple
+		print $self->get_tab(), "modifier $node->{modifier}\n";
+	}
+	$self->dec_tab();
+}
+
+sub visitPublishes {
+	my $self = shift;
+	my($node) = @_;
+	print $self->get_tab(), "publishes $node->{idf} $node->{type}\n";
+}
+
+sub visitEmits {
+	my $self = shift;
+	my($node) = @_;
+	print $self->get_tab(), "emits $node->{idf} $node->{type}\n";
+}
+
+sub visitConsumes {
+	my $self = shift;
+	my($node) = @_;
+	print $self->get_tab(), "consumes $node->{idf} $node->{type}\n";
+}
+
+#
+#	3.18	Home Declaration
+#
+
+sub visitHome {
+	my $self = shift;
+	my($node) = @_;
+	print $self->get_tab(), "home $node->{idf} '$node->{repos_id}'\n";
+	$self->inc_tab();
+	print $self->get_tab(), "doc: $node->{doc}\n"
+			if (exists $node->{doc});
+	if (exists $node->{inheritance}) {
+		$node->{inheritance}->visit($self);
+	}
+	if (exists $node->{list_support}) {
+		print $self->get_tab(), "supports \n";
+		foreach (@{$node->{list_support}}) {
+			$_->visit($self);
+		}
+	}
+	$node->{manage}->visit($self);
+	if (exists $node->{primakey}) {
+		print $self->get_tab(), "primarykey $self->{primarykey}\n";
+	}
+	print $self->get_tab(), "exports \n";
+	foreach (@{$node->{list_decl}}) {
+		$self->_get_defn($_)->visit($self);
+	}
+	$self->dec_tab();
+}
+
+sub visitFactory {
+	my $self = shift;
+	my($node) = @_;
+	print $self->get_tab(), "factory $node->{idf}\n";
+	$self->inc_tab();
+	print $self->get_tab(), "doc: $node->{doc}\n"
+			if (exists $node->{doc});
+	foreach (@{$node->{list_param}}) {
+		$_->visit($self);
+	}
+	if (exists $node->{list_raise}) {
+		foreach (@{$node->{list_raise}}) {		# exception
+			print $self->get_tab(), "raise $_\n";
+		}
+	}
+	$self->dec_tab();
+}
+
+sub visitFinder {
+	my $self = shift;
+	my($node) = @_;
+	print $self->get_tab(), "finder $node->{idf}\n";
+	$self->inc_tab();
+	print $self->get_tab(), "doc: $node->{doc}\n"
+			if (exists $node->{doc});
+	foreach (@{$node->{list_param}}) {
+		$_->visit($self);
+	}
+	if (exists $node->{list_raise}) {
+		foreach (@{$node->{list_raise}}) {		# exception
+			print $self->get_tab(), "raise $_\n";
+		}
+	}
 	$self->dec_tab();
 }
 

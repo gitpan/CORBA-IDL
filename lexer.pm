@@ -84,7 +84,6 @@ sub _StringLexer {
 	while ($parser->YYData->{INPUT}) {
 
 		for ($parser->YYData->{INPUT}) {
-			study;
 
 			s/^\"//
 				and return($token,$str);
@@ -148,7 +147,6 @@ sub _CharLexer {
 	my($token) = @_;
 
 	$_ = $parser->YYData->{INPUT};
-	study;
 	s/^([^'\\])\'//
 		and return ($token,$1);		# any character except single quote or backslash
 
@@ -197,11 +195,12 @@ sub _Identifier {
 	if (exists $parser->YYData->{keyword}{$key}) {
 		my $keywd = $parser->YYData->{keyword}{$key}[0];
 		my $version = $parser->YYData->{keyword}{$key}[1];
-		if ($parser->YYData->{IDL_version} ge $version) {
+		if ($Parser::IDL_version ge $version) {
 			if ($ident eq $keywd) {
 				return ($key, $ident);
 			} else {
 				$parser->Error("'$ident' collides with keyword '$keywd'.\n");
+				return ('IDENTIFIER', $ident);
 			}
 		} else {
 			if ($ident eq $keywd) {
@@ -209,17 +208,17 @@ sub _Identifier {
 			} else {
 				$parser->Info("'$ident' collides with future keyword '$keywd'.\n");
 			}
-			return ('IDENTIFIER',$ident);
+			return ('IDENTIFIER', $ident);
 		}
 	}
-	return ('IDENTIFIER',$ident);
+	return ('IDENTIFIER', $ident);
 }
 
 sub _EscIdentifier {
 	my $parser = shift;
 	my($ident) = @_;
 
-	if ($parser->YYData->{IDL_version} ge '2.3') {
+	if ($Parser::IDL_version ge '2.3') {
 		my $key = uc $ident;
 		if (! exists $parser->YYData->{keyword}{$key}) {
 			Info("Unnecessary escaped identifier '$ident'.\n");
@@ -261,7 +260,6 @@ sub _CommentLexer {
 		or  return;
 
 		for ($parser->YYData->{INPUT}) {
-			study;
 			s/^\n//
 					and $parser->YYData->{lineno} ++,
 					last;
@@ -284,7 +282,6 @@ sub _DocLexer {
 		or  return;
 
 		for ($parser->YYData->{INPUT}) {
-			study;
 			s/^(\n)//
 					and $parser->YYData->{lineno} ++,
 						$parser->YYData->{doc} .= $1,
@@ -313,7 +310,6 @@ sub _PragmaLexer {						#	10.6.5	Pragma Directives for RepositoryId
 	my($line) = @_;
 
 	for ($line) {
-		study;
 		s/^ID[ \t]+([0-9A-Za-z_:]+)[ \t]+\"([^\s">]+)\"//
 				and $parser->YYData->{symbtab}->PragmaID($1,$2),
 				    return;
@@ -365,7 +361,6 @@ sub _Lexer {
 		}
 
 		for ($parser->YYData->{INPUT}) {
-			study;
 			s/^# ([\d]+) ["<]([^\s">]+)[">] ([\d]+)\n//		# cccp
 					and $parser->YYData->{lineno} = $1,
 					    $parser->YYData->{filename} = $2,
@@ -409,7 +404,7 @@ sub _Lexer {
 			s/^\/\*//										# multiple line comment
 					and $parser->_CommentLexer(),
 					    last;
-			s/^\/\/(.*)\n//									# single line comment
+			s/^\/\/.*\n//									# single line comment
 					and $parser->YYData->{lineno} ++,
 					    $parser->YYData->{curr_node} = undef,
 					    last;
@@ -462,7 +457,7 @@ sub _Lexer {
 			s/^\"//
 					and return $parser->_StringLexer('STRING_LITERAL');
 
-			if ($parser->YYData->{IDL_version} ge '2.3') {
+			if ($Parser::IDL_version ge '2.3') {
 				s/^L\"//
 						and return $parser->_StringLexer('WIDE_STRING_LITERAL');
 			} else {
@@ -474,7 +469,7 @@ sub _Lexer {
 			s/^\'//
 					and return $parser->_CharLexer('CHARACTER_LITERAL');
 
-			if ($parser->YYData->{IDL_version} ge '2.3') {
+			if ($Parser::IDL_version ge '2.3') {
 				s/^L\'//
 						and return $parser->_CharLexer('WIDE_CHARACTER_LITERAL');
 			} else {
@@ -508,9 +503,6 @@ sub _Lexer {
 sub _InitLexico {
 	my $parser = shift;
 
-	$parser->YYData->{IDL_version} = '2.0'
-			unless (exists $parser->YYData->{IDL_version});
-
 	# 3.2.4	Keywords
 	my %keywords = (
 		'ABSTRACT'		=> [ 'abstract',	'2.3' ],
@@ -519,33 +511,46 @@ sub _InitLexico {
 		'BOOLEAN'		=> [ 'boolean',		'2.0' ],
 		'CASE'			=> [ 'case',		'2.0' ],
 		'CHAR'			=> [ 'char',		'2.0' ],
+		'COMPONENT'		=> [ 'component',	'3.0' ],
 		'CONST'			=> [ 'const',		'2.0' ],
+		'CONSUMES'		=> [ 'consumes',	'3.0' ],
 		'CONTEXT'		=> [ 'context',		'2.0' ],
 		'CUSTOM'		=> [ 'custom',		'2.3' ],
 		'DEFAULT'		=> [ 'default',		'2.0' ],
 		'DOUBLE'		=> [ 'double',		'2.0' ],
+		'EMITS'			=> [ 'emits',		'3.0' ],
 		'ENUM'			=> [ 'enum',		'2.0' ],
+		'EVENTTYPE'		=> [ 'eventtype',	'3.0' ],
 		'EXCEPTION'		=> [ 'exception',	'2.0' ],
 		'FACTORY'		=> [ 'factory',		'2.3' ],
 		'FALSE'			=> [ 'FALSE',		'2.0' ],
+		'FINDER'		=> [ 'finder',		'3.0' ],
 		'FIXED'			=> [ 'fixed',		'2.1' ],
 		'FLOAT'			=> [ 'float',		'2.0' ],
+		'GETRAISES'		=> [ 'getraises',	'3.0' ],
+		'HOME'			=> [ 'home',		'3.0' ],
+		'IMPORT'		=> [ 'import',		'3.0' ],
 		'IN'			=> [ 'in',			'2.0' ],
 		'INOUT'			=> [ 'inout',		'2.0' ],
 		'INTERFACE'		=> [ 'interface',	'2.0' ],
 		'LOCAL'			=> [ 'local',		'2.4' ],
 		'LONG'			=> [ 'long',		'2.0' ],
 		'MODULE'		=> [ 'module',		'2.0' ],
+		'MULTIPLE'		=> [ 'multiple',	'3.0' ],
 		'NATIVE'		=> [ 'native',		'2.2' ],
 		'OBJECT'		=> [ 'Object',		'2.0' ],
 		'OCTET'			=> [ 'octet',		'2.0' ],
 		'ONEWAY'		=> [ 'oneway',		'2.0' ],
 		'OUT'			=> [ 'out',			'2.0' ],
+		'PRIMARYKEY'	=> [ 'primarykey',	'3.0' ],
 		'PRIVATE'		=> [ 'private',		'2.3' ],
+		'PROVIDES'		=> [ 'provides',	'3.0' ],
 		'PUBLIC'		=> [ 'public',		'2.3' ],
+		'PUBLISHES'		=> [ 'publishes',	'3.0' ],
 		'RAISES'		=> [ 'raises',		'2.0' ],
 		'READONLY'		=> [ 'readonly',	'2.0' ],
 		'SEQUENCE'		=> [ 'sequence',	'2.0' ],
+		'SETRAISES'		=> [ 'setraises',	'3.0' ],
 		'SHORT'			=> [ 'short',		'2.0' ],
 		'STRING'		=> [ 'string',		'2.0' ],
 		'STRUCT'		=> [ 'struct',		'2.0' ],
@@ -554,8 +559,11 @@ sub _InitLexico {
 		'TRUE'			=> [ 'TRUE',		'2.0' ],
 		'TRUNCATABLE'	=> [ 'truncatable',	'2.3' ],
 		'TYPEDEF'		=> [ 'typedef',		'2.0' ],
+		'TYPEID'		=> [ 'typeid',		'3.0' ],
+		'TYPEPREFIX'	=> [ 'typeprefix',	'3.0' ],
 		'UNION'			=> [ 'union',		'2.0' ],
 		'UNSIGNED'		=> [ 'unsigned',	'2.0' ],
+		'USES'			=> [ 'uses',		'3.0' ],
 		'VALUEBASE'		=> [ 'ValueBase',	'2.3' ],
 		'VALUETYPE'		=> [ 'valuetype',	'2.3' ],
 		'VOID'			=> [ 'void',		'2.0' ],

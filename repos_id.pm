@@ -2,7 +2,7 @@ use strict;
 use UNIVERSAL;
 
 #
-#			Interface Definition Language (OMG IDL CORBA v2.4)
+#			Interface Definition Language (OMG IDL CORBA v3.0)
 #
 
 package repositoryIdVisitor;
@@ -15,23 +15,46 @@ sub new {
 	my $self = {};
 	bless($self, $class);
 	my($parser) = @_;
+	$self->{symbtab} = $parser->YYData->{symbtab};
 	return $self;
 }
 
 sub _set_repos_id {
 	my $self = shift;
 	my($node) = @_;
-	unless (exists $node->{repos_id}) {
+	if (exists $node->{typeid}) {
+		$node->{repos_id} = $node->{typeid};
+	} elsif (exists $node->{id}) {
+		$node->{repos_id} = $node->{id};
+	} else {
 		my $version;
+		my $scoped_name;
 		if (exists $node->{version}) {
 			$version = $node->{version};
 		} else {
 			$version = "1.0";
 		}
-		my $scoped_name = $node->{idf};
-		$scoped_name = $node->{prefix} . "/" . $node->{idf}
-				if ($node->{prefix});
+		if (defined $node->{_typeprefix}) {
+			if ($node->{_typeprefix}) {
+				$scoped_name = $node->{_typeprefix} . "/" . $node->{idf}
+			} else {
+				$scoped_name = $node->{idf};
+			}
+		} elsif ($node->{prefix}) {
+			$scoped_name = $node->{prefix} . "/" . $node->{idf}
+		} else {
+			$scoped_name = $node->{idf};
+		}
 		$node->{repos_id} = "IDL:" . $scoped_name . ":" . $version;
+	}
+}
+
+sub visitNameType {
+	my $self = shift;
+	my ($type) =@_;
+
+	if (ref $type) {
+		$type->visitName($self);
 	}
 }
 
@@ -42,77 +65,55 @@ sub _set_repos_id {
 sub visitNameSpecification {
 	my $self = shift;
 	my($node) = @_;
-	foreach (@{$node->{list_decl}}) {
-		$_->visitName($self);
+	foreach (@{$node->{list_export}}) {
+		$self->{symbtab}->Lookup($_)->visitName($self);
 	}
 }
 
 #
-#	3.6		Module Declaration
+#	3.6		Import Declaration
 #
 
-sub visitNameModule {
+#
+#	3.7		Module Declaration
+#
+
+sub visitNameModules {
 	my $self = shift;
 	my($node) = @_;
 	$self->_set_repos_id($node);
-	foreach (@{$node->{list_decl}}) {
-		$_->visitName($self);
+	foreach (@{$node->{list_export}}) {
+		$self->{symbtab}->Lookup($_)->visitName($self);
 	}
 }
 
 #
-#	3.7		Interface Declaration
+#	3.8		Interface Declaration
 #
 
-sub visitNameInterface {
+sub visitNameBaseInterface {
 	my $self = shift;
 	my($node) = @_;
 	$self->_set_repos_id($node);
-	foreach (@{$node->{list_decl}}) {
-		if (	   $_->isa('Operation')
-				or $_->isa('Attributes') ) {
-			next;
-		}
-		$_->visitName($self);
+	foreach (@{$node->{list_export}}) {
+		$self->{symbtab}->Lookup($_)->visitName($self);
 	}
 }
 
-sub visitNameForwardInterface {
+#
+#	3.9		Value Declaration
+#
+
+sub visitNameStateMember {
+	# empty
+}
+
+sub visitNameInitializer {
 	# empty
 }
 
 #
-#	3.8		Value Declaration
-#
-
-sub visitNameRegularValue {
-	my $self = shift;
-	my($node) = @_;
-	$self->_set_repos_id($node);
-}
-
-sub visitNameBoxedValue {
-	my $self = shift;
-	my($node) = @_;
-	$self->_set_repos_id($node);
-}
-
-sub visitNameAbstractValue {
-	my $self = shift;
-	my($node) = @_;
-	$self->_set_repos_id($node);
-}
-
-sub visitNameForwardRegularValue {
-	# empty
-}
-
-sub visitNameForwardAbstractValue {
-	# empty
-}
-
-#
-#	3.9		Constant Declaration
+#	3.10		Constant Declaration
 #
 
 sub visitNameConstant {
@@ -120,28 +121,20 @@ sub visitNameConstant {
 }
 
 #
-#	3.10	Type Declaration
+#	3.11	Type Declaration
 #
-
-sub visitNameTypeDeclarators {
-	my $self = shift;
-	my($node) = @_;
-	foreach (@{$node->{list_value}}) {
-		$_->visitName($self);
-	}
-}
 
 sub visitNameTypeDeclarator {
 	my $self = shift;
 	my($node) = @_;
 	unless (exists $node->{modifier}) {		# native IDL2.2
 		$self->_set_repos_id($node);
-		$node->{type}->visitName($self);
+		$self->visitNameType($node->{type});
 	}
 }
 
 #
-#	3.10.1	Basic Types
+#	3.11.1	Basic Types
 #
 
 sub visitNameBasicType {
@@ -149,9 +142,7 @@ sub visitNameBasicType {
 }
 
 #
-#	3.10.2	Constructed Types
-#
-#	3.10.2.1	Structures
+#	3.11.2	Constructed Types
 #
 
 sub visitNameStructType {
@@ -159,35 +150,33 @@ sub visitNameStructType {
 	my($node) = @_;
 	$self->_set_repos_id($node);
 	foreach (@{$node->{list_expr}}) {
-		if (	   $_->{type}->isa('StructType')
-				or $_->{type}->isa('UnionType')
-				or $_->{type}->isa('SequenceType')
-				or $_->{type}->isa('FixedPtType') ) {
-			$_->{type}->visitName($self);
+		if (ref $_->{type}) {
+			if (	   $_->{type}->isa('StructType')
+					or $_->{type}->isa('UnionType')
+					or $_->{type}->isa('SequenceType')
+					or $_->{type}->isa('FixedPtType') ) {
+				$_->{type}->visitName($self);
+			}
 		}
 	}
 }
-
-#	3.10.2.2	Discriminated Unions
-#
 
 sub visitNameUnionType {
 	my $self = shift;
 	my($node) = @_;
 	$self->_set_repos_id($node);
 	foreach (@{$node->{list_expr}}) {
-		if (	   $_->{element}->{type}->isa('StructType')
-				or $_->{element}->{type}->isa('UnionType')
-				or $_->{element}->{type}->isa('SequenceType')
-				or $_->{element}->{type}->isa('FixedPtType') ) {
-			$_->{element}->{type}->visitName($self);
+		if (ref $_->{element}->{type}) {
+			if (	   $_->{element}->{type}->isa('StructType')
+					or $_->{element}->{type}->isa('UnionType')
+					or $_->{element}->{type}->isa('SequenceType')
+					or $_->{element}->{type}->isa('FixedPtType') ) {
+				$_->{element}->{type}->visitName($self);
+			}
 		}
 	}
-	$node->{type}->visitName($self);
+	$self->visitNameType($node->{type});
 }
-
-#	3.10.2.3	Enumerations
-#
 
 sub visitNameEnumType {
 	my $self = shift;
@@ -196,19 +185,7 @@ sub visitNameEnumType {
 }
 
 #
-#	3.10.3	Constructed Recursive Types and Forward Declarations
-#
-
-sub visitNameForwardStructType {
-	# empty
-}
-
-sub visitNameForwardUnionType {
-	# empty
-}
-
-#
-#	3.10.4	Template Types
+#	3.11.3	Template Types
 #
 
 sub visitNameSequenceType {
@@ -228,7 +205,7 @@ sub visitNameFixedPtType {
 }
 
 #
-#	3.11	Exception Declaration
+#	3.12	Exception Declaration
 #
 
 sub visitNameException {
@@ -239,14 +216,84 @@ sub visitNameException {
 		warn __PACKAGE__,"::visitNameException $node->{idf} : empty list_expr.\n"
 				unless (@{$node->{list_expr}});
 		foreach (@{$node->{list_expr}}) {
-			if (	   $_->{type}->isa('StructType')
-					or $_->{type}->isa('UnionType')
-					or $_->{type}->isa('SequenceType')
-					or $_->{type}->isa('FixedPtType') ) {
-				$_->{type}->visitName($self);
+			if (ref $_->{type}) {
+				if (	   $_->{type}->isa('StructType')
+						or $_->{type}->isa('UnionType')
+						or $_->{type}->isa('SequenceType')
+						or $_->{type}->isa('FixedPtType') ) {
+					$_->{type}->visitName($self);
+				}
 			}
 		}
 	}
+}
+
+#
+#	3.13	Operation Declaration
+#
+
+sub visitNameOperation {
+	# empty
+}
+
+#
+#	3.14	Attribute Declaration
+#
+
+sub visitNameAttribute {
+	# empty
+}
+
+#
+#	3.15	Repository Identity Related Declarations
+#
+
+sub visitTypeId {
+	# empty
+}
+
+sub visitTypePrefix {
+	# empty
+}
+
+#
+#	3.16	Event Declaration
+#
+
+#
+#	3.17	Component Declaration
+#
+
+sub visitProvides {
+	# empty
+}
+
+sub visitUses {
+	# empty
+}
+
+sub visitPublishes {
+	# empty
+}
+
+sub visitEmits {
+	# empty
+}
+
+sub visitConsumes {
+	# empty
+}
+
+#
+#	3.18	Home Declaration
+#
+
+sub visitFactory {
+	# empty
+}
+
+sub visitFinder {
+	# empty
 }
 
 1;

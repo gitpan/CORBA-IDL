@@ -1,16 +1,15 @@
 
 YAPP=yapp -s -v -m
 CP=copy
-MV=ren
 RM=del
 
-all: parser24.pm parser23.pm parser22.pm parser21.pm parser20.pm parser24clean1.pm parser24clean2.pm
+all: parser30.pm parser24.pm parser23.pm parser22.pm parser21.pm parser20.pm
 	$(RM) Parser.pm
 
 parser20.pm: parser20.yp
 	$(YAPP) Parser parser20.yp
 	$(CP) Parser.pm parser20.pm
-	
+
 parser21.pm: parser21.yp
 	$(YAPP) Parser parser21.yp
 	$(CP) Parser.pm parser21.pm
@@ -27,13 +26,9 @@ parser24.pm: parser24.yp
 	$(YAPP) Parser parser24.yp
 	$(CP) Parser.pm parser24.pm
 
-parser24clean1.pm: parser24clean1.yp
-	$(YAPP) Parser parser24clean1.yp
-	$(CP) Parser.pm parser24clean1.pm
-
-parser24clean2.pm: parser24clean2.yp
-	$(YAPP) Parser parser24clean2.yp
-	$(CP) Parser.pm parser24clean2.pm
+parser30.pm: parser30.yp
+	$(YAPP) Parser parser30.yp
+	$(CP) Parser.pm parser30.pm
 
 clean:
 	$(RM) parser*.pm

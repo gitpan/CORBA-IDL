@@ -73,60 +73,73 @@ specification
 		}
 |	/* empty */
 		{
-			$_[0]->Error("Empty specification\n");
+			$_[0]->Error("Empty specification.\n");
 		}
 |	error
 		{
-			$_[0]->Error("definition declaration excepted.\n");
+			$_[0]->Error("definition declaration expected.\n");
 		}
 ;
 
 definitions
-:	definition							{ [$_[1]]; }
-|	definition	definitions				{ unshift(@{$_[2]},$_[1]); $_[2]; }
+:	definition
+		{
+			[$_[1]->getRef()];
+		}
+|	definition	definitions
+		{
+			unshift(@{$_[2]},$_[1]->getRef());
+			$_[2];
+		}
 ;
 
 /* 2 */
 definition
-:	type_dcl	';'						#default action
-|	const_dcl	';'						#default action
-|	except_dcl	';'						#default action
-|	interface	';'						#default action
-|	module		';'						#default action
-|	value		';'						#default action
-|	type_dcl	error
+:	type_dcl		';'
+										#default action
+|	const_dcl		';'
+										#default action
+|	except_dcl		';'
+										#default action
+|	interface		';'
+										#default action
+|	module			';'
+										#default action
+|	value			';'
+										#default action
+|	type_dcl		error
 		{
-			$_[0]->Warning("';' excepted.\n");
+			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
-|	const_dcl	error
+|	const_dcl		error
 		{
-			$_[0]->Warning("';' excepted.\n");
+			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
-|	except_dcl	error
+|	except_dcl		error
 		{
-			$_[0]->Warning("';' excepted.\n");
+			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
-|	interface	error
+|	interface		error
 		{
-			$_[0]->Warning("';' excepted.\n");
+			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
-|	module		error
+|	module			error
 		{
-			$_[0]->Warning("';' excepted.\n");
+			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
-|	value		error
+|	value			error
 		{
-			$_[0]->Warning("';' excepted.\n");
+			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
@@ -137,19 +150,20 @@ module
 :	module_header	'{'	definitions	'}'
 		{
 			$_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
-			$_[1]->configure('list_decl' => $_[3])
-					if (defined $_[1]);
+			$_[1]->Configure($_[0],
+					'list_decl'			=>	$_[3]
+			) if (defined $_[1]);
 		}
 |	module_header	'{'	error		'}'
 		{
 			$_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
-			$_[0]->Error("definition declaration excepted.\n");
+			$_[0]->Error("definition declaration expected.\n");
 			$_[0]->YYErrok();
 		}
 |	module_header	error
 		{
 			$_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
-			$_[0]->Error("'\x7b' excepted.\n");
+			$_[0]->Error("'\x7b' expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
@@ -163,15 +177,17 @@ module_header
 		}
 |	MODULE	error
 		{
-			$_[0]->Error("Identifier excepted.\n");
+			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
 
 /* 4 */		/* 3.7	Interface Declaration */
 interface
-:	interface_dcl						#default action
-|	forward_dcl							#default action
+:	interface_dcl
+										#default action
+|	forward_dcl
+										#default action
 ;
 
 /* 5 */
@@ -180,19 +196,23 @@ interface_dcl
 		{
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->YYData->{curr_itf} = undef;
-			$_[1]->configure('list_decl'		=>	[]);
+			$_[1]->Configure($_[0],
+					'list_decl'		=>	[]
+			) if (defined $_[1]);
 		}
 |	interface_header	'{'	interface_body	'}'
 		{
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->YYData->{curr_itf} = undef;
-			$_[1]->configure('list_decl'		=>	$_[3]);
+			$_[1]->Configure($_[0],
+					'list_decl'		=>	$_[3]
+			) if (defined $_[1]);
 		}
 |	interface_header	'{'	error			'}'
 		{
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->YYData->{curr_itf} = undef;
-			$_[0]->Error("export declaration excepted.\n");
+			$_[0]->Error("export declaration expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
@@ -201,86 +221,125 @@ interface_dcl
 forward_dcl
 :	interface_mod	INTERFACE	IDENTIFIER
 		{
-			new ForwardInterface($_[0],
-					'modifier'				=>	$_[1],
-					'idf'					=>	$_[3]
-			);
+			if (defined $_[1] and $_[1] eq 'abstract') {
+				new ForwardAbstractInterface($_[0],
+						'idf'					=>	$_[3]
+				);
+			} else {
+				new ForwardRegularInterface($_[0],
+						'idf'					=>	$_[3]
+				);
+			}
 		}
 |	interface_mod	INTERFACE	error
 		{
-			$_[0]->Error("Identifier excepted.\n");
+			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
 
 interface_mod
-:	ABSTRACT		/* 6.2		Semantics of Abstract Interfaces */		#default action
-|	/* empty */															#default action
+:	ABSTRACT		/* 6.2		Semantics of Abstract Interfaces */
+										#default action
+|	/* empty */
+										#default action
 ;
 
 /* 7 */		/* 3.7.1	Interface Header */
 interface_header
 :	interface_mod	INTERFACE	IDENTIFIER
 		{
-			new Interface($_[0],
-					'modifier'				=>	$_[1],
-					'idf'					=>	$_[3]
-			);
+			if (defined $_[1] and $_[1] eq 'abstract') {
+				new AbstractInterface($_[0],
+						'idf'					=>	$_[3]
+				);
+			} else {
+				new RegularInterface($_[0],
+						'idf'					=>	$_[3]
+				);
+			}
 		}
 |	interface_mod	INTERFACE	IDENTIFIER	interface_inheritance_spec
 		{
-			new Interface($_[0],
-					'modifier'				=>	$_[1],
-					'idf'					=>	$_[3],
-					'list_inheritance'		=>	$_[4]
+			my $inheritance = new InheritanceSpec($_[0],
+					'list_interface'		=>	$_[4]
 			);
+			if (defined $_[1] and $_[1] eq 'abstract') {
+				new AbstractInterface($_[0],
+						'idf'					=>	$_[3],
+						'inheritance'			=>	$inheritance
+				);
+			} else {
+				new RegularInterface($_[0],
+						'idf'					=>	$_[3],
+						'inheritance'			=>	$inheritance
+				);
+			}
+		}
+|	interface_mod	INTERFACE	error
+		{
+			$_[0]->Error("Identifier expected.\n");
+			$_[0]->YYErrok();
 		}
 ;
 
 /* 8 */		/* 3.7.3 Interface Body */
 interface_body
-:	exports								#default action
+:	exports
+										#default action
 ;
 
 exports
-:	export                      		{ [$_[1]]; }
-|	export	exports						{ unshift(@{$_[2]},$_[1]); $_[2]; }
+:	export
+		{
+			[$_[1]->getRef()];
+		}
+|	export	exports
+		{
+			unshift(@{$_[2]},$_[1]->getRef());
+			$_[2];
+		}
 ;
 
 /* 9 */
 export
-:	type_dcl	';'						#default action
-|	const_dcl	';'						#default action
-|	except_dcl	';'						#default action
-|	attr_dcl	';'						#default action
-|	op_dcl		';'						#default action
-|	type_dcl	error
+:	type_dcl		';'
+										#default action
+|	const_dcl		';'
+										#default action
+|	except_dcl		';'
+										#default action
+|	attr_dcl		';'
+										#default action
+|	op_dcl			';'
+										#default action
+|	type_dcl		error
 		{
-			$_[0]->Warning("';' excepted.\n");
+			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
-|	const_dcl	error
+|	const_dcl		error
 		{
-			$_[0]->Warning("';' excepted.\n");
+			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
-|	except_dcl	error
+|	except_dcl		error
 		{
-			$_[0]->Warning("';' excepted.\n");
+			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
-|	attr_dcl	error
+|	attr_dcl		error
 		{
-			$_[0]->Warning("';' excepted.\n");
+			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
-|	op_dcl		error
+|	op_dcl			error
 		{
-			$_[0]->Warning("';' excepted.\n");
+			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
@@ -288,37 +347,48 @@ export
 
 /* 10 */	/* 3.7.5	Interface Inheritance */
 interface_inheritance_spec
-:	':'	interface_names					{ $_[2]; }
+:	':'	interface_names
+		{
+			$_[2];
+		}
 |	':'	error
 		{
-			$_[0]->Error("Interface name excepted.\n");
+			$_[0]->Error("Interface name expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
 
 interface_names
-:	interface_name						{ [$_[1]]; }
-|	interface_name	','	interface_names	{ unshift(@{$_[3]},$_[1]); $_[3]; }
+:	interface_name
+		{
+			[$_[1]];
+		}
+|	interface_name	','	interface_names
+		{
+			unshift(@{$_[3]},$_[1]);
+			$_[3];
+		}
 ;
 
 /* 11 */
 interface_name
 :	scoped_name
 		{
-				Interface->Lookup($_[0],$_[1])
+				Interface->Lookup($_[0],$_[1]);
 		}
 ;
 
 /* 12 */
 scoped_name
-:	IDENTIFIER							#default action
+:	IDENTIFIER
+										#default action
 |	'::'	IDENTIFIER
 		{
 			$_[1] . $_[2];
 		}
 |	'::'	error
 		{
-			$_[0]->Error("Identifier excepted.\n");
+			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 			'';
 		}
@@ -328,7 +398,7 @@ scoped_name
 		}
 |	scoped_name	'::'	error
 		{
-			$_[0]->Error("Identifier excepted.\n");
+			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 			$_[1];
 		}
@@ -336,10 +406,14 @@ scoped_name
 
 /* 13 */	/* 3.8	Value Declaration */
 value
-:	value_dcl							#default action
-|	value_abs_dcl						#default action
-|	value_box_dcl						#default action
-|	value_forward_dcl					#default action
+:	value_dcl
+										#default action
+|	value_abs_dcl
+										#default action
+|	value_box_dcl
+										#default action
+|	value_forward_dcl
+										#default action
 ;
 
 /* 14 */	/* 3.8.4	Value Forward declaration */
@@ -375,21 +449,23 @@ value_abs_dcl
 		{
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->YYData->{curr_itf} = undef;
-			$_[1]->configure('list_decl'		=>	[])
-					if (defined $_[1]);
+			$_[1]->Configure($_[0],
+					'list_decl'		=>	[]
+			) if (defined $_[1]);
 		}
 |	value_abs_header	'{'	exports	'}'
 		{
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->YYData->{curr_itf} = undef;
-			$_[1]->configure('list_decl'		=>	$_[3])
-					if (defined $_[1]);
+			$_[1]->Configure($_[0],
+					'list_decl'		=>	$_[3]
+			) if (defined $_[1]);
 		}
 |	value_abs_header	'{'	error	'}'
 		{
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->YYData->{curr_itf} = undef;
-			$_[0]->Error("export declaration excepted.\n");
+			$_[0]->Error("export declaration expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
@@ -410,12 +486,12 @@ value_abs_header
 		}
 |	ABSTRACT	VALUETYPE	error
 		{
-			$_[0]->Error("Identifier excepted.\n");
+			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 |	ABSTRACT	error
 		{
-			$_[0]->Error("'valuetype' excepted.\n");
+			$_[0]->Error("'valuetype' expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
@@ -426,28 +502,37 @@ value_dcl
 		{
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->YYData->{curr_itf} = undef;
-			$_[1]->configure('list_decl'		=>	[])
-					if (defined $_[1]);
+			$_[1]->Configure($_[0],
+					'list_decl'		=>	[]
+			) if (defined $_[1]);
 		}
 |	value_header	'{'	value_elements	'}'
 		{
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->YYData->{curr_itf} = undef;
-			$_[1]->configure('list_decl'		=>	$_[3])
-					if (defined $_[1]);
+			$_[1]->Configure($_[0],
+					'list_decl'		=>	$_[3]
+			) if (defined $_[1]);
 		}
 |	value_header	'{'	error			'}'
 		{
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->YYData->{curr_itf} = undef;
-			$_[0]->Error("value_element excepted.\n");
+			$_[0]->Error("value_element expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
 
 value_elements
-:	value_element						{ [$_[1]]; }
-|	value_element	value_elements		{ unshift(@{$_[2]},$_[1]); $_[2]; }
+:	value_element
+		{
+			[$_[1]->getRef()];
+		}
+|	value_element	value_elements
+		{
+			unshift(@{$_[2]},$_[1]->getRef());
+			$_[2];
+		}
 ;
 
 /* 18 */
@@ -482,102 +567,98 @@ value_header
 		}
 |				VALUETYPE	error
 		{
-			$_[0]->Error("Identifier excepted.\n");
+			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 |	CUSTOM		VALUETYPE	error
 		{
-			$_[0]->Error("Identifier excepted.\n");
+			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 |	CUSTOM		error
 		{
-			$_[0]->Error("valuetype excepted.\n");
+			$_[0]->Error("valuetype expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
 
 /* 19 */	/* 3.8.5	Valuetype Inheritance */
 value_inheritance_spec
-:	':'				value_names
-		{
-			new InheritanceSpec($_[0],
-					'list_value'			=>	$_[2]
-			);
-		}
-|	':'	TRUNCATABLE	value_names
+:	':'	inheritance_mod	value_names
 		{
 			new InheritanceSpec($_[0],
 					'modifier'			=>	$_[2],
 					'list_value'		=>	$_[3]
 			);
 		}
-|	':'				value_names	SUPPORTS	interface_names
-		{
-			new InheritanceSpec($_[0],
-					'list_value'		=>	$_[2],
-					'list_interface'	=>	$_[4]
-			);
-		}
-|	':'	TRUNCATABLE	value_names	SUPPORTS	interface_names
+|	':'	inheritance_mod	value_names	supported_interface_spec
 		{
 			new InheritanceSpec($_[0],
 					'modifier'			=>	$_[2],
 					'list_value'		=>	$_[3],
-					'list_interface'	=>	$_[5]
+					'list_interface'	=>	$_[4]
 			);
 		}
-|	':'				value_names	SUPPORTS	error
+|	':'	inheritance_mod	error
 		{
-			$_[0]->Error("interface_name excepted.\n");
+			$_[0]->Error("value_name expected.\n");
 			$_[0]->YYErrok();
 		}
-|	':'	TRUNCATABLE	value_names	SUPPORTS	error
-		{
-			$_[0]->Error("interface_name excepted.\n");
-			$_[0]->YYErrok();
-		}
-|	':'	TRUNCATABLE	error
-		{
-			$_[0]->Error("value_name excepted.\n");
-			$_[0]->YYErrok();
-		}
-|	':'	error
-		{
-			$_[0]->Error("'truncatable' excepted.\n");
-			$_[0]->YYErrok();
-		}
-|								SUPPORTS	interface_names
+|									supported_interface_spec
 		{
 			new InheritanceSpec($_[0],
-					'list_interface'	=>	$_[2]
+					'list_interface'	=>	$_[1]
 			);
-		}
-|								SUPPORTS	error
-		{
-			$_[0]->Error("interface_name excepted.\n");
-			$_[0]->YYErrok();
 		}
 ;
 
+inheritance_mod
+:	TRUNCATABLE
+										#default action
+|	/* empty */
+										#default action
+;
+
 value_names
-:	value_name							{ [$_[1]]; }
-|	value_name	','	value_names			{ unshift(@{$_[3]},$_[1]); $_[3]; }
+:	value_name
+		{
+			[$_[1]];
+		}
+|	value_name	','	value_names
+		{
+			unshift(@{$_[3]},$_[1]);
+			$_[3];
+		}
+;
+
+supported_interface_spec
+:	SUPPORTS	interface_names
+		{
+			$_[2];
+		}
+|	SUPPORTS	error
+		{
+			$_[0]->Error("Interface name expected.\n");
+			$_[0]->YYErrok();
+		}
 ;
 
 /* 20 */
 value_name
 :	scoped_name
 		{
-			RegularValue->Lookup($_[0],$_[1]);
+			Value->Lookup($_[0],$_[1]);
 		}
 ;
 
 /* 21 */
 value_element
-:	export								#default action
-|	state_member						#default action
-|	init_dcl							#default action
+:	export
+										#default action
+|	state_member
+										#default action
+|	init_dcl
+										#default action
 ;
 
 /* 22 */	/* 3.8.1.4	State Members */
@@ -592,25 +673,43 @@ state_member
 		}
 |	state_mod	type_spec	error	';'
 		{
-			$_[0]->Error("declarator excepted.\n");
+			$_[0]->Error("declarator expected.\n");
 			$_[0]->YYErrok();
 		}
 |	state_mod	error	';'
 		{
-			$_[0]->Error("type_spec excepted.\n");
+			$_[0]->Error("type_spec expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
 
 state_mod
-:	PUBLIC								#default action
-|	PRIVATE								#default action
+:	PUBLIC
+										#default action
+|	PRIVATE
+										#default action
 ;
 
 /* 23 */	/* 3.8.1.5	Initializers */
 init_dcl
-:	init_header	'('	')'	';'				#default action
-|	init_header	'('	init_param_decls	')'	';'
+:	init_header_param	';'
+										#default action
+|	init_header_param	error
+		{
+			$_[0]->Warning("';' expected.\n");
+			$_[0]->YYErrok();
+			$_[1];						#default action
+		}
+;
+
+init_header_param
+:	init_header	'('	')'
+		{
+			delete $_[0]->YYData->{unnamed_symbtab}
+					if (exists $_[0]->YYData->{unnamed_symbtab});
+			$_[1];						#default action
+		}
+|	init_header	'('	init_param_decls	')'
 		{
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
@@ -618,35 +717,18 @@ init_dcl
 					'list_param'	=>	$_[3]
 			) if (defined $_[1]);
 		}
-|	init_header	'('	init_param_decls	')'	error
+|	init_header	'('	error				')'
 		{
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
-			$_[0]->Warning("';' excepted.\n");
-			$_[0]->YYErrok();
-			$_[1]->Configure($_[0],
-					'list_param'	=>	$_[3]
-			) if (defined $_[1]);
-		}
-|	init_header	'('	error				')'	';'
-		{
-			delete $_[0]->YYData->{unnamed_symbtab}
-					if (exists $_[0]->YYData->{unnamed_symbtab});
-			$_[0]->Error("init_param_decls excepted.\n");
-			$_[0]->YYErrok();
-		}
-|	init_header	'('	error				')'	error
-		{
-			delete $_[0]->YYData->{unnamed_symbtab}
-					if (exists $_[0]->YYData->{unnamed_symbtab});
-			$_[0]->Error("init_param_decls excepted.\n");
+			$_[0]->Error("init_param_decls expected.\n");
 			$_[0]->YYErrok();
 		}
 |	init_header	error
 		{
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
-			$_[0]->Error("'(' excepted.\n");
+			$_[0]->Error("'(' expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
@@ -654,22 +736,28 @@ init_dcl
 init_header
 :	FACTORY	IDENTIFIER
 		{
-			new Factory($_[0],							# like Operation
+			new Initializer($_[0],						# like Operation
 					'idf'				=>	$_[2]
 			);
 		}
 |	FACTORY	error
 		{
-			$_[0]->Error("Identifier excepted.\n");
+			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
 
 /* 24 */
 init_param_decls
-:	init_param_decl						{ [$_[1]]; }
+:	init_param_decl
+		{
+			[$_[1]];
+		}
 |	init_param_decl	','	init_param_decls
-										{ unshift(@{$_[3]},$_[1]); $_[3]; }
+		{
+			unshift(@{$_[3]},$_[1]);
+			$_[3];
+		}
 ;
 
 /* 25 */
@@ -686,7 +774,8 @@ init_param_decl
 
 /* 26 */
 init_param_attribute
-:	IN									#default action
+:	IN
+										#default action
 ;
 
 /* 27 */	/* 3.9	Constant Declaration */
@@ -701,51 +790,62 @@ const_dcl
 		}
 |	CONST	const_type	IDENTIFIER	'='	error
 		{
-			$_[0]->Error("Expression excepted.\n");
+			$_[0]->Error("Expression expected.\n");
 			$_[0]->YYErrok();
 		}
 |	CONST	const_type	IDENTIFIER	error
 		{
-			$_[0]->Error("'=' excepted.\n");
+			$_[0]->Error("'=' expected.\n");
 			$_[0]->YYErrok();
 		}
 |	CONST	const_type	error
 		{
-			$_[0]->Error("Identifier excepted.\n");
+			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 |	CONST	error
 		{
-			$_[0]->Error("const_type excepted.\n");
+			$_[0]->Error("const_type expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
 
 /* 28 */
 const_type
-:	integer_type						#default action
-|	char_type							#default action
-|	wide_char_type						#default action
-|	boolean_type						#default action
-|	floating_pt_type					#default action
-|	string_type							#default action
-|	wide_string_type					#default action
-|	fixed_pt_const_type					#default action
+:	integer_type
+										#default action
+|	char_type
+										#default action
+|	wide_char_type
+										#default action
+|	boolean_type
+										#default action
+|	floating_pt_type
+										#default action
+|	string_type
+										#default action
+|	wide_string_type
+										#default action
+|	fixed_pt_const_type
+										#default action
 |	scoped_name
 		{
 			TypeDeclarator->Lookup($_[0],$_[1]);
 		}
-|	octet_type							#default action
+|	octet_type
+										#default action
 ;
 
 /* 29 */
 const_exp
-:	or_expr								#default action
+:	or_expr
+										#default action
 ;
 
 /* 30 */
 or_expr
-:	xor_expr							#default action
+:	xor_expr
+										#default action
 |	or_expr		'|'		xor_expr
 		{
 			BuildBinop($_[1],$_[2],$_[3]);
@@ -754,7 +854,8 @@ or_expr
 
 /* 31 */
 xor_expr
-:	and_expr							#default action
+:	and_expr
+										#default action
 |	xor_expr	'^'		and_expr
 		{
 			BuildBinop($_[1],$_[2],$_[3]);
@@ -763,7 +864,8 @@ xor_expr
 
 /* 32 */
 and_expr
-:	shift_expr							#default action
+:	shift_expr
+										#default action
 |	and_expr	'&'		shift_expr
 		{
 			BuildBinop($_[1],$_[2],$_[3]);
@@ -772,7 +874,8 @@ and_expr
 
 /* 33 */
 shift_expr
-:	add_expr							#default action
+:	add_expr
+										#default action
 |	shift_expr	'>>'	add_expr
 		{
 			BuildBinop($_[1],$_[2],$_[3]);
@@ -785,7 +888,8 @@ shift_expr
 
 /* 34 */
 add_expr
-:	mult_expr							#default action
+:	mult_expr
+										#default action
 |	add_expr	'+'		mult_expr
 		{
 			BuildBinop($_[1],$_[2],$_[3]);
@@ -798,7 +902,8 @@ add_expr
 
 /* 35 */
 mult_expr
-:	unary_expr							#default action
+:	unary_expr
+										#default action
 |	mult_expr	'*'		unary_expr
 		{
 			BuildBinop($_[1],$_[2],$_[3]);
@@ -819,14 +924,18 @@ unary_expr
 		{
 			BuildUnop($_[1],$_[2]);
 		}
-|	primary_expr						#default action
+|	primary_expr
+										#default action
 ;
 
 /* 37 */
 unary_operator
-:	'-'									#default action
-|	'+'									#default action
-|	'~'									#default action
+:	'-'
+										#default action
+|	'+'
+										#default action
+|	'~'
+										#default action
 ;
 
 /* 38 */
@@ -847,7 +956,7 @@ primary_expr
 		}
 |	'('	error		')'
 		{
-			$_[0]->Error("Expression excepted.\n");
+			$_[0]->Error("Expression expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
@@ -899,18 +1008,26 @@ literal
 					'lexeme'			=>	$_[0]->YYData->{lexeme}
 			);
 		}
-|	boolean_literal						#default action
+|	boolean_literal
+										#default action
 ;
 
 string_literal
 :	STRING_LITERAL
-|	STRING_LITERAL	string_literal		{ $_[1] . $_[2]; }
+										#default action
+|	STRING_LITERAL	string_literal
+		{
+			$_[1] . $_[2];
+		}
 ;
 
 wide_string_literal
 :	WIDE_STRING_LITERAL
+										#default action
 |	WIDE_STRING_LITERAL	wide_string_literal
-										{ $_[1] . $_[2]; }
+		{
+			$_[1] . $_[2];
+		}
 ;
 
 /* 40 */
@@ -939,16 +1056,18 @@ positive_int_const
 		}
 ;
 
-
 /* 42 */	/* 3.10		Type Declaration */
 type_dcl
 :	TYPEDEF		type_declarator
 		{
 			$_[2];
 		}
-|	struct_type							#default action
-|	union_type							#default action
-|	enum_type							#default action
+|	struct_type
+										#default action
+|	union_type
+										#default action
+|	enum_type
+										#default action
 |	NATIVE		simple_declarator		/* 3.10.6	Native Types */
 		{
 			new TypeDeclarator($_[0],
@@ -958,12 +1077,12 @@ type_dcl
 		}
 |	TYPEDEF		error
 		{
-			$_[0]->Error("type_declarator excepted.\n");
+			$_[0]->Error("type_declarator expected.\n");
 			$_[0]->YYErrok();
 		}
 |	NATIVE		error
 		{
-			$_[0]->Error("Identifier excepted.\n");
+			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
@@ -979,21 +1098,25 @@ type_declarator
 		}
 |	type_spec	error
 		{
-			$_[0]->Error("declarator excepted.\n");
+			$_[0]->Error("declarator expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
 
 /* 44 */
 type_spec
-:	simple_type_spec					#default action
-|	constr_type_spec					#default action
+:	simple_type_spec
+										#default action
+|	constr_type_spec
+										#default action
 ;
 
 /* 45 */
 simple_type_spec
-:	base_type_spec						#default action
-|	template_type_spec					#default action
+:	base_type_spec
+										#default action
+|	template_type_spec
+										#default action
 |	scoped_name
 		{
 			TypeDeclarator->Lookup($_[0],$_[1]);
@@ -1002,52 +1125,81 @@ simple_type_spec
 
 /* 46 */
 base_type_spec
-:	floating_pt_type					#default action
-|	integer_type						#default action
-|	char_type							#default action
-|	wide_char_type						#default action
-|	boolean_type						#default action
-|	octet_type							#default action
-|	any_type							#default action
-|	object_type							#default action
-|	value_base_type						#default action
+:	floating_pt_type
+										#default action
+|	integer_type
+										#default action
+|	char_type
+										#default action
+|	wide_char_type
+										#default action
+|	boolean_type
+										#default action
+|	octet_type
+										#default action
+|	any_type
+										#default action
+|	object_type
+										#default action
+|	value_base_type
+										#default action
 ;
 
 /* 47 */	/* 3.10.4	Template Types */
 template_type_spec
-:	sequence_type						#default action
-|	string_type							#default action
-|	wide_string_type					#default action
-|	fixed_pt_type						#default action
+:	sequence_type
+										#default action
+|	string_type
+										#default action
+|	wide_string_type
+										#default action
+|	fixed_pt_type
+										#default action
 ;
 
 /* 48 */	/* 3.10.2	Constructed Types */
 constr_type_spec
-:	struct_type 						#default action
-|	union_type							#default action
-|	enum_type							#default action
+:	struct_type
+										#default action
+|	union_type
+										#default action
+|	enum_type
+										#default action
 ;
 
 /* 49 */
 declarators
-:	declarator							{ [$_[1]]; }
-|	declarator	','	declarators			{ unshift(@{$_[3]},$_[1]); $_[3]; }
+:	declarator
+		{
+			[$_[1]];
+		}
+|	declarator	','	declarators
+		{
+			unshift(@{$_[3]},$_[1]);
+			$_[3];
+		}
 ;
 
 /* 50 */
 declarator
-:	simple_declarator					{ [$_[1]]; }
-|	complex_declarator					#default action
+:	simple_declarator
+		{
+			[$_[1]];
+		}
+|	complex_declarator
+										#default action
 ;
 
 /* 51 */
 simple_declarator
-:	IDENTIFIER							#default action
+:	IDENTIFIER
+										#default action
 ;
 
 /* 52 */	/* 3.10.5	Complex Declarator */
 complex_declarator
-:	array_declarator					#default action
+:	array_declarator
+										#default action
 ;
 
 /* 53 */	/* 3.10.1	Basic Types */
@@ -1074,15 +1226,20 @@ floating_pt_type
 
 /* 54 */
 integer_type
-:	signed_int							#default action
-|	unsigned_int						#default action
+:	signed_int
+										#default action
+|	unsigned_int
+										#default action
 ;
 
 /* 55 */
 signed_int
-:	signed_short_int					#default action
-|	signed_long_int						#default action
-|	signed_longlong_int					#default action
+:	signed_short_int
+										#default action
+|	signed_long_int
+										#default action
+|	signed_longlong_int
+										#default action
 ;
 
 /* 56 */
@@ -1117,9 +1274,12 @@ signed_longlong_int
 
 /* 59 */
 unsigned_int
-:	unsigned_short_int					#default action
-|	unsigned_long_int					#default action
-|	unsigned_longlong_int				#default action
+:	unsigned_short_int
+										#default action
+|	unsigned_long_int
+										#default action
+|	unsigned_longlong_int
+										#default action
 ;
 
 /* 60 */
@@ -1219,12 +1379,12 @@ struct_type
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[1]->Configure($_[0],
 					'list_expr'			=>	$_[3]
-			);
+			) if (defined $_[1]);
 		}
 |	struct_header	'{'	error		'}'
 		{
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("member excepted.\n");
+			$_[0]->Error("member expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
@@ -1240,8 +1400,15 @@ struct_header
 
 /* 70 */
 member_list
-:	member								{ [$_[1]]; }
-|	member	member_list					{ unshift(@{$_[2]},$_[1]); $_[2]; }
+:	member
+		{
+			[$_[1]];
+		}
+|	member	member_list
+		{
+			unshift(@{$_[2]},$_[1]);
+			$_[2];
+		}
 ;
 
 /* 71 */
@@ -1255,7 +1422,7 @@ member
 		}
 |	type_spec	declarators	error
 		{
-			$_[0]->Error("';' excepted.\n");
+			$_[0]->Error("';' expected.\n");
 			$_[0]->YYErrok();
 			new Members($_[0],
 					'type'				=>	$_[1],
@@ -1272,30 +1439,30 @@ union_type
 			$_[1]->Configure($_[0],
 					'type'				=>	$_[4],
 					'list_expr'			=>	$_[7]
-			);
+			) if (defined $_[1]);
 		}
 |	union_header	SWITCH	'('	switch_type_spec	')'	'{'	error		'}'
 		{
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("switch_body excepted.\n");
+			$_[0]->Error("switch_body expected.\n");
 			$_[0]->YYErrok();
 		}
 |	union_header	SWITCH	'('	switch_type_spec	')'	error
 		{
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("'\x7b' excepted.\n");
+			$_[0]->Error("'\x7b' expected.\n");
 			$_[0]->YYErrok();
 		}
 |	union_header	SWITCH	'('	error				')'
 		{
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("switch_type_spec excepted.\n");
+			$_[0]->Error("switch_type_spec expected.\n");
 			$_[0]->YYErrok();
 		}
 |	union_header	SWITCH	error
 		{
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("'(' excepted.\n");
+			$_[0]->Error("'(' expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
@@ -1311,10 +1478,14 @@ union_header
 
 /* 73 */
 switch_type_spec
-:	integer_type						#default action
-|	char_type							#default action
-|	boolean_type						#default action
-|	enum_type							#default action
+:	integer_type
+										#default action
+|	char_type
+										#default action
+|	boolean_type
+										#default action
+|	enum_type
+										#default action
 |	scoped_name
 		{
 			TypeDeclarator->Lookup($_[0],$_[1]);
@@ -1323,8 +1494,15 @@ switch_type_spec
 
 /* 74 */
 switch_body
-:	case								{ [$_[1]]; }
-|	case	switch_body					{ unshift(@{$_[2]},$_[1]); $_[2]; }
+:	case
+		{
+			[$_[1]];
+		}
+|	case	switch_body
+		{
+			unshift(@{$_[2]},$_[1]);
+			$_[2];
+		}
 ;
 
 /* 75 */
@@ -1338,7 +1516,7 @@ case
 		}
 |	case_labels	element_spec	error
 		{
-			$_[0]->Error("';' excepted.\n");
+			$_[0]->Error("';' expected.\n");
 			$_[0]->YYErrok();
 			new Case($_[0],
 					'list_label'		=>	$_[1],
@@ -1348,8 +1526,15 @@ case
 ;
 
 case_labels
-:	case_label							{ [$_[1]]; }
-|	case_label	case_labels				{ unshift(@{$_[2]},$_[1]); $_[2]; }
+:	case_label
+		{
+			[$_[1]];
+		}
+|	case_label	case_labels
+		{
+			unshift(@{$_[2]},$_[1]);
+			$_[2];
+		}
 ;
 
 /* 76 */
@@ -1360,13 +1545,13 @@ case_label
 		}
 |	CASE	const_exp	error
 		{
-			$_[0]->Error("':' excepted.\n");
+			$_[0]->Error("':' expected.\n");
 			$_[0]->YYErrok();
 			$_[2];
 		}
 |	CASE	error
 		{
-			$_[0]->Error("Expression excepted.\n");
+			$_[0]->Error("Expression expected.\n");
 			$_[0]->YYErrok();
 		}
 |	DEFAULT		':'
@@ -1375,7 +1560,7 @@ case_label
 		}
 |	DEFAULT		error
 		{
-			$_[0]->Error("':' excepted.\n");
+			$_[0]->Error("':' expected.\n");
 			$_[0]->YYErrok();
 			new Default($_[0]);
 		}
@@ -1398,17 +1583,16 @@ enum_type
 		{
 			$_[1]->Configure($_[0],
 					'list_expr'		=>	$_[3]
-			)
-					if (defined $_[1]);
+			) if (defined $_[1]);
 		}
 |	enum_header	'{'	error		'}'
 		{
-			$_[0]->Error("enumerator excepted.\n");
+			$_[0]->Error("enumerator expected.\n");
 			$_[0]->YYErrok();
 		}
 |	enum_header	error
 		{
-			$_[0]->Error("'\x7b' excepted.\n");
+			$_[0]->Error("'\x7b' expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
@@ -1422,22 +1606,29 @@ enum_header
 		}
 |	ENUM	error
 		{
-			$_[0]->Error("Identifier excepted.\n");
+			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
 
 enumerators
-:	enumerator							{ [$_[1]]; }
-|	enumerator	','	enumerators			{ unshift(@{$_[3]},$_[1]); $_[3]; }
+:	enumerator
+		{
+			[$_[1]];
+		}
+|	enumerator	','	enumerators
+		{
+			unshift(@{$_[3]},$_[1]);
+			$_[3];
+		}
 |	enumerator	','
 		{
-			$_[0]->Warning("',' unexcepted.\n");
+			$_[0]->Warning("',' unexpected.\n");
 			[$_[1]];
 		}
 |	enumerator	';'
 		{
-			$_[0]->Error("';' unexcepted.\n");
+			$_[0]->Error("';' unexpected.\n");
 			[$_[1]];
 		}
 ;
@@ -1464,7 +1655,7 @@ sequence_type
 		}
 |	SEQUENCE	'<'	simple_type_spec	','	error				'>'
 		{
-			$_[0]->Error("Expression excepted.\n");
+			$_[0]->Error("Expression expected.\n");
 			$_[0]->YYErrok();
 		}
 |	SEQUENCE	'<'	simple_type_spec	'>'
@@ -1476,12 +1667,12 @@ sequence_type
 		}
 |	SEQUENCE	'<'	error  				'>'
 		{
-			$_[0]->Error("simple_type_spec excepted.\n");
+			$_[0]->Error("simple_type_spec expected.\n");
 			$_[0]->YYErrok();
 		}
 |	SEQUENCE	error
 		{
-			$_[0]->Error("'<' excepted.\n");
+			$_[0]->Error("'<' expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
@@ -1503,7 +1694,7 @@ string_type
 		}
 |	STRING	'<'	error				'>'
 		{
-			$_[0]->Error("Expression excepted.\n");
+			$_[0]->Error("Expression expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
@@ -1525,28 +1716,41 @@ wide_string_type
 		}
 |	WSTRING	'<'	error				'>'
 		{
-			$_[0]->Error("Expression excepted.\n");
+			$_[0]->Error("Expression expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
 
 /* 83 */	/* 3.10.5.1	Arrays */
 array_declarator
-:	IDENTIFIER	fixed_array_sizes		{ unshift(@{$_[2]},$_[1]); $_[2]; }
+:	IDENTIFIER	fixed_array_sizes
+		{
+			unshift(@{$_[2]},$_[1]);
+			$_[2];
+		}
 ;
 
 fixed_array_sizes
-:	fixed_array_size					{ [$_[1]]; }
+:	fixed_array_size
+		{
+			[$_[1]];
+		}
 |	fixed_array_size	fixed_array_sizes
-										{ unshift(@{$_[2]},$_[1]); $_[2]; }
+		{
+			unshift(@{$_[2]},$_[1]);
+			$_[2];
+		}
 ;
 
 /* 84 */
 fixed_array_size
-:	'['	positive_int_const	']'			{ $_[2]; }
+:	'['	positive_int_const	']'
+		{
+			$_[2];
+		}
 |	'['	error				']'
 		{
-			$_[0]->Error("Expression excepted.\n");
+			$_[0]->Error("Expression expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
@@ -1563,25 +1767,33 @@ attr_dcl
 		}
 |	attr_mod	ATTRIBUTE	param_type_spec	error
 		{
-			$_[0]->Error("declarator excepted.\n");
+			$_[0]->Error("declarator expected.\n");
 			$_[0]->YYErrok();
 		}
 |	attr_mod	ATTRIBUTE	error
 		{
-			$_[0]->Error("type excepted.\n");
+			$_[0]->Error("type expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
 
 attr_mod
-:	READONLY							#default action
-|	/* empty */							#default action
+:	READONLY
+										#default action
+|	/* empty */
+										#default action
 ;
 
 simple_declarators
-:	simple_declarator					{ [$_[1]]; }
+:	simple_declarator
+		{
+			[$_[1]];
+		}
 |	simple_declarator	','	simple_declarators
-										{ unshift(@{$_[3]},$_[1]); $_[3]; }
+		{
+			unshift(@{$_[3]},$_[1]);
+			$_[3];
+		}
 ;
 
 /* 86 */	/* 3.11	Exception Declaration */
@@ -1596,23 +1808,18 @@ except_dcl
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[1]->Configure($_[0],
 					'list_expr'			=>	$_[3]
-			)
-					if (defined $_[1]);
+			) if (defined $_[1]);
 		}
 |	exception_header	'{'	error	'}'
 		{
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("'members excepted.\n");
+			$_[0]->Error("'members expected.\n");
 			$_[0]->YYErrok();
-			$_[1]->Configure($_[0],
-					'list_expr'			=>	$_[3]
-			)
-					if (defined $_[1]);
 		}
 |	exception_header	error
 		{
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("'\x7b' excepted.\n");
+			$_[0]->Error("'\x7b' expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
@@ -1626,7 +1833,7 @@ exception_header
 		}
 |	EXCEPTION	error
 		{
-			$_[0]->Error("Identifier excepted.\n");
+			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
@@ -1639,8 +1846,7 @@ op_dcl
 					if (exists $_[0]->YYData->{unnamed_symbtab});
 			$_[1]->Configure($_[0],
 					'list_param'	=>	$_[2]
-			)
-					if (defined $_[1]);
+			) if (defined $_[1]);
 		}
 |	op_header	parameter_dcls	raises_expr
 		{
@@ -1649,8 +1855,7 @@ op_dcl
 			$_[1]->Configure($_[0],
 					'list_param'	=>	$_[2],
 					'list_raise'	=>	$_[3]
-			)
-					if (defined $_[1]);
+			) if (defined $_[1]);
 		}
 |	op_header	parameter_dcls	raises_expr	context_expr
 		{
@@ -1660,8 +1865,7 @@ op_dcl
 					'list_param'	=>	$_[2],
 					'list_raise'	=>	$_[3],
 					'list_context'	=>	$_[4]
-			)
-					if (defined $_[1]);
+			) if (defined $_[1]);
 		}
 |	op_header	parameter_dcls				context_expr
 		{
@@ -1670,14 +1874,13 @@ op_dcl
 			$_[1]->Configure($_[0],
 					'list_param'	=>	$_[2],
 					'list_context'	=>	$_[3]
-			)
-					if (defined $_[1]);
+			) if (defined $_[1]);
 		}
 |	op_header	error
 		{
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
-			$_[0]->Error("parameters declaration excepted.\n");
+			$_[0]->Error("parameters declaration expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
@@ -1693,24 +1896,28 @@ op_header
 		}
 |	op_mod	op_type_spec	error
 		{
-			$_[0]->Error("Identifier excepted.\n");
+			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
 
 op_mod
-:	op_attribute						#default action
-|	/* empty */							#default action
+:	op_attribute
+										#default action
+|	/* empty */
+										#default action
 ;
 
 /* 88 */	/* 3.12.1	Operation Attribute */
 op_attribute
-:	ONEWAY								#default action
+:	ONEWAY
+										#default action
 ;
 
 /* 89 */
 op_type_spec
-:	param_type_spec						#default action
+:	param_type_spec
+										#default action
 |	VOID
 		{
 			new VoidType($_[0],
@@ -1731,22 +1938,29 @@ parameter_dcls
 		}
 |	'('	error		')'
 		{
-			$_[0]->Error("parameters declaration excepted.\n");
+			$_[0]->Error("parameters declaration expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
 
 param_dcls
-:	param_dcl							{ [$_[1]]; }
-|	param_dcl	','	param_dcls			{ unshift(@{$_[3]},$_[1]); $_[3]; }
+:	param_dcl
+		{
+			[$_[1]];
+		}
+|	param_dcl	','	param_dcls
+		{
+			unshift(@{$_[3]},$_[1]);
+			$_[3];
+		}
 |	param_dcl	','
 		{
-			$_[0]->Warning("',' unexcepted.\n");
+			$_[0]->Warning("',' unexpected.\n");
 			[$_[1]];
 		}
 |	param_dcl	';'
 		{
-			$_[0]->Error("';' unexcepted.\n");
+			$_[0]->Error("';' unexpected.\n");
 			[$_[1]];
 		}
 ;
@@ -1760,14 +1974,17 @@ param_dcl
 					'type'				=>	$_[2],
 					'idf'				=>	$_[3]
 			);
-        }
+		}
 ;
 
 /* 92 */
 param_attribute
-:	IN									#default action
-|	OUT									#default action
-|	INOUT								#default action
+:	IN
+										#default action
+|	OUT
+										#default action
+|	INOUT
+										#default action
 ;
 
 /* 93 */	/* 3.12.3	Raises Expressions */
@@ -1778,19 +1995,26 @@ raises_expr
 		}
 |	RAISES	'('	error			')'
 		{
-			$_[0]->Error("name excepted.\n");
+			$_[0]->Error("name expected.\n");
 			$_[0]->YYErrok();
 		}
 |	RAISES	error
 		{
-			$_[0]->Error("'(' excepted.\n");
+			$_[0]->Error("'(' expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
 
 exception_names
-:	exception_name							{ [$_[1]]; }
-|	exception_name	','	exception_names		{ unshift(@{$_[3]},$_[1]); $_[3]; }
+:	exception_name
+		{
+			[$_[1]];
+		}
+|	exception_name	','	exception_names
+		{
+			unshift(@{$_[3]},$_[1]);
+			$_[3];
+		}
 ;
 
 exception_name
@@ -1808,26 +2032,36 @@ context_expr
 		}
 |	CONTEXT	'('	error			')'
 		{
-			$_[0]->Error("string excepted.\n");
+			$_[0]->Error("string expected.\n");
 			$_[0]->YYErrok();
 		}
 |	CONTEXT	error
 		{
-			$_[0]->Error("'(' excepted.\n");
+			$_[0]->Error("'(' expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
 
 string_literals
-:	string_literal						{ [$_[1]]; }
-|	string_literal	','	string_literals	{ unshift(@{$_[3]},$_[1]); $_[3]; }
+:	string_literal
+		{
+			[$_[1]];
+		}
+|	string_literal	','	string_literals
+		{
+			unshift(@{$_[3]},$_[1]);
+			$_[3];
+		}
 ;
 
 /* 95 */
 param_type_spec
-:	base_type_spec						#default action
-|	string_type							#default action
-|	wide_string_type					#default action
+:	base_type_spec
+										#default action
+|	string_type
+										#default action
+|	wide_string_type
+										#default action
 |	scoped_name
 		{
 			TypeDeclarator->Lookup($_[0],$_[1]);
@@ -1846,17 +2080,17 @@ fixed_pt_type
 		}
 |	FIXED	'<'	positive_int_const	','	error				'>'
 		{
-			$_[0]->Error("Expression excepted.\n");
+			$_[0]->Error("Expression expected.\n");
 			$_[0]->YYErrok();
 		}
 |	FIXED	'<'	error										'>'
 		{
-			$_[0]->Error("Expression excepted.\n");
+			$_[0]->Error("Expression expected.\n");
 			$_[0]->YYErrok();
 		}
 |	FIXED	error
 		{
-			$_[0]->Error("'<' excepted.\n");
+			$_[0]->Error("'<' expected.\n");
 			$_[0]->YYErrok();
 		}
 ;
@@ -1865,7 +2099,7 @@ fixed_pt_type
 fixed_pt_const_type
 :	FIXED
 		{
-			new FixedPtType($_[0],
+			new FixedPtConstType($_[0],
 					'value'				=>	$_[1]
 			);
 		}
@@ -1875,7 +2109,7 @@ fixed_pt_const_type
 value_base_type
 :	VALUEBASE
 		{
-			new ValueBaseType($_[0]
+			new ValueBaseType($_[0],
 					'value'				=>	$_[1]
 			);
 		}
@@ -1883,7 +2117,12 @@ value_base_type
 
 %%
 
+package Parser;
+
 use strict;
+use vars qw($IDL_version);
+$IDL_version = '2.3';
+
 use CORBA::IDL::symbtab;
 use CORBA::IDL::node;
 

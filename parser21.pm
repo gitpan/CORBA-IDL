@@ -574,7 +574,7 @@ sub new {
 		}
 	},
 	{#State 8
-		DEFAULT => -109
+		DEFAULT => -110
 	},
 	{#State 9
 		ACTIONS => {
@@ -583,7 +583,7 @@ sub new {
 		}
 	},
 	{#State 10
-		DEFAULT => -110
+		DEFAULT => -111
 	},
 	{#State 11
 		ACTIONS => {
@@ -665,7 +665,7 @@ sub new {
 		}
 	},
 	{#State 16
-		DEFAULT => -111
+		DEFAULT => -112
 	},
 	{#State 17
 		DEFAULT => -22
@@ -796,34 +796,34 @@ sub new {
 	},
 	{#State 31
 		ACTIONS => {
-			'CHAR' => -241,
-			'OBJECT' => -241,
+			'CHAR' => -242,
+			'OBJECT' => -242,
 			'ONEWAY' => 120,
-			'FIXED' => -241,
-			'VOID' => -241,
+			'FIXED' => -242,
+			'VOID' => -242,
 			'STRUCT' => 5,
-			'DOUBLE' => -241,
-			'LONG' => -241,
-			'STRING' => -241,
-			"::" => -241,
-			'WSTRING' => -241,
-			'UNSIGNED' => -241,
-			'SHORT' => -241,
+			'DOUBLE' => -242,
+			'LONG' => -242,
+			'STRING' => -242,
+			"::" => -242,
+			'WSTRING' => -242,
+			'UNSIGNED' => -242,
+			'SHORT' => -242,
 			'TYPEDEF' => 11,
-			'BOOLEAN' => -241,
-			'IDENTIFIER' => -241,
+			'BOOLEAN' => -242,
+			'IDENTIFIER' => -242,
 			'UNION' => 15,
 			'READONLY' => 131,
-			'WCHAR' => -241,
-			'ATTRIBUTE' => -224,
+			'WCHAR' => -242,
+			'ATTRIBUTE' => -225,
 			'error' => 125,
 			'CONST' => 21,
 			"}" => 126,
 			'EXCEPTION' => 22,
-			'OCTET' => -241,
-			'FLOAT' => -241,
+			'OCTET' => -242,
+			'FLOAT' => -242,
 			'ENUM' => 27,
-			'ANY' => -241
+			'ANY' => -242
 		},
 		GOTOS => {
 			'const_dcl' => 127,
@@ -857,7 +857,7 @@ sub new {
 		DEFAULT => 0
 	},
 	{#State 35
-		DEFAULT => -166
+		DEFAULT => -167
 	},
 	{#State 36
 		DEFAULT => -18
@@ -902,7 +902,7 @@ sub new {
 		DEFAULT => -14
 	},
 	{#State 40
-		DEFAULT => -230
+		DEFAULT => -231
 	},
 	{#State 41
 		ACTIONS => {
@@ -967,10 +967,10 @@ sub new {
 		}
 	},
 	{#State 42
-		DEFAULT => -145
+		DEFAULT => -146
 	},
 	{#State 43
-		DEFAULT => -120
+		DEFAULT => -121
 	},
 	{#State 44
 		ACTIONS => {
@@ -979,7 +979,7 @@ sub new {
 		}
 	},
 	{#State 45
-		DEFAULT => -144
+		DEFAULT => -145
 	},
 	{#State 46
 		ACTIONS => {
@@ -988,25 +988,25 @@ sub new {
 		}
 	},
 	{#State 47
-		DEFAULT => -122
+		DEFAULT => -123
 	},
 	{#State 48
-		DEFAULT => -127
+		DEFAULT => -128
 	},
 	{#State 49
-		DEFAULT => -125
+		DEFAULT => -126
 	},
 	{#State 50
 		ACTIONS => {
 			"::" => 147
 		},
-		DEFAULT => -119
+		DEFAULT => -120
 	},
 	{#State 51
-		DEFAULT => -123
+		DEFAULT => -124
 	},
 	{#State 52
-		DEFAULT => -147
+		DEFAULT => -148
 	},
 	{#State 53
 		ACTIONS => {
@@ -1022,7 +1022,7 @@ sub new {
 		}
 	},
 	{#State 54
-		DEFAULT => -108
+		DEFAULT => -109
 	},
 	{#State 55
 		ACTIONS => {
@@ -1031,74 +1031,74 @@ sub new {
 		}
 	},
 	{#State 56
-		DEFAULT => -129
-	},
-	{#State 57
-		DEFAULT => -149
-	},
-	{#State 58
-		DEFAULT => -159
-	},
-	{#State 59
-		DEFAULT => -154
-	},
-	{#State 60
-		DEFAULT => -126
-	},
-	{#State 61
-		DEFAULT => -117
-	},
-	{#State 62
-		DEFAULT => -134
-	},
-	{#State 63
-		DEFAULT => -112
-	},
-	{#State 64
-		DEFAULT => -161
-	},
-	{#State 65
-		DEFAULT => -152
-	},
-	{#State 66
-		DEFAULT => -141
-	},
-	{#State 67
-		DEFAULT => -148
-	},
-	{#State 68
-		DEFAULT => -162
-	},
-	{#State 69
-		DEFAULT => -158
-	},
-	{#State 70
-		DEFAULT => -163
-	},
-	{#State 71
 		DEFAULT => -130
 	},
+	{#State 57
+		DEFAULT => -150
+	},
+	{#State 58
+		DEFAULT => -160
+	},
+	{#State 59
+		DEFAULT => -155
+	},
+	{#State 60
+		DEFAULT => -127
+	},
+	{#State 61
+		DEFAULT => -118
+	},
+	{#State 62
+		DEFAULT => -135
+	},
+	{#State 63
+		DEFAULT => -113
+	},
+	{#State 64
+		DEFAULT => -162
+	},
+	{#State 65
+		DEFAULT => -153
+	},
+	{#State 66
+		DEFAULT => -142
+	},
+	{#State 67
+		DEFAULT => -149
+	},
+	{#State 68
+		DEFAULT => -163
+	},
+	{#State 69
+		DEFAULT => -159
+	},
+	{#State 70
+		DEFAULT => -164
+	},
+	{#State 71
+		DEFAULT => -131
+	},
 	{#State 72
-		DEFAULT => -121
+		DEFAULT => -122
 	},
 	{#State 73
-		DEFAULT => -124
+		DEFAULT => -125
 	},
 	{#State 74
-		DEFAULT => -142
+		DEFAULT => -143
 	},
 	{#State 75
 		ACTIONS => {
 			'LONG' => 158,
 			'DOUBLE' => 157
 		},
-		DEFAULT => -150
+		DEFAULT => -151
 	},
 	{#State 76
 		ACTIONS => {
 			"<" => 159
 		},
-		DEFAULT => -210
+		DEFAULT => -211
 	},
 	{#State 77
 		ACTIONS => {
@@ -1107,43 +1107,43 @@ sub new {
 		}
 	},
 	{#State 78
-		DEFAULT => -146
+		DEFAULT => -147
 	},
 	{#State 79
 		ACTIONS => {
 			"<" => 162
 		},
-		DEFAULT => -213
+		DEFAULT => -214
 	},
 	{#State 80
-		DEFAULT => -132
-	},
-	{#State 81
-		DEFAULT => -160
-	},
-	{#State 82
 		DEFAULT => -133
 	},
+	{#State 81
+		DEFAULT => -161
+	},
+	{#State 82
+		DEFAULT => -134
+	},
 	{#State 83
-		DEFAULT => -48
+		DEFAULT => -49
 	},
 	{#State 84
-		DEFAULT => -128
+		DEFAULT => -129
 	},
 	{#State 85
-		DEFAULT => -153
+		DEFAULT => -154
 	},
 	{#State 86
-		DEFAULT => -118
+		DEFAULT => -119
 	},
 	{#State 87
-		DEFAULT => -116
+		DEFAULT => -117
 	},
 	{#State 88
-		DEFAULT => -115
+		DEFAULT => -116
 	},
 	{#State 89
-		DEFAULT => -131
+		DEFAULT => -132
 	},
 	{#State 90
 		ACTIONS => {
@@ -1213,10 +1213,10 @@ sub new {
 		DEFAULT => -19
 	},
 	{#State 93
-		DEFAULT => -176
+		DEFAULT => -177
 	},
 	{#State 94
-		DEFAULT => -196
+		DEFAULT => -197
 	},
 	{#State 95
 		ACTIONS => {
@@ -1235,40 +1235,40 @@ sub new {
 		DEFAULT => -15
 	},
 	{#State 98
-		DEFAULT => -62
+		DEFAULT => -63
 	},
 	{#State 99
-		DEFAULT => -276
+		DEFAULT => -277
 	},
 	{#State 100
-		DEFAULT => -59
+		DEFAULT => -60
 	},
 	{#State 101
 		ACTIONS => {
 			"::" => 147
 		},
-		DEFAULT => -66
+		DEFAULT => -67
 	},
 	{#State 102
-		DEFAULT => -60
-	},
-	{#State 103
-		DEFAULT => -63
-	},
-	{#State 104
-		DEFAULT => -57
-	},
-	{#State 105
-		DEFAULT => -64
-	},
-	{#State 106
 		DEFAULT => -61
 	},
-	{#State 107
+	{#State 103
+		DEFAULT => -64
+	},
+	{#State 104
 		DEFAULT => -58
 	},
-	{#State 108
+	{#State 105
 		DEFAULT => -65
+	},
+	{#State 106
+		DEFAULT => -62
+	},
+	{#State 107
+		DEFAULT => -59
+	},
+	{#State 108
+		DEFAULT => -66
 	},
 	{#State 109
 		ACTIONS => {
@@ -1277,10 +1277,10 @@ sub new {
 		}
 	},
 	{#State 110
-		DEFAULT => -232
+		DEFAULT => -233
 	},
 	{#State 111
-		DEFAULT => -231
+		DEFAULT => -232
 	},
 	{#State 112
 		ACTIONS => {
@@ -1298,12 +1298,15 @@ sub new {
 		DEFAULT => -5
 	},
 	{#State 116
-		DEFAULT => -198
+		DEFAULT => -199
 	},
 	{#State 117
-		DEFAULT => -197
+		DEFAULT => -198
 	},
 	{#State 118
+		ACTIONS => {
+			"{" => -30
+		},
 		DEFAULT => -27
 	},
 	{#State 119
@@ -1317,7 +1320,7 @@ sub new {
 		}
 	},
 	{#State 120
-		DEFAULT => -242
+		DEFAULT => -243
 	},
 	{#State 121
 		ACTIONS => {
@@ -1372,7 +1375,7 @@ sub new {
 		}
 	},
 	{#State 123
-		DEFAULT => -240
+		DEFAULT => -241
 	},
 	{#State 124
 		ACTIONS => {
@@ -1394,7 +1397,7 @@ sub new {
 		}
 	},
 	{#State 128
-		DEFAULT => -30
+		DEFAULT => -31
 	},
 	{#State 129
 		ACTIONS => {
@@ -1403,13 +1406,13 @@ sub new {
 			'TYPEDEF' => 11,
 			'UNION' => 15,
 			'READONLY' => 131,
-			'ATTRIBUTE' => -224,
+			'ATTRIBUTE' => -225,
 			'CONST' => 21,
-			"}" => -31,
+			"}" => -32,
 			'EXCEPTION' => 22,
 			'ENUM' => 27
 		},
-		DEFAULT => -241,
+		DEFAULT => -242,
 		GOTOS => {
 			'const_dcl' => 127,
 			'op_mod' => 121,
@@ -1441,7 +1444,7 @@ sub new {
 		}
 	},
 	{#State 131
-		DEFAULT => -223
+		DEFAULT => -224
 	},
 	{#State 132
 		ACTIONS => {
@@ -1499,7 +1502,7 @@ sub new {
 		}
 	},
 	{#State 141
-		DEFAULT => -227
+		DEFAULT => -228
 	},
 	{#State 142
 		ACTIONS => {
@@ -1524,7 +1527,7 @@ sub new {
 			'ENUM' => 27,
 			'ANY' => 68
 		},
-		DEFAULT => -167,
+		DEFAULT => -168,
 		GOTOS => {
 			'unsigned_int' => 42,
 			'floating_pt_type' => 43,
@@ -1563,7 +1566,7 @@ sub new {
 		}
 	},
 	{#State 143
-		DEFAULT => -275
+		DEFAULT => -276
 	},
 	{#State 144
 		ACTIONS => {
@@ -1604,7 +1607,7 @@ sub new {
 		}
 	},
 	{#State 145
-		DEFAULT => -208
+		DEFAULT => -209
 	},
 	{#State 146
 		ACTIONS => {
@@ -1661,50 +1664,50 @@ sub new {
 		}
 	},
 	{#State 148
-		DEFAULT => -113
+		DEFAULT => -114
 	},
 	{#State 149
 		ACTIONS => {
 			"," => 240
 		},
-		DEFAULT => -135
+		DEFAULT => -136
 	},
 	{#State 150
-		DEFAULT => -114
+		DEFAULT => -115
 	},
 	{#State 151
-		DEFAULT => -138
+		DEFAULT => -139
 	},
 	{#State 152
-		DEFAULT => -137
+		DEFAULT => -138
 	},
 	{#State 153
-		DEFAULT => -140
+		DEFAULT => -141
 	},
 	{#State 154
 		ACTIONS => {
 			"[" => 243
 		},
-		DEFAULT => -139,
+		DEFAULT => -140,
 		GOTOS => {
 			'fixed_array_sizes' => 241,
 			'fixed_array_size' => 242
 		}
 	},
 	{#State 155
-		DEFAULT => -155
+		DEFAULT => -156
 	},
 	{#State 156
 		ACTIONS => {
 			'LONG' => 244
 		},
-		DEFAULT => -156
+		DEFAULT => -157
 	},
 	{#State 157
-		DEFAULT => -143
+		DEFAULT => -144
 	},
 	{#State 158
-		DEFAULT => -151
+		DEFAULT => -152
 	},
 	{#State 159
 		ACTIONS => {
@@ -1745,10 +1748,10 @@ sub new {
 		}
 	},
 	{#State 160
-		DEFAULT => -50
+		DEFAULT => -51
 	},
 	{#State 161
-		DEFAULT => -49
+		DEFAULT => -50
 	},
 	{#State 162
 		ACTIONS => {
@@ -1808,10 +1811,10 @@ sub new {
 			";" => 252,
 			"," => 253
 		},
-		DEFAULT => -199
+		DEFAULT => -200
 	},
 	{#State 167
-		DEFAULT => -203
+		DEFAULT => -204
 	},
 	{#State 168
 		ACTIONS => {
@@ -1819,7 +1822,7 @@ sub new {
 		}
 	},
 	{#State 169
-		DEFAULT => -56
+		DEFAULT => -57
 	},
 	{#State 170
 		ACTIONS => {
@@ -1858,7 +1861,7 @@ sub new {
 		}
 	},
 	{#State 172
-		DEFAULT => -175
+		DEFAULT => -176
 	},
 	{#State 173
 		ACTIONS => {
@@ -1879,22 +1882,22 @@ sub new {
 		ACTIONS => {
 			"::" => 147
 		},
-		DEFAULT => -271
+		DEFAULT => -272
 	},
 	{#State 176
-		DEFAULT => -268
-	},
-	{#State 177
-		DEFAULT => -267
-	},
-	{#State 178
-		DEFAULT => -243
-	},
-	{#State 179
 		DEFAULT => -269
 	},
-	{#State 180
+	{#State 177
+		DEFAULT => -268
+	},
+	{#State 178
 		DEFAULT => -244
+	},
+	{#State 179
+		DEFAULT => -270
+	},
+	{#State 180
+		DEFAULT => -245
 	},
 	{#State 181
 		ACTIONS => {
@@ -1903,13 +1906,13 @@ sub new {
 		}
 	},
 	{#State 182
-		DEFAULT => -270
+		DEFAULT => -271
 	},
 	{#State 183
-		DEFAULT => -35
+		DEFAULT => -36
 	},
 	{#State 184
-		DEFAULT => -40
+		DEFAULT => -41
 	},
 	{#State 185
 		ACTIONS => {
@@ -1960,13 +1963,13 @@ sub new {
 		DEFAULT => -25
 	},
 	{#State 187
-		DEFAULT => -34
+		DEFAULT => -35
 	},
 	{#State 188
-		DEFAULT => -39
+		DEFAULT => -40
 	},
 	{#State 189
-		DEFAULT => -32
+		DEFAULT => -33
 	},
 	{#State 190
 		ACTIONS => {
@@ -1983,36 +1986,36 @@ sub new {
 		}
 	},
 	{#State 191
-		DEFAULT => -237
+		DEFAULT => -238
 	},
 	{#State 192
 		ACTIONS => {
 			'RAISES' => 284,
 			'CONTEXT' => 281
 		},
-		DEFAULT => -233,
+		DEFAULT => -234,
 		GOTOS => {
 			'context_expr' => 283,
 			'raises_expr' => 282
 		}
 	},
 	{#State 193
-		DEFAULT => -37
+		DEFAULT => -38
 	},
 	{#State 194
-		DEFAULT => -42
+		DEFAULT => -43
 	},
 	{#State 195
-		DEFAULT => -36
+		DEFAULT => -37
 	},
 	{#State 196
-		DEFAULT => -41
+		DEFAULT => -42
 	},
 	{#State 197
-		DEFAULT => -33
+		DEFAULT => -34
 	},
 	{#State 198
-		DEFAULT => -38
+		DEFAULT => -39
 	},
 	{#State 199
 		DEFAULT => -24
@@ -2030,25 +2033,25 @@ sub new {
 		}
 	},
 	{#State 203
-		DEFAULT => -229
+		DEFAULT => -230
 	},
 	{#State 204
-		DEFAULT => -228
+		DEFAULT => -229
 	},
 	{#State 205
-		DEFAULT => -168
+		DEFAULT => -169
 	},
 	{#State 206
-		DEFAULT => -96
+		DEFAULT => -97
 	},
 	{#State 207
-		DEFAULT => -97
+		DEFAULT => -98
 	},
 	{#State 208
 		ACTIONS => {
 			"::" => 147
 		},
-		DEFAULT => -89
+		DEFAULT => -90
 	},
 	{#State 209
 		ACTIONS => {
@@ -2056,7 +2059,7 @@ sub new {
 		}
 	},
 	{#State 210
-		DEFAULT => -95
+		DEFAULT => -96
 	},
 	{#State 211
 		ACTIONS => {
@@ -2096,16 +2099,16 @@ sub new {
 		}
 	},
 	{#State 212
-		DEFAULT => -100
+		DEFAULT => -101
 	},
 	{#State 213
-		DEFAULT => -107
+		DEFAULT => -108
 	},
 	{#State 214
 		ACTIONS => {
 			"|" => 290
 		},
-		DEFAULT => -67
+		DEFAULT => -68
 	},
 	{#State 215
 		ACTIONS => {
@@ -2116,57 +2119,57 @@ sub new {
 		ACTIONS => {
 			"^" => 292
 		},
-		DEFAULT => -68
+		DEFAULT => -69
 	},
 	{#State 217
 		ACTIONS => {
 			"<<" => 293,
 			">>" => 294
 		},
-		DEFAULT => -72
+		DEFAULT => -73
 	},
 	{#State 218
-		DEFAULT => -106
+		DEFAULT => -107
 	},
 	{#State 219
 		ACTIONS => {
 			'WIDE_STRING_LITERAL' => 219
 		},
-		DEFAULT => -103,
+		DEFAULT => -104,
 		GOTOS => {
 			'wide_string_literal' => 295
 		}
 	},
 	{#State 220
-		DEFAULT => -90
+		DEFAULT => -91
 	},
 	{#State 221
-		DEFAULT => -105
+		DEFAULT => -106
 	},
 	{#State 222
 		ACTIONS => {
 			"+" => 296,
 			"-" => 297
 		},
-		DEFAULT => -74
+		DEFAULT => -75
 	},
 	{#State 223
-		DEFAULT => -94
+		DEFAULT => -95
 	},
 	{#State 224
-		DEFAULT => -99
+		DEFAULT => -100
 	},
 	{#State 225
-		DEFAULT => -85
+		DEFAULT => -86
 	},
 	{#State 226
 		ACTIONS => {
 			"&" => 298
 		},
-		DEFAULT => -70
+		DEFAULT => -71
 	},
 	{#State 227
-		DEFAULT => -93
+		DEFAULT => -94
 	},
 	{#State 228
 		ACTIONS => {
@@ -2174,31 +2177,31 @@ sub new {
 			"*" => 299,
 			"/" => 301
 		},
-		DEFAULT => -77
+		DEFAULT => -78
 	},
 	{#State 229
 		ACTIONS => {
 			'STRING_LITERAL' => 229
 		},
-		DEFAULT => -101,
+		DEFAULT => -102,
 		GOTOS => {
 			'string_literal' => 302
 		}
 	},
 	{#State 230
-		DEFAULT => -98
+		DEFAULT => -99
 	},
 	{#State 231
-		DEFAULT => -87
+		DEFAULT => -88
 	},
 	{#State 232
-		DEFAULT => -80
+		DEFAULT => -81
 	},
 	{#State 233
-		DEFAULT => -86
+		DEFAULT => -87
 	},
 	{#State 234
-		DEFAULT => -88
+		DEFAULT => -89
 	},
 	{#State 235
 		ACTIONS => {
@@ -2236,10 +2239,10 @@ sub new {
 		}
 	},
 	{#State 238
-		DEFAULT => -52
+		DEFAULT => -53
 	},
 	{#State 239
-		DEFAULT => -51
+		DEFAULT => -52
 	},
 	{#State 240
 		ACTIONS => {
@@ -2254,13 +2257,13 @@ sub new {
 		}
 	},
 	{#State 241
-		DEFAULT => -215
+		DEFAULT => -216
 	},
 	{#State 242
 		ACTIONS => {
 			"[" => 243
 		},
-		DEFAULT => -216,
+		DEFAULT => -217,
 		GOTOS => {
 			'fixed_array_sizes' => 308,
 			'fixed_array_size' => 242
@@ -2305,7 +2308,7 @@ sub new {
 		}
 	},
 	{#State 244
-		DEFAULT => -157
+		DEFAULT => -158
 	},
 	{#State 245
 		ACTIONS => {
@@ -2328,32 +2331,32 @@ sub new {
 		}
 	},
 	{#State 249
-		DEFAULT => -165
+		DEFAULT => -166
 	},
 	{#State 250
-		DEFAULT => -164
+		DEFAULT => -165
 	},
 	{#State 251
-		DEFAULT => -195
+		DEFAULT => -196
 	},
 	{#State 252
-		DEFAULT => -202
+		DEFAULT => -203
 	},
 	{#State 253
 		ACTIONS => {
 			'IDENTIFIER' => 167
 		},
-		DEFAULT => -201,
+		DEFAULT => -202,
 		GOTOS => {
 			'enumerators' => 315,
 			'enumerator' => 166
 		}
 	},
 	{#State 254
-		DEFAULT => -194
+		DEFAULT => -195
 	},
 	{#State 255
-		DEFAULT => -55
+		DEFAULT => -56
 	},
 	{#State 256
 		ACTIONS => {
@@ -2393,16 +2396,16 @@ sub new {
 		}
 	},
 	{#State 257
-		DEFAULT => -178
+		DEFAULT => -179
 	},
 	{#State 258
 		ACTIONS => {
 			"::" => 147
 		},
-		DEFAULT => -181
+		DEFAULT => -182
 	},
 	{#State 259
-		DEFAULT => -180
+		DEFAULT => -181
 	},
 	{#State 260
 		ACTIONS => {
@@ -2415,43 +2418,43 @@ sub new {
 		}
 	},
 	{#State 262
-		DEFAULT => -179
+		DEFAULT => -180
 	},
 	{#State 263
-		DEFAULT => -177
+		DEFAULT => -178
 	},
 	{#State 264
 		ACTIONS => {
 			'LONG' => 158
 		},
-		DEFAULT => -150
+		DEFAULT => -151
 	},
 	{#State 265
 		ACTIONS => {
 			"::" => 147
 		},
-		DEFAULT => -47
+		DEFAULT => -48
 	},
 	{#State 266
-		DEFAULT => -44
+		DEFAULT => -45
 	},
 	{#State 267
 		ACTIONS => {
 			"," => 320
 		},
-		DEFAULT => -45
+		DEFAULT => -46
 	},
 	{#State 268
-		DEFAULT => -43
+		DEFAULT => -44
 	},
 	{#State 269
-		DEFAULT => -239
+		DEFAULT => -240
 	},
 	{#State 270
-		DEFAULT => -238
+		DEFAULT => -239
 	},
 	{#State 271
-		DEFAULT => -222
+		DEFAULT => -223
 	},
 	{#State 272
 		ACTIONS => {
@@ -2464,7 +2467,7 @@ sub new {
 		}
 	},
 	{#State 273
-		DEFAULT => -253
+		DEFAULT => -254
 	},
 	{#State 274
 		ACTIONS => {
@@ -2472,7 +2475,7 @@ sub new {
 		}
 	},
 	{#State 275
-		DEFAULT => -255
+		DEFAULT => -256
 	},
 	{#State 276
 		ACTIONS => {
@@ -2524,17 +2527,17 @@ sub new {
 		}
 	},
 	{#State 278
-		DEFAULT => -246
+		DEFAULT => -247
 	},
 	{#State 279
-		DEFAULT => -254
+		DEFAULT => -255
 	},
 	{#State 280
 		ACTIONS => {
 			";" => 328,
 			"," => 329
 		},
-		DEFAULT => -248
+		DEFAULT => -249
 	},
 	{#State 281
 		ACTIONS => {
@@ -2546,13 +2549,13 @@ sub new {
 		ACTIONS => {
 			'CONTEXT' => 281
 		},
-		DEFAULT => -234,
+		DEFAULT => -235,
 		GOTOS => {
 			'context_expr' => 332
 		}
 	},
 	{#State 283
-		DEFAULT => -236
+		DEFAULT => -237
 	},
 	{#State 284
 		ACTIONS => {
@@ -2561,10 +2564,10 @@ sub new {
 		}
 	},
 	{#State 285
-		DEFAULT => -169
+		DEFAULT => -170
 	},
 	{#State 286
-		DEFAULT => -170
+		DEFAULT => -171
 	},
 	{#State 287
 		ACTIONS => {
@@ -2649,7 +2652,7 @@ sub new {
 		}
 	},
 	{#State 291
-		DEFAULT => -274
+		DEFAULT => -275
 	},
 	{#State 292
 		ACTIONS => {
@@ -2747,7 +2750,7 @@ sub new {
 		}
 	},
 	{#State 295
-		DEFAULT => -104
+		DEFAULT => -105
 	},
 	{#State 296
 		ACTIONS => {
@@ -2929,13 +2932,13 @@ sub new {
 		}
 	},
 	{#State 302
-		DEFAULT => -102
+		DEFAULT => -103
 	},
 	{#State 303
-		DEFAULT => -84
+		DEFAULT => -85
 	},
 	{#State 304
-		DEFAULT => -207
+		DEFAULT => -208
 	},
 	{#State 305
 		ACTIONS => {
@@ -2976,13 +2979,13 @@ sub new {
 		}
 	},
 	{#State 306
-		DEFAULT => -206
+		DEFAULT => -207
 	},
 	{#State 307
-		DEFAULT => -136
+		DEFAULT => -137
 	},
 	{#State 308
-		DEFAULT => -217
+		DEFAULT => -218
 	},
 	{#State 309
 		ACTIONS => {
@@ -2995,28 +2998,28 @@ sub new {
 		}
 	},
 	{#State 311
-		DEFAULT => -209
+		DEFAULT => -210
 	},
 	{#State 312
-		DEFAULT => -211
-	},
-	{#State 313
 		DEFAULT => -212
 	},
+	{#State 313
+		DEFAULT => -213
+	},
 	{#State 314
-		DEFAULT => -214
+		DEFAULT => -215
 	},
 	{#State 315
-		DEFAULT => -200
+		DEFAULT => -201
 	},
 	{#State 316
-		DEFAULT => -53
-	},
-	{#State 317
 		DEFAULT => -54
 	},
+	{#State 317
+		DEFAULT => -55
+	},
 	{#State 318
-		DEFAULT => -174
+		DEFAULT => -175
 	},
 	{#State 319
 		ACTIONS => {
@@ -3036,22 +3039,22 @@ sub new {
 		}
 	},
 	{#State 321
-		DEFAULT => -221
+		DEFAULT => -222
 	},
 	{#State 322
 		ACTIONS => {
 			"," => 356
 		},
-		DEFAULT => -225
+		DEFAULT => -226
 	},
 	{#State 323
-		DEFAULT => -220
+		DEFAULT => -221
 	},
 	{#State 324
-		DEFAULT => -139
+		DEFAULT => -140
 	},
 	{#State 325
-		DEFAULT => -247
+		DEFAULT => -248
 	},
 	{#State 326
 		ACTIONS => {
@@ -3062,10 +3065,10 @@ sub new {
 		}
 	},
 	{#State 327
-		DEFAULT => -245
+		DEFAULT => -246
 	},
 	{#State 328
-		DEFAULT => -251
+		DEFAULT => -252
 	},
 	{#State 329
 		ACTIONS => {
@@ -3073,7 +3076,7 @@ sub new {
 			'INOUT' => 275,
 			'IN' => 273
 		},
-		DEFAULT => -250,
+		DEFAULT => -251,
 		GOTOS => {
 			'param_dcl' => 280,
 			'param_dcls' => 358,
@@ -3091,10 +3094,10 @@ sub new {
 		}
 	},
 	{#State 331
-		DEFAULT => -264
+		DEFAULT => -265
 	},
 	{#State 332
-		DEFAULT => -235
+		DEFAULT => -236
 	},
 	{#State 333
 		ACTIONS => {
@@ -3109,7 +3112,7 @@ sub new {
 		}
 	},
 	{#State 334
-		DEFAULT => -258
+		DEFAULT => -259
 	},
 	{#State 335
 		ACTIONS => {
@@ -3122,36 +3125,36 @@ sub new {
 		}
 	},
 	{#State 337
-		DEFAULT => -91
+		DEFAULT => -92
 	},
 	{#State 338
-		DEFAULT => -92
+		DEFAULT => -93
 	},
 	{#State 339
 		ACTIONS => {
 			"^" => 292
 		},
-		DEFAULT => -69
+		DEFAULT => -70
 	},
 	{#State 340
 		ACTIONS => {
 			"&" => 298
 		},
-		DEFAULT => -71
+		DEFAULT => -72
 	},
 	{#State 341
 		ACTIONS => {
 			"+" => 296,
 			"-" => 297
 		},
-		DEFAULT => -76
+		DEFAULT => -77
 	},
 	{#State 342
 		ACTIONS => {
 			"+" => 296,
 			"-" => 297
 		},
-		DEFAULT => -75
+		DEFAULT => -76
 	},
 	{#State 343
 		ACTIONS => {
@@ -3159,7 +3162,7 @@ sub new {
 			"*" => 299,
 			"/" => 301
 		},
-		DEFAULT => -78
+		DEFAULT => -79
 	},
 	{#State 344
 		ACTIONS => {
@@ -3167,23 +3170,23 @@ sub new {
 			"*" => 299,
 			"/" => 301
 		},
-		DEFAULT => -79
+		DEFAULT => -80
 	},
 	{#State 345
 		ACTIONS => {
 			"<<" => 293,
 			">>" => 294
 		},
-		DEFAULT => -73
+		DEFAULT => -74
 	},
 	{#State 346
-		DEFAULT => -81
+		DEFAULT => -82
 	},
 	{#State 347
-		DEFAULT => -83
+		DEFAULT => -84
 	},
 	{#State 348
-		DEFAULT => -82
+		DEFAULT => -83
 	},
 	{#State 349
 		ACTIONS => {
@@ -3196,13 +3199,13 @@ sub new {
 		}
 	},
 	{#State 351
-		DEFAULT => -218
-	},
-	{#State 352
 		DEFAULT => -219
 	},
+	{#State 352
+		DEFAULT => -220
+	},
 	{#State 353
-		DEFAULT => -173
+		DEFAULT => -174
 	},
 	{#State 354
 		ACTIONS => {
@@ -3218,7 +3221,7 @@ sub new {
 		}
 	},
 	{#State 355
-		DEFAULT => -46
+		DEFAULT => -47
 	},
 	{#State 356
 		ACTIONS => {
@@ -3230,10 +3233,10 @@ sub new {
 		}
 	},
 	{#State 357
-		DEFAULT => -252
+		DEFAULT => -253
 	},
 	{#State 358
-		DEFAULT => -249
+		DEFAULT => -250
 	},
 	{#State 359
 		ACTIONS => {
@@ -3244,7 +3247,7 @@ sub new {
 		ACTIONS => {
 			"," => 379
 		},
-		DEFAULT => -265
+		DEFAULT => -266
 	},
 	{#State 361
 		ACTIONS => {
@@ -3255,7 +3258,7 @@ sub new {
 		ACTIONS => {
 			"::" => 147
 		},
-		DEFAULT => -261
+		DEFAULT => -262
 	},
 	{#State 363
 		ACTIONS => {
@@ -3271,19 +3274,19 @@ sub new {
 		ACTIONS => {
 			"," => 383
 		},
-		DEFAULT => -259
+		DEFAULT => -260
 	},
 	{#State 366
-		DEFAULT => -272
-	},
-	{#State 367
 		DEFAULT => -273
 	},
+	{#State 367
+		DEFAULT => -274
+	},
 	{#State 368
-		DEFAULT => -204
+		DEFAULT => -205
 	},
 	{#State 369
-		DEFAULT => -205
+		DEFAULT => -206
 	},
 	{#State 370
 		ACTIONS => {
@@ -3327,7 +3330,7 @@ sub new {
 			'CASE' => 370,
 			'DEFAULT' => 372
 		},
-		DEFAULT => -182,
+		DEFAULT => -183,
 		GOTOS => {
 			'case_labels' => 375,
 			'switch_body' => 386,
@@ -3415,17 +3418,17 @@ sub new {
 			'CASE' => 370,
 			'DEFAULT' => 372
 		},
-		DEFAULT => -186,
+		DEFAULT => -187,
 		GOTOS => {
 			'case_labels' => 393,
 			'case_label' => 376
 		}
 	},
 	{#State 377
-		DEFAULT => -226
+		DEFAULT => -227
 	},
 	{#State 378
-		DEFAULT => -263
+		DEFAULT => -264
 	},
 	{#State 379
 		ACTIONS => {
@@ -3437,13 +3440,13 @@ sub new {
 		}
 	},
 	{#State 380
-		DEFAULT => -262
+		DEFAULT => -263
 	},
 	{#State 381
-		DEFAULT => -257
+		DEFAULT => -258
 	},
 	{#State 382
-		DEFAULT => -256
+		DEFAULT => -257
 	},
 	{#State 383
 		ACTIONS => {
@@ -3463,22 +3466,22 @@ sub new {
 		}
 	},
 	{#State 385
-		DEFAULT => -190
-	},
-	{#State 386
-		DEFAULT => -183
-	},
-	{#State 387
-		DEFAULT => -192
-	},
-	{#State 388
 		DEFAULT => -191
 	},
+	{#State 386
+		DEFAULT => -184
+	},
+	{#State 387
+		DEFAULT => -193
+	},
+	{#State 388
+		DEFAULT => -192
+	},
 	{#State 389
-		DEFAULT => -172
+		DEFAULT => -173
 	},
 	{#State 390
-		DEFAULT => -171
+		DEFAULT => -172
 	},
 	{#State 391
 		ACTIONS => {
@@ -3498,28 +3501,28 @@ sub new {
 		}
 	},
 	{#State 393
-		DEFAULT => -187
-	},
-	{#State 394
-		DEFAULT => -266
-	},
-	{#State 395
-		DEFAULT => -260
-	},
-	{#State 396
-		DEFAULT => -189
-	},
-	{#State 397
 		DEFAULT => -188
 	},
+	{#State 394
+		DEFAULT => -267
+	},
+	{#State 395
+		DEFAULT => -261
+	},
+	{#State 396
+		DEFAULT => -190
+	},
+	{#State 397
+		DEFAULT => -189
+	},
 	{#State 398
-		DEFAULT => -193
+		DEFAULT => -194
 	},
 	{#State 399
-		DEFAULT => -184
+		DEFAULT => -185
 	},
 	{#State 400
-		DEFAULT => -185
+		DEFAULT => -186
 	}
 ],
                                   yyrules  =>
@@ -3542,7 +3545,7 @@ sub
 sub
 #line 65 "parser21.yp"
 {
-			$_[0]->Error("Empty specification\n");
+			$_[0]->Error("Empty specification.\n");
 		}
 	],
 	[#Rule 3
@@ -3550,20 +3553,25 @@ sub
 sub
 #line 69 "parser21.yp"
 {
-			$_[0]->Error("definition declaration excepted.\n");
+			$_[0]->Error("definition declaration expected.\n");
 		}
 	],
 	[#Rule 4
 		 'definitions', 1,
 sub
-#line 75 "parser21.yp"
-{ [$_[1]]; }
+#line 76 "parser21.yp"
+{
+			[$_[1]->getRef()];
+		}
 	],
 	[#Rule 5
 		 'definitions', 2,
 sub
-#line 76 "parser21.yp"
-{ unshift(@{$_[2]},$_[1]); $_[2]; }
+#line 80 "parser21.yp"
+{
+			unshift(@{$_[2]},$_[1]->getRef());
+			$_[2];
+		}
 	],
 	[#Rule 6
 		 'definition', 2, undef
@@ -3583,9 +3591,9 @@ sub
 	[#Rule 11
 		 'definition', 2,
 sub
-#line 87 "parser21.yp"
+#line 99 "parser21.yp"
 {
-			$_[0]->Warning("';' excepted.\n");
+			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
@@ -3593,9 +3601,9 @@ sub
 	[#Rule 12
 		 'definition', 2,
 sub
-#line 93 "parser21.yp"
+#line 105 "parser21.yp"
 {
-			$_[0]->Warning("';' excepted.\n");
+			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
@@ -3603,9 +3611,9 @@ sub
 	[#Rule 13
 		 'definition', 2,
 sub
-#line 99 "parser21.yp"
+#line 111 "parser21.yp"
 {
-			$_[0]->Warning("';' excepted.\n");
+			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
@@ -3613,9 +3621,9 @@ sub
 	[#Rule 14
 		 'definition', 2,
 sub
-#line 105 "parser21.yp"
+#line 117 "parser21.yp"
 {
-			$_[0]->Warning("';' excepted.\n");
+			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
@@ -3623,9 +3631,9 @@ sub
 	[#Rule 15
 		 'definition', 2,
 sub
-#line 111 "parser21.yp"
+#line 123 "parser21.yp"
 {
-			$_[0]->Warning("';' excepted.\n");
+			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
@@ -3633,37 +3641,38 @@ sub
 	[#Rule 16
 		 'module', 4,
 sub
-#line 121 "parser21.yp"
+#line 133 "parser21.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
-			$_[1]->configure('list_decl' => $_[3])
-					if (defined $_[1]);
+			$_[1]->Configure($_[0],
+					'list_decl'			=>	$_[3]
+			) if (defined $_[1]);
 		}
 	],
 	[#Rule 17
 		 'module', 4,
 sub
-#line 127 "parser21.yp"
+#line 140 "parser21.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
-			$_[0]->Error("definition declaration excepted.\n");
+			$_[0]->Error("definition declaration expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 18
 		 'module', 2,
 sub
-#line 133 "parser21.yp"
+#line 146 "parser21.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
-			$_[0]->Error("'\x7b' excepted.\n");
+			$_[0]->Error("'\x7b' expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 19
 		 'module_header', 2,
 sub
-#line 142 "parser21.yp"
+#line 155 "parser21.yp"
 {
 			new Module($_[0],
 					'idf'				=>	$_[2],
@@ -3673,9 +3682,9 @@ sub
 	[#Rule 20
 		 'module_header', 2,
 sub
-#line 148 "parser21.yp"
+#line 161 "parser21.yp"
 {
-			$_[0]->Error("Identifier excepted.\n");
+			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
@@ -3688,40 +3697,44 @@ sub
 	[#Rule 23
 		 'interface_dcl', 3,
 sub
-#line 163 "parser21.yp"
+#line 178 "parser21.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->YYData->{curr_itf} = undef;
-			$_[1]->configure('list_decl'		=>	[]);
+			$_[1]->Configure($_[0],
+					'list_decl'		=>	[]
+			) if (defined $_[1]);
 		}
 	],
 	[#Rule 24
 		 'interface_dcl', 4,
 sub
-#line 169 "parser21.yp"
+#line 186 "parser21.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->YYData->{curr_itf} = undef;
-			$_[1]->configure('list_decl'		=>	$_[3]);
+			$_[1]->Configure($_[0],
+					'list_decl'		=>	$_[3]
+			) if (defined $_[1]);
 		}
 	],
 	[#Rule 25
 		 'interface_dcl', 4,
 sub
-#line 175 "parser21.yp"
+#line 194 "parser21.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->YYData->{curr_itf} = undef;
-			$_[0]->Error("export declaration excepted.\n");
+			$_[0]->Error("export declaration expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 26
 		 'forward_dcl', 2,
 sub
-#line 186 "parser21.yp"
+#line 205 "parser21.yp"
 {
-			new ForwardInterface($_[0],
+			new ForwardRegularInterface($_[0],
 					'idf'					=>	$_[2]
 			);
 		}
@@ -3729,18 +3742,18 @@ sub
 	[#Rule 27
 		 'forward_dcl', 2,
 sub
-#line 192 "parser21.yp"
+#line 211 "parser21.yp"
 {
-			$_[0]->Error("Identifier excepted.\n");
+			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 28
 		 'interface_header', 2,
 sub
-#line 201 "parser21.yp"
+#line 220 "parser21.yp"
 {
-			new Interface($_[0],
+			new RegularInterface($_[0],
 					'idf'					=>	$_[2]
 			);
 		}
@@ -3748,31 +3761,45 @@ sub
 	[#Rule 29
 		 'interface_header', 3,
 sub
-#line 207 "parser21.yp"
+#line 226 "parser21.yp"
 {
-			new Interface($_[0],
-					'idf'					=>	$_[2],
-					'list_inheritance'		=>	$_[3]
+			my $inheritance = new InheritanceSpec($_[0],
+					'list_interface'		=>	$_[4]
+			);
+			new RegularInterface($_[0],
+					'idf'					=>	$_[3],
+					'inheritance'			=>	$inheritance
 			);
 		}
 	],
 	[#Rule 30
-		 'interface_body', 1, undef
+		 'interface_header', 2,
+sub
+#line 236 "parser21.yp"
+{
+			$_[0]->Error("Identifier expected.\n");
+			$_[0]->YYErrok();
+		}
 	],
 	[#Rule 31
-		 'exports', 1,
-sub
-#line 221 "parser21.yp"
-{ [$_[1]]; }
+		 'interface_body', 1, undef
 	],
 	[#Rule 32
-		 'exports', 2,
+		 'exports', 1,
 sub
-#line 222 "parser21.yp"
-{ unshift(@{$_[2]},$_[1]); $_[2]; }
+#line 250 "parser21.yp"
+{
+			[$_[1]->getRef()];
+		}
 	],
 	[#Rule 33
-		 'export', 2, undef
+		 'exports', 2,
+sub
+#line 254 "parser21.yp"
+{
+			unshift(@{$_[2]},$_[1]->getRef());
+			$_[2];
+		}
 	],
 	[#Rule 34
 		 'export', 2, undef
@@ -3787,21 +3814,14 @@ sub
 		 'export', 2, undef
 	],
 	[#Rule 38
-		 'export', 2,
-sub
-#line 233 "parser21.yp"
-{
-			$_[0]->Warning("';' excepted.\n");
-			$_[0]->YYErrok();
-			$_[1];						#default action
-		}
+		 'export', 2, undef
 	],
 	[#Rule 39
 		 'export', 2,
 sub
-#line 239 "parser21.yp"
+#line 273 "parser21.yp"
 {
-			$_[0]->Warning("';' excepted.\n");
+			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
@@ -3809,9 +3829,9 @@ sub
 	[#Rule 40
 		 'export', 2,
 sub
-#line 245 "parser21.yp"
+#line 279 "parser21.yp"
 {
-			$_[0]->Warning("';' excepted.\n");
+			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
@@ -3819,9 +3839,9 @@ sub
 	[#Rule 41
 		 'export', 2,
 sub
-#line 251 "parser21.yp"
+#line 285 "parser21.yp"
 {
-			$_[0]->Warning("';' excepted.\n");
+			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
@@ -3829,91 +3849,108 @@ sub
 	[#Rule 42
 		 'export', 2,
 sub
-#line 257 "parser21.yp"
+#line 291 "parser21.yp"
 {
-			$_[0]->Warning("';' excepted.\n");
+			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
 	],
 	[#Rule 43
-		 'interface_inheritance_spec', 2,
+		 'export', 2,
 sub
-#line 266 "parser21.yp"
-{ $_[2]; }
+#line 297 "parser21.yp"
+{
+			$_[0]->Warning("';' expected.\n");
+			$_[0]->YYErrok();
+			$_[1];						#default action
+		}
 	],
 	[#Rule 44
 		 'interface_inheritance_spec', 2,
 sub
-#line 268 "parser21.yp"
+#line 307 "parser21.yp"
 {
-			$_[0]->Error("Interface name excepted.\n");
-			$_[0]->YYErrok();
+			$_[2];
 		}
 	],
 	[#Rule 45
-		 'interface_names', 1,
+		 'interface_inheritance_spec', 2,
 sub
-#line 275 "parser21.yp"
-{ [$_[1]]; }
+#line 311 "parser21.yp"
+{
+			$_[0]->Error("Interface name expected.\n");
+			$_[0]->YYErrok();
+		}
 	],
 	[#Rule 46
-		 'interface_names', 3,
+		 'interface_names', 1,
 sub
-#line 276 "parser21.yp"
-{ unshift(@{$_[3]},$_[1]); $_[3]; }
+#line 319 "parser21.yp"
+{
+			[$_[1]];
+		}
 	],
 	[#Rule 47
-		 'interface_name', 1,
+		 'interface_names', 3,
 sub
-#line 281 "parser21.yp"
+#line 323 "parser21.yp"
 {
-				Interface->Lookup($_[0],$_[1])
+			unshift(@{$_[3]},$_[1]);
+			$_[3];
 		}
 	],
 	[#Rule 48
-		 'scoped_name', 1, undef
+		 'interface_name', 1,
+sub
+#line 331 "parser21.yp"
+{
+				Interface->Lookup($_[0],$_[1]);
+		}
 	],
 	[#Rule 49
-		 'scoped_name', 2,
-sub
-#line 290 "parser21.yp"
-{
-			$_[1] . $_[2];
-		}
+		 'scoped_name', 1, undef
 	],
 	[#Rule 50
 		 'scoped_name', 2,
 sub
-#line 294 "parser21.yp"
+#line 341 "parser21.yp"
 {
-			$_[0]->Error("Identifier excepted.\n");
-			$_[0]->YYErrok();
-			'';
+			$_[1] . $_[2];
 		}
 	],
 	[#Rule 51
-		 'scoped_name', 3,
+		 'scoped_name', 2,
 sub
-#line 300 "parser21.yp"
+#line 345 "parser21.yp"
 {
-			$_[1] . $_[2] . $_[3];
+			$_[0]->Error("Identifier expected.\n");
+			$_[0]->YYErrok();
+			'';
 		}
 	],
 	[#Rule 52
 		 'scoped_name', 3,
 sub
-#line 304 "parser21.yp"
+#line 351 "parser21.yp"
 {
-			$_[0]->Error("Identifier excepted.\n");
+			$_[1] . $_[2] . $_[3];
+		}
+	],
+	[#Rule 53
+		 'scoped_name', 3,
+sub
+#line 355 "parser21.yp"
+{
+			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 			$_[1];
 		}
 	],
-	[#Rule 53
+	[#Rule 54
 		 'const_dcl', 5,
 sub
-#line 314 "parser21.yp"
+#line 365 "parser21.yp"
 {
 			new Constant($_[0],
 					'type'				=>	$_[2],
@@ -3922,44 +3959,41 @@ sub
 			);
 		}
 	],
-	[#Rule 54
+	[#Rule 55
 		 'const_dcl', 5,
 sub
-#line 322 "parser21.yp"
+#line 373 "parser21.yp"
 {
-			$_[0]->Error("Expression excepted.\n");
-			$_[0]->YYErrok();
-		}
-	],
-	[#Rule 55
-		 'const_dcl', 4,
-sub
-#line 327 "parser21.yp"
-{
-			$_[0]->Error("'=' excepted.\n");
+			$_[0]->Error("Expression expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 56
-		 'const_dcl', 3,
+		 'const_dcl', 4,
 sub
-#line 332 "parser21.yp"
+#line 378 "parser21.yp"
 {
-			$_[0]->Error("Identifier excepted.\n");
+			$_[0]->Error("'=' expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 57
-		 'const_dcl', 2,
+		 'const_dcl', 3,
 sub
-#line 337 "parser21.yp"
+#line 383 "parser21.yp"
 {
-			$_[0]->Error("const_type excepted.\n");
+			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 58
-		 'const_type', 1, undef
+		 'const_dcl', 2,
+sub
+#line 388 "parser21.yp"
+{
+			$_[0]->Error("const_type expected.\n");
+			$_[0]->YYErrok();
+		}
 	],
 	[#Rule 59
 		 'const_type', 1, undef
@@ -3983,102 +4017,97 @@ sub
 		 'const_type', 1, undef
 	],
 	[#Rule 66
+		 'const_type', 1, undef
+	],
+	[#Rule 67
 		 'const_type', 1,
 sub
-#line 354 "parser21.yp"
+#line 413 "parser21.yp"
 {
 			TypeDeclarator->Lookup($_[0],$_[1]);
 		}
 	],
-	[#Rule 67
+	[#Rule 68
 		 'const_exp', 1, undef
 	],
-	[#Rule 68
+	[#Rule 69
 		 'or_expr', 1, undef
 	],
-	[#Rule 69
+	[#Rule 70
 		 'or_expr', 3,
 sub
-#line 368 "parser21.yp"
+#line 429 "parser21.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
-	],
-	[#Rule 70
-		 'xor_expr', 1, undef
 	],
 	[#Rule 71
-		 'xor_expr', 3,
-sub
-#line 377 "parser21.yp"
-{
-			BuildBinop($_[1],$_[2],$_[3]);
-		}
+		 'xor_expr', 1, undef
 	],
 	[#Rule 72
-		 'and_expr', 1, undef
+		 'xor_expr', 3,
+sub
+#line 439 "parser21.yp"
+{
+			BuildBinop($_[1],$_[2],$_[3]);
+		}
 	],
 	[#Rule 73
-		 'and_expr', 3,
-sub
-#line 386 "parser21.yp"
-{
-			BuildBinop($_[1],$_[2],$_[3]);
-		}
+		 'and_expr', 1, undef
 	],
 	[#Rule 74
-		 'shift_expr', 1, undef
-	],
-	[#Rule 75
-		 'shift_expr', 3,
+		 'and_expr', 3,
 sub
-#line 395 "parser21.yp"
+#line 449 "parser21.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
+	],
+	[#Rule 75
+		 'shift_expr', 1, undef
 	],
 	[#Rule 76
 		 'shift_expr', 3,
 sub
-#line 399 "parser21.yp"
+#line 459 "parser21.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
 	],
 	[#Rule 77
-		 'add_expr', 1, undef
-	],
-	[#Rule 78
-		 'add_expr', 3,
+		 'shift_expr', 3,
 sub
-#line 408 "parser21.yp"
+#line 463 "parser21.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
 	],
+	[#Rule 78
+		 'add_expr', 1, undef
+	],
 	[#Rule 79
 		 'add_expr', 3,
 sub
-#line 412 "parser21.yp"
+#line 473 "parser21.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
 	],
 	[#Rule 80
-		 'mult_expr', 1, undef
-	],
-	[#Rule 81
-		 'mult_expr', 3,
+		 'add_expr', 3,
 sub
-#line 421 "parser21.yp"
+#line 477 "parser21.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
 	],
+	[#Rule 81
+		 'mult_expr', 1, undef
+	],
 	[#Rule 82
 		 'mult_expr', 3,
 sub
-#line 425 "parser21.yp"
+#line 487 "parser21.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
@@ -4086,24 +4115,29 @@ sub
 	[#Rule 83
 		 'mult_expr', 3,
 sub
-#line 429 "parser21.yp"
+#line 491 "parser21.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
 	],
 	[#Rule 84
+		 'mult_expr', 3,
+sub
+#line 495 "parser21.yp"
+{
+			BuildBinop($_[1],$_[2],$_[3]);
+		}
+	],
+	[#Rule 85
 		 'unary_expr', 2,
 sub
-#line 437 "parser21.yp"
+#line 503 "parser21.yp"
 {
 			BuildUnop($_[1],$_[2]);
 		}
 	],
-	[#Rule 85
-		 'unary_expr', 1, undef
-	],
 	[#Rule 86
-		 'unary_operator', 1, undef
+		 'unary_expr', 1, undef
 	],
 	[#Rule 87
 		 'unary_operator', 1, undef
@@ -4112,44 +4146,47 @@ sub
 		 'unary_operator', 1, undef
 	],
 	[#Rule 89
+		 'unary_operator', 1, undef
+	],
+	[#Rule 90
 		 'primary_expr', 1,
 sub
-#line 453 "parser21.yp"
+#line 523 "parser21.yp"
 {
 			[
 				Constant->Lookup($_[0],$_[1])
 			];
 		}
 	],
-	[#Rule 90
+	[#Rule 91
 		 'primary_expr', 1,
 sub
-#line 459 "parser21.yp"
+#line 529 "parser21.yp"
 {
 			[ $_[1] ];
-		}
-	],
-	[#Rule 91
-		 'primary_expr', 3,
-sub
-#line 463 "parser21.yp"
-{
-			$_[2];
 		}
 	],
 	[#Rule 92
 		 'primary_expr', 3,
 sub
-#line 467 "parser21.yp"
+#line 533 "parser21.yp"
 {
-			$_[0]->Error("Expression excepted.\n");
-			$_[0]->YYErrok();
+			$_[2];
 		}
 	],
 	[#Rule 93
+		 'primary_expr', 3,
+sub
+#line 537 "parser21.yp"
+{
+			$_[0]->Error("Expression expected.\n");
+			$_[0]->YYErrok();
+		}
+	],
+	[#Rule 94
 		 'literal', 1,
 sub
-#line 476 "parser21.yp"
+#line 546 "parser21.yp"
 {
 			new IntegerLiteral($_[0],
 					'value'				=>	$_[1],
@@ -4157,22 +4194,12 @@ sub
 			);
 		}
 	],
-	[#Rule 94
-		 'literal', 1,
-sub
-#line 483 "parser21.yp"
-{
-			new StringLiteral($_[0],
-					'value'				=>	$_[1]
-			);
-		}
-	],
 	[#Rule 95
 		 'literal', 1,
 sub
-#line 489 "parser21.yp"
+#line 553 "parser21.yp"
 {
-			new WideStringLiteral($_[0],
+			new StringLiteral($_[0],
 					'value'				=>	$_[1]
 			);
 		}
@@ -4180,9 +4207,9 @@ sub
 	[#Rule 96
 		 'literal', 1,
 sub
-#line 495 "parser21.yp"
+#line 559 "parser21.yp"
 {
-			new CharacterLiteral($_[0],
+			new WideStringLiteral($_[0],
 					'value'				=>	$_[1]
 			);
 		}
@@ -4190,9 +4217,9 @@ sub
 	[#Rule 97
 		 'literal', 1,
 sub
-#line 501 "parser21.yp"
+#line 565 "parser21.yp"
 {
-			new WideCharacterLiteral($_[0],
+			new CharacterLiteral($_[0],
 					'value'				=>	$_[1]
 			);
 		}
@@ -4200,7 +4227,17 @@ sub
 	[#Rule 98
 		 'literal', 1,
 sub
-#line 507 "parser21.yp"
+#line 571 "parser21.yp"
+{
+			new WideCharacterLiteral($_[0],
+					'value'				=>	$_[1]
+			);
+		}
+	],
+	[#Rule 99
+		 'literal', 1,
+sub
+#line 577 "parser21.yp"
 {
 			new FixedPtLiteral($_[0],
 					'value'				=>	$_[1],
@@ -4208,10 +4245,10 @@ sub
 			);
 		}
 	],
-	[#Rule 99
+	[#Rule 100
 		 'literal', 1,
 sub
-#line 514 "parser21.yp"
+#line 584 "parser21.yp"
 {
 			new FloatingPtLiteral($_[0],
 					'value'				=>	$_[1],
@@ -4219,67 +4256,68 @@ sub
 			);
 		}
 	],
-	[#Rule 100
+	[#Rule 101
 		 'literal', 1, undef
 	],
-	[#Rule 101
+	[#Rule 102
 		 'string_literal', 1, undef
 	],
-	[#Rule 102
+	[#Rule 103
 		 'string_literal', 2,
 sub
-#line 525 "parser21.yp"
-{ $_[1] . $_[2]; }
-	],
-	[#Rule 103
-		 'wide_string_literal', 1, undef
+#line 598 "parser21.yp"
+{
+			$_[1] . $_[2];
+		}
 	],
 	[#Rule 104
-		 'wide_string_literal', 2,
-sub
-#line 531 "parser21.yp"
-{ $_[1] . $_[2]; }
+		 'wide_string_literal', 1, undef
 	],
 	[#Rule 105
+		 'wide_string_literal', 2,
+sub
+#line 607 "parser21.yp"
+{
+			$_[1] . $_[2];
+		}
+	],
+	[#Rule 106
 		 'boolean_literal', 1,
 sub
-#line 537 "parser21.yp"
+#line 615 "parser21.yp"
 {
 			new BooleanLiteral($_[0],
 					'value'				=>	1
 			);
 		}
 	],
-	[#Rule 106
+	[#Rule 107
 		 'boolean_literal', 1,
 sub
-#line 543 "parser21.yp"
+#line 621 "parser21.yp"
 {
 			new BooleanLiteral($_[0],
 					'value'				=>	0
 			);
 		}
 	],
-	[#Rule 107
+	[#Rule 108
 		 'positive_int_const', 1,
 sub
-#line 553 "parser21.yp"
+#line 631 "parser21.yp"
 {
 			new Expression($_[0],
 					'list_expr'			=>	$_[1]
 			);
 		}
 	],
-	[#Rule 108
+	[#Rule 109
 		 'type_dcl', 2,
 sub
-#line 564 "parser21.yp"
+#line 641 "parser21.yp"
 {
 			$_[2];
 		}
-	],
-	[#Rule 109
-		 'type_dcl', 1, undef
 	],
 	[#Rule 110
 		 'type_dcl', 1, undef
@@ -4288,18 +4326,21 @@ sub
 		 'type_dcl', 1, undef
 	],
 	[#Rule 112
+		 'type_dcl', 1, undef
+	],
+	[#Rule 113
 		 'type_dcl', 2,
 sub
-#line 571 "parser21.yp"
+#line 651 "parser21.yp"
 {
-			$_[0]->Error("type_declarator excepted.\n");
+			$_[0]->Error("type_declarator expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 113
+	[#Rule 114
 		 'type_declarator', 2,
 sub
-#line 580 "parser21.yp"
+#line 660 "parser21.yp"
 {
 			new TypeDeclarators($_[0],
 					'type'				=>	$_[1],
@@ -4307,37 +4348,34 @@ sub
 			);
 		}
 	],
-	[#Rule 114
+	[#Rule 115
 		 'type_declarator', 2,
 sub
-#line 587 "parser21.yp"
+#line 667 "parser21.yp"
 {
-			$_[0]->Error("declarator excepted.\n");
+			$_[0]->Error("declarator expected.\n");
 			$_[0]->YYErrok();
 		}
-	],
-	[#Rule 115
-		 'type_spec', 1, undef
 	],
 	[#Rule 116
 		 'type_spec', 1, undef
 	],
 	[#Rule 117
-		 'simple_type_spec', 1, undef
+		 'type_spec', 1, undef
 	],
 	[#Rule 118
 		 'simple_type_spec', 1, undef
 	],
 	[#Rule 119
+		 'simple_type_spec', 1, undef
+	],
+	[#Rule 120
 		 'simple_type_spec', 1,
 sub
-#line 604 "parser21.yp"
+#line 688 "parser21.yp"
 {
 			TypeDeclarator->Lookup($_[0],$_[1]);
 		}
-	],
-	[#Rule 120
-		 'base_type_spec', 1, undef
 	],
 	[#Rule 121
 		 'base_type_spec', 1, undef
@@ -4361,7 +4399,7 @@ sub
 		 'base_type_spec', 1, undef
 	],
 	[#Rule 128
-		 'template_type_spec', 1, undef
+		 'base_type_spec', 1, undef
 	],
 	[#Rule 129
 		 'template_type_spec', 1, undef
@@ -4373,7 +4411,7 @@ sub
 		 'template_type_spec', 1, undef
 	],
 	[#Rule 132
-		 'constr_type_spec', 1, undef
+		 'template_type_spec', 1, undef
 	],
 	[#Rule 133
 		 'constr_type_spec', 1, undef
@@ -4382,46 +4420,46 @@ sub
 		 'constr_type_spec', 1, undef
 	],
 	[#Rule 135
-		 'declarators', 1,
-sub
-#line 638 "parser21.yp"
-{ [$_[1]]; }
+		 'constr_type_spec', 1, undef
 	],
 	[#Rule 136
-		 'declarators', 3,
+		 'declarators', 1,
 sub
-#line 639 "parser21.yp"
-{ unshift(@{$_[3]},$_[1]); $_[3]; }
+#line 738 "parser21.yp"
+{
+			[$_[1]];
+		}
 	],
 	[#Rule 137
-		 'declarator', 1,
+		 'declarators', 3,
 sub
-#line 644 "parser21.yp"
-{ [$_[1]]; }
+#line 742 "parser21.yp"
+{
+			unshift(@{$_[3]},$_[1]);
+			$_[3];
+		}
 	],
 	[#Rule 138
-		 'declarator', 1, undef
+		 'declarator', 1,
+sub
+#line 751 "parser21.yp"
+{
+			[$_[1]];
+		}
 	],
 	[#Rule 139
-		 'simple_declarator', 1, undef
+		 'declarator', 1, undef
 	],
 	[#Rule 140
-		 'complex_declarator', 1, undef
+		 'simple_declarator', 1, undef
 	],
 	[#Rule 141
-		 'floating_pt_type', 1,
-sub
-#line 661 "parser21.yp"
-{
-			new FloatingPtType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+		 'complex_declarator', 1, undef
 	],
 	[#Rule 142
 		 'floating_pt_type', 1,
 sub
-#line 667 "parser21.yp"
+#line 773 "parser21.yp"
 {
 			new FloatingPtType($_[0],
 					'value'				=>	$_[1]
@@ -4429,23 +4467,30 @@ sub
 		}
 	],
 	[#Rule 143
+		 'floating_pt_type', 1,
+sub
+#line 779 "parser21.yp"
+{
+			new FloatingPtType($_[0],
+					'value'				=>	$_[1]
+			);
+		}
+	],
+	[#Rule 144
 		 'floating_pt_type', 2,
 sub
-#line 673 "parser21.yp"
+#line 785 "parser21.yp"
 {
 			new FloatingPtType($_[0],
 					'value'				=>	$_[1] . ' ' . $_[2]
 			);
 		}
 	],
-	[#Rule 144
-		 'integer_type', 1, undef
-	],
 	[#Rule 145
 		 'integer_type', 1, undef
 	],
 	[#Rule 146
-		 'signed_int', 1, undef
+		 'integer_type', 1, undef
 	],
 	[#Rule 147
 		 'signed_int', 1, undef
@@ -4454,19 +4499,12 @@ sub
 		 'signed_int', 1, undef
 	],
 	[#Rule 149
-		 'signed_short_int', 1,
-sub
-#line 696 "parser21.yp"
-{
-			new IntegerType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+		 'signed_int', 1, undef
 	],
 	[#Rule 150
-		 'signed_long_int', 1,
+		 'signed_short_int', 1,
 sub
-#line 706 "parser21.yp"
+#line 813 "parser21.yp"
 {
 			new IntegerType($_[0],
 					'value'				=>	$_[1]
@@ -4474,17 +4512,24 @@ sub
 		}
 	],
 	[#Rule 151
+		 'signed_long_int', 1,
+sub
+#line 823 "parser21.yp"
+{
+			new IntegerType($_[0],
+					'value'				=>	$_[1]
+			);
+		}
+	],
+	[#Rule 152
 		 'signed_longlong_int', 2,
 sub
-#line 716 "parser21.yp"
+#line 833 "parser21.yp"
 {
 			new IntegerType($_[0],
 					'value'				=>	$_[1] . ' ' . $_[2]
 			);
 		}
-	],
-	[#Rule 152
-		 'unsigned_int', 1, undef
 	],
 	[#Rule 153
 		 'unsigned_int', 1, undef
@@ -4493,19 +4538,12 @@ sub
 		 'unsigned_int', 1, undef
 	],
 	[#Rule 155
-		 'unsigned_short_int', 2,
-sub
-#line 733 "parser21.yp"
-{
-			new IntegerType($_[0],
-					'value'				=>	$_[1] . ' ' . $_[2]
-			);
-		}
+		 'unsigned_int', 1, undef
 	],
 	[#Rule 156
-		 'unsigned_long_int', 2,
+		 'unsigned_short_int', 2,
 sub
-#line 743 "parser21.yp"
+#line 853 "parser21.yp"
 {
 			new IntegerType($_[0],
 					'value'				=>	$_[1] . ' ' . $_[2]
@@ -4513,136 +4551,138 @@ sub
 		}
 	],
 	[#Rule 157
+		 'unsigned_long_int', 2,
+sub
+#line 863 "parser21.yp"
+{
+			new IntegerType($_[0],
+					'value'				=>	$_[1] . ' ' . $_[2]
+			);
+		}
+	],
+	[#Rule 158
 		 'unsigned_longlong_int', 3,
 sub
-#line 753 "parser21.yp"
+#line 873 "parser21.yp"
 {
 			new IntegerType($_[0],
 					'value'				=>	$_[1] . ' ' . $_[2] . ' ' . $_[3]
 			);
 		}
 	],
-	[#Rule 158
+	[#Rule 159
 		 'char_type', 1,
 sub
-#line 763 "parser21.yp"
+#line 883 "parser21.yp"
 {
 			new CharType($_[0],
 					'value'				=>	$_[1]
 			);
 		}
 	],
-	[#Rule 159
+	[#Rule 160
 		 'wide_char_type', 1,
 sub
-#line 773 "parser21.yp"
+#line 893 "parser21.yp"
 {
 			new WideCharType($_[0],
 					'value'				=>	$_[1]
 			);
 		}
 	],
-	[#Rule 160
+	[#Rule 161
 		 'boolean_type', 1,
 sub
-#line 783 "parser21.yp"
+#line 903 "parser21.yp"
 {
 			new BooleanType($_[0],
 					'value'				=>	$_[1]
 			);
 		}
 	],
-	[#Rule 161
+	[#Rule 162
 		 'octet_type', 1,
 sub
-#line 793 "parser21.yp"
+#line 913 "parser21.yp"
 {
 			new OctetType($_[0],
 					'value'				=>	$_[1]
 			);
 		}
 	],
-	[#Rule 162
+	[#Rule 163
 		 'any_type', 1,
 sub
-#line 803 "parser21.yp"
+#line 923 "parser21.yp"
 {
 			new AnyType($_[0],
 					'value'				=>	$_[1]
 			);
 		}
 	],
-	[#Rule 163
+	[#Rule 164
 		 'object_type', 1,
 sub
-#line 813 "parser21.yp"
+#line 933 "parser21.yp"
 {
 			new ObjectType($_[0],
 					'value'				=>	$_[1]
 			);
 		}
 	],
-	[#Rule 164
+	[#Rule 165
 		 'struct_type', 4,
 sub
-#line 823 "parser21.yp"
+#line 943 "parser21.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[1]->Configure($_[0],
 					'list_expr'			=>	$_[3]
-			);
-		}
-	],
-	[#Rule 165
-		 'struct_type', 4,
-sub
-#line 830 "parser21.yp"
-{
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("member excepted.\n");
-			$_[0]->YYErrok();
+			) if (defined $_[1]);
 		}
 	],
 	[#Rule 166
+		 'struct_type', 4,
+sub
+#line 950 "parser21.yp"
+{
+			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+			$_[0]->Error("member expected.\n");
+			$_[0]->YYErrok();
+		}
+	],
+	[#Rule 167
 		 'struct_header', 2,
 sub
-#line 839 "parser21.yp"
+#line 959 "parser21.yp"
 {
 			new StructType($_[0],
 					'idf'				=>	$_[2]
 			);
 		}
 	],
-	[#Rule 167
+	[#Rule 168
 		 'member_list', 1,
 sub
-#line 848 "parser21.yp"
-{ [$_[1]]; }
-	],
-	[#Rule 168
-		 'member_list', 2,
-sub
-#line 849 "parser21.yp"
-{ unshift(@{$_[2]},$_[1]); $_[2]; }
+#line 969 "parser21.yp"
+{
+			[$_[1]];
+		}
 	],
 	[#Rule 169
-		 'member', 3,
+		 'member_list', 2,
 sub
-#line 855 "parser21.yp"
+#line 973 "parser21.yp"
 {
-			new Members($_[0],
-					'type'				=>	$_[1],
-					'list_expr'			=>	$_[2]
-			);
+			unshift(@{$_[2]},$_[1]);
+			$_[2];
 		}
 	],
 	[#Rule 170
 		 'member', 3,
 sub
-#line 862 "parser21.yp"
+#line 982 "parser21.yp"
 {
-			$_[0]->Error("';' excepted.\n");
-			$_[0]->YYErrok();
 			new Members($_[0],
 					'type'				=>	$_[1],
 					'list_expr'			=>	$_[2]
@@ -4650,69 +4690,79 @@ sub
 		}
 	],
 	[#Rule 171
-		 'union_type', 8,
+		 'member', 3,
 sub
-#line 875 "parser21.yp"
+#line 989 "parser21.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[1]->Configure($_[0],
-					'type'				=>	$_[4],
-					'list_expr'			=>	$_[7]
+			$_[0]->Error("';' expected.\n");
+			$_[0]->YYErrok();
+			new Members($_[0],
+					'type'				=>	$_[1],
+					'list_expr'			=>	$_[2]
 			);
 		}
 	],
 	[#Rule 172
 		 'union_type', 8,
 sub
-#line 883 "parser21.yp"
+#line 1002 "parser21.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("switch_body excepted.\n");
-			$_[0]->YYErrok();
+			$_[1]->Configure($_[0],
+					'type'				=>	$_[4],
+					'list_expr'			=>	$_[7]
+			) if (defined $_[1]);
 		}
 	],
 	[#Rule 173
-		 'union_type', 6,
+		 'union_type', 8,
 sub
-#line 889 "parser21.yp"
+#line 1010 "parser21.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("'\x7b' excepted.\n");
+			$_[0]->Error("switch_body expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 174
-		 'union_type', 5,
+		 'union_type', 6,
 sub
-#line 895 "parser21.yp"
+#line 1016 "parser21.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("switch_type_spec excepted.\n");
+			$_[0]->Error("'\x7b' expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 175
-		 'union_type', 3,
+		 'union_type', 5,
 sub
-#line 901 "parser21.yp"
+#line 1022 "parser21.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("'(' excepted.\n");
+			$_[0]->Error("switch_type_spec expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 176
+		 'union_type', 3,
+sub
+#line 1028 "parser21.yp"
+{
+			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+			$_[0]->Error("'(' expected.\n");
+			$_[0]->YYErrok();
+		}
+	],
+	[#Rule 177
 		 'union_header', 2,
 sub
-#line 910 "parser21.yp"
+#line 1037 "parser21.yp"
 {
 			new UnionType($_[0],
 					'idf'				=>	$_[2],
 			);
 		}
-	],
-	[#Rule 177
-		 'switch_type_spec', 1, undef
 	],
 	[#Rule 178
 		 'switch_type_spec', 1, undef
@@ -4724,43 +4774,38 @@ sub
 		 'switch_type_spec', 1, undef
 	],
 	[#Rule 181
+		 'switch_type_spec', 1, undef
+	],
+	[#Rule 182
 		 'switch_type_spec', 1,
 sub
-#line 924 "parser21.yp"
+#line 1055 "parser21.yp"
 {
 			TypeDeclarator->Lookup($_[0],$_[1]);
 		}
 	],
-	[#Rule 182
+	[#Rule 183
 		 'switch_body', 1,
 sub
-#line 931 "parser21.yp"
-{ [$_[1]]; }
-	],
-	[#Rule 183
-		 'switch_body', 2,
-sub
-#line 932 "parser21.yp"
-{ unshift(@{$_[2]},$_[1]); $_[2]; }
+#line 1063 "parser21.yp"
+{
+			[$_[1]];
+		}
 	],
 	[#Rule 184
-		 'case', 3,
+		 'switch_body', 2,
 sub
-#line 938 "parser21.yp"
+#line 1067 "parser21.yp"
 {
-			new Case($_[0],
-					'list_label'		=>	$_[1],
-					'element'			=>	$_[2]
-			);
+			unshift(@{$_[2]},$_[1]);
+			$_[2];
 		}
 	],
 	[#Rule 185
 		 'case', 3,
 sub
-#line 945 "parser21.yp"
+#line 1076 "parser21.yp"
 {
-			$_[0]->Error("';' excepted.\n");
-			$_[0]->YYErrok();
 			new Case($_[0],
 					'list_label'		=>	$_[1],
 					'element'			=>	$_[2]
@@ -4768,66 +4813,84 @@ sub
 		}
 	],
 	[#Rule 186
-		 'case_labels', 1,
+		 'case', 3,
 sub
-#line 956 "parser21.yp"
-{ [$_[1]]; }
+#line 1083 "parser21.yp"
+{
+			$_[0]->Error("';' expected.\n");
+			$_[0]->YYErrok();
+			new Case($_[0],
+					'list_label'		=>	$_[1],
+					'element'			=>	$_[2]
+			);
+		}
 	],
 	[#Rule 187
-		 'case_labels', 2,
+		 'case_labels', 1,
 sub
-#line 957 "parser21.yp"
-{ unshift(@{$_[2]},$_[1]); $_[2]; }
+#line 1095 "parser21.yp"
+{
+			[$_[1]];
+		}
 	],
 	[#Rule 188
-		 'case_label', 3,
+		 'case_labels', 2,
 sub
-#line 963 "parser21.yp"
+#line 1099 "parser21.yp"
 {
-			$_[2];						# here only a expression, type is not known
+			unshift(@{$_[2]},$_[1]);
+			$_[2];
 		}
 	],
 	[#Rule 189
 		 'case_label', 3,
 sub
-#line 967 "parser21.yp"
+#line 1108 "parser21.yp"
 {
-			$_[0]->Error("':' excepted.\n");
-			$_[0]->YYErrok();
-			$_[2];
+			$_[2];						# here only a expression, type is not known
 		}
 	],
 	[#Rule 190
-		 'case_label', 2,
+		 'case_label', 3,
 sub
-#line 973 "parser21.yp"
+#line 1112 "parser21.yp"
 {
-			$_[0]->Error("Expression excepted.\n");
+			$_[0]->Error("':' expected.\n");
 			$_[0]->YYErrok();
+			$_[2];
 		}
 	],
 	[#Rule 191
 		 'case_label', 2,
 sub
-#line 978 "parser21.yp"
+#line 1118 "parser21.yp"
 {
-			new Default($_[0]);
+			$_[0]->Error("Expression expected.\n");
+			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 192
 		 'case_label', 2,
 sub
-#line 982 "parser21.yp"
+#line 1123 "parser21.yp"
 {
-			$_[0]->Error("':' excepted.\n");
-			$_[0]->YYErrok();
 			new Default($_[0]);
 		}
 	],
 	[#Rule 193
+		 'case_label', 2,
+sub
+#line 1127 "parser21.yp"
+{
+			$_[0]->Error("':' expected.\n");
+			$_[0]->YYErrok();
+			new Default($_[0]);
+		}
+	],
+	[#Rule 194
 		 'element_spec', 2,
 sub
-#line 992 "parser21.yp"
+#line 1137 "parser21.yp"
 {
 			new Element($_[0],
 					'type'			=>	$_[1],
@@ -4835,98 +4898,102 @@ sub
 			);
 		}
 	],
-	[#Rule 194
-		 'enum_type', 4,
-sub
-#line 1003 "parser21.yp"
-{
-			$_[1]->Configure($_[0],
-					'list_expr'		=>	$_[3]
-			)
-					if (defined $_[1]);
-		}
-	],
 	[#Rule 195
 		 'enum_type', 4,
 sub
-#line 1010 "parser21.yp"
+#line 1148 "parser21.yp"
 {
-			$_[0]->Error("enumerator excepted.\n");
-			$_[0]->YYErrok();
+			$_[1]->Configure($_[0],
+					'list_expr'		=>	$_[3]
+			) if (defined $_[1]);
 		}
 	],
 	[#Rule 196
-		 'enum_type', 2,
+		 'enum_type', 4,
 sub
-#line 1015 "parser21.yp"
+#line 1154 "parser21.yp"
 {
-			$_[0]->Error("'\x7b' excepted.\n");
+			$_[0]->Error("enumerator expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 197
+		 'enum_type', 2,
+sub
+#line 1159 "parser21.yp"
+{
+			$_[0]->Error("'\x7b' expected.\n");
+			$_[0]->YYErrok();
+		}
+	],
+	[#Rule 198
 		 'enum_header', 2,
 sub
-#line 1023 "parser21.yp"
+#line 1167 "parser21.yp"
 {
 			new EnumType($_[0],
 					'idf'				=>	$_[2],
 			);
 		}
 	],
-	[#Rule 198
+	[#Rule 199
 		 'enum_header', 2,
 sub
-#line 1029 "parser21.yp"
+#line 1173 "parser21.yp"
 {
-			$_[0]->Error("Identifier excepted.\n");
+			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 199
+	[#Rule 200
 		 'enumerators', 1,
 sub
-#line 1036 "parser21.yp"
-{ [$_[1]]; }
-	],
-	[#Rule 200
-		 'enumerators', 3,
-sub
-#line 1037 "parser21.yp"
-{ unshift(@{$_[3]},$_[1]); $_[3]; }
+#line 1181 "parser21.yp"
+{
+			[$_[1]];
+		}
 	],
 	[#Rule 201
-		 'enumerators', 2,
+		 'enumerators', 3,
 sub
-#line 1039 "parser21.yp"
+#line 1185 "parser21.yp"
 {
-			$_[0]->Warning("',' unexcepted.\n");
-			[$_[1]];
+			unshift(@{$_[3]},$_[1]);
+			$_[3];
 		}
 	],
 	[#Rule 202
 		 'enumerators', 2,
 sub
-#line 1044 "parser21.yp"
+#line 1190 "parser21.yp"
 {
-			$_[0]->Error("';' unexcepted.\n");
+			$_[0]->Warning("',' unexpected.\n");
 			[$_[1]];
 		}
 	],
 	[#Rule 203
+		 'enumerators', 2,
+sub
+#line 1195 "parser21.yp"
+{
+			$_[0]->Error("';' unexpected.\n");
+			[$_[1]];
+		}
+	],
+	[#Rule 204
 		 'enumerator', 1,
 sub
-#line 1053 "parser21.yp"
+#line 1204 "parser21.yp"
 {
 			new Enum($_[0],
 					'idf'				=>	$_[1]
 			);
 		}
 	],
-	[#Rule 204
+	[#Rule 205
 		 'sequence_type', 6,
 sub
-#line 1063 "parser21.yp"
+#line 1214 "parser21.yp"
 {
 			new SequenceType($_[0],
 					'value'				=>	$_[1],
@@ -4935,19 +5002,19 @@ sub
 			);
 		}
 	],
-	[#Rule 205
+	[#Rule 206
 		 'sequence_type', 6,
 sub
-#line 1071 "parser21.yp"
+#line 1222 "parser21.yp"
 {
-			$_[0]->Error("Expression excepted.\n");
+			$_[0]->Error("Expression expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 206
+	[#Rule 207
 		 'sequence_type', 4,
 sub
-#line 1076 "parser21.yp"
+#line 1227 "parser21.yp"
 {
 			new SequenceType($_[0],
 					'value'				=>	$_[1],
@@ -4955,58 +5022,58 @@ sub
 			);
 		}
 	],
-	[#Rule 207
+	[#Rule 208
 		 'sequence_type', 4,
 sub
-#line 1083 "parser21.yp"
+#line 1234 "parser21.yp"
 {
-			$_[0]->Error("simple_type_spec excepted.\n");
-			$_[0]->YYErrok();
-		}
-	],
-	[#Rule 208
-		 'sequence_type', 2,
-sub
-#line 1088 "parser21.yp"
-{
-			$_[0]->Error("'<' excepted.\n");
+			$_[0]->Error("simple_type_spec expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 209
+		 'sequence_type', 2,
+sub
+#line 1239 "parser21.yp"
+{
+			$_[0]->Error("'<' expected.\n");
+			$_[0]->YYErrok();
+		}
+	],
+	[#Rule 210
 		 'string_type', 4,
 sub
-#line 1097 "parser21.yp"
+#line 1248 "parser21.yp"
 {
 			new StringType($_[0],
 					'value'				=>	$_[1],
 					'max'				=>	$_[3]
-			);
-		}
-	],
-	[#Rule 210
-		 'string_type', 1,
-sub
-#line 1104 "parser21.yp"
-{
-			new StringType($_[0],
-					'value'				=>	$_[1]
 			);
 		}
 	],
 	[#Rule 211
-		 'string_type', 4,
+		 'string_type', 1,
 sub
-#line 1110 "parser21.yp"
+#line 1255 "parser21.yp"
 {
-			$_[0]->Error("Expression excepted.\n");
-			$_[0]->YYErrok();
+			new StringType($_[0],
+					'value'				=>	$_[1]
+			);
 		}
 	],
 	[#Rule 212
+		 'string_type', 4,
+sub
+#line 1261 "parser21.yp"
+{
+			$_[0]->Error("Expression expected.\n");
+			$_[0]->YYErrok();
+		}
+	],
+	[#Rule 213
 		 'wide_string_type', 4,
 sub
-#line 1119 "parser21.yp"
+#line 1270 "parser21.yp"
 {
 			new WideStringType($_[0],
 					'value'				=>	$_[1],
@@ -5014,62 +5081,72 @@ sub
 			);
 		}
 	],
-	[#Rule 213
+	[#Rule 214
 		 'wide_string_type', 1,
 sub
-#line 1126 "parser21.yp"
+#line 1277 "parser21.yp"
 {
 			new WideStringType($_[0],
 					'value'				=>	$_[1]
 			);
 		}
 	],
-	[#Rule 214
+	[#Rule 215
 		 'wide_string_type', 4,
 sub
-#line 1132 "parser21.yp"
+#line 1283 "parser21.yp"
 {
-			$_[0]->Error("Expression excepted.\n");
+			$_[0]->Error("Expression expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 215
+	[#Rule 216
 		 'array_declarator', 2,
 sub
-#line 1140 "parser21.yp"
-{ unshift(@{$_[2]},$_[1]); $_[2]; }
-	],
-	[#Rule 216
-		 'fixed_array_sizes', 1,
-sub
-#line 1144 "parser21.yp"
-{ [$_[1]]; }
+#line 1292 "parser21.yp"
+{
+			unshift(@{$_[2]},$_[1]);
+			$_[2];
+		}
 	],
 	[#Rule 217
-		 'fixed_array_sizes', 2,
+		 'fixed_array_sizes', 1,
 sub
-#line 1146 "parser21.yp"
-{ unshift(@{$_[2]},$_[1]); $_[2]; }
+#line 1300 "parser21.yp"
+{
+			[$_[1]];
+		}
 	],
 	[#Rule 218
-		 'fixed_array_size', 3,
+		 'fixed_array_sizes', 2,
 sub
-#line 1151 "parser21.yp"
-{ $_[2]; }
+#line 1304 "parser21.yp"
+{
+			unshift(@{$_[2]},$_[1]);
+			$_[2];
+		}
 	],
 	[#Rule 219
 		 'fixed_array_size', 3,
 sub
-#line 1153 "parser21.yp"
+#line 1313 "parser21.yp"
 {
-			$_[0]->Error("Expression excepted.\n");
-			$_[0]->YYErrok();
+			$_[2];
 		}
 	],
 	[#Rule 220
+		 'fixed_array_size', 3,
+sub
+#line 1317 "parser21.yp"
+{
+			$_[0]->Error("Expression expected.\n");
+			$_[0]->YYErrok();
+		}
+	],
+	[#Rule 221
 		 'attr_dcl', 4,
 sub
-#line 1162 "parser21.yp"
+#line 1326 "parser21.yp"
 {
 			new Attributes($_[0],
 					'modifier'			=>	$_[1],
@@ -5078,137 +5155,135 @@ sub
 			);
 		}
 	],
-	[#Rule 221
+	[#Rule 222
 		 'attr_dcl', 4,
 sub
-#line 1170 "parser21.yp"
+#line 1334 "parser21.yp"
 {
-			$_[0]->Error("declarator excepted.\n");
-			$_[0]->YYErrok();
-		}
-	],
-	[#Rule 222
-		 'attr_dcl', 3,
-sub
-#line 1175 "parser21.yp"
-{
-			$_[0]->Error("type excepted.\n");
+			$_[0]->Error("declarator expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 223
-		 'attr_mod', 1, undef
+		 'attr_dcl', 3,
+sub
+#line 1339 "parser21.yp"
+{
+			$_[0]->Error("type expected.\n");
+			$_[0]->YYErrok();
+		}
 	],
 	[#Rule 224
-		 'attr_mod', 0, undef
+		 'attr_mod', 1, undef
 	],
 	[#Rule 225
-		 'simple_declarators', 1,
-sub
-#line 1187 "parser21.yp"
-{ [$_[1]]; }
+		 'attr_mod', 0, undef
 	],
 	[#Rule 226
-		 'simple_declarators', 3,
+		 'simple_declarators', 1,
 sub
-#line 1189 "parser21.yp"
-{ unshift(@{$_[3]},$_[1]); $_[3]; }
+#line 1354 "parser21.yp"
+{
+			[$_[1]];
+		}
 	],
 	[#Rule 227
+		 'simple_declarators', 3,
+sub
+#line 1358 "parser21.yp"
+{
+			unshift(@{$_[3]},$_[1]);
+			$_[3];
+		}
+	],
+	[#Rule 228
 		 'except_dcl', 3,
 sub
-#line 1195 "parser21.yp"
+#line 1367 "parser21.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[1];
 		}
 	],
-	[#Rule 228
-		 'except_dcl', 4,
-sub
-#line 1200 "parser21.yp"
-{
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[1]->Configure($_[0],
-					'list_expr'			=>	$_[3]
-			)
-					if (defined $_[1]);
-		}
-	],
 	[#Rule 229
 		 'except_dcl', 4,
 sub
-#line 1208 "parser21.yp"
+#line 1372 "parser21.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("'members excepted.\n");
-			$_[0]->YYErrok();
 			$_[1]->Configure($_[0],
 					'list_expr'			=>	$_[3]
-			)
-					if (defined $_[1]);
+			) if (defined $_[1]);
 		}
 	],
 	[#Rule 230
-		 'except_dcl', 2,
+		 'except_dcl', 4,
 sub
-#line 1218 "parser21.yp"
+#line 1379 "parser21.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("'\x7b' excepted.\n");
+			$_[0]->Error("'members expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 231
+		 'except_dcl', 2,
+sub
+#line 1385 "parser21.yp"
+{
+			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+			$_[0]->Error("'\x7b' expected.\n");
+			$_[0]->YYErrok();
+		}
+	],
+	[#Rule 232
 		 'exception_header', 2,
 sub
-#line 1227 "parser21.yp"
+#line 1394 "parser21.yp"
 {
 			new Exception($_[0],
 					'idf'				=>	$_[2],
 			);
 		}
 	],
-	[#Rule 232
+	[#Rule 233
 		 'exception_header', 2,
 sub
-#line 1233 "parser21.yp"
+#line 1400 "parser21.yp"
 {
-			$_[0]->Error("Identifier excepted.\n");
+			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 233
+	[#Rule 234
 		 'op_dcl', 2,
 sub
-#line 1242 "parser21.yp"
+#line 1409 "parser21.yp"
 {
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
 			$_[1]->Configure($_[0],
 					'list_param'	=>	$_[2]
-			)
-					if (defined $_[1]);
+			) if (defined $_[1]);
 		}
 	],
-	[#Rule 234
+	[#Rule 235
 		 'op_dcl', 3,
 sub
-#line 1251 "parser21.yp"
+#line 1417 "parser21.yp"
 {
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
 			$_[1]->Configure($_[0],
 					'list_param'	=>	$_[2],
 					'list_raise'	=>	$_[3]
-			)
-					if (defined $_[1]);
+			) if (defined $_[1]);
 		}
 	],
-	[#Rule 235
+	[#Rule 236
 		 'op_dcl', 4,
 sub
-#line 1261 "parser21.yp"
+#line 1426 "parser21.yp"
 {
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
@@ -5216,39 +5291,37 @@ sub
 					'list_param'	=>	$_[2],
 					'list_raise'	=>	$_[3],
 					'list_context'	=>	$_[4]
-			)
-					if (defined $_[1]);
+			) if (defined $_[1]);
 		}
 	],
-	[#Rule 236
+	[#Rule 237
 		 'op_dcl', 3,
 sub
-#line 1272 "parser21.yp"
+#line 1436 "parser21.yp"
 {
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
 			$_[1]->Configure($_[0],
 					'list_param'	=>	$_[2],
 					'list_context'	=>	$_[3]
-			)
-					if (defined $_[1]);
-		}
-	],
-	[#Rule 237
-		 'op_dcl', 2,
-sub
-#line 1282 "parser21.yp"
-{
-			delete $_[0]->YYData->{unnamed_symbtab}
-					if (exists $_[0]->YYData->{unnamed_symbtab});
-			$_[0]->Error("parameters declaration excepted.\n");
-			$_[0]->YYErrok();
+			) if (defined $_[1]);
 		}
 	],
 	[#Rule 238
+		 'op_dcl', 2,
+sub
+#line 1445 "parser21.yp"
+{
+			delete $_[0]->YYData->{unnamed_symbtab}
+					if (exists $_[0]->YYData->{unnamed_symbtab});
+			$_[0]->Error("parameters declaration expected.\n");
+			$_[0]->YYErrok();
+		}
+	],
+	[#Rule 239
 		 'op_header', 3,
 sub
-#line 1292 "parser21.yp"
+#line 1455 "parser21.yp"
 {
 			new Operation($_[0],
 					'modifier'			=>	$_[1],
@@ -5257,106 +5330,108 @@ sub
 			);
 		}
 	],
-	[#Rule 239
+	[#Rule 240
 		 'op_header', 3,
 sub
-#line 1300 "parser21.yp"
+#line 1463 "parser21.yp"
 {
-			$_[0]->Error("Identifier excepted.\n");
+			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 240
+	[#Rule 241
 		 'op_mod', 1, undef
 	],
-	[#Rule 241
+	[#Rule 242
 		 'op_mod', 0, undef
 	],
-	[#Rule 242
+	[#Rule 243
 		 'op_attribute', 1, undef
 	],
-	[#Rule 243
+	[#Rule 244
 		 'op_type_spec', 1, undef
 	],
-	[#Rule 244
+	[#Rule 245
 		 'op_type_spec', 1,
 sub
-#line 1320 "parser21.yp"
+#line 1487 "parser21.yp"
 {
 			new VoidType($_[0],
 					'value'				=>	$_[1]
 			);
 		}
 	],
-	[#Rule 245
+	[#Rule 246
 		 'parameter_dcls', 3,
 sub
-#line 1330 "parser21.yp"
+#line 1497 "parser21.yp"
 {
 			$_[2];
 		}
 	],
-	[#Rule 246
+	[#Rule 247
 		 'parameter_dcls', 2,
 sub
-#line 1334 "parser21.yp"
+#line 1501 "parser21.yp"
 {
 			undef;
 		}
 	],
-	[#Rule 247
+	[#Rule 248
 		 'parameter_dcls', 3,
 sub
-#line 1338 "parser21.yp"
+#line 1505 "parser21.yp"
 {
-			$_[0]->Error("parameters declaration excepted.\n");
+			$_[0]->Error("parameters declaration expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 248
+	[#Rule 249
 		 'param_dcls', 1,
 sub
-#line 1345 "parser21.yp"
-{ [$_[1]]; }
-	],
-	[#Rule 249
-		 'param_dcls', 3,
-sub
-#line 1346 "parser21.yp"
-{ unshift(@{$_[3]},$_[1]); $_[3]; }
+#line 1513 "parser21.yp"
+{
+			[$_[1]];
+		}
 	],
 	[#Rule 250
-		 'param_dcls', 2,
+		 'param_dcls', 3,
 sub
-#line 1348 "parser21.yp"
+#line 1517 "parser21.yp"
 {
-			$_[0]->Warning("',' unexcepted.\n");
-			[$_[1]];
+			unshift(@{$_[3]},$_[1]);
+			$_[3];
 		}
 	],
 	[#Rule 251
 		 'param_dcls', 2,
 sub
-#line 1353 "parser21.yp"
+#line 1522 "parser21.yp"
 {
-			$_[0]->Error("';' unexcepted.\n");
+			$_[0]->Warning("',' unexpected.\n");
 			[$_[1]];
 		}
 	],
 	[#Rule 252
+		 'param_dcls', 2,
+sub
+#line 1527 "parser21.yp"
+{
+			$_[0]->Error("';' unexpected.\n");
+			[$_[1]];
+		}
+	],
+	[#Rule 253
 		 'param_dcl', 3,
 sub
-#line 1362 "parser21.yp"
+#line 1536 "parser21.yp"
 {
 			new Parameter($_[0],
 					'attr'				=>	$_[1],
 					'type'				=>	$_[2],
 					'idf'				=>	$_[3]
 			);
-        }
-	],
-	[#Rule 253
-		 'param_attribute', 1, undef
+		}
 	],
 	[#Rule 254
 		 'param_attribute', 1, undef
@@ -5365,91 +5440,101 @@ sub
 		 'param_attribute', 1, undef
 	],
 	[#Rule 256
-		 'raises_expr', 4,
-sub
-#line 1381 "parser21.yp"
-{
-			$_[3];
-		}
+		 'param_attribute', 1, undef
 	],
 	[#Rule 257
 		 'raises_expr', 4,
 sub
-#line 1385 "parser21.yp"
+#line 1558 "parser21.yp"
 {
-			$_[0]->Error("name excepted.\n");
-			$_[0]->YYErrok();
+			$_[3];
 		}
 	],
 	[#Rule 258
-		 'raises_expr', 2,
+		 'raises_expr', 4,
 sub
-#line 1390 "parser21.yp"
+#line 1562 "parser21.yp"
 {
-			$_[0]->Error("'(' excepted.\n");
+			$_[0]->Error("name expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 259
-		 'exception_names', 1,
+		 'raises_expr', 2,
 sub
-#line 1397 "parser21.yp"
-{ [$_[1]]; }
+#line 1567 "parser21.yp"
+{
+			$_[0]->Error("'(' expected.\n");
+			$_[0]->YYErrok();
+		}
 	],
 	[#Rule 260
-		 'exception_names', 3,
+		 'exception_names', 1,
 sub
-#line 1398 "parser21.yp"
-{ unshift(@{$_[3]},$_[1]); $_[3]; }
+#line 1575 "parser21.yp"
+{
+			[$_[1]];
+		}
 	],
 	[#Rule 261
-		 'exception_name', 1,
+		 'exception_names', 3,
 sub
-#line 1403 "parser21.yp"
+#line 1579 "parser21.yp"
 {
-			Exception->Lookup($_[0],$_[1]);
+			unshift(@{$_[3]},$_[1]);
+			$_[3];
 		}
 	],
 	[#Rule 262
-		 'context_expr', 4,
+		 'exception_name', 1,
 sub
-#line 1411 "parser21.yp"
+#line 1587 "parser21.yp"
 {
-			$_[3];
+			Exception->Lookup($_[0],$_[1]);
 		}
 	],
 	[#Rule 263
 		 'context_expr', 4,
 sub
-#line 1415 "parser21.yp"
+#line 1595 "parser21.yp"
 {
-			$_[0]->Error("string excepted.\n");
-			$_[0]->YYErrok();
+			$_[3];
 		}
 	],
 	[#Rule 264
-		 'context_expr', 2,
+		 'context_expr', 4,
 sub
-#line 1420 "parser21.yp"
+#line 1599 "parser21.yp"
 {
-			$_[0]->Error("'(' excepted.\n");
+			$_[0]->Error("string expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 265
-		 'string_literals', 1,
+		 'context_expr', 2,
 sub
-#line 1427 "parser21.yp"
-{ [$_[1]]; }
+#line 1604 "parser21.yp"
+{
+			$_[0]->Error("'(' expected.\n");
+			$_[0]->YYErrok();
+		}
 	],
 	[#Rule 266
-		 'string_literals', 3,
+		 'string_literals', 1,
 sub
-#line 1428 "parser21.yp"
-{ unshift(@{$_[3]},$_[1]); $_[3]; }
+#line 1612 "parser21.yp"
+{
+			[$_[1]];
+		}
 	],
 	[#Rule 267
-		 'param_type_spec', 1, undef
+		 'string_literals', 3,
+sub
+#line 1616 "parser21.yp"
+{
+			unshift(@{$_[3]},$_[1]);
+			$_[3];
+		}
 	],
 	[#Rule 268
 		 'param_type_spec', 1, undef
@@ -5461,17 +5546,20 @@ sub
 		 'param_type_spec', 1, undef
 	],
 	[#Rule 271
+		 'param_type_spec', 1, undef
+	],
+	[#Rule 272
 		 'param_type_spec', 1,
 sub
-#line 1438 "parser21.yp"
+#line 1633 "parser21.yp"
 {
 			TypeDeclarator->Lookup($_[0],$_[1]);
 		}
 	],
-	[#Rule 272
+	[#Rule 273
 		 'fixed_pt_type', 6,
 sub
-#line 1446 "parser21.yp"
+#line 1641 "parser21.yp"
 {
 			new FixedPtType($_[0],
 					'value'				=>	$_[1],
@@ -5480,39 +5568,39 @@ sub
 			);
 		}
 	],
-	[#Rule 273
+	[#Rule 274
 		 'fixed_pt_type', 6,
 sub
-#line 1454 "parser21.yp"
+#line 1649 "parser21.yp"
 {
-			$_[0]->Error("Expression excepted.\n");
-			$_[0]->YYErrok();
-		}
-	],
-	[#Rule 274
-		 'fixed_pt_type', 4,
-sub
-#line 1459 "parser21.yp"
-{
-			$_[0]->Error("Expression excepted.\n");
+			$_[0]->Error("Expression expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 275
-		 'fixed_pt_type', 2,
+		 'fixed_pt_type', 4,
 sub
-#line 1464 "parser21.yp"
+#line 1654 "parser21.yp"
 {
-			$_[0]->Error("'<' excepted.\n");
+			$_[0]->Error("Expression expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 276
+		 'fixed_pt_type', 2,
+sub
+#line 1659 "parser21.yp"
+{
+			$_[0]->Error("'<' expected.\n");
+			$_[0]->YYErrok();
+		}
+	],
+	[#Rule 277
 		 'fixed_pt_const_type', 1,
 sub
-#line 1473 "parser21.yp"
+#line 1668 "parser21.yp"
 {
-			new FixedPtType($_[0],
+			new FixedPtConstType($_[0],
 					'value'				=>	$_[1]
 			);
 		}
@@ -5522,10 +5610,15 @@ sub
     bless($self,$class);
 }
 
-#line 1480 "parser21.yp"
+#line 1675 "parser21.yp"
 
+
+package Parser;
 
 use strict;
+use vars qw($IDL_version);
+$IDL_version = '2.1';
+
 use CORBA::IDL::symbtab;
 use CORBA::IDL::node;
 

@@ -4,7 +4,7 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
     'NAME'          => 'CORBA::IDL',
     'VERSION_FROM'  => 'node.pm',
-    'ABSTRACT'      => 'CORBA-IDL parser',
+    'ABSTRACT'      => 'CORBA-IDL 3.0 parser',
     'PREREQ_PM'     => {},
     'PM'            => {
                         'ascii.pm'      => '$(INST_LIBDIR)/IDL/ascii.pm',
@@ -15,6 +15,7 @@ WriteMakefile(
                         'parser22.pm'   => '$(INST_LIBDIR)/IDL/parser22.pm',
                         'parser23.pm'   => '$(INST_LIBDIR)/IDL/parser23.pm',
                         'parser24.pm'   => '$(INST_LIBDIR)/IDL/parser24.pm',
+                        'parser30.pm'   => '$(INST_LIBDIR)/IDL/parser30.pm',
                         'repos_id.pm'   => '$(INST_LIBDIR)/IDL/repos_id.pm',
                         'symbtab.pm'    => '$(INST_LIBDIR)/IDL/symbtab.pm',
     },

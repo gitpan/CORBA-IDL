@@ -7,6 +7,7 @@ parser21.pm
 parser22.pm
 parser23.pm
 parser24.pm
+parser30.pm
 repos_id.pm
 symbtab.pm
 parser20.yp
@@ -14,6 +15,7 @@ parser21.yp
 parser22.yp
 parser23.yp
 parser24.yp
+parser30.yp
 idl.pl
 TypeCode.idl
 makefile.yapp
@@ -21,3 +23,13 @@ Makefile.PL
 MANIFEST
 test.pl
 README
+corba_idl/orb.idl
+corba_idl/CORBA_Current.idl
+corba_idl/CORBA_CustomMarshal.idl
+corba_idl/CORBA_DomainManager.idl
+corba_idl/CORBA_InterfaceRepository.idl
+corba_idl/CORBA_Policy.idl
+corba_idl/CORBA_Pollable.idl
+corba_idl/CORBA_StandardExceptions.idl
+corba_idl/CORBA_Stream.idl
+corba_idl/CORBA_TypeCode.idl

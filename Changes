@@ -1,5 +1,10 @@
 Revision history for Perl extension CORBA::IDL.
 
+2.00  Mon Jan 13 12:30:00 2003
+	- support CORBA 3.0
+	- and refactoring (the AST is not compatible with 1.0x version)
+	- add orb.idl files
+
 1.04  Tue Sep 17 08:30:00 2002
 	- add single line doc comment (/// comment)
 	- add getopts function

@@ -584,7 +584,7 @@ sub new {
 		}
 	},
 	{#State 9
-		DEFAULT => -109
+		DEFAULT => -110
 	},
 	{#State 10
 		ACTIONS => {
@@ -593,7 +593,7 @@ sub new {
 		}
 	},
 	{#State 11
-		DEFAULT => -110
+		DEFAULT => -111
 	},
 	{#State 12
 		ACTIONS => {
@@ -675,7 +675,7 @@ sub new {
 		}
 	},
 	{#State 17
-		DEFAULT => -111
+		DEFAULT => -112
 	},
 	{#State 18
 		DEFAULT => -22
@@ -806,45 +806,45 @@ sub new {
 		DEFAULT => -12
 	},
 	{#State 32
-		DEFAULT => -112
+		DEFAULT => -113
 	},
 	{#State 33
-		DEFAULT => -141
+		DEFAULT => -142
 	},
 	{#State 34
-		DEFAULT => -114
+		DEFAULT => -115
 	},
 	{#State 35
 		ACTIONS => {
-			'CHAR' => -243,
-			'OBJECT' => -243,
+			'CHAR' => -244,
+			'OBJECT' => -244,
 			'ONEWAY' => 124,
-			'FIXED' => -243,
+			'FIXED' => -244,
 			'NATIVE' => 2,
-			'VOID' => -243,
+			'VOID' => -244,
 			'STRUCT' => 6,
-			'DOUBLE' => -243,
-			'LONG' => -243,
-			'STRING' => -243,
-			"::" => -243,
-			'WSTRING' => -243,
-			'UNSIGNED' => -243,
-			'SHORT' => -243,
+			'DOUBLE' => -244,
+			'LONG' => -244,
+			'STRING' => -244,
+			"::" => -244,
+			'WSTRING' => -244,
+			'UNSIGNED' => -244,
+			'SHORT' => -244,
 			'TYPEDEF' => 12,
-			'BOOLEAN' => -243,
-			'IDENTIFIER' => -243,
+			'BOOLEAN' => -244,
+			'IDENTIFIER' => -244,
 			'UNION' => 16,
 			'READONLY' => 135,
-			'WCHAR' => -243,
-			'ATTRIBUTE' => -226,
+			'WCHAR' => -244,
+			'ATTRIBUTE' => -227,
 			'error' => 129,
 			'CONST' => 22,
 			"}" => 130,
 			'EXCEPTION' => 23,
-			'OCTET' => -243,
-			'FLOAT' => -243,
+			'OCTET' => -244,
+			'FLOAT' => -244,
 			'ENUM' => 28,
-			'ANY' => -243
+			'ANY' => -244
 		},
 		GOTOS => {
 			'const_dcl' => 131,
@@ -878,7 +878,7 @@ sub new {
 		DEFAULT => 0
 	},
 	{#State 39
-		DEFAULT => -168
+		DEFAULT => -169
 	},
 	{#State 40
 		DEFAULT => -18
@@ -924,7 +924,7 @@ sub new {
 		DEFAULT => -14
 	},
 	{#State 44
-		DEFAULT => -232
+		DEFAULT => -233
 	},
 	{#State 45
 		ACTIONS => {
@@ -989,10 +989,10 @@ sub new {
 		}
 	},
 	{#State 46
-		DEFAULT => -147
+		DEFAULT => -148
 	},
 	{#State 47
-		DEFAULT => -122
+		DEFAULT => -123
 	},
 	{#State 48
 		ACTIONS => {
@@ -1001,7 +1001,7 @@ sub new {
 		}
 	},
 	{#State 49
-		DEFAULT => -146
+		DEFAULT => -147
 	},
 	{#State 50
 		ACTIONS => {
@@ -1010,25 +1010,25 @@ sub new {
 		}
 	},
 	{#State 51
-		DEFAULT => -124
+		DEFAULT => -125
 	},
 	{#State 52
-		DEFAULT => -129
+		DEFAULT => -130
 	},
 	{#State 53
-		DEFAULT => -127
+		DEFAULT => -128
 	},
 	{#State 54
 		ACTIONS => {
 			"::" => 151
 		},
-		DEFAULT => -121
+		DEFAULT => -122
 	},
 	{#State 55
-		DEFAULT => -125
+		DEFAULT => -126
 	},
 	{#State 56
-		DEFAULT => -149
+		DEFAULT => -150
 	},
 	{#State 57
 		ACTIONS => {
@@ -1044,7 +1044,7 @@ sub new {
 		}
 	},
 	{#State 58
-		DEFAULT => -108
+		DEFAULT => -109
 	},
 	{#State 59
 		ACTIONS => {
@@ -1053,74 +1053,74 @@ sub new {
 		}
 	},
 	{#State 60
-		DEFAULT => -131
-	},
-	{#State 61
-		DEFAULT => -151
-	},
-	{#State 62
-		DEFAULT => -161
-	},
-	{#State 63
-		DEFAULT => -156
-	},
-	{#State 64
-		DEFAULT => -128
-	},
-	{#State 65
-		DEFAULT => -119
-	},
-	{#State 66
-		DEFAULT => -136
-	},
-	{#State 67
-		DEFAULT => -113
-	},
-	{#State 68
-		DEFAULT => -163
-	},
-	{#State 69
-		DEFAULT => -154
-	},
-	{#State 70
-		DEFAULT => -143
-	},
-	{#State 71
-		DEFAULT => -150
-	},
-	{#State 72
-		DEFAULT => -164
-	},
-	{#State 73
-		DEFAULT => -160
-	},
-	{#State 74
-		DEFAULT => -165
-	},
-	{#State 75
 		DEFAULT => -132
 	},
+	{#State 61
+		DEFAULT => -152
+	},
+	{#State 62
+		DEFAULT => -162
+	},
+	{#State 63
+		DEFAULT => -157
+	},
+	{#State 64
+		DEFAULT => -129
+	},
+	{#State 65
+		DEFAULT => -120
+	},
+	{#State 66
+		DEFAULT => -137
+	},
+	{#State 67
+		DEFAULT => -114
+	},
+	{#State 68
+		DEFAULT => -164
+	},
+	{#State 69
+		DEFAULT => -155
+	},
+	{#State 70
+		DEFAULT => -144
+	},
+	{#State 71
+		DEFAULT => -151
+	},
+	{#State 72
+		DEFAULT => -165
+	},
+	{#State 73
+		DEFAULT => -161
+	},
+	{#State 74
+		DEFAULT => -166
+	},
+	{#State 75
+		DEFAULT => -133
+	},
 	{#State 76
-		DEFAULT => -123
+		DEFAULT => -124
 	},
 	{#State 77
-		DEFAULT => -126
+		DEFAULT => -127
 	},
 	{#State 78
-		DEFAULT => -144
+		DEFAULT => -145
 	},
 	{#State 79
 		ACTIONS => {
 			'LONG' => 162,
 			'DOUBLE' => 161
 		},
-		DEFAULT => -152
+		DEFAULT => -153
 	},
 	{#State 80
 		ACTIONS => {
 			"<" => 163
 		},
-		DEFAULT => -212
+		DEFAULT => -213
 	},
 	{#State 81
 		ACTIONS => {
@@ -1129,43 +1129,43 @@ sub new {
 		}
 	},
 	{#State 82
-		DEFAULT => -148
+		DEFAULT => -149
 	},
 	{#State 83
 		ACTIONS => {
 			"<" => 166
 		},
-		DEFAULT => -215
+		DEFAULT => -216
 	},
 	{#State 84
-		DEFAULT => -134
-	},
-	{#State 85
-		DEFAULT => -162
-	},
-	{#State 86
 		DEFAULT => -135
 	},
+	{#State 85
+		DEFAULT => -163
+	},
+	{#State 86
+		DEFAULT => -136
+	},
 	{#State 87
-		DEFAULT => -48
+		DEFAULT => -49
 	},
 	{#State 88
-		DEFAULT => -130
+		DEFAULT => -131
 	},
 	{#State 89
-		DEFAULT => -155
+		DEFAULT => -156
 	},
 	{#State 90
-		DEFAULT => -120
+		DEFAULT => -121
 	},
 	{#State 91
-		DEFAULT => -118
+		DEFAULT => -119
 	},
 	{#State 92
-		DEFAULT => -117
+		DEFAULT => -118
 	},
 	{#State 93
-		DEFAULT => -133
+		DEFAULT => -134
 	},
 	{#State 94
 		ACTIONS => {
@@ -1235,10 +1235,10 @@ sub new {
 		DEFAULT => -19
 	},
 	{#State 97
-		DEFAULT => -178
+		DEFAULT => -179
 	},
 	{#State 98
-		DEFAULT => -198
+		DEFAULT => -199
 	},
 	{#State 99
 		ACTIONS => {
@@ -1257,40 +1257,40 @@ sub new {
 		DEFAULT => -15
 	},
 	{#State 102
-		DEFAULT => -62
+		DEFAULT => -63
 	},
 	{#State 103
-		DEFAULT => -278
+		DEFAULT => -279
 	},
 	{#State 104
-		DEFAULT => -59
+		DEFAULT => -60
 	},
 	{#State 105
 		ACTIONS => {
 			"::" => 151
 		},
-		DEFAULT => -66
+		DEFAULT => -67
 	},
 	{#State 106
-		DEFAULT => -60
-	},
-	{#State 107
-		DEFAULT => -63
-	},
-	{#State 108
-		DEFAULT => -57
-	},
-	{#State 109
-		DEFAULT => -64
-	},
-	{#State 110
 		DEFAULT => -61
 	},
-	{#State 111
+	{#State 107
+		DEFAULT => -64
+	},
+	{#State 108
 		DEFAULT => -58
 	},
-	{#State 112
+	{#State 109
 		DEFAULT => -65
+	},
+	{#State 110
+		DEFAULT => -62
+	},
+	{#State 111
+		DEFAULT => -59
+	},
+	{#State 112
+		DEFAULT => -66
 	},
 	{#State 113
 		ACTIONS => {
@@ -1299,10 +1299,10 @@ sub new {
 		}
 	},
 	{#State 114
-		DEFAULT => -234
+		DEFAULT => -235
 	},
 	{#State 115
-		DEFAULT => -233
+		DEFAULT => -234
 	},
 	{#State 116
 		ACTIONS => {
@@ -1320,12 +1320,15 @@ sub new {
 		DEFAULT => -5
 	},
 	{#State 120
-		DEFAULT => -200
+		DEFAULT => -201
 	},
 	{#State 121
-		DEFAULT => -199
+		DEFAULT => -200
 	},
 	{#State 122
+		ACTIONS => {
+			"{" => -30
+		},
 		DEFAULT => -27
 	},
 	{#State 123
@@ -1339,7 +1342,7 @@ sub new {
 		}
 	},
 	{#State 124
-		DEFAULT => -244
+		DEFAULT => -245
 	},
 	{#State 125
 		ACTIONS => {
@@ -1394,7 +1397,7 @@ sub new {
 		}
 	},
 	{#State 127
-		DEFAULT => -242
+		DEFAULT => -243
 	},
 	{#State 128
 		ACTIONS => {
@@ -1416,7 +1419,7 @@ sub new {
 		}
 	},
 	{#State 132
-		DEFAULT => -30
+		DEFAULT => -31
 	},
 	{#State 133
 		ACTIONS => {
@@ -1426,13 +1429,13 @@ sub new {
 			'TYPEDEF' => 12,
 			'UNION' => 16,
 			'READONLY' => 135,
-			'ATTRIBUTE' => -226,
+			'ATTRIBUTE' => -227,
 			'CONST' => 22,
-			"}" => -31,
+			"}" => -32,
 			'EXCEPTION' => 23,
 			'ENUM' => 28
 		},
-		DEFAULT => -243,
+		DEFAULT => -244,
 		GOTOS => {
 			'const_dcl' => 131,
 			'op_mod' => 125,
@@ -1464,7 +1467,7 @@ sub new {
 		}
 	},
 	{#State 135
-		DEFAULT => -225
+		DEFAULT => -226
 	},
 	{#State 136
 		ACTIONS => {
@@ -1522,7 +1525,7 @@ sub new {
 		}
 	},
 	{#State 145
-		DEFAULT => -229
+		DEFAULT => -230
 	},
 	{#State 146
 		ACTIONS => {
@@ -1547,7 +1550,7 @@ sub new {
 			'ENUM' => 28,
 			'ANY' => 72
 		},
-		DEFAULT => -169,
+		DEFAULT => -170,
 		GOTOS => {
 			'unsigned_int' => 46,
 			'floating_pt_type' => 47,
@@ -1586,7 +1589,7 @@ sub new {
 		}
 	},
 	{#State 147
-		DEFAULT => -277
+		DEFAULT => -278
 	},
 	{#State 148
 		ACTIONS => {
@@ -1627,7 +1630,7 @@ sub new {
 		}
 	},
 	{#State 149
-		DEFAULT => -210
+		DEFAULT => -211
 	},
 	{#State 150
 		ACTIONS => {
@@ -1684,50 +1687,50 @@ sub new {
 		}
 	},
 	{#State 152
-		DEFAULT => -115
+		DEFAULT => -116
 	},
 	{#State 153
 		ACTIONS => {
 			"," => 244
 		},
-		DEFAULT => -137
+		DEFAULT => -138
 	},
 	{#State 154
-		DEFAULT => -116
+		DEFAULT => -117
 	},
 	{#State 155
-		DEFAULT => -140
+		DEFAULT => -141
 	},
 	{#State 156
-		DEFAULT => -139
+		DEFAULT => -140
 	},
 	{#State 157
-		DEFAULT => -142
+		DEFAULT => -143
 	},
 	{#State 158
 		ACTIONS => {
 			"[" => 247
 		},
-		DEFAULT => -141,
+		DEFAULT => -142,
 		GOTOS => {
 			'fixed_array_sizes' => 245,
 			'fixed_array_size' => 246
 		}
 	},
 	{#State 159
-		DEFAULT => -157
+		DEFAULT => -158
 	},
 	{#State 160
 		ACTIONS => {
 			'LONG' => 248
 		},
-		DEFAULT => -158
+		DEFAULT => -159
 	},
 	{#State 161
-		DEFAULT => -145
+		DEFAULT => -146
 	},
 	{#State 162
-		DEFAULT => -153
+		DEFAULT => -154
 	},
 	{#State 163
 		ACTIONS => {
@@ -1768,10 +1771,10 @@ sub new {
 		}
 	},
 	{#State 164
-		DEFAULT => -50
+		DEFAULT => -51
 	},
 	{#State 165
-		DEFAULT => -49
+		DEFAULT => -50
 	},
 	{#State 166
 		ACTIONS => {
@@ -1831,10 +1834,10 @@ sub new {
 			";" => 256,
 			"," => 257
 		},
-		DEFAULT => -201
+		DEFAULT => -202
 	},
 	{#State 171
-		DEFAULT => -205
+		DEFAULT => -206
 	},
 	{#State 172
 		ACTIONS => {
@@ -1842,7 +1845,7 @@ sub new {
 		}
 	},
 	{#State 173
-		DEFAULT => -56
+		DEFAULT => -57
 	},
 	{#State 174
 		ACTIONS => {
@@ -1881,7 +1884,7 @@ sub new {
 		}
 	},
 	{#State 176
-		DEFAULT => -177
+		DEFAULT => -178
 	},
 	{#State 177
 		ACTIONS => {
@@ -1902,22 +1905,22 @@ sub new {
 		ACTIONS => {
 			"::" => 151
 		},
-		DEFAULT => -273
+		DEFAULT => -274
 	},
 	{#State 180
-		DEFAULT => -270
-	},
-	{#State 181
-		DEFAULT => -269
-	},
-	{#State 182
-		DEFAULT => -245
-	},
-	{#State 183
 		DEFAULT => -271
 	},
-	{#State 184
+	{#State 181
+		DEFAULT => -270
+	},
+	{#State 182
 		DEFAULT => -246
+	},
+	{#State 183
+		DEFAULT => -272
+	},
+	{#State 184
+		DEFAULT => -247
 	},
 	{#State 185
 		ACTIONS => {
@@ -1926,13 +1929,13 @@ sub new {
 		}
 	},
 	{#State 186
-		DEFAULT => -272
+		DEFAULT => -273
 	},
 	{#State 187
-		DEFAULT => -35
+		DEFAULT => -36
 	},
 	{#State 188
-		DEFAULT => -40
+		DEFAULT => -41
 	},
 	{#State 189
 		ACTIONS => {
@@ -1983,13 +1986,13 @@ sub new {
 		DEFAULT => -25
 	},
 	{#State 191
-		DEFAULT => -34
+		DEFAULT => -35
 	},
 	{#State 192
-		DEFAULT => -39
+		DEFAULT => -40
 	},
 	{#State 193
-		DEFAULT => -32
+		DEFAULT => -33
 	},
 	{#State 194
 		ACTIONS => {
@@ -2006,36 +2009,36 @@ sub new {
 		}
 	},
 	{#State 195
-		DEFAULT => -239
+		DEFAULT => -240
 	},
 	{#State 196
 		ACTIONS => {
 			'RAISES' => 288,
 			'CONTEXT' => 285
 		},
-		DEFAULT => -235,
+		DEFAULT => -236,
 		GOTOS => {
 			'context_expr' => 287,
 			'raises_expr' => 286
 		}
 	},
 	{#State 197
-		DEFAULT => -37
+		DEFAULT => -38
 	},
 	{#State 198
-		DEFAULT => -42
+		DEFAULT => -43
 	},
 	{#State 199
-		DEFAULT => -36
+		DEFAULT => -37
 	},
 	{#State 200
-		DEFAULT => -41
+		DEFAULT => -42
 	},
 	{#State 201
-		DEFAULT => -33
+		DEFAULT => -34
 	},
 	{#State 202
-		DEFAULT => -38
+		DEFAULT => -39
 	},
 	{#State 203
 		DEFAULT => -24
@@ -2053,25 +2056,25 @@ sub new {
 		}
 	},
 	{#State 207
-		DEFAULT => -231
+		DEFAULT => -232
 	},
 	{#State 208
-		DEFAULT => -230
+		DEFAULT => -231
 	},
 	{#State 209
-		DEFAULT => -170
+		DEFAULT => -171
 	},
 	{#State 210
-		DEFAULT => -96
+		DEFAULT => -97
 	},
 	{#State 211
-		DEFAULT => -97
+		DEFAULT => -98
 	},
 	{#State 212
 		ACTIONS => {
 			"::" => 151
 		},
-		DEFAULT => -89
+		DEFAULT => -90
 	},
 	{#State 213
 		ACTIONS => {
@@ -2079,7 +2082,7 @@ sub new {
 		}
 	},
 	{#State 214
-		DEFAULT => -95
+		DEFAULT => -96
 	},
 	{#State 215
 		ACTIONS => {
@@ -2119,16 +2122,16 @@ sub new {
 		}
 	},
 	{#State 216
-		DEFAULT => -100
+		DEFAULT => -101
 	},
 	{#State 217
-		DEFAULT => -107
+		DEFAULT => -108
 	},
 	{#State 218
 		ACTIONS => {
 			"|" => 294
 		},
-		DEFAULT => -67
+		DEFAULT => -68
 	},
 	{#State 219
 		ACTIONS => {
@@ -2139,57 +2142,57 @@ sub new {
 		ACTIONS => {
 			"^" => 296
 		},
-		DEFAULT => -68
+		DEFAULT => -69
 	},
 	{#State 221
 		ACTIONS => {
 			"<<" => 297,
 			">>" => 298
 		},
-		DEFAULT => -72
+		DEFAULT => -73
 	},
 	{#State 222
-		DEFAULT => -106
+		DEFAULT => -107
 	},
 	{#State 223
 		ACTIONS => {
 			'WIDE_STRING_LITERAL' => 223
 		},
-		DEFAULT => -103,
+		DEFAULT => -104,
 		GOTOS => {
 			'wide_string_literal' => 299
 		}
 	},
 	{#State 224
-		DEFAULT => -90
+		DEFAULT => -91
 	},
 	{#State 225
-		DEFAULT => -105
+		DEFAULT => -106
 	},
 	{#State 226
 		ACTIONS => {
 			"+" => 300,
 			"-" => 301
 		},
-		DEFAULT => -74
+		DEFAULT => -75
 	},
 	{#State 227
-		DEFAULT => -94
+		DEFAULT => -95
 	},
 	{#State 228
-		DEFAULT => -99
+		DEFAULT => -100
 	},
 	{#State 229
-		DEFAULT => -85
+		DEFAULT => -86
 	},
 	{#State 230
 		ACTIONS => {
 			"&" => 302
 		},
-		DEFAULT => -70
+		DEFAULT => -71
 	},
 	{#State 231
-		DEFAULT => -93
+		DEFAULT => -94
 	},
 	{#State 232
 		ACTIONS => {
@@ -2197,31 +2200,31 @@ sub new {
 			"*" => 303,
 			"/" => 305
 		},
-		DEFAULT => -77
+		DEFAULT => -78
 	},
 	{#State 233
 		ACTIONS => {
 			'STRING_LITERAL' => 233
 		},
-		DEFAULT => -101,
+		DEFAULT => -102,
 		GOTOS => {
 			'string_literal' => 306
 		}
 	},
 	{#State 234
-		DEFAULT => -98
+		DEFAULT => -99
 	},
 	{#State 235
-		DEFAULT => -87
+		DEFAULT => -88
 	},
 	{#State 236
-		DEFAULT => -80
+		DEFAULT => -81
 	},
 	{#State 237
-		DEFAULT => -86
+		DEFAULT => -87
 	},
 	{#State 238
-		DEFAULT => -88
+		DEFAULT => -89
 	},
 	{#State 239
 		ACTIONS => {
@@ -2259,10 +2262,10 @@ sub new {
 		}
 	},
 	{#State 242
-		DEFAULT => -52
+		DEFAULT => -53
 	},
 	{#State 243
-		DEFAULT => -51
+		DEFAULT => -52
 	},
 	{#State 244
 		ACTIONS => {
@@ -2277,13 +2280,13 @@ sub new {
 		}
 	},
 	{#State 245
-		DEFAULT => -217
+		DEFAULT => -218
 	},
 	{#State 246
 		ACTIONS => {
 			"[" => 247
 		},
-		DEFAULT => -218,
+		DEFAULT => -219,
 		GOTOS => {
 			'fixed_array_sizes' => 312,
 			'fixed_array_size' => 246
@@ -2328,7 +2331,7 @@ sub new {
 		}
 	},
 	{#State 248
-		DEFAULT => -159
+		DEFAULT => -160
 	},
 	{#State 249
 		ACTIONS => {
@@ -2351,32 +2354,32 @@ sub new {
 		}
 	},
 	{#State 253
-		DEFAULT => -167
+		DEFAULT => -168
 	},
 	{#State 254
-		DEFAULT => -166
+		DEFAULT => -167
 	},
 	{#State 255
-		DEFAULT => -197
+		DEFAULT => -198
 	},
 	{#State 256
-		DEFAULT => -204
+		DEFAULT => -205
 	},
 	{#State 257
 		ACTIONS => {
 			'IDENTIFIER' => 171
 		},
-		DEFAULT => -203,
+		DEFAULT => -204,
 		GOTOS => {
 			'enumerators' => 319,
 			'enumerator' => 170
 		}
 	},
 	{#State 258
-		DEFAULT => -196
+		DEFAULT => -197
 	},
 	{#State 259
-		DEFAULT => -55
+		DEFAULT => -56
 	},
 	{#State 260
 		ACTIONS => {
@@ -2416,16 +2419,16 @@ sub new {
 		}
 	},
 	{#State 261
-		DEFAULT => -180
+		DEFAULT => -181
 	},
 	{#State 262
 		ACTIONS => {
 			"::" => 151
 		},
-		DEFAULT => -183
+		DEFAULT => -184
 	},
 	{#State 263
-		DEFAULT => -182
+		DEFAULT => -183
 	},
 	{#State 264
 		ACTIONS => {
@@ -2438,43 +2441,43 @@ sub new {
 		}
 	},
 	{#State 266
-		DEFAULT => -181
+		DEFAULT => -182
 	},
 	{#State 267
-		DEFAULT => -179
+		DEFAULT => -180
 	},
 	{#State 268
 		ACTIONS => {
 			'LONG' => 162
 		},
-		DEFAULT => -152
+		DEFAULT => -153
 	},
 	{#State 269
 		ACTIONS => {
 			"::" => 151
 		},
-		DEFAULT => -47
+		DEFAULT => -48
 	},
 	{#State 270
-		DEFAULT => -44
+		DEFAULT => -45
 	},
 	{#State 271
 		ACTIONS => {
 			"," => 324
 		},
-		DEFAULT => -45
+		DEFAULT => -46
 	},
 	{#State 272
-		DEFAULT => -43
+		DEFAULT => -44
 	},
 	{#State 273
-		DEFAULT => -241
+		DEFAULT => -242
 	},
 	{#State 274
-		DEFAULT => -240
+		DEFAULT => -241
 	},
 	{#State 275
-		DEFAULT => -224
+		DEFAULT => -225
 	},
 	{#State 276
 		ACTIONS => {
@@ -2487,7 +2490,7 @@ sub new {
 		}
 	},
 	{#State 277
-		DEFAULT => -255
+		DEFAULT => -256
 	},
 	{#State 278
 		ACTIONS => {
@@ -2495,7 +2498,7 @@ sub new {
 		}
 	},
 	{#State 279
-		DEFAULT => -257
+		DEFAULT => -258
 	},
 	{#State 280
 		ACTIONS => {
@@ -2547,17 +2550,17 @@ sub new {
 		}
 	},
 	{#State 282
-		DEFAULT => -248
+		DEFAULT => -249
 	},
 	{#State 283
-		DEFAULT => -256
+		DEFAULT => -257
 	},
 	{#State 284
 		ACTIONS => {
 			";" => 331,
 			"," => 332
 		},
-		DEFAULT => -250
+		DEFAULT => -251
 	},
 	{#State 285
 		ACTIONS => {
@@ -2569,13 +2572,13 @@ sub new {
 		ACTIONS => {
 			'CONTEXT' => 285
 		},
-		DEFAULT => -236,
+		DEFAULT => -237,
 		GOTOS => {
 			'context_expr' => 335
 		}
 	},
 	{#State 287
-		DEFAULT => -238
+		DEFAULT => -239
 	},
 	{#State 288
 		ACTIONS => {
@@ -2584,10 +2587,10 @@ sub new {
 		}
 	},
 	{#State 289
-		DEFAULT => -171
+		DEFAULT => -172
 	},
 	{#State 290
-		DEFAULT => -172
+		DEFAULT => -173
 	},
 	{#State 291
 		ACTIONS => {
@@ -2672,7 +2675,7 @@ sub new {
 		}
 	},
 	{#State 295
-		DEFAULT => -276
+		DEFAULT => -277
 	},
 	{#State 296
 		ACTIONS => {
@@ -2770,7 +2773,7 @@ sub new {
 		}
 	},
 	{#State 299
-		DEFAULT => -104
+		DEFAULT => -105
 	},
 	{#State 300
 		ACTIONS => {
@@ -2952,13 +2955,13 @@ sub new {
 		}
 	},
 	{#State 306
-		DEFAULT => -102
+		DEFAULT => -103
 	},
 	{#State 307
-		DEFAULT => -84
+		DEFAULT => -85
 	},
 	{#State 308
-		DEFAULT => -209
+		DEFAULT => -210
 	},
 	{#State 309
 		ACTIONS => {
@@ -2999,13 +3002,13 @@ sub new {
 		}
 	},
 	{#State 310
-		DEFAULT => -208
+		DEFAULT => -209
 	},
 	{#State 311
-		DEFAULT => -138
+		DEFAULT => -139
 	},
 	{#State 312
-		DEFAULT => -219
+		DEFAULT => -220
 	},
 	{#State 313
 		ACTIONS => {
@@ -3018,28 +3021,28 @@ sub new {
 		}
 	},
 	{#State 315
-		DEFAULT => -211
+		DEFAULT => -212
 	},
 	{#State 316
-		DEFAULT => -213
-	},
-	{#State 317
 		DEFAULT => -214
 	},
+	{#State 317
+		DEFAULT => -215
+	},
 	{#State 318
-		DEFAULT => -216
+		DEFAULT => -217
 	},
 	{#State 319
-		DEFAULT => -202
+		DEFAULT => -203
 	},
 	{#State 320
-		DEFAULT => -53
-	},
-	{#State 321
 		DEFAULT => -54
 	},
+	{#State 321
+		DEFAULT => -55
+	},
 	{#State 322
-		DEFAULT => -176
+		DEFAULT => -177
 	},
 	{#State 323
 		ACTIONS => {
@@ -3059,19 +3062,19 @@ sub new {
 		}
 	},
 	{#State 325
-		DEFAULT => -223
+		DEFAULT => -224
 	},
 	{#State 326
 		ACTIONS => {
 			"," => 359
 		},
-		DEFAULT => -227
+		DEFAULT => -228
 	},
 	{#State 327
-		DEFAULT => -222
+		DEFAULT => -223
 	},
 	{#State 328
-		DEFAULT => -249
+		DEFAULT => -250
 	},
 	{#State 329
 		ACTIONS => {
@@ -3082,10 +3085,10 @@ sub new {
 		}
 	},
 	{#State 330
-		DEFAULT => -247
+		DEFAULT => -248
 	},
 	{#State 331
-		DEFAULT => -253
+		DEFAULT => -254
 	},
 	{#State 332
 		ACTIONS => {
@@ -3093,7 +3096,7 @@ sub new {
 			'INOUT' => 279,
 			'IN' => 277
 		},
-		DEFAULT => -252,
+		DEFAULT => -253,
 		GOTOS => {
 			'param_dcl' => 284,
 			'param_dcls' => 361,
@@ -3111,10 +3114,10 @@ sub new {
 		}
 	},
 	{#State 334
-		DEFAULT => -266
+		DEFAULT => -267
 	},
 	{#State 335
-		DEFAULT => -237
+		DEFAULT => -238
 	},
 	{#State 336
 		ACTIONS => {
@@ -3129,7 +3132,7 @@ sub new {
 		}
 	},
 	{#State 337
-		DEFAULT => -260
+		DEFAULT => -261
 	},
 	{#State 338
 		ACTIONS => {
@@ -3142,36 +3145,36 @@ sub new {
 		}
 	},
 	{#State 340
-		DEFAULT => -91
+		DEFAULT => -92
 	},
 	{#State 341
-		DEFAULT => -92
+		DEFAULT => -93
 	},
 	{#State 342
 		ACTIONS => {
 			"^" => 296
 		},
-		DEFAULT => -69
+		DEFAULT => -70
 	},
 	{#State 343
 		ACTIONS => {
 			"&" => 302
 		},
-		DEFAULT => -71
+		DEFAULT => -72
 	},
 	{#State 344
 		ACTIONS => {
 			"+" => 300,
 			"-" => 301
 		},
-		DEFAULT => -76
+		DEFAULT => -77
 	},
 	{#State 345
 		ACTIONS => {
 			"+" => 300,
 			"-" => 301
 		},
-		DEFAULT => -75
+		DEFAULT => -76
 	},
 	{#State 346
 		ACTIONS => {
@@ -3179,7 +3182,7 @@ sub new {
 			"*" => 303,
 			"/" => 305
 		},
-		DEFAULT => -78
+		DEFAULT => -79
 	},
 	{#State 347
 		ACTIONS => {
@@ -3187,23 +3190,23 @@ sub new {
 			"*" => 303,
 			"/" => 305
 		},
-		DEFAULT => -79
+		DEFAULT => -80
 	},
 	{#State 348
 		ACTIONS => {
 			"<<" => 297,
 			">>" => 298
 		},
-		DEFAULT => -73
+		DEFAULT => -74
 	},
 	{#State 349
-		DEFAULT => -81
+		DEFAULT => -82
 	},
 	{#State 350
-		DEFAULT => -83
+		DEFAULT => -84
 	},
 	{#State 351
-		DEFAULT => -82
+		DEFAULT => -83
 	},
 	{#State 352
 		ACTIONS => {
@@ -3216,13 +3219,13 @@ sub new {
 		}
 	},
 	{#State 354
-		DEFAULT => -220
-	},
-	{#State 355
 		DEFAULT => -221
 	},
+	{#State 355
+		DEFAULT => -222
+	},
 	{#State 356
-		DEFAULT => -175
+		DEFAULT => -176
 	},
 	{#State 357
 		ACTIONS => {
@@ -3238,7 +3241,7 @@ sub new {
 		}
 	},
 	{#State 358
-		DEFAULT => -46
+		DEFAULT => -47
 	},
 	{#State 359
 		ACTIONS => {
@@ -3250,10 +3253,10 @@ sub new {
 		}
 	},
 	{#State 360
-		DEFAULT => -254
+		DEFAULT => -255
 	},
 	{#State 361
-		DEFAULT => -251
+		DEFAULT => -252
 	},
 	{#State 362
 		ACTIONS => {
@@ -3264,7 +3267,7 @@ sub new {
 		ACTIONS => {
 			"," => 382
 		},
-		DEFAULT => -267
+		DEFAULT => -268
 	},
 	{#State 364
 		ACTIONS => {
@@ -3275,7 +3278,7 @@ sub new {
 		ACTIONS => {
 			"::" => 151
 		},
-		DEFAULT => -263
+		DEFAULT => -264
 	},
 	{#State 366
 		ACTIONS => {
@@ -3291,19 +3294,19 @@ sub new {
 		ACTIONS => {
 			"," => 386
 		},
-		DEFAULT => -261
+		DEFAULT => -262
 	},
 	{#State 369
-		DEFAULT => -274
-	},
-	{#State 370
 		DEFAULT => -275
 	},
+	{#State 370
+		DEFAULT => -276
+	},
 	{#State 371
-		DEFAULT => -206
+		DEFAULT => -207
 	},
 	{#State 372
-		DEFAULT => -207
+		DEFAULT => -208
 	},
 	{#State 373
 		ACTIONS => {
@@ -3347,7 +3350,7 @@ sub new {
 			'CASE' => 373,
 			'DEFAULT' => 375
 		},
-		DEFAULT => -184,
+		DEFAULT => -185,
 		GOTOS => {
 			'case_labels' => 378,
 			'switch_body' => 389,
@@ -3435,17 +3438,17 @@ sub new {
 			'CASE' => 373,
 			'DEFAULT' => 375
 		},
-		DEFAULT => -188,
+		DEFAULT => -189,
 		GOTOS => {
 			'case_labels' => 396,
 			'case_label' => 379
 		}
 	},
 	{#State 380
-		DEFAULT => -228
+		DEFAULT => -229
 	},
 	{#State 381
-		DEFAULT => -265
+		DEFAULT => -266
 	},
 	{#State 382
 		ACTIONS => {
@@ -3457,13 +3460,13 @@ sub new {
 		}
 	},
 	{#State 383
-		DEFAULT => -264
+		DEFAULT => -265
 	},
 	{#State 384
-		DEFAULT => -259
+		DEFAULT => -260
 	},
 	{#State 385
-		DEFAULT => -258
+		DEFAULT => -259
 	},
 	{#State 386
 		ACTIONS => {
@@ -3483,22 +3486,22 @@ sub new {
 		}
 	},
 	{#State 388
-		DEFAULT => -192
-	},
-	{#State 389
-		DEFAULT => -185
-	},
-	{#State 390
-		DEFAULT => -194
-	},
-	{#State 391
 		DEFAULT => -193
 	},
+	{#State 389
+		DEFAULT => -186
+	},
+	{#State 390
+		DEFAULT => -195
+	},
+	{#State 391
+		DEFAULT => -194
+	},
 	{#State 392
-		DEFAULT => -174
+		DEFAULT => -175
 	},
 	{#State 393
-		DEFAULT => -173
+		DEFAULT => -174
 	},
 	{#State 394
 		ACTIONS => {
@@ -3518,28 +3521,28 @@ sub new {
 		}
 	},
 	{#State 396
-		DEFAULT => -189
-	},
-	{#State 397
-		DEFAULT => -268
-	},
-	{#State 398
-		DEFAULT => -262
-	},
-	{#State 399
-		DEFAULT => -191
-	},
-	{#State 400
 		DEFAULT => -190
 	},
+	{#State 397
+		DEFAULT => -269
+	},
+	{#State 398
+		DEFAULT => -263
+	},
+	{#State 399
+		DEFAULT => -192
+	},
+	{#State 400
+		DEFAULT => -191
+	},
 	{#State 401
-		DEFAULT => -195
+		DEFAULT => -196
 	},
 	{#State 402
-		DEFAULT => -186
+		DEFAULT => -187
 	},
 	{#State 403
-		DEFAULT => -187
+		DEFAULT => -188
 	}
 ],
                                   yyrules  =>
@@ -3562,7 +3565,7 @@ sub
 sub
 #line 66 "parser22.yp"
 {
-			$_[0]->Error("Empty specification\n");
+			$_[0]->Error("Empty specification.\n");
 		}
 	],
 	[#Rule 3
@@ -3570,20 +3573,25 @@ sub
 sub
 #line 70 "parser22.yp"
 {
-			$_[0]->Error("definition declaration excepted.\n");
+			$_[0]->Error("definition declaration expected.\n");
 		}
 	],
 	[#Rule 4
 		 'definitions', 1,
 sub
-#line 76 "parser22.yp"
-{ [$_[1]]; }
+#line 77 "parser22.yp"
+{
+			[$_[1]->getRef()];
+		}
 	],
 	[#Rule 5
 		 'definitions', 2,
 sub
-#line 77 "parser22.yp"
-{ unshift(@{$_[2]},$_[1]); $_[2]; }
+#line 81 "parser22.yp"
+{
+			unshift(@{$_[2]},$_[1]->getRef());
+			$_[2];
+		}
 	],
 	[#Rule 6
 		 'definition', 2, undef
@@ -3603,9 +3611,9 @@ sub
 	[#Rule 11
 		 'definition', 2,
 sub
-#line 88 "parser22.yp"
+#line 100 "parser22.yp"
 {
-			$_[0]->Warning("';' excepted.\n");
+			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
@@ -3613,9 +3621,9 @@ sub
 	[#Rule 12
 		 'definition', 2,
 sub
-#line 94 "parser22.yp"
+#line 106 "parser22.yp"
 {
-			$_[0]->Warning("';' excepted.\n");
+			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
@@ -3623,9 +3631,9 @@ sub
 	[#Rule 13
 		 'definition', 2,
 sub
-#line 100 "parser22.yp"
+#line 112 "parser22.yp"
 {
-			$_[0]->Warning("';' excepted.\n");
+			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
@@ -3633,9 +3641,9 @@ sub
 	[#Rule 14
 		 'definition', 2,
 sub
-#line 106 "parser22.yp"
+#line 118 "parser22.yp"
 {
-			$_[0]->Warning("';' excepted.\n");
+			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
@@ -3643,9 +3651,9 @@ sub
 	[#Rule 15
 		 'definition', 2,
 sub
-#line 112 "parser22.yp"
+#line 124 "parser22.yp"
 {
-			$_[0]->Warning("';' excepted.\n");
+			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
@@ -3653,37 +3661,38 @@ sub
 	[#Rule 16
 		 'module', 4,
 sub
-#line 122 "parser22.yp"
+#line 134 "parser22.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
-			$_[1]->configure('list_decl' => $_[3])
-					if (defined $_[1]);
+			$_[1]->Configure($_[0],
+					'list_decl'			=>	$_[3]
+			) if (defined $_[1]);
 		}
 	],
 	[#Rule 17
 		 'module', 4,
 sub
-#line 128 "parser22.yp"
+#line 141 "parser22.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
-			$_[0]->Error("definition declaration excepted.\n");
+			$_[0]->Error("definition declaration expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 18
 		 'module', 2,
 sub
-#line 134 "parser22.yp"
+#line 147 "parser22.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
-			$_[0]->Error("'\x7b' excepted.\n");
+			$_[0]->Error("'\x7b' expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 19
 		 'module_header', 2,
 sub
-#line 143 "parser22.yp"
+#line 156 "parser22.yp"
 {
 			new Module($_[0],
 					'idf'				=>	$_[2],
@@ -3693,9 +3702,9 @@ sub
 	[#Rule 20
 		 'module_header', 2,
 sub
-#line 149 "parser22.yp"
+#line 162 "parser22.yp"
 {
-			$_[0]->Error("Identifier excepted.\n");
+			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
@@ -3708,40 +3717,44 @@ sub
 	[#Rule 23
 		 'interface_dcl', 3,
 sub
-#line 164 "parser22.yp"
+#line 179 "parser22.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->YYData->{curr_itf} = undef;
-			$_[1]->configure('list_decl'		=>	[]);
+			$_[1]->Configure($_[0],
+					'list_decl'		=>	[]
+			) if (defined $_[1]);
 		}
 	],
 	[#Rule 24
 		 'interface_dcl', 4,
 sub
-#line 170 "parser22.yp"
+#line 187 "parser22.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->YYData->{curr_itf} = undef;
-			$_[1]->configure('list_decl'		=>	$_[3]);
+			$_[1]->Configure($_[0],
+					'list_decl'		=>	$_[3]
+			) if (defined $_[1]);
 		}
 	],
 	[#Rule 25
 		 'interface_dcl', 4,
 sub
-#line 176 "parser22.yp"
+#line 195 "parser22.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->YYData->{curr_itf} = undef;
-			$_[0]->Error("export declaration excepted.\n");
+			$_[0]->Error("export declaration expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 26
 		 'forward_dcl', 2,
 sub
-#line 187 "parser22.yp"
+#line 206 "parser22.yp"
 {
-			new ForwardInterface($_[0],
+			new ForwardRegularInterface($_[0],
 					'idf'					=>	$_[2]
 			);
 		}
@@ -3749,18 +3762,18 @@ sub
 	[#Rule 27
 		 'forward_dcl', 2,
 sub
-#line 193 "parser22.yp"
+#line 212 "parser22.yp"
 {
-			$_[0]->Error("Identifier excepted.\n");
+			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 28
 		 'interface_header', 2,
 sub
-#line 202 "parser22.yp"
+#line 221 "parser22.yp"
 {
-			new Interface($_[0],
+			new RegularInterface($_[0],
 					'idf'					=>	$_[2]
 			);
 		}
@@ -3768,31 +3781,45 @@ sub
 	[#Rule 29
 		 'interface_header', 3,
 sub
-#line 208 "parser22.yp"
+#line 227 "parser22.yp"
 {
-			new Interface($_[0],
-					'idf'					=>	$_[2],
-					'list_inheritance'		=>	$_[3]
+			my $inheritance = new InheritanceSpec($_[0],
+					'list_interface'		=>	$_[4]
+			);
+			new RegularInterface($_[0],
+					'idf'					=>	$_[3],
+					'inheritance'			=>	$inheritance
 			);
 		}
 	],
 	[#Rule 30
-		 'interface_body', 1, undef
+		 'interface_header', 2,
+sub
+#line 237 "parser22.yp"
+{
+			$_[0]->Error("Identifier expected.\n");
+			$_[0]->YYErrok();
+		}
 	],
 	[#Rule 31
-		 'exports', 1,
-sub
-#line 222 "parser22.yp"
-{ [$_[1]]; }
+		 'interface_body', 1, undef
 	],
 	[#Rule 32
-		 'exports', 2,
+		 'exports', 1,
 sub
-#line 223 "parser22.yp"
-{ unshift(@{$_[2]},$_[1]); $_[2]; }
+#line 251 "parser22.yp"
+{
+			[$_[1]->getRef()];
+		}
 	],
 	[#Rule 33
-		 'export', 2, undef
+		 'exports', 2,
+sub
+#line 255 "parser22.yp"
+{
+			unshift(@{$_[2]},$_[1]->getRef());
+			$_[2];
+		}
 	],
 	[#Rule 34
 		 'export', 2, undef
@@ -3807,21 +3834,14 @@ sub
 		 'export', 2, undef
 	],
 	[#Rule 38
-		 'export', 2,
-sub
-#line 234 "parser22.yp"
-{
-			$_[0]->Warning("';' excepted.\n");
-			$_[0]->YYErrok();
-			$_[1];						#default action
-		}
+		 'export', 2, undef
 	],
 	[#Rule 39
 		 'export', 2,
 sub
-#line 240 "parser22.yp"
+#line 274 "parser22.yp"
 {
-			$_[0]->Warning("';' excepted.\n");
+			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
@@ -3829,9 +3849,9 @@ sub
 	[#Rule 40
 		 'export', 2,
 sub
-#line 246 "parser22.yp"
+#line 280 "parser22.yp"
 {
-			$_[0]->Warning("';' excepted.\n");
+			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
@@ -3839,9 +3859,9 @@ sub
 	[#Rule 41
 		 'export', 2,
 sub
-#line 252 "parser22.yp"
+#line 286 "parser22.yp"
 {
-			$_[0]->Warning("';' excepted.\n");
+			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
@@ -3849,91 +3869,108 @@ sub
 	[#Rule 42
 		 'export', 2,
 sub
-#line 258 "parser22.yp"
+#line 292 "parser22.yp"
 {
-			$_[0]->Warning("';' excepted.\n");
+			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
 	],
 	[#Rule 43
-		 'interface_inheritance_spec', 2,
+		 'export', 2,
 sub
-#line 267 "parser22.yp"
-{ $_[2]; }
+#line 298 "parser22.yp"
+{
+			$_[0]->Warning("';' expected.\n");
+			$_[0]->YYErrok();
+			$_[1];						#default action
+		}
 	],
 	[#Rule 44
 		 'interface_inheritance_spec', 2,
 sub
-#line 269 "parser22.yp"
+#line 308 "parser22.yp"
 {
-			$_[0]->Error("Interface name excepted.\n");
-			$_[0]->YYErrok();
+			$_[2];
 		}
 	],
 	[#Rule 45
-		 'interface_names', 1,
+		 'interface_inheritance_spec', 2,
 sub
-#line 276 "parser22.yp"
-{ [$_[1]]; }
+#line 312 "parser22.yp"
+{
+			$_[0]->Error("Interface name expected.\n");
+			$_[0]->YYErrok();
+		}
 	],
 	[#Rule 46
-		 'interface_names', 3,
+		 'interface_names', 1,
 sub
-#line 277 "parser22.yp"
-{ unshift(@{$_[3]},$_[1]); $_[3]; }
+#line 320 "parser22.yp"
+{
+			[$_[1]];
+		}
 	],
 	[#Rule 47
-		 'interface_name', 1,
+		 'interface_names', 3,
 sub
-#line 282 "parser22.yp"
+#line 324 "parser22.yp"
 {
-				Interface->Lookup($_[0],$_[1])
+			unshift(@{$_[3]},$_[1]);
+			$_[3];
 		}
 	],
 	[#Rule 48
-		 'scoped_name', 1, undef
+		 'interface_name', 1,
+sub
+#line 332 "parser22.yp"
+{
+				Interface->Lookup($_[0],$_[1]);
+		}
 	],
 	[#Rule 49
-		 'scoped_name', 2,
-sub
-#line 291 "parser22.yp"
-{
-			$_[1] . $_[2];
-		}
+		 'scoped_name', 1, undef
 	],
 	[#Rule 50
 		 'scoped_name', 2,
 sub
-#line 295 "parser22.yp"
+#line 342 "parser22.yp"
 {
-			$_[0]->Error("Identifier excepted.\n");
-			$_[0]->YYErrok();
-			'';
+			$_[1] . $_[2];
 		}
 	],
 	[#Rule 51
-		 'scoped_name', 3,
+		 'scoped_name', 2,
 sub
-#line 301 "parser22.yp"
+#line 346 "parser22.yp"
 {
-			$_[1] . $_[2] . $_[3];
+			$_[0]->Error("Identifier expected.\n");
+			$_[0]->YYErrok();
+			'';
 		}
 	],
 	[#Rule 52
 		 'scoped_name', 3,
 sub
-#line 305 "parser22.yp"
+#line 352 "parser22.yp"
 {
-			$_[0]->Error("Identifier excepted.\n");
+			$_[1] . $_[2] . $_[3];
+		}
+	],
+	[#Rule 53
+		 'scoped_name', 3,
+sub
+#line 356 "parser22.yp"
+{
+			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 			$_[1];
 		}
 	],
-	[#Rule 53
+	[#Rule 54
 		 'const_dcl', 5,
 sub
-#line 315 "parser22.yp"
+#line 366 "parser22.yp"
 {
 			new Constant($_[0],
 					'type'				=>	$_[2],
@@ -3942,44 +3979,41 @@ sub
 			);
 		}
 	],
-	[#Rule 54
+	[#Rule 55
 		 'const_dcl', 5,
 sub
-#line 323 "parser22.yp"
+#line 374 "parser22.yp"
 {
-			$_[0]->Error("Expression excepted.\n");
-			$_[0]->YYErrok();
-		}
-	],
-	[#Rule 55
-		 'const_dcl', 4,
-sub
-#line 328 "parser22.yp"
-{
-			$_[0]->Error("'=' excepted.\n");
+			$_[0]->Error("Expression expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 56
-		 'const_dcl', 3,
+		 'const_dcl', 4,
 sub
-#line 333 "parser22.yp"
+#line 379 "parser22.yp"
 {
-			$_[0]->Error("Identifier excepted.\n");
+			$_[0]->Error("'=' expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 57
-		 'const_dcl', 2,
+		 'const_dcl', 3,
 sub
-#line 338 "parser22.yp"
+#line 384 "parser22.yp"
 {
-			$_[0]->Error("const_type excepted.\n");
+			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 58
-		 'const_type', 1, undef
+		 'const_dcl', 2,
+sub
+#line 389 "parser22.yp"
+{
+			$_[0]->Error("const_type expected.\n");
+			$_[0]->YYErrok();
+		}
 	],
 	[#Rule 59
 		 'const_type', 1, undef
@@ -4003,102 +4037,97 @@ sub
 		 'const_type', 1, undef
 	],
 	[#Rule 66
+		 'const_type', 1, undef
+	],
+	[#Rule 67
 		 'const_type', 1,
 sub
-#line 355 "parser22.yp"
+#line 414 "parser22.yp"
 {
 			TypeDeclarator->Lookup($_[0],$_[1]);
 		}
 	],
-	[#Rule 67
+	[#Rule 68
 		 'const_exp', 1, undef
 	],
-	[#Rule 68
+	[#Rule 69
 		 'or_expr', 1, undef
 	],
-	[#Rule 69
+	[#Rule 70
 		 'or_expr', 3,
 sub
-#line 369 "parser22.yp"
+#line 430 "parser22.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
-	],
-	[#Rule 70
-		 'xor_expr', 1, undef
 	],
 	[#Rule 71
-		 'xor_expr', 3,
-sub
-#line 378 "parser22.yp"
-{
-			BuildBinop($_[1],$_[2],$_[3]);
-		}
+		 'xor_expr', 1, undef
 	],
 	[#Rule 72
-		 'and_expr', 1, undef
+		 'xor_expr', 3,
+sub
+#line 440 "parser22.yp"
+{
+			BuildBinop($_[1],$_[2],$_[3]);
+		}
 	],
 	[#Rule 73
-		 'and_expr', 3,
-sub
-#line 387 "parser22.yp"
-{
-			BuildBinop($_[1],$_[2],$_[3]);
-		}
+		 'and_expr', 1, undef
 	],
 	[#Rule 74
-		 'shift_expr', 1, undef
-	],
-	[#Rule 75
-		 'shift_expr', 3,
+		 'and_expr', 3,
 sub
-#line 396 "parser22.yp"
+#line 450 "parser22.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
+	],
+	[#Rule 75
+		 'shift_expr', 1, undef
 	],
 	[#Rule 76
 		 'shift_expr', 3,
 sub
-#line 400 "parser22.yp"
+#line 460 "parser22.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
 	],
 	[#Rule 77
-		 'add_expr', 1, undef
-	],
-	[#Rule 78
-		 'add_expr', 3,
+		 'shift_expr', 3,
 sub
-#line 409 "parser22.yp"
+#line 464 "parser22.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
 	],
+	[#Rule 78
+		 'add_expr', 1, undef
+	],
 	[#Rule 79
 		 'add_expr', 3,
 sub
-#line 413 "parser22.yp"
+#line 474 "parser22.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
 	],
 	[#Rule 80
-		 'mult_expr', 1, undef
-	],
-	[#Rule 81
-		 'mult_expr', 3,
+		 'add_expr', 3,
 sub
-#line 422 "parser22.yp"
+#line 478 "parser22.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
 	],
+	[#Rule 81
+		 'mult_expr', 1, undef
+	],
 	[#Rule 82
 		 'mult_expr', 3,
 sub
-#line 426 "parser22.yp"
+#line 488 "parser22.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
@@ -4106,24 +4135,29 @@ sub
 	[#Rule 83
 		 'mult_expr', 3,
 sub
-#line 430 "parser22.yp"
+#line 492 "parser22.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
 	],
 	[#Rule 84
+		 'mult_expr', 3,
+sub
+#line 496 "parser22.yp"
+{
+			BuildBinop($_[1],$_[2],$_[3]);
+		}
+	],
+	[#Rule 85
 		 'unary_expr', 2,
 sub
-#line 438 "parser22.yp"
+#line 504 "parser22.yp"
 {
 			BuildUnop($_[1],$_[2]);
 		}
 	],
-	[#Rule 85
-		 'unary_expr', 1, undef
-	],
 	[#Rule 86
-		 'unary_operator', 1, undef
+		 'unary_expr', 1, undef
 	],
 	[#Rule 87
 		 'unary_operator', 1, undef
@@ -4132,44 +4166,47 @@ sub
 		 'unary_operator', 1, undef
 	],
 	[#Rule 89
+		 'unary_operator', 1, undef
+	],
+	[#Rule 90
 		 'primary_expr', 1,
 sub
-#line 454 "parser22.yp"
+#line 524 "parser22.yp"
 {
 			[
 				Constant->Lookup($_[0],$_[1])
 			];
 		}
 	],
-	[#Rule 90
+	[#Rule 91
 		 'primary_expr', 1,
 sub
-#line 460 "parser22.yp"
+#line 530 "parser22.yp"
 {
 			[ $_[1] ];
-		}
-	],
-	[#Rule 91
-		 'primary_expr', 3,
-sub
-#line 464 "parser22.yp"
-{
-			$_[2];
 		}
 	],
 	[#Rule 92
 		 'primary_expr', 3,
 sub
-#line 468 "parser22.yp"
+#line 534 "parser22.yp"
 {
-			$_[0]->Error("Expression excepted.\n");
-			$_[0]->YYErrok();
+			$_[2];
 		}
 	],
 	[#Rule 93
+		 'primary_expr', 3,
+sub
+#line 538 "parser22.yp"
+{
+			$_[0]->Error("Expression expected.\n");
+			$_[0]->YYErrok();
+		}
+	],
+	[#Rule 94
 		 'literal', 1,
 sub
-#line 477 "parser22.yp"
+#line 547 "parser22.yp"
 {
 			new IntegerLiteral($_[0],
 					'value'				=>	$_[1],
@@ -4177,22 +4214,12 @@ sub
 			);
 		}
 	],
-	[#Rule 94
-		 'literal', 1,
-sub
-#line 484 "parser22.yp"
-{
-			new StringLiteral($_[0],
-					'value'				=>	$_[1]
-			);
-		}
-	],
 	[#Rule 95
 		 'literal', 1,
 sub
-#line 490 "parser22.yp"
+#line 554 "parser22.yp"
 {
-			new WideStringLiteral($_[0],
+			new StringLiteral($_[0],
 					'value'				=>	$_[1]
 			);
 		}
@@ -4200,9 +4227,9 @@ sub
 	[#Rule 96
 		 'literal', 1,
 sub
-#line 496 "parser22.yp"
+#line 560 "parser22.yp"
 {
-			new CharacterLiteral($_[0],
+			new WideStringLiteral($_[0],
 					'value'				=>	$_[1]
 			);
 		}
@@ -4210,9 +4237,9 @@ sub
 	[#Rule 97
 		 'literal', 1,
 sub
-#line 502 "parser22.yp"
+#line 566 "parser22.yp"
 {
-			new WideCharacterLiteral($_[0],
+			new CharacterLiteral($_[0],
 					'value'				=>	$_[1]
 			);
 		}
@@ -4220,7 +4247,17 @@ sub
 	[#Rule 98
 		 'literal', 1,
 sub
-#line 508 "parser22.yp"
+#line 572 "parser22.yp"
+{
+			new WideCharacterLiteral($_[0],
+					'value'				=>	$_[1]
+			);
+		}
+	],
+	[#Rule 99
+		 'literal', 1,
+sub
+#line 578 "parser22.yp"
 {
 			new FixedPtLiteral($_[0],
 					'value'				=>	$_[1],
@@ -4228,10 +4265,10 @@ sub
 			);
 		}
 	],
-	[#Rule 99
+	[#Rule 100
 		 'literal', 1,
 sub
-#line 515 "parser22.yp"
+#line 585 "parser22.yp"
 {
 			new FloatingPtLiteral($_[0],
 					'value'				=>	$_[1],
@@ -4239,67 +4276,68 @@ sub
 			);
 		}
 	],
-	[#Rule 100
+	[#Rule 101
 		 'literal', 1, undef
 	],
-	[#Rule 101
+	[#Rule 102
 		 'string_literal', 1, undef
 	],
-	[#Rule 102
+	[#Rule 103
 		 'string_literal', 2,
 sub
-#line 526 "parser22.yp"
-{ $_[1] . $_[2]; }
-	],
-	[#Rule 103
-		 'wide_string_literal', 1, undef
+#line 599 "parser22.yp"
+{
+			$_[1] . $_[2];
+		}
 	],
 	[#Rule 104
-		 'wide_string_literal', 2,
-sub
-#line 532 "parser22.yp"
-{ $_[1] . $_[2]; }
+		 'wide_string_literal', 1, undef
 	],
 	[#Rule 105
+		 'wide_string_literal', 2,
+sub
+#line 608 "parser22.yp"
+{
+			$_[1] . $_[2];
+		}
+	],
+	[#Rule 106
 		 'boolean_literal', 1,
 sub
-#line 538 "parser22.yp"
+#line 616 "parser22.yp"
 {
 			new BooleanLiteral($_[0],
 					'value'				=>	1
 			);
 		}
 	],
-	[#Rule 106
+	[#Rule 107
 		 'boolean_literal', 1,
 sub
-#line 544 "parser22.yp"
+#line 622 "parser22.yp"
 {
 			new BooleanLiteral($_[0],
 					'value'				=>	0
 			);
 		}
 	],
-	[#Rule 107
+	[#Rule 108
 		 'positive_int_const', 1,
 sub
-#line 554 "parser22.yp"
+#line 632 "parser22.yp"
 {
 			new Expression($_[0],
 					'list_expr'			=>	$_[1]
 			);
 		}
 	],
-	[#Rule 108
+	[#Rule 109
 		 'type_dcl', 2,
 sub
-#line 565 "parser22.yp"
+#line 642 "parser22.yp"
 {
 			$_[2];
 		}
-	],
-	[#Rule 109
-		 'type_dcl', 1, undef
 	],
 	[#Rule 110
 		 'type_dcl', 1, undef
@@ -4308,9 +4346,12 @@ sub
 		 'type_dcl', 1, undef
 	],
 	[#Rule 112
+		 'type_dcl', 1, undef
+	],
+	[#Rule 113
 		 'type_dcl', 2,
 sub
-#line 572 "parser22.yp"
+#line 652 "parser22.yp"
 {
 			new TypeDeclarator($_[0],
 					'modifier'			=>	$_[1],
@@ -4318,28 +4359,28 @@ sub
 			);
 		}
 	],
-	[#Rule 113
-		 'type_dcl', 2,
-sub
-#line 579 "parser22.yp"
-{
-			$_[0]->Error("type_declarator excepted.\n");
-			$_[0]->YYErrok();
-		}
-	],
 	[#Rule 114
 		 'type_dcl', 2,
 sub
-#line 584 "parser22.yp"
+#line 659 "parser22.yp"
 {
-			$_[0]->Error("Identifier excepted.\n");
+			$_[0]->Error("type_declarator expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 115
+		 'type_dcl', 2,
+sub
+#line 664 "parser22.yp"
+{
+			$_[0]->Error("Identifier expected.\n");
+			$_[0]->YYErrok();
+		}
+	],
+	[#Rule 116
 		 'type_declarator', 2,
 sub
-#line 593 "parser22.yp"
+#line 673 "parser22.yp"
 {
 			new TypeDeclarators($_[0],
 					'type'				=>	$_[1],
@@ -4347,37 +4388,34 @@ sub
 			);
 		}
 	],
-	[#Rule 116
+	[#Rule 117
 		 'type_declarator', 2,
 sub
-#line 600 "parser22.yp"
+#line 680 "parser22.yp"
 {
-			$_[0]->Error("declarator excepted.\n");
+			$_[0]->Error("declarator expected.\n");
 			$_[0]->YYErrok();
 		}
-	],
-	[#Rule 117
-		 'type_spec', 1, undef
 	],
 	[#Rule 118
 		 'type_spec', 1, undef
 	],
 	[#Rule 119
-		 'simple_type_spec', 1, undef
+		 'type_spec', 1, undef
 	],
 	[#Rule 120
 		 'simple_type_spec', 1, undef
 	],
 	[#Rule 121
+		 'simple_type_spec', 1, undef
+	],
+	[#Rule 122
 		 'simple_type_spec', 1,
 sub
-#line 617 "parser22.yp"
+#line 701 "parser22.yp"
 {
 			TypeDeclarator->Lookup($_[0],$_[1]);
 		}
-	],
-	[#Rule 122
-		 'base_type_spec', 1, undef
 	],
 	[#Rule 123
 		 'base_type_spec', 1, undef
@@ -4401,7 +4439,7 @@ sub
 		 'base_type_spec', 1, undef
 	],
 	[#Rule 130
-		 'template_type_spec', 1, undef
+		 'base_type_spec', 1, undef
 	],
 	[#Rule 131
 		 'template_type_spec', 1, undef
@@ -4413,7 +4451,7 @@ sub
 		 'template_type_spec', 1, undef
 	],
 	[#Rule 134
-		 'constr_type_spec', 1, undef
+		 'template_type_spec', 1, undef
 	],
 	[#Rule 135
 		 'constr_type_spec', 1, undef
@@ -4422,46 +4460,46 @@ sub
 		 'constr_type_spec', 1, undef
 	],
 	[#Rule 137
-		 'declarators', 1,
-sub
-#line 651 "parser22.yp"
-{ [$_[1]]; }
+		 'constr_type_spec', 1, undef
 	],
 	[#Rule 138
-		 'declarators', 3,
+		 'declarators', 1,
 sub
-#line 652 "parser22.yp"
-{ unshift(@{$_[3]},$_[1]); $_[3]; }
+#line 751 "parser22.yp"
+{
+			[$_[1]];
+		}
 	],
 	[#Rule 139
-		 'declarator', 1,
+		 'declarators', 3,
 sub
-#line 657 "parser22.yp"
-{ [$_[1]]; }
+#line 755 "parser22.yp"
+{
+			unshift(@{$_[3]},$_[1]);
+			$_[3];
+		}
 	],
 	[#Rule 140
-		 'declarator', 1, undef
+		 'declarator', 1,
+sub
+#line 764 "parser22.yp"
+{
+			[$_[1]];
+		}
 	],
 	[#Rule 141
-		 'simple_declarator', 1, undef
+		 'declarator', 1, undef
 	],
 	[#Rule 142
-		 'complex_declarator', 1, undef
+		 'simple_declarator', 1, undef
 	],
 	[#Rule 143
-		 'floating_pt_type', 1,
-sub
-#line 674 "parser22.yp"
-{
-			new FloatingPtType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+		 'complex_declarator', 1, undef
 	],
 	[#Rule 144
 		 'floating_pt_type', 1,
 sub
-#line 680 "parser22.yp"
+#line 786 "parser22.yp"
 {
 			new FloatingPtType($_[0],
 					'value'				=>	$_[1]
@@ -4469,23 +4507,30 @@ sub
 		}
 	],
 	[#Rule 145
+		 'floating_pt_type', 1,
+sub
+#line 792 "parser22.yp"
+{
+			new FloatingPtType($_[0],
+					'value'				=>	$_[1]
+			);
+		}
+	],
+	[#Rule 146
 		 'floating_pt_type', 2,
 sub
-#line 686 "parser22.yp"
+#line 798 "parser22.yp"
 {
 			new FloatingPtType($_[0],
 					'value'				=>	$_[1] . ' ' . $_[2]
 			);
 		}
 	],
-	[#Rule 146
-		 'integer_type', 1, undef
-	],
 	[#Rule 147
 		 'integer_type', 1, undef
 	],
 	[#Rule 148
-		 'signed_int', 1, undef
+		 'integer_type', 1, undef
 	],
 	[#Rule 149
 		 'signed_int', 1, undef
@@ -4494,19 +4539,12 @@ sub
 		 'signed_int', 1, undef
 	],
 	[#Rule 151
-		 'signed_short_int', 1,
-sub
-#line 709 "parser22.yp"
-{
-			new IntegerType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+		 'signed_int', 1, undef
 	],
 	[#Rule 152
-		 'signed_long_int', 1,
+		 'signed_short_int', 1,
 sub
-#line 719 "parser22.yp"
+#line 826 "parser22.yp"
 {
 			new IntegerType($_[0],
 					'value'				=>	$_[1]
@@ -4514,17 +4552,24 @@ sub
 		}
 	],
 	[#Rule 153
+		 'signed_long_int', 1,
+sub
+#line 836 "parser22.yp"
+{
+			new IntegerType($_[0],
+					'value'				=>	$_[1]
+			);
+		}
+	],
+	[#Rule 154
 		 'signed_longlong_int', 2,
 sub
-#line 729 "parser22.yp"
+#line 846 "parser22.yp"
 {
 			new IntegerType($_[0],
 					'value'				=>	$_[1] . ' ' . $_[2]
 			);
 		}
-	],
-	[#Rule 154
-		 'unsigned_int', 1, undef
 	],
 	[#Rule 155
 		 'unsigned_int', 1, undef
@@ -4533,19 +4578,12 @@ sub
 		 'unsigned_int', 1, undef
 	],
 	[#Rule 157
-		 'unsigned_short_int', 2,
-sub
-#line 746 "parser22.yp"
-{
-			new IntegerType($_[0],
-					'value'				=>	$_[1] . ' ' . $_[2]
-			);
-		}
+		 'unsigned_int', 1, undef
 	],
 	[#Rule 158
-		 'unsigned_long_int', 2,
+		 'unsigned_short_int', 2,
 sub
-#line 756 "parser22.yp"
+#line 866 "parser22.yp"
 {
 			new IntegerType($_[0],
 					'value'				=>	$_[1] . ' ' . $_[2]
@@ -4553,136 +4591,138 @@ sub
 		}
 	],
 	[#Rule 159
+		 'unsigned_long_int', 2,
+sub
+#line 876 "parser22.yp"
+{
+			new IntegerType($_[0],
+					'value'				=>	$_[1] . ' ' . $_[2]
+			);
+		}
+	],
+	[#Rule 160
 		 'unsigned_longlong_int', 3,
 sub
-#line 766 "parser22.yp"
+#line 886 "parser22.yp"
 {
 			new IntegerType($_[0],
 					'value'				=>	$_[1] . ' ' . $_[2] . ' ' . $_[3]
 			);
 		}
 	],
-	[#Rule 160
+	[#Rule 161
 		 'char_type', 1,
 sub
-#line 776 "parser22.yp"
+#line 896 "parser22.yp"
 {
 			new CharType($_[0],
 					'value'				=>	$_[1]
 			);
 		}
 	],
-	[#Rule 161
+	[#Rule 162
 		 'wide_char_type', 1,
 sub
-#line 786 "parser22.yp"
+#line 906 "parser22.yp"
 {
 			new WideCharType($_[0],
 					'value'				=>	$_[1]
 			);
 		}
 	],
-	[#Rule 162
+	[#Rule 163
 		 'boolean_type', 1,
 sub
-#line 796 "parser22.yp"
+#line 916 "parser22.yp"
 {
 			new BooleanType($_[0],
 					'value'				=>	$_[1]
 			);
 		}
 	],
-	[#Rule 163
+	[#Rule 164
 		 'octet_type', 1,
 sub
-#line 806 "parser22.yp"
+#line 926 "parser22.yp"
 {
 			new OctetType($_[0],
 					'value'				=>	$_[1]
 			);
 		}
 	],
-	[#Rule 164
+	[#Rule 165
 		 'any_type', 1,
 sub
-#line 816 "parser22.yp"
+#line 936 "parser22.yp"
 {
 			new AnyType($_[0],
 					'value'				=>	$_[1]
 			);
 		}
 	],
-	[#Rule 165
+	[#Rule 166
 		 'object_type', 1,
 sub
-#line 826 "parser22.yp"
+#line 946 "parser22.yp"
 {
 			new ObjectType($_[0],
 					'value'				=>	$_[1]
 			);
 		}
 	],
-	[#Rule 166
+	[#Rule 167
 		 'struct_type', 4,
 sub
-#line 836 "parser22.yp"
+#line 956 "parser22.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[1]->Configure($_[0],
 					'list_expr'			=>	$_[3]
-			);
-		}
-	],
-	[#Rule 167
-		 'struct_type', 4,
-sub
-#line 843 "parser22.yp"
-{
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("member excepted.\n");
-			$_[0]->YYErrok();
+			) if (defined $_[1]);
 		}
 	],
 	[#Rule 168
+		 'struct_type', 4,
+sub
+#line 963 "parser22.yp"
+{
+			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+			$_[0]->Error("member expected.\n");
+			$_[0]->YYErrok();
+		}
+	],
+	[#Rule 169
 		 'struct_header', 2,
 sub
-#line 852 "parser22.yp"
+#line 972 "parser22.yp"
 {
 			new StructType($_[0],
 					'idf'				=>	$_[2]
 			);
 		}
 	],
-	[#Rule 169
+	[#Rule 170
 		 'member_list', 1,
 sub
-#line 861 "parser22.yp"
-{ [$_[1]]; }
-	],
-	[#Rule 170
-		 'member_list', 2,
-sub
-#line 862 "parser22.yp"
-{ unshift(@{$_[2]},$_[1]); $_[2]; }
+#line 982 "parser22.yp"
+{
+			[$_[1]];
+		}
 	],
 	[#Rule 171
-		 'member', 3,
+		 'member_list', 2,
 sub
-#line 868 "parser22.yp"
+#line 986 "parser22.yp"
 {
-			new Members($_[0],
-					'type'				=>	$_[1],
-					'list_expr'			=>	$_[2]
-			);
+			unshift(@{$_[2]},$_[1]);
+			$_[2];
 		}
 	],
 	[#Rule 172
 		 'member', 3,
 sub
-#line 875 "parser22.yp"
+#line 995 "parser22.yp"
 {
-			$_[0]->Error("';' excepted.\n");
-			$_[0]->YYErrok();
 			new Members($_[0],
 					'type'				=>	$_[1],
 					'list_expr'			=>	$_[2]
@@ -4690,69 +4730,79 @@ sub
 		}
 	],
 	[#Rule 173
-		 'union_type', 8,
+		 'member', 3,
 sub
-#line 888 "parser22.yp"
+#line 1002 "parser22.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[1]->Configure($_[0],
-					'type'				=>	$_[4],
-					'list_expr'			=>	$_[7]
+			$_[0]->Error("';' expected.\n");
+			$_[0]->YYErrok();
+			new Members($_[0],
+					'type'				=>	$_[1],
+					'list_expr'			=>	$_[2]
 			);
 		}
 	],
 	[#Rule 174
 		 'union_type', 8,
 sub
-#line 896 "parser22.yp"
+#line 1015 "parser22.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("switch_body excepted.\n");
-			$_[0]->YYErrok();
+			$_[1]->Configure($_[0],
+					'type'				=>	$_[4],
+					'list_expr'			=>	$_[7]
+			) if (defined $_[1]);
 		}
 	],
 	[#Rule 175
-		 'union_type', 6,
+		 'union_type', 8,
 sub
-#line 902 "parser22.yp"
+#line 1023 "parser22.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("'\x7b' excepted.\n");
+			$_[0]->Error("switch_body expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 176
-		 'union_type', 5,
+		 'union_type', 6,
 sub
-#line 908 "parser22.yp"
+#line 1029 "parser22.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("switch_type_spec excepted.\n");
+			$_[0]->Error("'\x7b' expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 177
-		 'union_type', 3,
+		 'union_type', 5,
 sub
-#line 914 "parser22.yp"
+#line 1035 "parser22.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("'(' excepted.\n");
+			$_[0]->Error("switch_type_spec expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 178
+		 'union_type', 3,
+sub
+#line 1041 "parser22.yp"
+{
+			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+			$_[0]->Error("'(' expected.\n");
+			$_[0]->YYErrok();
+		}
+	],
+	[#Rule 179
 		 'union_header', 2,
 sub
-#line 923 "parser22.yp"
+#line 1050 "parser22.yp"
 {
 			new UnionType($_[0],
 					'idf'				=>	$_[2],
 			);
 		}
-	],
-	[#Rule 179
-		 'switch_type_spec', 1, undef
 	],
 	[#Rule 180
 		 'switch_type_spec', 1, undef
@@ -4764,43 +4814,38 @@ sub
 		 'switch_type_spec', 1, undef
 	],
 	[#Rule 183
+		 'switch_type_spec', 1, undef
+	],
+	[#Rule 184
 		 'switch_type_spec', 1,
 sub
-#line 937 "parser22.yp"
+#line 1068 "parser22.yp"
 {
 			TypeDeclarator->Lookup($_[0],$_[1]);
 		}
 	],
-	[#Rule 184
+	[#Rule 185
 		 'switch_body', 1,
 sub
-#line 944 "parser22.yp"
-{ [$_[1]]; }
-	],
-	[#Rule 185
-		 'switch_body', 2,
-sub
-#line 945 "parser22.yp"
-{ unshift(@{$_[2]},$_[1]); $_[2]; }
+#line 1076 "parser22.yp"
+{
+			[$_[1]];
+		}
 	],
 	[#Rule 186
-		 'case', 3,
+		 'switch_body', 2,
 sub
-#line 951 "parser22.yp"
+#line 1080 "parser22.yp"
 {
-			new Case($_[0],
-					'list_label'		=>	$_[1],
-					'element'			=>	$_[2]
-			);
+			unshift(@{$_[2]},$_[1]);
+			$_[2];
 		}
 	],
 	[#Rule 187
 		 'case', 3,
 sub
-#line 958 "parser22.yp"
+#line 1089 "parser22.yp"
 {
-			$_[0]->Error("';' excepted.\n");
-			$_[0]->YYErrok();
 			new Case($_[0],
 					'list_label'		=>	$_[1],
 					'element'			=>	$_[2]
@@ -4808,66 +4853,84 @@ sub
 		}
 	],
 	[#Rule 188
-		 'case_labels', 1,
+		 'case', 3,
 sub
-#line 969 "parser22.yp"
-{ [$_[1]]; }
+#line 1096 "parser22.yp"
+{
+			$_[0]->Error("';' expected.\n");
+			$_[0]->YYErrok();
+			new Case($_[0],
+					'list_label'		=>	$_[1],
+					'element'			=>	$_[2]
+			);
+		}
 	],
 	[#Rule 189
-		 'case_labels', 2,
+		 'case_labels', 1,
 sub
-#line 970 "parser22.yp"
-{ unshift(@{$_[2]},$_[1]); $_[2]; }
+#line 1108 "parser22.yp"
+{
+			[$_[1]];
+		}
 	],
 	[#Rule 190
-		 'case_label', 3,
+		 'case_labels', 2,
 sub
-#line 976 "parser22.yp"
+#line 1112 "parser22.yp"
 {
-			$_[2];						# here only a expression, type is not known
+			unshift(@{$_[2]},$_[1]);
+			$_[2];
 		}
 	],
 	[#Rule 191
 		 'case_label', 3,
 sub
-#line 980 "parser22.yp"
+#line 1121 "parser22.yp"
 {
-			$_[0]->Error("':' excepted.\n");
-			$_[0]->YYErrok();
-			$_[2];
+			$_[2];						# here only a expression, type is not known
 		}
 	],
 	[#Rule 192
-		 'case_label', 2,
+		 'case_label', 3,
 sub
-#line 986 "parser22.yp"
+#line 1125 "parser22.yp"
 {
-			$_[0]->Error("Expression excepted.\n");
+			$_[0]->Error("':' expected.\n");
 			$_[0]->YYErrok();
+			$_[2];
 		}
 	],
 	[#Rule 193
 		 'case_label', 2,
 sub
-#line 991 "parser22.yp"
+#line 1131 "parser22.yp"
 {
-			new Default($_[0]);
+			$_[0]->Error("Expression expected.\n");
+			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 194
 		 'case_label', 2,
 sub
-#line 995 "parser22.yp"
+#line 1136 "parser22.yp"
 {
-			$_[0]->Error("':' excepted.\n");
-			$_[0]->YYErrok();
 			new Default($_[0]);
 		}
 	],
 	[#Rule 195
+		 'case_label', 2,
+sub
+#line 1140 "parser22.yp"
+{
+			$_[0]->Error("':' expected.\n");
+			$_[0]->YYErrok();
+			new Default($_[0]);
+		}
+	],
+	[#Rule 196
 		 'element_spec', 2,
 sub
-#line 1005 "parser22.yp"
+#line 1150 "parser22.yp"
 {
 			new Element($_[0],
 					'type'			=>	$_[1],
@@ -4875,98 +4938,102 @@ sub
 			);
 		}
 	],
-	[#Rule 196
-		 'enum_type', 4,
-sub
-#line 1016 "parser22.yp"
-{
-			$_[1]->Configure($_[0],
-					'list_expr'		=>	$_[3]
-			)
-					if (defined $_[1]);
-		}
-	],
 	[#Rule 197
 		 'enum_type', 4,
 sub
-#line 1023 "parser22.yp"
+#line 1161 "parser22.yp"
 {
-			$_[0]->Error("enumerator excepted.\n");
-			$_[0]->YYErrok();
+			$_[1]->Configure($_[0],
+					'list_expr'		=>	$_[3]
+			) if (defined $_[1]);
 		}
 	],
 	[#Rule 198
-		 'enum_type', 2,
+		 'enum_type', 4,
 sub
-#line 1028 "parser22.yp"
+#line 1167 "parser22.yp"
 {
-			$_[0]->Error("'\x7b' excepted.\n");
+			$_[0]->Error("enumerator expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 199
+		 'enum_type', 2,
+sub
+#line 1172 "parser22.yp"
+{
+			$_[0]->Error("'\x7b' expected.\n");
+			$_[0]->YYErrok();
+		}
+	],
+	[#Rule 200
 		 'enum_header', 2,
 sub
-#line 1036 "parser22.yp"
+#line 1180 "parser22.yp"
 {
 			new EnumType($_[0],
 					'idf'				=>	$_[2],
 			);
 		}
 	],
-	[#Rule 200
+	[#Rule 201
 		 'enum_header', 2,
 sub
-#line 1042 "parser22.yp"
+#line 1186 "parser22.yp"
 {
-			$_[0]->Error("Identifier excepted.\n");
+			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 201
+	[#Rule 202
 		 'enumerators', 1,
 sub
-#line 1049 "parser22.yp"
-{ [$_[1]]; }
-	],
-	[#Rule 202
-		 'enumerators', 3,
-sub
-#line 1050 "parser22.yp"
-{ unshift(@{$_[3]},$_[1]); $_[3]; }
+#line 1194 "parser22.yp"
+{
+			[$_[1]];
+		}
 	],
 	[#Rule 203
-		 'enumerators', 2,
+		 'enumerators', 3,
 sub
-#line 1052 "parser22.yp"
+#line 1198 "parser22.yp"
 {
-			$_[0]->Warning("',' unexcepted.\n");
-			[$_[1]];
+			unshift(@{$_[3]},$_[1]);
+			$_[3];
 		}
 	],
 	[#Rule 204
 		 'enumerators', 2,
 sub
-#line 1057 "parser22.yp"
+#line 1203 "parser22.yp"
 {
-			$_[0]->Error("';' unexcepted.\n");
+			$_[0]->Warning("',' unexpected.\n");
 			[$_[1]];
 		}
 	],
 	[#Rule 205
+		 'enumerators', 2,
+sub
+#line 1208 "parser22.yp"
+{
+			$_[0]->Error("';' unexpected.\n");
+			[$_[1]];
+		}
+	],
+	[#Rule 206
 		 'enumerator', 1,
 sub
-#line 1066 "parser22.yp"
+#line 1217 "parser22.yp"
 {
 			new Enum($_[0],
 					'idf'				=>	$_[1]
 			);
 		}
 	],
-	[#Rule 206
+	[#Rule 207
 		 'sequence_type', 6,
 sub
-#line 1076 "parser22.yp"
+#line 1227 "parser22.yp"
 {
 			new SequenceType($_[0],
 					'value'				=>	$_[1],
@@ -4975,19 +5042,19 @@ sub
 			);
 		}
 	],
-	[#Rule 207
+	[#Rule 208
 		 'sequence_type', 6,
 sub
-#line 1084 "parser22.yp"
+#line 1235 "parser22.yp"
 {
-			$_[0]->Error("Expression excepted.\n");
+			$_[0]->Error("Expression expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 208
+	[#Rule 209
 		 'sequence_type', 4,
 sub
-#line 1089 "parser22.yp"
+#line 1240 "parser22.yp"
 {
 			new SequenceType($_[0],
 					'value'				=>	$_[1],
@@ -4995,58 +5062,58 @@ sub
 			);
 		}
 	],
-	[#Rule 209
+	[#Rule 210
 		 'sequence_type', 4,
 sub
-#line 1096 "parser22.yp"
+#line 1247 "parser22.yp"
 {
-			$_[0]->Error("simple_type_spec excepted.\n");
-			$_[0]->YYErrok();
-		}
-	],
-	[#Rule 210
-		 'sequence_type', 2,
-sub
-#line 1101 "parser22.yp"
-{
-			$_[0]->Error("'<' excepted.\n");
+			$_[0]->Error("simple_type_spec expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 211
+		 'sequence_type', 2,
+sub
+#line 1252 "parser22.yp"
+{
+			$_[0]->Error("'<' expected.\n");
+			$_[0]->YYErrok();
+		}
+	],
+	[#Rule 212
 		 'string_type', 4,
 sub
-#line 1110 "parser22.yp"
+#line 1261 "parser22.yp"
 {
 			new StringType($_[0],
 					'value'				=>	$_[1],
 					'max'				=>	$_[3]
-			);
-		}
-	],
-	[#Rule 212
-		 'string_type', 1,
-sub
-#line 1117 "parser22.yp"
-{
-			new StringType($_[0],
-					'value'				=>	$_[1]
 			);
 		}
 	],
 	[#Rule 213
-		 'string_type', 4,
+		 'string_type', 1,
 sub
-#line 1123 "parser22.yp"
+#line 1268 "parser22.yp"
 {
-			$_[0]->Error("Expression excepted.\n");
-			$_[0]->YYErrok();
+			new StringType($_[0],
+					'value'				=>	$_[1]
+			);
 		}
 	],
 	[#Rule 214
+		 'string_type', 4,
+sub
+#line 1274 "parser22.yp"
+{
+			$_[0]->Error("Expression expected.\n");
+			$_[0]->YYErrok();
+		}
+	],
+	[#Rule 215
 		 'wide_string_type', 4,
 sub
-#line 1132 "parser22.yp"
+#line 1283 "parser22.yp"
 {
 			new WideStringType($_[0],
 					'value'				=>	$_[1],
@@ -5054,62 +5121,72 @@ sub
 			);
 		}
 	],
-	[#Rule 215
+	[#Rule 216
 		 'wide_string_type', 1,
 sub
-#line 1139 "parser22.yp"
+#line 1290 "parser22.yp"
 {
 			new WideStringType($_[0],
 					'value'				=>	$_[1]
 			);
 		}
 	],
-	[#Rule 216
+	[#Rule 217
 		 'wide_string_type', 4,
 sub
-#line 1145 "parser22.yp"
+#line 1296 "parser22.yp"
 {
-			$_[0]->Error("Expression excepted.\n");
+			$_[0]->Error("Expression expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 217
+	[#Rule 218
 		 'array_declarator', 2,
 sub
-#line 1153 "parser22.yp"
-{ unshift(@{$_[2]},$_[1]); $_[2]; }
-	],
-	[#Rule 218
-		 'fixed_array_sizes', 1,
-sub
-#line 1157 "parser22.yp"
-{ [$_[1]]; }
+#line 1305 "parser22.yp"
+{
+			unshift(@{$_[2]},$_[1]);
+			$_[2];
+		}
 	],
 	[#Rule 219
-		 'fixed_array_sizes', 2,
+		 'fixed_array_sizes', 1,
 sub
-#line 1159 "parser22.yp"
-{ unshift(@{$_[2]},$_[1]); $_[2]; }
+#line 1313 "parser22.yp"
+{
+			[$_[1]];
+		}
 	],
 	[#Rule 220
-		 'fixed_array_size', 3,
+		 'fixed_array_sizes', 2,
 sub
-#line 1164 "parser22.yp"
-{ $_[2]; }
+#line 1317 "parser22.yp"
+{
+			unshift(@{$_[2]},$_[1]);
+			$_[2];
+		}
 	],
 	[#Rule 221
 		 'fixed_array_size', 3,
 sub
-#line 1166 "parser22.yp"
+#line 1326 "parser22.yp"
 {
-			$_[0]->Error("Expression excepted.\n");
-			$_[0]->YYErrok();
+			$_[2];
 		}
 	],
 	[#Rule 222
+		 'fixed_array_size', 3,
+sub
+#line 1330 "parser22.yp"
+{
+			$_[0]->Error("Expression expected.\n");
+			$_[0]->YYErrok();
+		}
+	],
+	[#Rule 223
 		 'attr_dcl', 4,
 sub
-#line 1175 "parser22.yp"
+#line 1339 "parser22.yp"
 {
 			new Attributes($_[0],
 					'modifier'			=>	$_[1],
@@ -5118,137 +5195,135 @@ sub
 			);
 		}
 	],
-	[#Rule 223
+	[#Rule 224
 		 'attr_dcl', 4,
 sub
-#line 1183 "parser22.yp"
+#line 1347 "parser22.yp"
 {
-			$_[0]->Error("declarator excepted.\n");
-			$_[0]->YYErrok();
-		}
-	],
-	[#Rule 224
-		 'attr_dcl', 3,
-sub
-#line 1188 "parser22.yp"
-{
-			$_[0]->Error("type excepted.\n");
+			$_[0]->Error("declarator expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 225
-		 'attr_mod', 1, undef
+		 'attr_dcl', 3,
+sub
+#line 1352 "parser22.yp"
+{
+			$_[0]->Error("type expected.\n");
+			$_[0]->YYErrok();
+		}
 	],
 	[#Rule 226
-		 'attr_mod', 0, undef
+		 'attr_mod', 1, undef
 	],
 	[#Rule 227
-		 'simple_declarators', 1,
-sub
-#line 1200 "parser22.yp"
-{ [$_[1]]; }
+		 'attr_mod', 0, undef
 	],
 	[#Rule 228
-		 'simple_declarators', 3,
+		 'simple_declarators', 1,
 sub
-#line 1202 "parser22.yp"
-{ unshift(@{$_[3]},$_[1]); $_[3]; }
+#line 1367 "parser22.yp"
+{
+			[$_[1]];
+		}
 	],
 	[#Rule 229
+		 'simple_declarators', 3,
+sub
+#line 1371 "parser22.yp"
+{
+			unshift(@{$_[3]},$_[1]);
+			$_[3];
+		}
+	],
+	[#Rule 230
 		 'except_dcl', 3,
 sub
-#line 1208 "parser22.yp"
+#line 1380 "parser22.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[1];
 		}
 	],
-	[#Rule 230
-		 'except_dcl', 4,
-sub
-#line 1213 "parser22.yp"
-{
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[1]->Configure($_[0],
-					'list_expr'			=>	$_[3]
-			)
-					if (defined $_[1]);
-		}
-	],
 	[#Rule 231
 		 'except_dcl', 4,
 sub
-#line 1221 "parser22.yp"
+#line 1385 "parser22.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("'members excepted.\n");
-			$_[0]->YYErrok();
 			$_[1]->Configure($_[0],
 					'list_expr'			=>	$_[3]
-			)
-					if (defined $_[1]);
+			) if (defined $_[1]);
 		}
 	],
 	[#Rule 232
-		 'except_dcl', 2,
+		 'except_dcl', 4,
 sub
-#line 1231 "parser22.yp"
+#line 1392 "parser22.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("'\x7b' excepted.\n");
+			$_[0]->Error("'members expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 233
+		 'except_dcl', 2,
+sub
+#line 1398 "parser22.yp"
+{
+			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+			$_[0]->Error("'\x7b' expected.\n");
+			$_[0]->YYErrok();
+		}
+	],
+	[#Rule 234
 		 'exception_header', 2,
 sub
-#line 1240 "parser22.yp"
+#line 1407 "parser22.yp"
 {
 			new Exception($_[0],
 					'idf'				=>	$_[2],
 			);
 		}
 	],
-	[#Rule 234
+	[#Rule 235
 		 'exception_header', 2,
 sub
-#line 1246 "parser22.yp"
+#line 1413 "parser22.yp"
 {
-			$_[0]->Error("Identifier excepted.\n");
+			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 235
+	[#Rule 236
 		 'op_dcl', 2,
 sub
-#line 1255 "parser22.yp"
+#line 1422 "parser22.yp"
 {
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
 			$_[1]->Configure($_[0],
 					'list_param'	=>	$_[2]
-			)
-					if (defined $_[1]);
+			) if (defined $_[1]);
 		}
 	],
-	[#Rule 236
+	[#Rule 237
 		 'op_dcl', 3,
 sub
-#line 1264 "parser22.yp"
+#line 1430 "parser22.yp"
 {
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
 			$_[1]->Configure($_[0],
 					'list_param'	=>	$_[2],
 					'list_raise'	=>	$_[3]
-			)
-					if (defined $_[1]);
+			) if (defined $_[1]);
 		}
 	],
-	[#Rule 237
+	[#Rule 238
 		 'op_dcl', 4,
 sub
-#line 1274 "parser22.yp"
+#line 1439 "parser22.yp"
 {
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
@@ -5256,39 +5331,37 @@ sub
 					'list_param'	=>	$_[2],
 					'list_raise'	=>	$_[3],
 					'list_context'	=>	$_[4]
-			)
-					if (defined $_[1]);
+			) if (defined $_[1]);
 		}
 	],
-	[#Rule 238
+	[#Rule 239
 		 'op_dcl', 3,
 sub
-#line 1285 "parser22.yp"
+#line 1449 "parser22.yp"
 {
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
 			$_[1]->Configure($_[0],
 					'list_param'	=>	$_[2],
 					'list_context'	=>	$_[3]
-			)
-					if (defined $_[1]);
-		}
-	],
-	[#Rule 239
-		 'op_dcl', 2,
-sub
-#line 1295 "parser22.yp"
-{
-			delete $_[0]->YYData->{unnamed_symbtab}
-					if (exists $_[0]->YYData->{unnamed_symbtab});
-			$_[0]->Error("parameters declaration excepted.\n");
-			$_[0]->YYErrok();
+			) if (defined $_[1]);
 		}
 	],
 	[#Rule 240
+		 'op_dcl', 2,
+sub
+#line 1458 "parser22.yp"
+{
+			delete $_[0]->YYData->{unnamed_symbtab}
+					if (exists $_[0]->YYData->{unnamed_symbtab});
+			$_[0]->Error("parameters declaration expected.\n");
+			$_[0]->YYErrok();
+		}
+	],
+	[#Rule 241
 		 'op_header', 3,
 sub
-#line 1305 "parser22.yp"
+#line 1468 "parser22.yp"
 {
 			new Operation($_[0],
 					'modifier'			=>	$_[1],
@@ -5297,106 +5370,108 @@ sub
 			);
 		}
 	],
-	[#Rule 241
+	[#Rule 242
 		 'op_header', 3,
 sub
-#line 1313 "parser22.yp"
+#line 1476 "parser22.yp"
 {
-			$_[0]->Error("Identifier excepted.\n");
+			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 242
+	[#Rule 243
 		 'op_mod', 1, undef
 	],
-	[#Rule 243
+	[#Rule 244
 		 'op_mod', 0, undef
 	],
-	[#Rule 244
+	[#Rule 245
 		 'op_attribute', 1, undef
 	],
-	[#Rule 245
+	[#Rule 246
 		 'op_type_spec', 1, undef
 	],
-	[#Rule 246
+	[#Rule 247
 		 'op_type_spec', 1,
 sub
-#line 1333 "parser22.yp"
+#line 1500 "parser22.yp"
 {
 			new VoidType($_[0],
 					'value'				=>	$_[1]
 			);
 		}
 	],
-	[#Rule 247
+	[#Rule 248
 		 'parameter_dcls', 3,
 sub
-#line 1343 "parser22.yp"
+#line 1510 "parser22.yp"
 {
 			$_[2];
 		}
 	],
-	[#Rule 248
+	[#Rule 249
 		 'parameter_dcls', 2,
 sub
-#line 1347 "parser22.yp"
+#line 1514 "parser22.yp"
 {
 			undef;
 		}
 	],
-	[#Rule 249
+	[#Rule 250
 		 'parameter_dcls', 3,
 sub
-#line 1351 "parser22.yp"
+#line 1518 "parser22.yp"
 {
-			$_[0]->Error("parameters declaration excepted.\n");
+			$_[0]->Error("parameters declaration expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 250
+	[#Rule 251
 		 'param_dcls', 1,
 sub
-#line 1358 "parser22.yp"
-{ [$_[1]]; }
-	],
-	[#Rule 251
-		 'param_dcls', 3,
-sub
-#line 1359 "parser22.yp"
-{ unshift(@{$_[3]},$_[1]); $_[3]; }
+#line 1526 "parser22.yp"
+{
+			[$_[1]];
+		}
 	],
 	[#Rule 252
-		 'param_dcls', 2,
+		 'param_dcls', 3,
 sub
-#line 1361 "parser22.yp"
+#line 1530 "parser22.yp"
 {
-			$_[0]->Warning("',' unexcepted.\n");
-			[$_[1]];
+			unshift(@{$_[3]},$_[1]);
+			$_[3];
 		}
 	],
 	[#Rule 253
 		 'param_dcls', 2,
 sub
-#line 1366 "parser22.yp"
+#line 1535 "parser22.yp"
 {
-			$_[0]->Error("';' unexcepted.\n");
+			$_[0]->Warning("',' unexpected.\n");
 			[$_[1]];
 		}
 	],
 	[#Rule 254
+		 'param_dcls', 2,
+sub
+#line 1540 "parser22.yp"
+{
+			$_[0]->Error("';' unexpected.\n");
+			[$_[1]];
+		}
+	],
+	[#Rule 255
 		 'param_dcl', 3,
 sub
-#line 1375 "parser22.yp"
+#line 1549 "parser22.yp"
 {
 			new Parameter($_[0],
 					'attr'				=>	$_[1],
 					'type'				=>	$_[2],
 					'idf'				=>	$_[3]
 			);
-        }
-	],
-	[#Rule 255
-		 'param_attribute', 1, undef
+		}
 	],
 	[#Rule 256
 		 'param_attribute', 1, undef
@@ -5405,91 +5480,101 @@ sub
 		 'param_attribute', 1, undef
 	],
 	[#Rule 258
-		 'raises_expr', 4,
-sub
-#line 1394 "parser22.yp"
-{
-			$_[3];
-		}
+		 'param_attribute', 1, undef
 	],
 	[#Rule 259
 		 'raises_expr', 4,
 sub
-#line 1398 "parser22.yp"
+#line 1571 "parser22.yp"
 {
-			$_[0]->Error("name excepted.\n");
-			$_[0]->YYErrok();
+			$_[3];
 		}
 	],
 	[#Rule 260
-		 'raises_expr', 2,
+		 'raises_expr', 4,
 sub
-#line 1403 "parser22.yp"
+#line 1575 "parser22.yp"
 {
-			$_[0]->Error("'(' excepted.\n");
+			$_[0]->Error("name expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 261
-		 'exception_names', 1,
+		 'raises_expr', 2,
 sub
-#line 1410 "parser22.yp"
-{ [$_[1]]; }
+#line 1580 "parser22.yp"
+{
+			$_[0]->Error("'(' expected.\n");
+			$_[0]->YYErrok();
+		}
 	],
 	[#Rule 262
-		 'exception_names', 3,
+		 'exception_names', 1,
 sub
-#line 1411 "parser22.yp"
-{ unshift(@{$_[3]},$_[1]); $_[3]; }
+#line 1588 "parser22.yp"
+{
+			[$_[1]];
+		}
 	],
 	[#Rule 263
-		 'exception_name', 1,
+		 'exception_names', 3,
 sub
-#line 1416 "parser22.yp"
+#line 1592 "parser22.yp"
 {
-			Exception->Lookup($_[0],$_[1]);
+			unshift(@{$_[3]},$_[1]);
+			$_[3];
 		}
 	],
 	[#Rule 264
-		 'context_expr', 4,
+		 'exception_name', 1,
 sub
-#line 1424 "parser22.yp"
+#line 1600 "parser22.yp"
 {
-			$_[3];
+			Exception->Lookup($_[0],$_[1]);
 		}
 	],
 	[#Rule 265
 		 'context_expr', 4,
 sub
-#line 1428 "parser22.yp"
+#line 1608 "parser22.yp"
 {
-			$_[0]->Error("string excepted.\n");
-			$_[0]->YYErrok();
+			$_[3];
 		}
 	],
 	[#Rule 266
-		 'context_expr', 2,
+		 'context_expr', 4,
 sub
-#line 1433 "parser22.yp"
+#line 1612 "parser22.yp"
 {
-			$_[0]->Error("'(' excepted.\n");
+			$_[0]->Error("string expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 267
-		 'string_literals', 1,
+		 'context_expr', 2,
 sub
-#line 1440 "parser22.yp"
-{ [$_[1]]; }
+#line 1617 "parser22.yp"
+{
+			$_[0]->Error("'(' expected.\n");
+			$_[0]->YYErrok();
+		}
 	],
 	[#Rule 268
-		 'string_literals', 3,
+		 'string_literals', 1,
 sub
-#line 1441 "parser22.yp"
-{ unshift(@{$_[3]},$_[1]); $_[3]; }
+#line 1625 "parser22.yp"
+{
+			[$_[1]];
+		}
 	],
 	[#Rule 269
-		 'param_type_spec', 1, undef
+		 'string_literals', 3,
+sub
+#line 1629 "parser22.yp"
+{
+			unshift(@{$_[3]},$_[1]);
+			$_[3];
+		}
 	],
 	[#Rule 270
 		 'param_type_spec', 1, undef
@@ -5501,17 +5586,20 @@ sub
 		 'param_type_spec', 1, undef
 	],
 	[#Rule 273
+		 'param_type_spec', 1, undef
+	],
+	[#Rule 274
 		 'param_type_spec', 1,
 sub
-#line 1451 "parser22.yp"
+#line 1646 "parser22.yp"
 {
 			TypeDeclarator->Lookup($_[0],$_[1]);
 		}
 	],
-	[#Rule 274
+	[#Rule 275
 		 'fixed_pt_type', 6,
 sub
-#line 1459 "parser22.yp"
+#line 1654 "parser22.yp"
 {
 			new FixedPtType($_[0],
 					'value'				=>	$_[1],
@@ -5520,39 +5608,39 @@ sub
 			);
 		}
 	],
-	[#Rule 275
+	[#Rule 276
 		 'fixed_pt_type', 6,
 sub
-#line 1467 "parser22.yp"
+#line 1662 "parser22.yp"
 {
-			$_[0]->Error("Expression excepted.\n");
-			$_[0]->YYErrok();
-		}
-	],
-	[#Rule 276
-		 'fixed_pt_type', 4,
-sub
-#line 1472 "parser22.yp"
-{
-			$_[0]->Error("Expression excepted.\n");
+			$_[0]->Error("Expression expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 277
-		 'fixed_pt_type', 2,
+		 'fixed_pt_type', 4,
 sub
-#line 1477 "parser22.yp"
+#line 1667 "parser22.yp"
 {
-			$_[0]->Error("'<' excepted.\n");
+			$_[0]->Error("Expression expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
 	[#Rule 278
+		 'fixed_pt_type', 2,
+sub
+#line 1672 "parser22.yp"
+{
+			$_[0]->Error("'<' expected.\n");
+			$_[0]->YYErrok();
+		}
+	],
+	[#Rule 279
 		 'fixed_pt_const_type', 1,
 sub
-#line 1486 "parser22.yp"
+#line 1681 "parser22.yp"
 {
-			new FixedPtType($_[0],
+			new FixedPtConstType($_[0],
 					'value'				=>	$_[1]
 			);
 		}
@@ -5562,10 +5650,15 @@ sub
     bless($self,$class);
 }
 
-#line 1493 "parser22.yp"
+#line 1688 "parser22.yp"
 
+
+package Parser;
 
 use strict;
+use vars qw($IDL_version);
+$IDL_version = '2.2';
+
 use CORBA::IDL::symbtab;
 use CORBA::IDL::node;
 

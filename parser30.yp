@@ -1,5 +1,5 @@
 /*
- *	Interface Definition Language (OMG IDL CORBA v2.4)
+ *	Interface Definition Language (OMG IDL CORBA v3.0)
  */
 
 %token	IDENTIFIER
@@ -17,33 +17,46 @@
 %token	BOOLEAN
 %token	CASE
 %token	CHAR
+%token	COMPONENT
 %token	CONST
+%token	CONSUMES
 %token	CONTEXT
 %token	CUSTOM
 %token	DEFAULT
 %token	DOUBLE
+%token	EMITS
 %token	ENUM
+%token	EVENTTYPE
 %token	EXCEPTION
 %token	FACTORY
 %token	FALSE
+%token	FINDER
 %token	FIXED
 %token	FLOAT
+%token	GETRAISES
+%token	HOME
+%token	IMPORT
 %token	IN
 %token	INOUT
 %token	INTERFACE
 %token	LOCAL
 %token	LONG
 %token	MODULE
+%token	MULTIPLE
 %token	NATIVE
 %token	OBJECT
 %token	OCTET
 %token	ONEWAY
 %token	OUT
+%token	PRIMARYKEY
 %token	PRIVATE
+%token	PROVIDES
 %token	PUBLIC
+%token	PUBLISHES
 %token	RAISES
 %token	READONLY
 %token	SEQUENCE
+%token	SETRAISES
 %token	SHORT
 %token	STRING
 %token	STRUCT
@@ -52,7 +65,10 @@
 %token	TRUE
 %token	TRUNCATABLE
 %token	TYPEDEF
+%token	TYPEID
+%token	TYPEPREFIX
 %token	UNION
+%token	USES
 %token	UNSIGNED
 %token	VALUEBASE
 %token	VALUETYPE
@@ -66,7 +82,14 @@
 
 /* 1 */		/* 3.5	OMG IDL Specification */
 specification
-:	definitions
+:	imports		definitions
+		{
+			$_[0]->YYData->{root} = new Specification($_[0],
+					'list_import'		=>	$_[1],
+					'list_decl'			=>	$_[2],
+			);
+		}
+|	definitions
 		{
 			$_[0]->YYData->{root} = new Specification($_[0],
 					'list_decl'			=>	$_[1],
@@ -79,6 +102,18 @@ specification
 |	error
 		{
 			$_[0]->Error("definition declaration expected.\n");
+		}
+;
+
+imports
+:	import
+		{
+			[$_[1]];
+		}
+|	import		imports
+		{
+			unshift(@{$_[2]},$_[1]);
+			$_[2];
 		}
 ;
 
@@ -107,6 +142,16 @@ definition
 |	module			';'
 										#default action
 |	value			';'
+										#default action
+|	type_id_dcl		';'
+										#default action
+|	type_prefix_dcl	';'
+										#default action
+|	event			';'
+										#default action
+|	component		';'
+										#default action
+|	home_dcl		';'
 										#default action
 |	type_dcl		error
 		{
@@ -144,9 +189,39 @@ definition
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
+|	type_id_dcl		error
+		{
+			$_[0]->Warning("';' expected.\n");
+			$_[0]->YYErrok();
+			$_[1];						#default action
+		}
+|	type_prefix_dcl	error
+		{
+			$_[0]->Warning("';' expected.\n");
+			$_[0]->YYErrok();
+			$_[1];						#default action
+		}
+|	event			error
+		{
+			$_[0]->Warning("';' expected.\n");
+			$_[0]->YYErrok();
+			$_[1];						#default action
+		}
+|	component		error
+		{
+			$_[0]->Warning("';' expected.\n");
+			$_[0]->YYErrok();
+			$_[1];						#default action
+		}
+|	home_dcl		error
+		{
+			$_[0]->Warning("';' expected.\n");
+			$_[0]->YYErrok();
+			$_[1];						#default action
+		}
 ;
 
-/* 3 */		/* 3.6	Module Declaration */
+/* 3 */		/* 3.7	Module Declaration */
 module
 :	module_header	'{'	definitions	'}'
 		{
@@ -161,7 +236,13 @@ module
 			$_[0]->Error("definition declaration expected.\n");
 			$_[0]->YYErrok();
 		}
-|	module_header	error
+|	module_header	'{'	'}'
+		{
+			$_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
+			$_[0]->Error("Empty module.\n");
+			$_[0]->YYErrok();
+		}
+|	module_header	error	'}'
 		{
 			$_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
 			$_[0]->Error("'\x7b' expected.\n");
@@ -183,7 +264,7 @@ module_header
 		}
 ;
 
-/* 4 */		/* 3.7	Interface Declaration */
+/* 4 */		/* 3.8	Interface Declaration */
 interface
 :	interface_dcl
 										#default action
@@ -218,7 +299,7 @@ interface_dcl
 		}
 ;
 
-/* 6 */		/* 3.7.4	Forward Declaration */
+/* 6 */		/* 3.8.4	Forward Declaration */
 forward_dcl
 :	interface_mod	INTERFACE	IDENTIFIER
 		{
@@ -244,15 +325,15 @@ forward_dcl
 ;
 
 interface_mod
-:	ABSTRACT		/* 6.2		Semantics of Abstract Interfaces */
+:	ABSTRACT		/* 3.8.6	Abstract Interface */
 										#default action
-|	LOCAL			/* 3.7.6	Local Interface */
+|	LOCAL			/* 3.8.7	Local Interface */
 										#default action
 |	/* empty */
 										#default action
 ;
 
-/* 7 */		/* 3.7.1	Interface Header */
+/* 7 */		/* 3.8.1	Interface Header */
 interface_header
 :	interface_mod	INTERFACE	IDENTIFIER
 		{
@@ -299,7 +380,7 @@ interface_header
 		}
 ;
 
-/* 8 */		/* 3.7.3 Interface Body */
+/* 8 */		/* 3.8.3	Interface Body */
 interface_body
 :	exports
 										#default action
@@ -328,6 +409,10 @@ export
 |	attr_dcl		';'
 										#default action
 |	op_dcl			';'
+										#default action
+|	type_id_dcl		';'
+										#default action
+|	type_prefix_dcl	';'
 										#default action
 |	type_dcl		error
 		{
@@ -359,9 +444,21 @@ export
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
+|	type_id_dcl		error
+		{
+			$_[0]->Warning("';' expected.\n");
+			$_[0]->YYErrok();
+			$_[1];						#default action
+		}
+|	type_prefix_dcl	error
+		{
+			$_[0]->Warning("';' expected.\n");
+			$_[0]->YYErrok();
+			$_[1];						#default action
+		}
 ;
 
-/* 10 */	/* 3.7.5	Interface Inheritance */
+/* 10 */	/* 3.8.5	Interface Inheritance */
 interface_inheritance_spec
 :	':'	interface_names
 		{
@@ -420,7 +517,7 @@ scoped_name
 		}
 ;
 
-/* 13 */	/* 3.8	Value Declaration */
+/* 13 */	/* 3.9	Value Declaration */
 value
 :	value_dcl
 										#default action
@@ -432,7 +529,7 @@ value
 										#default action
 ;
 
-/* 14 */	/* 3.8.4	Value Forward declaration */
+/* 14 */	/* 3.9.4	Value Forward declaration */
 value_forward_dcl
 :				VALUETYPE	IDENTIFIER
 		{
@@ -448,7 +545,7 @@ value_forward_dcl
 		}
 ;
 
-/* 15 */	/*	3.8.2	Boxed Value Type */
+/* 15 */	/*	3.9.2	Boxed Value Type */
 value_box_dcl
 :	VALUETYPE	IDENTIFIER	type_spec
 		{
@@ -459,7 +556,7 @@ value_box_dcl
 		}
 ;
 
-/* 16 */	/* 3.8.3	Abstract Value Type */
+/* 16 */	/* 3.9.3	Abstract Value Type */
 value_abs_dcl
 :	value_abs_header	'{'	'}'
 		{
@@ -512,7 +609,7 @@ value_abs_header
 		}
 ;
 
-/* 17 */	/* 3.8.1	Regular Value Type */
+/* 17 */	/* 3.9.1	Regular Value Type */
 value_dcl
 :	value_header	'{'	'}'
 		{
@@ -598,7 +695,7 @@ value_header
 		}
 ;
 
-/* 19 */	/* 3.8.5	Valuetype Inheritance */
+/* 19 */	/* 3.9.5	Valuetype Inheritance */
 value_inheritance_spec
 :	':'	inheritance_mod	value_names
 		{
@@ -647,18 +744,6 @@ value_names
 		}
 ;
 
-supported_interface_spec
-:	SUPPORTS	interface_names
-		{
-			$_[2];
-		}
-|	SUPPORTS	error
-		{
-			$_[0]->Error("Interface name expected.\n");
-			$_[0]->YYErrok();
-		}
-;
-
 /* 20 */
 value_name
 :	scoped_name
@@ -677,7 +762,7 @@ value_element
 										#default action
 ;
 
-/* 22 */	/* 3.8.1.4	State Members */
+/* 22 */	/* 3.9.1.4	State Members */
 state_member
 :	state_mod	type_spec	declarators	';'
 		{
@@ -686,11 +771,6 @@ state_member
 					'type'				=>	$_[2],
 					'list_expr'			=>	$_[3]
 			);
-		}
-|	state_mod	type_spec	error	';'
-		{
-			$_[0]->Error("declarator expected.\n");
-			$_[0]->YYErrok();
 		}
 |	state_mod	error	';'
 		{
@@ -706,9 +786,23 @@ state_mod
 										#default action
 ;
 
-/* 23 */	/* 3.8.1.5	Initializers */
+/* 23 */	/* 3.9.1.5	Initializers */
 init_dcl
-:	init_header_param	';'
+:	init_header_param	raises_expr	';'
+		{
+			$_[1]->Configure($_[0],
+					'list_raise'	=>	$_[2]
+			) if (defined $_[1]);
+		}
+|	init_header_param	raises_expr	error
+		{
+			$_[0]->Warning("';' expected.\n");
+			$_[0]->YYErrok();
+			$_[1]->Configure($_[0],
+					'list_raise'	=>	$_[2]
+			) if (defined $_[1]);
+		}
+|	init_header_param	';'
 										#default action
 |	init_header_param	error
 		{
@@ -786,6 +880,11 @@ init_param_decl
 					'idf'				=>	$_[3]
 			);
 		}
+|	init_param_attribute	error
+		{
+			$_[0]->Error("Type expected.\n");
+			$_[0]->YYErrok();
+		}
 ;
 
 /* 26 */
@@ -794,7 +893,7 @@ init_param_attribute
 										#default action
 ;
 
-/* 27 */	/* 3.9	Constant Declaration */
+/* 27 */	/* 3.10	Constant Declaration */
 const_dcl
 :	CONST	const_type	IDENTIFIER	'='	const_exp
 		{
@@ -1072,7 +1171,7 @@ positive_int_const
 		}
 ;
 
-/* 42 */	/* 3.10		Type Declaration */
+/* 42 */	/* 3.11		Type Declaration */
 type_dcl
 :	TYPEDEF		type_declarator
 		{
@@ -1084,7 +1183,7 @@ type_dcl
 										#default action
 |	enum_type
 										#default action
-|	NATIVE		simple_declarator		/* 3.10.6	Native Types */
+|	NATIVE		simple_declarator		/* 3.11.5	Native Types */
 		{
 			new TypeDeclarator($_[0],
 					'modifier'			=>	$_[1],
@@ -1098,11 +1197,6 @@ type_dcl
 			$_[0]->Error("type_declarator expected.\n");
 			$_[0]->YYErrok();
 		}
-|	NATIVE		error
-		{
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-		}
 ;
 
 /* 43 */
@@ -1113,11 +1207,6 @@ type_declarator
 					'type'				=>	$_[1],
 					'list_expr'			=>	$_[2]
 			);
-		}
-|	type_spec	error
-		{
-			$_[0]->Error("declarator expected.\n");
-			$_[0]->YYErrok();
 		}
 ;
 
@@ -1163,7 +1252,7 @@ base_type_spec
 										#default action
 ;
 
-/* 47 */	/* 3.10.4	Template Types */
+/* 47 */	/* 3.11.3	Template Types */
 template_type_spec
 :	sequence_type
 										#default action
@@ -1175,7 +1264,7 @@ template_type_spec
 										#default action
 ;
 
-/* 48 */	/* 3.10.2	Constructed Types */
+/* 48 */	/* 3.11.2	Constructed Types */
 constr_type_spec
 :	struct_type
 										#default action
@@ -1212,15 +1301,25 @@ declarator
 simple_declarator
 :	IDENTIFIER
 										#default action
+|	error	','
+		{
+			$_[0]->Error("Identifier expected.\n");
+			$_[0]->YYErrok();
+		}
+|	error	';'
+		{
+			$_[0]->Error("Identifier expected.\n");
+			$_[0]->YYErrok();
+		}
 ;
 
-/* 52 */	/* 3.10.5	Complex Declarator */
+/* 52 */
 complex_declarator
 :	array_declarator
 										#default action
 ;
 
-/* 53 */	/* 3.10.1	Basic Types */
+/* 53 */	/* 3.11.1	Basic Types */
 floating_pt_type
 :	FLOAT
 		{
@@ -1390,7 +1489,7 @@ object_type
 		}
 ;
 
-/* 69 */	/* 3.10.2.1	Structures */
+/* 69 */	/* 3.11.2.1	Structures */
 struct_type
 :	struct_header	'{'	member_list	'}'
 		{
@@ -1413,6 +1512,11 @@ struct_header
 			new StructType($_[0],
 					'idf'				=>	$_[2]
 			);
+		}
+|	STRUCT	error
+		{
+			$_[0]->Error("Identifier expected.\n");
+			$_[0]->YYErrok();
 		}
 ;
 
@@ -1449,7 +1553,7 @@ member
 		}
 ;
 
-/* 72 */	/* 3.10.2.2	Discriminated Unions */
+/* 72 */	/* 3.11.2.2	Discriminated Unions */
 union_type
 :	union_header	SWITCH	'('	switch_type_spec	')'	'{'	switch_body	'}'
 		{
@@ -1491,6 +1595,11 @@ union_header
 			new UnionType($_[0],
 					'idf'				=>	$_[2],
 			);
+		}
+|	UNION	error
+		{
+			$_[0]->Error("Identifier expected.\n");
+			$_[0]->YYErrok();
 		}
 ;
 
@@ -1595,7 +1704,7 @@ element_spec
 		}
 ;
 
-/* 78 */	/* 3.10.2.3	Enumerations */
+/* 78 */	/* 3.11.2.4	Enumerations */
 enum_type
 :	enum_header	'{'	enumerators	'}'
 		{
@@ -1661,7 +1770,7 @@ enumerator
 		}
 ;
 
-/* 80 */	/* 3.10.4.1	Sequences */
+/* 80 */	/* 3.11.3.1	Sequences */
 sequence_type
 :	SEQUENCE	'<'	simple_type_spec	','	positive_int_const	'>'
 		{
@@ -1695,7 +1804,7 @@ sequence_type
 		}
 ;
 
-/* 81 */	/* 3.10.4.2 Strings */
+/* 81 */	/* 3.11.3.2	Strings */
 string_type
 :	STRING	'<'	positive_int_const	'>'
 		{
@@ -1717,7 +1826,7 @@ string_type
 		}
 ;
 
-/* 82 */	/* 3.10.4.3	Wstrings */
+/* 82 */	/* 3.11.3.3	Wstrings */
 wide_string_type
 :	WSTRING	'<'	positive_int_const	'>'
 		{
@@ -1739,7 +1848,7 @@ wide_string_type
 		}
 ;
 
-/* 83 */	/* 3.10.5.1	Arrays */
+/* 83 */	/* 3.11.4.1	Arrays */
 array_declarator
 :	IDENTIFIER	fixed_array_sizes
 		{
@@ -1773,48 +1882,15 @@ fixed_array_size
 		}
 ;
 
-/* 85 */	/* 3.13	Attribute Declaration */
+/* 85 */	/* 3.14	Attribute Declaration */
 attr_dcl
-:	attr_mod	ATTRIBUTE	param_type_spec	simple_declarators
-		{
-			new Attributes($_[0],
-					'modifier'			=>	$_[1],
-					'type'				=>	$_[3],
-					'list_expr'			=>	$_[4]
-			);
-		}
-|	attr_mod	ATTRIBUTE	param_type_spec	error
-		{
-			$_[0]->Error("declarator expected.\n");
-			$_[0]->YYErrok();
-		}
-|	attr_mod	ATTRIBUTE	error
-		{
-			$_[0]->Error("type expected.\n");
-			$_[0]->YYErrok();
-		}
-;
-
-attr_mod
-:	READONLY
+:	readonly_attr_spec
 										#default action
-|	/* empty */
+|	attr_spec
 										#default action
 ;
 
-simple_declarators
-:	simple_declarator
-		{
-			[$_[1]];
-		}
-|	simple_declarator	','	simple_declarators
-		{
-			unshift(@{$_[3]},$_[1]);
-			$_[3];
-		}
-;
-
-/* 86 */	/* 3.11	Exception Declaration */
+/* 86 */	/* 3.12	Exception Declaration */
 except_dcl
 :	exception_header	'{'	'}'
 		{
@@ -1856,7 +1932,7 @@ exception_header
 		}
 ;
 
-/* 87 */	/* 3.12	Operation Declaration */
+/* 87 */	/* 3.13	Operation Declaration */
 op_dcl
 :	op_header	parameter_dcls
 		{
@@ -1926,7 +2002,7 @@ op_mod
 										#default action
 ;
 
-/* 88 */	/* 3.12.1	Operation Attribute */
+/* 88 */	/* 3.13.1	Operation Attribute */
 op_attribute
 :	ONEWAY
 										#default action
@@ -1944,7 +2020,7 @@ op_type_spec
 		}
 ;
 
-/* 90 */	/* 3.12.2	Parameter Declarations */
+/* 90 */	/* 3.13.2	Parameter Declarations */
 parameter_dcls
 :	'('	param_dcls	')'
 		{
@@ -1993,6 +2069,11 @@ param_dcl
 					'idf'				=>	$_[3]
 			);
 		}
+|	param_attribute	error
+		{
+			$_[0]->Error("Type expected.\n");
+			$_[0]->YYErrok();
+		}
 ;
 
 /* 92 */
@@ -2005,7 +2086,7 @@ param_attribute
 										#default action
 ;
 
-/* 93 */	/* 3.12.3	Raises Expressions */
+/* 93 */	/* 3.13.3	Raises Expressions */
 raises_expr
 :	RAISES	'('	exception_names	')'
 		{
@@ -2042,7 +2123,7 @@ exception_name
 		}
 ;
 
-/* 94 */	/* 3.12.4	Context Expressions */
+/* 94 */	/* 3.13.4	Context Expressions */
 context_expr
 :	CONTEXT	'('	string_literals	')'
 		{
@@ -2086,7 +2167,7 @@ param_type_spec
 		}
 ;
 
-/* 96 */	/* 3.10.4.4	Fixed Type */
+/* 96 */	/* 3.11.3.4	Fixed Type */
 fixed_pt_type
 :	FIXED	'<'	positive_int_const	','	positive_int_const	'>'
 		{
@@ -2133,7 +2214,7 @@ value_base_type
 		}
 ;
 
-/* 99 */	/*	3.10.2	Constructed Types */
+/* 99 */	/* 3.11.2	Constructed Types */
 constr_forward_decl
 :	STRUCT	IDENTIFIER
 		{
@@ -2159,13 +2240,954 @@ constr_forward_decl
 		}
 ;
 
+/* 100 */	/* 3.6	Import Declaration */
+import
+:	IMPORT	imported_scope	';'
+		{
+			new Import($_[0],
+					'value'				=>	$_[2]
+			);
+		}
+|	IMPORT	imported_scope	error
+		{
+			$_[0]->Warning("';' expected.\n");
+			$_[0]->YYErrok();
+			new Import($_[0],
+					'value'				=>	$_[2]
+			);
+		}
+|	IMPORT	error
+		{
+			$_[0]->Error("Scoped name expected.\n");
+			$_[0]->YYErrok();
+		}
+;
+
+/* 101 */
+imported_scope
+:	scoped_name
+										#default action
+|	string_literal
+										#default action
+;
+
+/* 102 */	/* 3.15.1	Repository Identity Declaration */
+type_id_dcl
+:	TYPEID	scoped_name	string_literal
+		{
+			new TypeId($_[0],
+					'idf'				=>	$_[2],
+					'value'				=>	$_[3]
+			);
+		}
+|	TYPEID	scoped_name	error
+		{
+			$_[0]->Error("String literal expected.\n");
+			$_[0]->YYErrok();
+		}
+|	TYPEID	error
+		{
+			$_[0]->Error("Scoped name expected.\n");
+			$_[0]->YYErrok();
+		}
+;
+
+/* 103 */	/* 3.15.2	Repository Identifier Prefic Declaration */
+type_prefix_dcl
+:	TYPEPREFIX	scoped_name	string_literal
+		{
+			new TypePrefix($_[0],
+					'idf'				=>	$_[2],
+					'value'				=>	$_[3]
+			);
+		}
+|	TYPEPREFIX	scoped_name	error
+		{
+			$_[0]->Error("String literal expected.\n");
+			$_[0]->YYErrok();
+		}
+|	TYPEPREFIX	'::'		string_literal
+		{
+			new TypePrefix($_[0],
+					'idf'				=>	'',
+					'value'				=>	$_[3]
+			);
+		}
+|	TYPEPREFIX	error
+		{
+			$_[0]->Error("Scoped name expected.\n");
+			$_[0]->YYErrok();
+		}
+;
+
+/* 104 */	/* 3.14	Attribute Declaration */
+readonly_attr_spec
+:	READONLY	ATTRIBUTE	param_type_spec	readonly_attr_declarator
+		{
+			new Attributes($_[0],
+					'modifier'			=>	$_[1],
+					'type'				=>	$_[3],
+					'list_expr'			=>	$_[4]->{list_expr},
+					'list_getraise'		=>	$_[4]->{list_getraise},
+			);
+		}
+|	READONLY	ATTRIBUTE	error
+		{
+			$_[0]->Error("type expected.\n");
+			$_[0]->YYErrok();
+		}
+|	READONLY	error
+		{
+			$_[0]->Error("'attribute' expected.\n");
+			$_[0]->YYErrok();
+		}
+;
+
+/* 105 */
+readonly_attr_declarator
+:	simple_declarator	raises_expr
+		{
+			{
+				'list_expr'			=> [$_[1]],
+				'list_getraise'		=> $_[2]
+			};
+		}
+|	simple_declarators
+		{
+			{
+				'list_expr'			=> $_[1]
+			};
+		}
+;
+
+simple_declarators
+:	simple_declarator
+		{
+			[$_[1]];
+		}
+|	simple_declarator	','	simple_declarators
+		{
+			unshift(@{$_[3]},$_[1]);
+			$_[3];
+		}
+;
+
+/* 106 */
+attr_spec
+:	ATTRIBUTE	param_type_spec	attr_declarator
+		{
+			new Attributes($_[0],
+					'type'				=>	$_[2],
+					'list_expr'			=>	$_[3]->{list_expr},
+					'list_getraise'		=>	$_[3]->{list_getraise},
+					'list_setraise'		=>	$_[3]->{list_setraise},
+			);
+		}
+|	ATTRIBUTE	error
+		{
+			$_[0]->Error("type expected.\n");
+			$_[0]->YYErrok();
+		}
+;
+
+/* 107 */
+attr_declarator
+:	simple_declarator	attr_raises_expr
+		{
+			{
+				'list_expr'			=> [$_[1]],
+				'list_getraise'		=> $_[2]->{list_getraise},
+				'list_setraise'		=> $_[2]->{list_setraise}
+			};
+		}
+|	simple_declarators
+		{
+			{
+				'list_expr'			=> $_[1]
+			};
+		}
+;
+
+/* 108 */
+attr_raises_expr
+:	get_except_expr	set_except_expr
+		{
+			{
+				'list_getraise'		=> $_[1],
+				'list_setraise'		=> $_[2]
+			};
+		}
+|	get_except_expr
+		{
+			{
+				'list_getraise'		=> $_[1],
+			};
+		}
+|	set_except_expr
+		{
+			{
+				'list_setraise'		=> $_[1]
+			};
+		}
+;
+
+/* 109 */
+get_except_expr
+:	GETRAISES	exception_list
+		{
+			$_[2];
+		}
+|	GETRAISES	error
+		{
+			$_[0]->Error("'(' expected.\n");
+			$_[0]->YYErrok();
+		}
+;
+
+/* 110 */
+set_except_expr
+:	SETRAISES	exception_list
+		{
+			$_[2];
+		}
+|	SETRAISES	error
+		{
+			$_[0]->Error("'(' expected.\n");
+			$_[0]->YYErrok();
+		}
+;
+
+/* 111 */
+exception_list
+:	'('	exception_names	')'
+		{
+			$_[2];
+		}
+|	'('	error			')'
+		{
+			$_[0]->Error("name expected.\n");
+			$_[0]->YYErrok();
+		}
+;
+
+/* 112 */	/* 3.17	Component Declaration */
+component
+:	component_dcl
+										#default action
+|	component_forward_dcl
+										#default action
+;
+
+/* 113 */
+component_forward_dcl
+:	COMPONENT	IDENTIFIER
+		{
+			new ForwardComponent($_[0],
+					'idf'				=>	$_[2]
+			);
+		}
+|	COMPONENT	error
+		{
+			$_[0]->Error("Identifier expected.\n");
+			$_[0]->YYErrok();
+		}
+;
+
+/* 114 */
+component_dcl
+:	component_header	'{'	'}'
+		{
+			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+			$_[0]->YYData->{curr_itf} = undef;
+			$_[1]->Configure($_[0],
+					'list_decl'		=>	[]
+			) if (defined $_[1]);
+		}
+|	component_header	'{'	component_body	'}'
+		{
+			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+			$_[0]->YYData->{curr_itf} = undef;
+			$_[1]->Configure($_[0],
+					'list_decl'		=>	$_[3]
+			) if (defined $_[1]);
+		}
+|	component_header	'{'	error			'}'
+		{
+			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+			$_[0]->YYData->{curr_itf} = undef;
+			$_[0]->Error("export declaration expected.\n");
+			$_[0]->YYErrok();
+		}
+;
+
+/* 115 */	/* 3.17.2	Component Header */
+component_header
+:	COMPONENT	IDENTIFIER	component_inheritance_spec	supported_interface_spec
+		{
+			new Component($_[0],
+					'idf'					=>	$_[2],
+					'inheritance'			=>	$_[3],
+					'list_support'			=>	$_[4],
+			);
+		}
+|	COMPONENT	IDENTIFIER	component_inheritance_spec
+		{
+			new Component($_[0],
+					'idf'					=>	$_[2],
+					'inheritance'			=>	$_[3],
+			);
+		}
+|	COMPONENT	IDENTIFIER								supported_interface_spec
+		{
+			new Component($_[0],
+					'idf'					=>	$_[2],
+					'list_support'			=>	$_[3],
+			);
+		}
+|	COMPONENT	IDENTIFIER
+		{
+			new Component($_[0],
+					'idf'					=>	$_[2],
+			);
+		}
+|	COMPONENT	error
+		{
+			$_[0]->Error("Identifier expected.\n");
+			$_[0]->YYErrok();
+		}
+;
+
+/* 116 */
+supported_interface_spec
+:	SUPPORTS	interface_names
+		{
+			$_[2];
+		}
+|	SUPPORTS	error
+		{
+			$_[0]->Error("Interface name expected.\n");
+			$_[0]->YYErrok();
+		}
+;
+
+/* 117 */
+component_inheritance_spec
+:	':'	scoped_name
+		{
+			Component->Lookup($_[0],$_[2]);
+		}
+|	':'	error
+		{
+			$_[0]->Error("Scoped name expected.\n");
+			$_[0]->YYErrok();
+		}
+;
+
+/* 118 */	/* 3.17.3	Component Body */
+component_body
+:	component_exports
+										#default action
+;
+
+component_exports
+:	component_export
+		{
+			[$_[1]->getRef()];
+		}
+|	component_export component_exports
+		{
+			unshift(@{$_[2]},$_[1]->getRef());
+			$_[2];
+		}
+;
+
+/* 119 */
+component_export
+:	provides_dcl	';'
+										#default action
+|	uses_dcl		';'
+										#default action
+|	emits_dcl		';'
+										#default action
+|	publishes_dcl	';'
+										#default action
+|	consumes_dcl	';'
+										#default action
+|	attr_dcl		';'
+										#default action
+|	provides_dcl	error
+		{
+			$_[0]->Warning("';' expected.\n");
+			$_[0]->YYErrok();
+			$_[1];						#default action
+		}
+|	uses_dcl		error
+		{
+			$_[0]->Warning("';' expected.\n");
+			$_[0]->YYErrok();
+			$_[1];						#default action
+		}
+|	emits_dcl		error
+		{
+			$_[0]->Warning("';' expected.\n");
+			$_[0]->YYErrok();
+			$_[1];						#default action
+		}
+|	publishes_dcl	error
+		{
+			$_[0]->Warning("';' expected.\n");
+			$_[0]->YYErrok();
+			$_[1];						#default action
+		}
+|	consumes_dcl	error
+		{
+			$_[0]->Warning("';' expected.\n");
+			$_[0]->YYErrok();
+			$_[1];						#default action
+		}
+|	attr_dcl		error
+		{
+			$_[0]->Warning("';' expected.\n");
+			$_[0]->YYErrok();
+			$_[1];						#default action
+		}
+;
+
+/* 120 */	/* 3.17.3.1	Facets and Navigation */
+provides_dcl
+:	PROVIDES	interface_type	IDENTIFIER
+		{
+			new Provides($_[0],
+					'idf'					=>	$_[3],
+					'type'					=>	$_[2],
+			);
+		}
+|	PROVIDES	interface_type	error
+		{
+			$_[0]->Error("Identifier expected.\n");
+			$_[0]->YYErrok();
+		}
+|	PROVIDES	error
+		{
+			$_[0]->Error("Interface type expected.\n");
+			$_[0]->YYErrok();
+		}
+;
+
+/* 121 */
+interface_type
+:	scoped_name
+		{
+			BaseInterface->Lookup($_[0],$_[1]);
+		}
+|	OBJECT
+										#default action
+;
+
+/* 122 */	/* 3.17.3.2	Receptacles */
+uses_dcl
+:	USES	uses_mod	interface_type	IDENTIFIER
+		{
+			new Uses($_[0],
+					'modifier'				=>	$_[2],
+					'idf'					=>	$_[4],
+					'type'					=>	$_[3],
+			);
+		}
+|	USES	uses_mod	interface_type	error
+		{
+			$_[0]->Error("Identifier expected.\n");
+			$_[0]->YYErrok();
+		}
+|	USES	uses_mod	error
+		{
+			$_[0]->Error("Interface type expected.\n");
+			$_[0]->YYErrok();
+		}
+;
+
+uses_mod
+:	MULTIPLE
+										#default action
+|	/* empty */
+										#default action
+;
+
+/* 123 */	/* 3.17.4.2	Emitters */
+emits_dcl
+:	EMITS	scoped_name	IDENTIFIER
+		{
+			new Emits($_[0],
+					'idf'					=>	$_[3],
+					'type'					=>	Event->Lookup($_[0],$_[2]),
+			);
+		}
+|	EMITS	scoped_name	error
+		{
+			$_[0]->Error("Identifier expected.\n");
+			$_[0]->YYErrok();
+		}
+|	EMITS	error
+		{
+			$_[0]->Error("Scoped name expected.\n");
+			$_[0]->YYErrok();
+		}
+;
+
+/* 124 */	/* 3.17.4.1	Publishers */
+publishes_dcl
+:	PUBLISHES	scoped_name	IDENTIFIER
+		{
+			new Publishes($_[0],
+					'idf'					=>	$_[3],
+					'type'					=>	Event->Lookup($_[0],$_[2]),
+			);
+		}
+|	PUBLISHES	scoped_name	error
+		{
+			$_[0]->Error("Identifier expected.\n");
+			$_[0]->YYErrok();
+		}
+|	PUBLISHES	error
+		{
+			$_[0]->Error("Scoped name expected.\n");
+			$_[0]->YYErrok();
+		}
+;
+
+/* 125 */	/* 3.17.5	Event Sinks */
+consumes_dcl
+:	CONSUMES	scoped_name	IDENTIFIER
+		{
+			new Consumes($_[0],
+					'idf'					=>	$_[3],
+					'type'					=>	Event->Lookup($_[0],$_[2]),
+			);
+		}
+|	CONSUMES	scoped_name	error
+		{
+			$_[0]->Error("Identifier expected.\n");
+			$_[0]->YYErrok();
+		}
+|	CONSUMES	error
+		{
+			$_[0]->Error("Scoped name expected.\n");
+			$_[0]->YYErrok();
+		}
+;
+
+/* 126 */	/* 3.18	Home Declaration */
+home_dcl
+:	home_header	home_body
+		{
+			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+			$_[0]->YYData->{curr_itf} = undef;
+			$_[1]->Configure($_[0],
+					'list_decl'			=>	$_[2],
+			) if (defined $_[1]);
+		}
+;
+
+/* 127 */	/* 3.18.2	Home Header */
+home_header
+:	home_header_spec	MANAGES	scoped_name	primary_key_spec
+		{
+			$_[1]->Configure($_[0],
+					'manage'			=>	Component->Lookup($_[0],$_[3]),
+					'primarykey'		=>	$_[4],
+			) if (defined $_[1]);
+		}
+|	home_header_spec	MANAGES	scoped_name
+		{
+			$_[1]->Configure($_[0],
+					'manage'			=>	Component->Lookup($_[0],$_[3]),
+			) if (defined $_[1]);
+		}
+|	home_header_spec	MANAGES	error
+		{
+			$_[0]->Error("Scoped name expected.\n");
+			$_[0]->YYErrok();
+			$_[1];						#default action
+		}
+;
+
+home_header_spec
+:	HOME	IDENTIFIER	home_inheritance_spec	supported_interface_spec
+		{
+			new Home($_[0],
+					'idf'				=>	$_[2],
+					'inheritance'		=>	$_[3],
+					'list_support'		=>	$_[4],
+			);
+		}
+|	HOME	IDENTIFIER	home_inheritance_spec
+		{
+			new Home($_[0],
+					'idf'				=>	$_[2],
+					'inheritance'		=>	$_[3],
+			);
+		}
+|	HOME	IDENTIFIER							supported_interface_spec
+		{
+			new Home($_[0],
+					'idf'				=>	$_[2],
+					'list_support'		=>	$_[3],
+			);
+		}
+|	HOME	IDENTIFIER
+		{
+			new Home($_[0],
+					'idf'				=>	$_[2],
+			);
+		}
+|	HOME	error
+		{
+			$_[0]->Error("Identifier expected.\n");
+			$_[0]->YYErrok();
+		}
+;
+
+/* 128 */
+home_inheritance_spec
+:	':'	scoped_name
+		{
+			Home->Lookup($_[0],$_[2]);
+		}
+|	':'	error
+		{
+			$_[0]->Error("Scoped name expected.\n");
+			$_[0]->YYErrok();
+		}
+;
+
+/* 129 */
+primary_key_spec
+:	PRIMARYKEY	scoped_name
+		{
+			Value->Lookup($_[0],$_[2]);
+		}
+|	PRIMARYKEY	error
+		{
+			$_[0]->Error("Scoped name expected.\n");
+			$_[0]->YYErrok();
+		}
+;
+
+/* 130 */	/* 3.18.3	Home Body */
+home_body
+:	'{'	'}'
+		{
+			[];
+		}
+|	'{'	home_exports	'}'
+		{
+			$_[2];
+		}
+|	'{'	error			'}'
+		{
+			$_[0]->Error("export declaration expected.\n");
+			$_[0]->YYErrok();
+		}
+;
+
+home_exports
+:	home_export
+		{
+			[$_[1]->getRef()];
+		}
+|	home_export	home_exports
+		{
+			unshift(@{$_[2]},$_[1]->getRef());
+			$_[2];
+		}
+;
+
+/* 131 */
+home_export
+:	export
+										#default action
+|	factory_dcl	';'
+										#default action
+|	finder_dcl	';'
+										#default action
+|	factory_dcl	error
+		{
+			$_[0]->Warning("';' expected.\n");
+			$_[0]->YYErrok();
+			$_[1];						#default action
+		}
+|	finder_dcl	error
+		{
+			$_[0]->Warning("';' expected.\n");
+			$_[0]->YYErrok();
+			$_[1];						#default action
+		}
+;
+
+/* 132 */
+factory_dcl
+:	factory_header_param	raises_expr
+		{
+			$_[1]->Configure($_[0],
+					'list_raise'	=>	$_[2]
+			) if (defined $_[1]);
+		}
+|	factory_header_param
+										#default action
+;
+
+factory_header_param
+:	factory_header	'('	')'
+		{
+			delete $_[0]->YYData->{unnamed_symbtab}
+					if (exists $_[0]->YYData->{unnamed_symbtab});
+			$_[1];						#default action
+		}
+|	factory_header	'('	init_param_decls	')'
+		{
+			delete $_[0]->YYData->{unnamed_symbtab}
+					if (exists $_[0]->YYData->{unnamed_symbtab});
+			$_[1]->Configure($_[0],
+					'list_param'		=>	$_[2]
+			) if (defined $_[1]);
+		}
+|	factory_header	'('	error				')'
+		{
+			delete $_[0]->YYData->{unnamed_symbtab}
+					if (exists $_[0]->YYData->{unnamed_symbtab});
+			$_[0]->Error("init_param_decls expected.\n");
+			$_[0]->YYErrok();
+		}
+|	factory_header	error
+		{
+			delete $_[0]->YYData->{unnamed_symbtab}
+					if (exists $_[0]->YYData->{unnamed_symbtab});
+			$_[0]->Error("'(' expected.\n");
+			$_[0]->YYErrok();
+		}
+;
+
+factory_header
+:	FACTORY	IDENTIFIER
+		{
+			new Factory($_[0],							# like Operation
+					'idf'				=>	$_[2],
+			);
+		}
+|	FACTORY	error
+		{
+			$_[0]->Error("Identifier expected.\n");
+			$_[0]->YYErrok();
+		}
+;
+
+/* 133 */
+finder_dcl
+:	finder_header_param	raises_expr
+		{
+			$_[1]->Configure($_[0],
+					'list_raise'	=>	$_[2]
+			) if (defined $_[1]);
+		}
+|	finder_header_param
+										#default action
+;
+
+finder_header_param
+:	finder_header	'('	')'
+		{
+			delete $_[0]->YYData->{unnamed_symbtab}
+					if (exists $_[0]->YYData->{unnamed_symbtab});
+			$_[1];						#default action
+		}
+|	finder_header	'('	init_param_decls	')'
+		{
+			delete $_[0]->YYData->{unnamed_symbtab}
+					if (exists $_[0]->YYData->{unnamed_symbtab});
+			$_[1]->Configure($_[0],
+					'list_param'		=>	$_[2]
+			) if (defined $_[1]);
+		}
+|	finder_header	'('	error				')'
+		{
+			delete $_[0]->YYData->{unnamed_symbtab}
+					if (exists $_[0]->YYData->{unnamed_symbtab});
+			$_[0]->Error("init_param_decls expected.\n");
+			$_[0]->YYErrok();
+		}
+|	finder_header	error
+		{
+			delete $_[0]->YYData->{unnamed_symbtab}
+					if (exists $_[0]->YYData->{unnamed_symbtab});
+			$_[0]->Error("'(' expected.\n");
+			$_[0]->YYErrok();
+		}
+;
+
+finder_header
+:	FINDER	IDENTIFIER
+		{
+			new Finder($_[0],							# like Operation
+					'idf'				=>	$_[2],
+			);
+		}
+|	FINDER	error
+		{
+			$_[0]->Error("Identifier expected.\n");
+			$_[0]->YYErrok();
+		}
+;
+
+/* 134 */	/* 3.16	Event Declaration */
+event
+:	event_dcl
+										#default action
+|	event_abs_dcl
+										#default action
+|	event_forward_dcl
+										#default action
+;
+
+/* 135 */	/* 3.16.3	Event Forward Declaration */
+event_forward_dcl
+:				EVENTTYPE	IDENTIFIER
+		{
+			new ForwardRegularEvent($_[0],
+					'idf'				=>	$_[2]
+			);
+		}
+|	ABSTRACT	EVENTTYPE	IDENTIFIER
+		{
+			new ForwardAbstractEvent($_[0],
+					'idf'				=>	$_[3]
+			);
+		}
+;
+
+/* 136 */	/* 3.16.2	Abstract Event Type */
+event_abs_dcl
+:	event_abs_header	'{'	'}'
+		{
+			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+			$_[0]->YYData->{curr_itf} = undef;
+			$_[1]->Configure($_[0],
+					'list_decl'		=>	[]
+			) if (defined $_[1]);
+		}
+|	event_abs_header	'{'	exports	'}'
+		{
+			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+			$_[0]->YYData->{curr_itf} = undef;
+			$_[1]->Configure($_[0],
+					'list_decl'		=>	$_[3]
+			) if (defined $_[1]);
+		}
+|	event_abs_header	'{'	error	'}'
+		{
+			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+			$_[0]->YYData->{curr_itf} = undef;
+			$_[0]->Error("export expected.\n");
+			$_[0]->YYErrok();
+		}
+;
+
+event_abs_header
+:	ABSTRACT	EVENTTYPE	IDENTIFIER
+		{
+			new AbstractEvent($_[0],
+					'idf'				=>	$_[3],
+			);
+		}
+|	ABSTRACT	EVENTTYPE	IDENTIFIER	value_inheritance_spec
+		{
+			new AbstractEvent($_[0],
+					'idf'				=>	$_[3],
+					'inheritance'		=>	$_[4]
+			);
+		}
+|	ABSTRACT	EVENTTYPE	error
+		{
+			$_[0]->Error("Identifier expected.\n");
+			$_[0]->YYErrok();
+		}
+;
+
+/* 137 */	/* 3.16.1	Regular Event Type */
+event_dcl
+:	event_header	'{'	'}'
+		{
+			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+			$_[0]->YYData->{curr_itf} = undef;
+			$_[1]->Configure($_[0],
+					'list_decl'		=>	[]
+			) if (defined $_[1]);
+		}
+|	event_header	'{'	value_elements	'}'
+		{
+			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+			$_[0]->YYData->{curr_itf} = undef;
+			$_[1]->Configure($_[0],
+					'list_decl'		=>	$_[3]
+			) if (defined $_[1]);
+		}
+|	event_header	'{'	error			'}'
+		{
+			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+			$_[0]->YYData->{curr_itf} = undef;
+			$_[0]->Error("value_element expected.\n");
+			$_[0]->YYErrok();
+		}
+;
+
+/* 138 */
+event_header
+:				EVENTTYPE	IDENTIFIER
+		{
+			new RegularEvent($_[0],
+					'idf'				=>	$_[2],
+			);
+		}
+|	CUSTOM		EVENTTYPE	IDENTIFIER
+		{
+			new RegularEvent($_[0],
+					'modifier'			=>	$_[1],
+					'idf'				=>	$_[3],
+			);
+		}
+|				EVENTTYPE	IDENTIFIER	value_inheritance_spec
+		{
+			new RegularEvent($_[0],
+					'idf'				=>	$_[2],
+					'inheritance'		=>	$_[3]
+			);
+		}
+|	CUSTOM		EVENTTYPE	IDENTIFIER	value_inheritance_spec
+		{
+			new RegularEvent($_[0],
+					'modifier'			=>	$_[1],
+					'idf'				=>	$_[3],
+					'inheritance'		=>	$_[4]
+			);
+		}
+|				EVENTTYPE	error
+		{
+			$_[0]->Error("Identifier expected.\n");
+			$_[0]->YYErrok();
+		}
+|	CUSTOM		EVENTTYPE	error
+		{
+			$_[0]->Error("Identifier expected.\n");
+			$_[0]->YYErrok();
+		}
+;
+
 %%
 
 package Parser;
 
 use strict;
 use vars qw($IDL_version);
-$IDL_version = '2.4';
+$IDL_version = '3.0';
 
 use CORBA::IDL::symbtab;
 use CORBA::IDL::node;

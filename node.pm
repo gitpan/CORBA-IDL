@@ -2,25 +2,37 @@ use strict;
 use UNIVERSAL;
 
 #
-#			Interface Definition Language (OMG IDL CORBA v2.4)
+#			Interface Definition Language (OMG IDL CORBA v3.0)
 #
 
 package node;
 use vars qw($VERSION);
-$VERSION = '1.04';
+$VERSION = '2.00';
 
-sub new {
+sub _Build {
 	my $proto = shift;
-	my $class = ref($proto) || $proto;
 	my %attr = @_;
 	my $self = \%attr;
-	bless($self, $class);
 	foreach (keys %attr) {
 		unless (defined $self->{$_}) {
 			delete $self->{$_};
 		}
 	}
 	return $self;
+}
+
+sub new {
+	my $proto = shift;
+	my $class = ref($proto) || $proto;
+	my $parser = shift;
+	my $self = _Build node(@_);
+	bless($self, $class);
+	$self->_Init($parser);		# specialized or default
+	return $self
+}
+
+sub _Init {
+	# default
 }
 
 sub configure {
@@ -42,34 +54,59 @@ sub line_stamp {
 	$self->{lineno} = $parser->YYData->{lineno};
 }
 
+sub getRef {
+	my $self = shift;
+	if (exists $self->{full}) {
+		if (	   ref($self) eq 'Module'
+				or ref($self) =~ /^Forward/ ) {
+			return $self;
+		} else {
+			return $self->{full};
+		}
+	} else {
+		return $self;
+	}
+}
+
+sub getInheritance {
+	my $self = shift;
+	my @list = ();
+	if (exists $self->{inheritance}) {
+		if (exists $self->{inheritance}->{list_interface}) {
+			push @list, @{$self->{inheritance}->{list_interface}};
+		}
+		if (exists $self->{inheritance}->{list_value}) {
+			push @list, @{$self->{inheritance}->{list_value}};
+		}
+	}
+	return @list;
+}
+
 sub visit {
 	# overloaded in : BasicType, Literal
 	my $self = shift;
 	my $class = ref $self;
 	my $visitor = shift;
 	my $func = 'visit' . $class;
-	$visitor->$func($self,@_);
+	if($visitor->can($func)) {
+		$visitor->$func($self,@_);
+	} else {
+		warn "Please implement a function '$func' in '",ref $visitor,"'.\n";
+	}
 }
 
 sub visitName {
-	# overloaded in : BasicType
+	# overloaded in : BasicType, BaseInterface
 	my $self = shift;
 	my $class = ref $self;
 	my $visitor = shift;
 	my $func = 'visitName' . $class;
-	return $visitor->$func($self,@_);
-}
-
-package Dummy;
-
-@Dummy::ISA = qw(node);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $self = new node(node => @_);
-	bless($self, $class);
-	return $self;
+	if($visitor->can($func)) {
+		return $visitor->$func($self,@_);
+	} else {
+		warn "Please implement a function '$func' in '",ref $visitor,"'.\n";
+		return undef;
+	}
 }
 
 #
@@ -78,122 +115,166 @@ sub new {
 
 package Specification;
 
-@Specification::ISA = qw(node);
+use base qw(node);
 
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	return $self;
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
+	my %hash;
+	foreach my $export (@{$self->{list_decl}}) {
+		if (ref $export) {
+			unless (ref($export) =~ /^Forward/) {
+				if ($export->isa('Module')) {
+					$hash{$export->{full}} = 1;
+				} else {	# TypeDeclarators, StateMembers, Attributes
+					foreach (@{$export->{list_decl}}) {
+						$hash{$_} = 1 if (defined $_);
+					}
+				}
+			}
+		} else {
+			$hash{$export} = 1;
+		}
+	}
+	$self->{list_export} = [keys %hash];
+	$parser->YYData->{symbtab}->Insert($self);
 }
 
 #
-#	3.6		Module Declaration
+#	3.6		Import Declaration
 #
+
+package Import;
+
+use base qw(node);
+
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
+	$parser->YYData->{symbtab}->Import($self);
+}
+
+#
+#	3.7		Module Declaration
+#
+
+package Modules;
+
+use base qw(node);
 
 package Module;
 
-@Module::ISA = qw(node);
+use base qw(node);
 
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
 	$self->{prefix} = $parser->YYData->{symbtab}->GetPrefix();
-	$parser->YYData->{symbtab}->OpenModule($self->{idf},$self);
-	$parser->YYData->{symbtab}->PushCurrentRoot($self);
-	$parser->YYData->{symbtab}->Insert($self->{idf},new Dummy($self));
+	$self->{_typeprefix} = $parser->YYData->{symbtab}->GetTypePrefix();
 	$self->line_stamp($parser);
 	if ($parser->YYData->{doc} ne '') {
 		$self->{doc} = $parser->YYData->{doc}
 				unless (exists $self->{doc});
 		$parser->YYData->{doc} = '';
 	}
+	$parser->YYData->{symbtab}->PushCurrentRoot($self);
 	$parser->YYData->{curr_node} = $self;
-	return $self;
 }
 
-#
-#	3.7		Interface Declaration
-#
-
-package Interface;
-
-@Interface::ISA = qw(node);
-
-sub _CheckInheritance {
+sub Configure {
 	my $self = shift;
-	my($parser) = @_;
-	$self->{hash_attribute_operation} = {};
-	if (exists $self->{list_inheritance}) {
-		# 3.7.5	Interface Inheritance
-		my %hash;
-		foreach (@{$self->{list_inheritance}}) {
-			my $name = $_->{idf};
-			if (exists $hash{$name}) {
-				$parser->Warning("'$name' redeclares inheritance.\n");
-			} else {
-				$hash{$name} = $_;
-			}
-		}
-		$self->configure(hash_inheritance => \%hash);
-		if (exists $self->{modifier} and $self->{modifier} eq 'abstract') {
-			foreach (@{$self->{list_inheritance}}) {
-				if (! exists $_->{modifier} or $_->{modifier} ne 'abstract') {
-					$parser->Error("'$_->{idf}' is not abstract.\n");
-				}
-			}
-		}
-		# 3.7.6 Local Interface
-		foreach (@{$self->{list_inheritance}}) {
-			if (exists $_->{modifier} and $_->{modifier} eq 'local') {
-				if (! exists $self->{modifier} or $_->{modifier} ne 'local') {
-					$parser->Error("'$self->{idf}' is not local.\n");
-				}
-				last;
-			}
-		}
-		foreach (@{$self->{list_inheritance}}) {
-			my $base = $_;
-			foreach (keys %{$base->{hash_attribute_operation}}) {
-				if (exists $self->{hash_attribute_operation}{$_}) {
-					if ($self->{hash_attribute_operation}{$_} != $base->{hash_attribute_operation}{$_}) {
-						$parser->Error("multi inheritance of '$_'.\n");
+	my $parser = shift;
+	$self->configure(@_);
+	my $defn = $parser->YYData->{symbtab}->Lookup($self->{full});	# Modules
+	my %hash;
+	foreach my $module (@{$defn->{list_decl}}) {
+		foreach my $export (@{$module->{list_decl}}) {
+			if (ref $export) {
+				unless (ref($export) =~ /^Forward/) {
+					if ($export->isa('Module')) {
+						$hash{$export->{full}} = 1;
+					} else {	# TypeDeclarators, StateMembers, Attributes
+						foreach (@{$export->{list_decl}}) {
+							$hash{$_} = 1 if (defined $_);
+						}
 					}
-				} else {
-					my $node = $base->{hash_attribute_operation}{$_};
-					$self->{hash_attribute_operation}{$_} = $node;
-					$parser->YYData->{symbtab}->Insert($_,$node);
 				}
+			} else {
+				$hash{$export} = 1;
 			}
 		}
 	}
+	$defn->{list_export} = [keys %hash];
+	return $defn;
 }
 
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
+#
+#	3.8		Interface Declaration
+#
+
+package BaseInterface;
+
+use base qw(node);
+
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
 	$self->{prefix} = $parser->YYData->{symbtab}->GetPrefix();
-	$parser->YYData->{symbtab}->Insert($self->{idf},$self);
-	$parser->YYData->{symbtab}->PushCurrentScope($self);
-	$parser->YYData->{symbtab}->Insert($self->{idf},new Dummy($self));
-	$parser->YYData->{curr_itf} = $self;
+	$self->{_typeprefix} = $parser->YYData->{symbtab}->GetTypePrefix();
 	$self->line_stamp($parser);
-	$self->_CheckInheritance($parser);
 	if ($parser->YYData->{doc} ne '') {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
+	$self->{local_type} = 1 if ($self->isa('LocalInterface'));
+	$parser->YYData->{symbtab}->PushCurrentScope($self);
+	$parser->YYData->{curr_itf} = $self;
+	$self->_CheckInheritance($parser);			# specialized
+	$self->_InsertInherited($parser);
 	$parser->YYData->{curr_node} = $self;
+}
+
+sub _InsertInherited {
+	my $self = shift;
+	my ($parser) = @_;
+	$self->{hash_attribute_operation} = {};
+	foreach ($self->getInheritance()) {
+		my $base = $parser->YYData->{symbtab}->Lookup($_);
+		foreach (keys %{$base->{hash_attribute_operation}}) {
+			next if ($_->isa('Initializer'));
+#			next if ($_->isa('Factory'));
+#			next if ($_->isa('Finder'));
+			my $name = $base->{hash_attribute_operation}{$_};
+			if (exists $self->{hash_attribute_operation}{$_}) {
+				if ($self->{hash_attribute_operation}{$_} ne $name) {
+					$parser->Error("multi inheritance of '$_'.\n");
+				}
+			} else {
+				$self->{hash_attribute_operation}{$_} = $name;
+				$parser->YYData->{symbtab}->InsertInherit($self, $_, $name);
+			}
+		}
+	}
+}
+
+sub Configure {
+	my $self = shift;
+	my $parser = shift;
+	$self->configure(@_);
+	my @list;
+	foreach my $export (@{$self->{list_decl}}) {
+		if (ref $export) {
+			unless (ref($export) =~ /^Forward/) {
+				foreach (@{$export->{list_decl}}) {
+					push @list, $_ if (defined $_);
+				}
+			}
+		} else {
+			push @list, $export;
+		}
+	}
+	$self->{list_export} = \@list;
+	$self->_CheckLocal($parser);			# specialized
 	return $self;
 }
 
@@ -201,43 +282,228 @@ sub Lookup {
 	my $proto = shift;
 	my $class = ref($proto) || $proto;
 	my($parser,$name) = @_;
-	my $node = $parser->YYData->{symbtab}->Lookup($name);
-	if (defined $node) {
-	 	if ($node->isa('ForwardInterface')) {
+	my $defn = $parser->YYData->{symbtab}->Lookup($name);
+	if (defined $defn) {
+	 	if ($defn->isa('Forward' . $class)) {
 			$parser->Error("'$name' is declared, but not defined.\n");
-	 	} elsif (! $node->isa($class)) {
+	 	} elsif (! $defn->isa($class)) {
 			$parser->Error("'$name' is not a $class.\n");
 		}
+		return $defn->{full};
+	} else {
+		return '';
 	}
-	return $node;
+}
+
+sub visitName {
+	my $self = shift;
+	my $class = ref $self;
+	my $visitor = shift;
+	my $func = 'visitName' . $class;
+	if ($visitor->can($func)) {
+		return $visitor->$func($self,@_);
+	} else {
+		return $visitor->visitNameBaseInterface($self,@_);
+	}
+}
+
+#
+#	3.8.2	Interface Inheritance Specification
+#
+
+package InheritanceSpec;
+
+use base qw(node);
+
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
+	my %hash;
+	# 3.8.5	Interface Inheritance
+	if (exists $self->{list_interface}) {
+		foreach my $name (@{$self->{list_interface}}) {
+			if (exists $hash{$name}) {
+				$parser->Warning("'$name' redeclares inheritance.\n");
+			} else {
+				$hash{$name} = $_;
+			}
+		}
+	}
+	# 3.9.5	Valuetype Inheritance
+	if (exists $self->{list_value}) {
+		foreach my $name (@{$self->{list_value}}) {
+			if (exists $hash{$name}) {
+				$parser->Warning("'$name' redeclares inheritance.\n");
+			} else {
+				$hash{$name} = $_;
+			}
+		}
+	}
+}
+
+package Interface;
+
+use base qw(BaseInterface);
+
+package RegularInterface;
+
+use base qw(Interface);
+
+sub _CheckInheritance {
+	my $self = shift;
+	my($parser) = @_;
+	if (exists $self->{inheritance}) {
+		foreach (@{$self->{inheritance}->{list_interface}}) {
+			my $base = $parser->YYData->{symbtab}->Lookup($_);
+			# An unconstrained interface may not inherit from a local interface.
+			if ($base->isa('LocalInterface')) {
+				$parser->Error("'$self->{idf}' is not local.\n");
+			}
+		}
+	}
+}
+
+sub _CheckLocal {
+	my $self = shift;
+	my($parser) = @_;
+
+	# A local type may not appear as a parameter, attribute, return type, or exception
+	# declaration of an unconstrained interface or as a state member of a valuetype.
+	foreach (@{$self->{list_export}}) {
+		my $defn = $parser->YYData->{symbtab}->Lookup($_);
+		if      ($defn->isa('Attribute')) {
+			if (TypeDeclarator->IsaLocal($parser, $defn->{type})) {
+				$parser->Error("'$self->{idf}' is not local.\n");
+			}
+		} elsif ($defn->isa('Operation')) {
+			if (TypeDeclarator->IsaLocal($parser, $defn->{type})) {
+				$parser->Error("'$self->{idf}' is not local.\n");
+			}
+			foreach (@{$defn->{list_param}}) {
+				if (TypeDeclarator->IsaLocal($parser, $_->{type})) {
+					$parser->Error("'$self->{idf}' is not local.\n");
+				}
+			}
+		}
+	}
+}
+
+#
+#	3.8.4	Forward Declaration
+#
+
+package ForwardBaseInterface;
+
+use base qw(node);
+
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
+	$self->{prefix} = $parser->YYData->{symbtab}->GetPrefix();
+	$self->{_typeprefix} = $parser->YYData->{symbtab}->GetTypePrefix();
+	$self->line_stamp($parser);
+	$self->{local_type} = 1 if ($self->isa('ForwardLocalInterface'));
+	$parser->YYData->{symbtab}->InsertForward($self);
 }
 
 package ForwardInterface;
 
-@ForwardInterface::ISA = qw(node);
+use base qw(ForwardBaseInterface);
 
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
-	$self->{prefix} = $parser->YYData->{symbtab}->GetPrefix();
-	$parser->YYData->{symbtab}->InsertForward($self->{idf},$self);
-	$self->line_stamp($parser);
-	return $self;
+package ForwardRegularInterface;
+
+use base qw(ForwardInterface);
+
+package ForwardAbstractInterface;
+
+use base qw(ForwardInterface);
+
+package ForwardLocalInterface;
+
+use base qw(ForwardInterface);
+
+#
+#	3.8.6	Abstract Interface
+#
+
+package AbstractInterface;
+
+use base qw(Interface);
+
+sub _CheckInheritance {
+	my $self = shift;
+	my($parser) = @_;
+	if (exists $self->{inheritance}) {
+		foreach (@{$self->{inheritance}->{list_interface}}) {
+			my $base = $parser->YYData->{symbtab}->Lookup($_);
+			# (An unconstrained interface may not inherit from a local interface.)
+			# An abstract interface may only inherit from other abstract interfaces.
+			unless ($base->isa('AbstractInterface')) {
+				$parser->Error("'$_' is not abstract.\n");
+			}
+		}
+	}
+}
+
+sub _CheckLocal {
+	my $self = shift;
+	my($parser) = @_;
+
+	# A local type may not appear as a parameter, attribute, return type, or exception
+	# declaration of an unconstrained interface or as a state member of a valuetype.
+	foreach (@{$self->{list_export}}) {
+		my $defn = $parser->YYData->{symbtab}->Lookup($_);
+		if      ($defn->isa('Attribute')) {
+			if (TypeDeclarator->IsaLocal($parser, $defn->{type})) {
+				$parser->Error("'$self->{idf}' is not local.\n");
+			}
+		} elsif ($defn->isa('Operation')) {
+			if (TypeDeclarator->IsaLocal($parser, $defn->{type})) {
+				$parser->Error("'$self->{idf}' is not local.\n");
+			}
+			foreach (@{$defn->{list_param}}) {
+				if (TypeDeclarator->IsaLocal($parser, $_->{type})) {
+					$parser->Error("'$self->{idf}' is not local.\n");
+				}
+			}
+		}
+	}
 }
 
 #
-#	3.8		Value Declaration
+#	3.8.7	Local Interface
 #
-#	3.8.1	Regular Value Type
+
+package LocalInterface;
+
+use base qw(Interface);
+
+sub _CheckInheritance {
+	# A local interface may inherit from other local or unconstrained interfaces
+}
+
+sub _CheckLocal {
+	# Any IDL type, including an unconstrained interface, may appear as a parameter,
+	# attribute, return type, or exception declaration of a local interface.
+
+	# A local type may be used as a parameter, attribute, return type, or exception
+	# declaration of a local interface or of a valuetype.
+}
+
+#
+#	3.9		Value Declaration
+#
+
+package Value;
+
+use base qw(BaseInterface);
+
+#	3.9.1	Regular Value Type
 #
 
 package RegularValue;
 
-@RegularValue::ISA = qw(node);
+use base qw(Value);
 
 sub _CheckInheritance {
 	my $self = shift;
@@ -247,146 +513,25 @@ sub _CheckInheritance {
 			and exists $self->{modifier} ) {				# custom
 			$parser->Error("'truncatable' is used in a custom value.\n");
 		}
-		$self->configure(hash_inheritance => $self->{inheritance}->{hash_inheritance});
-		$self->configure(hash_attribute_operation => $self->{inheritance}->{hash_attribute_operation});
 	}
 }
 
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
-	$self->{prefix} = $parser->YYData->{symbtab}->GetPrefix();
-	$parser->YYData->{symbtab}->Insert($self->{idf},$self);
-	$parser->YYData->{symbtab}->PushCurrentScope($self);
-	$parser->YYData->{symbtab}->Insert($self->{idf},new Dummy($self));
-	$parser->YYData->{curr_itf} = $self;
-	$self->line_stamp($parser);
-	$self->_CheckInheritance($parser);
-	if ($parser->YYData->{doc} ne '') {
-		$self->{doc} = $parser->YYData->{doc};
-		$parser->YYData->{doc} = '';
-	}
-	$parser->YYData->{curr_node} = $self;
-	return $self;
-}
-
-sub Lookup {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my($parser,$name) = @_;
-	my $node = $parser->YYData->{symbtab}->Lookup($name);
-	if (defined $node) {
-	 	if (	    $node->isa('ForwardRegularValue')
-	 			and $node->isa('ForwardAbstractValue') ) {
-			$parser->Error("'$name' is declared, but not defined.\n");
-	 	} elsif (   ! $node->isa($class)
-	 			and ! $node->isa('BoxedValue')
-	 			and ! $node->isa('AbstractValue') ) {
-			$parser->Error("'$name' is not a value.\n");
-		}
-	}
-	return $node;
+sub _CheckLocal {
+	# A local type may be used as a parameter, attribute, return type, or exception
+	# declaration of a local interface or of a valuetype.
 }
 
 #
-#	3.8.1.3	Value Inheritance Specification
-#
-
-package InheritanceSpec;
-
-@InheritanceSpec::ISA = qw(node);
-
-sub _CheckInheritance {
-	my $self = shift;
-	my($parser) = @_;
-	# 3.8.5	Valuetype Inheritance
-	$self->{hash_attribute_operation} = {};
-	my %hash;
-	if (exists $self->{list_value}) {
-		foreach (@{$self->{list_value}}) {
-			my $name = $_->{idf};
-			if (exists $hash{$name}) {
-				$parser->Warning("'$name' redeclares inheritance.\n");
-			} else {
-				$hash{$name} = $_;
-			}
-		}
-	}
-	if (exists $self->{list_interface}) {
-		foreach (@{$self->{list_interface}}) {
-			my $name = $_->{idf};
-			if (exists $hash{$name}) {
-				$parser->Warning("'$name' redeclares inheritance.\n");
-			} else {
-				$hash{$name} = $_;
-			}
-		}
-	}
-	$self->configure(hash_inheritance => \%hash);
-	if (exists $self->{list_value}) {
-		foreach (@{$self->{list_value}}) {
-			my $base = $_;
-			foreach (keys %{$base->{hash_attribute_operation}}) {
-				if (exists $self->{hash_attribute_operation}{$_}) {
-					if ($self->{hash_attribute_operation}{$_} != $base->{hash_attribute_operation}{$_}) {
-						$parser->Error("multi inheritance of '$_'.\n");
-					}
-				} else {
-					my $node = $base->{hash_attribute_operation}{$_};
-					$self->{hash_attribute_operation}{$_} = $node;
-					$parser->YYData->{symbtab}->Insert($_,$node);
-				}
-			}
-		}
-	}
-	if (exists $self->{list_interface}) {
-		foreach (@{$self->{list_interface}}) {
-			my $base = $_;
-			foreach (keys %{$base->{hash_attribute_operation}}) {
-				if (exists $self->{hash_attribute_operation}{$_}) {
-					if ($self->{hash_attribute_operation}{$_} != $base->{hash_attribute_operation}{$_}) {
-						$parser->Error("multi inheritance of '$_'.\n");
-					}
-				} else {
-					my $node = $base->{hash_attribute_operation}{$_};
-					$self->{hash_attribute_operation}{$_} = $node;
-					$parser->YYData->{symbtab}->Insert($_,$node);
-				}
-			}
-		}
-	}
-}
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
-	$self->_CheckInheritance($parser);
-	return $self;
-}
-
-#
-#	3.8.1.4	State Members
+#	3.9.1.4	State Members
 #
 
 package StateMembers;
 
-@StateMembers::ISA = qw(node);
+use base qw(node);
 
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
 	my @list;
 	foreach (@{$self->{list_expr}}) {
 		my $member;
@@ -399,7 +544,7 @@ sub new {
 					idf				=>	$idf,
 					array_size		=>	\@array_size
 			);
-			if ($parser->YYData->{IDL_version} ge '2.4') {
+			if ($Parser::IDL_version ge '2.4') {
 				$parser->Deprecated("Anonymous type (array).\n");
 			}
 		} else {
@@ -409,68 +554,64 @@ sub new {
 					idf				=>	$idf,
 			);
 		}
-		push @list, $member;
+		push @list, $member->{full};
 	}
-	$self->configure(list_value	=>	\@list);
+	$self->configure(list_decl	=>	\@list);
 	TypeDeclarator->CheckDeprecated($parser,$self->{type});
 	TypeDeclarator->CheckForward($parser,$self->{type});
-	return $self;
+	# A local type may not appear as a parameter, attribute, return type, or exception
+	# declaration of an unconstrained interface or as a state member of a valuetype.
+	if (TypeDeclarator->IsaLocal($parser, $self->{type})) {
+		my $idf = $self->{type}->{idf} if (exists $self->{type}->{idf});
+		$idf ||= $self->{type};
+		$parser->Error("'$idf' is local.\n");
+	}
 }
 
 package StateMember;					# modifier, idf, type[, array_size]
 
-@StateMember::ISA = qw(node);
+use base qw(node);
 
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
-	$parser->YYData->{symbtab}->Insert($self->{idf},$self);
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
+	$parser->YYData->{symbtab}->Insert($self);
 	if (defined $parser->YYData->{curr_itf}) {
 		$parser->YYData->{curr_itf}->{hash_attribute_operation}{$self->{idf}} = $self;
 	} else {
-		$parser->Error(__PACKAGE__,"::new ERROR_INTERNAL.\n");
+		$parser->Error(__PACKAGE__ . "::new ERROR_INTERNAL.\n");
 	}
 	if ($parser->YYData->{doc} ne '') {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
 	$parser->YYData->{curr_node} = $self;
-	return $self;
 }
 
 #
-#	3.8.1.5	Initializers
+#	3.9.1.5	Initializers
 #
 
-package Factory;
+package Initializer;
 
-@Factory::ISA = qw(node);
+use base qw(node);
 
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
-	$parser->YYData->{symbtab}->Insert($self->{idf},$self);
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
+	$parser->YYData->{symbtab}->Insert($self);
 	$parser->YYData->{unnamed_symbtab} = new UnnamedSymbtab($parser);
 	if (defined $parser->YYData->{curr_itf}) {
-		$self->{itf} = $parser->YYData->{curr_itf}->{coll};
+		$self->{itf} = $parser->YYData->{curr_itf}->{full};
 		$parser->YYData->{curr_itf}->{hash_attribute_operation}{$self->{idf}} = $self;
 	} else {
-		$parser->Error(__PACKAGE__,"::new ERROR_INTERNAL.\n");
+		$parser->Error(__PACKAGE__ . "::new ERROR_INTERNAL.\n");
 	}
 	if ($parser->YYData->{doc} ne '') {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
 	$parser->YYData->{curr_node} = $self;
-	return $self;
 }
 
 sub Configure {
@@ -490,112 +631,111 @@ sub Configure {
 }
 
 #
-#	3.8.2	Boxed Value Type
+#	3.9.2	Boxed Value Type
 #
 package BoxedValue;
 
-@BoxedValue::ISA = qw(node);
+use base qw(Value);
 
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
 	$self->{prefix} = $parser->YYData->{symbtab}->GetPrefix();
-	$parser->YYData->{symbtab}->Insert($self->{idf},$self);
+	$self->{_typeprefix} = $parser->YYData->{symbtab}->GetTypePrefix();
+	$parser->YYData->{symbtab}->Insert($self);
 	$self->line_stamp($parser);
 	if ($parser->YYData->{doc} ne '') {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
 	$parser->YYData->{curr_node} = $self;
-	return $self;
+	my $type = TypeDeclarator->GetDefn($parser, $self->{type});
+	if ($type->isa('Value')) {
+		if ($Parser::IDL_version ge '3.0') {
+			$parser->Error("$self->{type}->{idf} is a value type.\n");
+		} else {
+			$parser->Info("$self->{type}->{idf} is a value type.\n");
+		}
+	}
 }
 
 #
-#	3.8.3	Abstract Value Type
+#	3.9.3	Abstract Value Type
 #
 
 package AbstractValue;
 
-@AbstractValue::ISA = qw(node);
+use base qw(Value);
 
 sub _CheckInheritance {
-	my $self = shift;
-	my($parser) = @_;
-	if (exists $self->{inheritance}) {
-		$self->configure(hash_inheritance => $self->{inheritance}->{hash_inheritance});
-		$self->configure(hash_attribute_operation => $self->{inheritance}->{hash_attribute_operation});
-	}
+	# empty
 }
 
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
-	$self->{prefix} = $parser->YYData->{symbtab}->GetPrefix();
-	$parser->YYData->{symbtab}->Insert($self->{idf},$self);
-	$parser->YYData->{symbtab}->PushCurrentScope($self);
-	$parser->YYData->{symbtab}->Insert($self->{idf},new Dummy($self));
-	$parser->YYData->{curr_itf} = $self;
-	$self->line_stamp($parser);
-	$self->_CheckInheritance($parser);
-	if ($parser->YYData->{doc} ne '') {
-		$self->{doc} = $parser->YYData->{doc};
-		$parser->YYData->{doc} = '';
-	}
-	$parser->YYData->{curr_node} = $self;
-	return $self;
+sub _CheckLocal {
+	# A local type may be used as a parameter, attribute, return type, or exception
+	# declaration of a local interface or of a valuetype.
 }
 
 #
-#	3.8.4	Value Forward Declaration
+#	3.9.4	Value Forward Declaration
 #
+
+package ForwardValue;
+
+use base qw(ForwardBaseInterface);
 
 package ForwardRegularValue;
 
-@ForwardRegularValue::ISA = qw(node);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
-	$self->{prefix} = $parser->YYData->{symbtab}->GetPrefix();
-	$parser->YYData->{symbtab}->InsertForward($self->{idf},$self);
-	$self->line_stamp($parser);
-	return $self;
-}
+use base qw(ForwardValue);
 
 package ForwardAbstractValue;
 
-@ForwardAbstractValue::ISA = qw(node);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
-	$self->{prefix} = $parser->YYData->{symbtab}->GetPrefix();
-	$parser->YYData->{symbtab}->InsertForward($self->{idf},$self);
-	$self->line_stamp($parser);
-	return $self;
-}
+use base qw(ForwardValue);
 
 #
-#	3.9		Constant Declaration
+#	3.10		Constant Declaration
 #
 
 package Expression;
+
+use base qw(node);
+
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
+	if (        ! exists $self->{type} ) {
+		$self->configure(
+				type	=>	new IntegerType($parser,
+									value	=>	'unsigned long',
+									auto	=>	1
+							)
+		);
+	} elsif (   @{$self->{list_expr}} == 1
+			and defined $self->{list_expr}[0] ) {
+		if (ref $self->{type}) {
+			my $expr = $self->{list_expr}[0];
+			if (	    $self->{type}->isa('WideCharType')
+					and $expr->isa('CharacterLiteral') ) {
+				$self->{list_expr} = [
+						new WideCharacterLiteral($parser,
+								value	=>	$expr->{value}
+						)
+				];
+			} elsif (   $self->{type}->isa('WideStringType')
+					and $expr->isa('StringLiteral') ) {
+				$self->{list_expr} = [
+						new WideStringLiteral($parser,
+								value	=>	$expr->{value}
+						)
+				];
+			}
+		}
+	}
+	$self->configure(
+			value	=>	$self->Eval($parser)
+	);
+}
+
 use Math::BigInt;
 use Math::BigFloat;
 
@@ -616,52 +756,16 @@ use constant FLT_MIN  		=> new Math::BigFloat(         '1.17549435e-38' );
 use constant DBL_MIN  		=> new Math::BigFloat('2.22507385850720138e-308');
 use constant LDBL_MIN 		=> new Math::BigFloat('2.22507385850720138e-308');
 
-@Expression::ISA = qw(node);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
-	if (        ! exists $self->{type} ) {
-		$self->configure(
-				type	=>	new IntegerType($parser,
-									value	=>	'unsigned long',
-									auto	=>	1
-							)
-		);
-	} elsif (   @{$self->{list_expr}} == 1
-			and defined $self->{list_expr}[0] ) {
-		my $expr = $self->{list_expr}[0];
-		if (	    $self->{type}->isa('WideCharType')
-				and $expr->isa('CharacterLiteral') ) {
-			$self->{list_expr} = [
-					new WideCharacterLiteral($parser,
-							value	=>	$expr->{value}
-					)
-			];
-		} elsif (   $self->{type}->isa('WideStringType')
-				and $expr->isa('StringLiteral') ) {
-			$self->{list_expr} = [
-					new WideStringLiteral($parser,
-							value	=>	$expr->{value}
-					)
-			];
-		}
-	}
-	$self->configure(
-			value	=>	$self->Eval($parser)
-	);
-	return $self;
-}
-
 sub Eval {
 	my $self = shift;
 	my($parser) = @_;
 	my @list_expr = @{$self->{list_expr}};		# create a copy
-	return _Eval($parser,$self->{type},\@list_expr);
+	my $type = TypeDeclarator->GetEffectiveType($parser, $self->{type});
+	if (defined $type) {
+		return _Eval($parser, $type, \@list_expr);
+	} else {
+		return 0;
+	}
 }
 
 sub _EvalBinop {
@@ -744,7 +848,7 @@ sub _EvalBinop {
 			$parser->Error("_EvalBinop (fp) : INTERNAL ERROR.\n");
 			return undef;
 		}
-	} elsif (  $type->isa('FixedPtType') ) {
+	} elsif (  $type->isa('FixedPtConstType') ) {
 		my $right = _Eval($parser,$type,$list_expr);
 		return undef unless (defined $right);
 		my $left = _Eval($parser,$type,$list_expr);
@@ -812,7 +916,7 @@ sub _EvalUnop {
 			$parser->Error("_EvalUnop (fp) : INTERNAL ERROR.\n");
 			return undef;
 		}
-	} elsif (  $type->isa('FixedPtType') ) {
+	} elsif (  $type->isa('FixedPtConstType') ) {
 		my $right = _Eval($parser,$type,$list_expr);
 		return undef unless (defined $right);
 		if (	  $elt->{op} eq '+' ) {
@@ -834,16 +938,22 @@ sub _EvalUnop {
 }
 
 sub _Eval {
-	my($parser,$type,$list_expr) = @_;
+	my ($parser, $type, $list_expr) = @_;
 	my $elt = pop @$list_expr;
-	if (! defined $elt) {
-		return undef;
-	} elsif ($elt->isa('BinaryOp'))	{
+	return undef unless (defined $elt);
+	return undef unless ($elt);
+	unless (ref $elt) {
+		$elt = $parser->YYData->{symbtab}->Lookup($elt);
+		return undef unless (defined $elt);
+	}
+	if      ($elt->isa('BinaryOp'))	{
 		return _EvalBinop($parser,$type,$elt,$list_expr);
 	} elsif ($elt->isa('UnaryOp')) {
 		return _EvalUnop($parser,$type,$elt,$list_expr);
 	} elsif ($elt->isa('Constant')) {
 		if (ref $type eq ref $elt->{value}->{type}) {
+			return _CheckRange($parser,$type,$elt->{value}->{value});
+		} elsif ($type->isa('IntegerType') and $elt->{value}->{type}->isa('OctetType')) {
 			return _CheckRange($parser,$type,$elt->{value}->{value});
 		} else {
 			$parser->Error("'$elt->{value}->{value}' is not a '$type->{value}'.\n");
@@ -894,7 +1004,7 @@ sub _Eval {
 			return undef;
 		}
 	} elsif ($elt->isa('FixedPtLiteral')) {
-		if ($type->isa('FixedPtType')) {
+		if ($type->isa('FixedPtConstType')) {
 			return _CheckRange($parser,$type,$elt->{value});
 		} else {
 			$parser->Error("'$elt->{value}' is not a '$type->{value}'.\n");
@@ -1003,7 +1113,7 @@ sub _CheckRange {
 			$parser->Error("_CheckRange FloatingPtType : INTERNAL ERROR.\n");
 			return undef;
 		}
-	} elsif (  $type->isa('FixedPtType') ) {
+	} elsif (  $type->isa('FixedPtConstType') ) {
 		return $value;
 	} elsif (  $type->isa('StringType')
 			or $type->isa('WideStringType') ) {
@@ -1023,87 +1133,74 @@ sub _CheckRange {
 
 package Constant;
 
-@Constant::ISA = qw(node);
+use base qw(node);
 
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
 	$self->line_stamp($parser);
-	$parser->YYData->{symbtab}->Insert($self->{idf},$self);
-	my $type = $self->{type};
-	TypeDeclarator->CheckDeprecated($parser,$type);
-	while ($type->isa('TypeDeclarator')) {
-		$type = $type->{type};
-		if (		! $type->isa('IntegerType')
-				and ! $type->isa('CharType')
-				and ! $type->isa('WideCharType')
-				and ! $type->isa('BooleanType')
-				and ! $type->isa('FloatingPtType')
-				and ! $type->isa('StringType')
-				and ! $type->isa('WideStringType')
-				and ! $type->isa('OctetType')
-				and ! $type->isa('EnumType') ) {
-			$parser->Error("'$self->{type}->{idf}' refers a bad type for constant.\n");
-			return $self;
-		}
-	}
-	$self->configure(
-			value	=>	new Expression($parser,
-								type		=>	$type,
-								list_expr	=>	$self->{list_expr}
-						)
-	);
 	if ($parser->YYData->{doc} ne '') {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
+	$self->{prefix} = $parser->YYData->{symbtab}->GetPrefix();
+	$self->{_typeprefix} = $parser->YYData->{symbtab}->GetTypePrefix();
+	$parser->YYData->{symbtab}->Insert($self);
+	my $type = $self->{type};
+	TypeDeclarator->CheckDeprecated($parser, $type);
+	my $defn = TypeDeclarator->GetEffectiveType($parser, $type);
+	if (defined $defn) {
+		if (		! $defn->isa('IntegerType')
+				and ! $defn->isa('CharType')
+				and ! $defn->isa('WideCharType')
+				and ! $defn->isa('BooleanType')
+				and ! $defn->isa('FloatingPtType')
+				and ! $defn->isa('StringType')
+				and ! $defn->isa('WideStringType')
+				and ! $defn->isa('FixedPtConstType')
+				and ! $defn->isa('OctetType')
+				and ! $defn->isa('EnumType') ) {
+			my $idf = $defn->{idf} if (exists $defn->{idf});
+			$idf ||= $type->{idf} if (exists $type->{idf});
+			$idf ||= $type;
+			$parser->Error("'$idf' refers a bad type for constant.\n");
+			return $self;
+		}
+	} else {
+		$parser->Error(__PACKAGE__ . "::_Init ERROR_INTERNAL ($type).\n");
+	}
+	$self->configure(
+			value	=>	new Expression($parser,
+								type		=>	$defn,
+								list_expr	=>	$self->{list_expr}
+						)
+	);
 	$parser->YYData->{curr_node} = $self;
-	return $self;
 }
 
 sub Lookup {
 	my $proto = shift;
 	my $class = ref($proto) || $proto;
 	my($parser,$name) = @_;
-	my $node = $parser->YYData->{symbtab}->Lookup($name);
-	if (defined $node) {
-	 	if (		! $node->isa($class)
-	 			and ! $node->isa('Enum') ) {
+	my $defn = $parser->YYData->{symbtab}->Lookup($name);
+	if (defined $defn) {
+	 	if (		! $defn->isa($class)
+	 			and ! $defn->isa('Enum') ) {
 			$parser->Error("'$name' is not a $class.\n");
 		}
+		return $defn->{full};
+	} else {
+		return '';
 	}
-	return $node;
 }
 
 package UnaryOp;
 
-@UnaryOp::ISA = qw(node);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	return $self;
-}
+use base qw(node);
 
 package BinaryOp;
 
-@BinaryOp::ISA = qw(node);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	return $self;
-}
+use base qw(node);
 
 #
 #	3.2.5	Literals
@@ -1111,186 +1208,144 @@ sub new {
 
 package Literal;
 
-@Literal::ISA = qw(node);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	return $self;
-}
+use base qw(node);
 
 sub visit {
 	my $self = shift;
-	my($visitor) = @_;
-	$visitor->visitLiteral($self);
+	my $class = ref $self;
+	my $visitor = shift;
+	my $func = 'visit' . $class;
+	if($visitor->can($func)) {
+		$visitor->$func($self,@_);
+	} else {
+		$visitor->visitLiteral($self);
+	}
 }
 
 package IntegerLiteral;
 
-@IntegerLiteral::ISA = qw(Literal);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $self = new Literal(@_);
-	bless($self, $class);
-	return $self;
-}
+use base qw(Literal);
 
 package StringLiteral;
 
-@StringLiteral::ISA = qw(Literal);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $self = new Literal(@_);
-	bless($self, $class);
-	return $self;
-}
+use base qw(Literal);
 
 package WideStringLiteral;
 
-@WideStringLiteral::ISA = qw(Literal);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $self = new Literal(@_);
-	bless($self, $class);
-	return $self;
-}
+use base qw(Literal);
 
 package CharacterLiteral;
 
-@CharacterLiteral::ISA = qw(Literal);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $self = new Literal(@_);
-	bless($self, $class);
-	return $self;
-}
+use base qw(Literal);
 
 package WideCharacterLiteral;
 
-@WideCharacterLiteral::ISA = qw(Literal);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $self = new Literal(@_);
-	bless($self, $class);
-	return $self;
-}
+use base qw(Literal);
 
 package FixedPtLiteral;
 
-@FixedPtLiteral::ISA = qw(Literal);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $self = new Literal(@_);
-	bless($self, $class);
-	return $self;
-}
+use base qw(Literal);
 
 package FloatingPtLiteral;
 
-@FloatingPtLiteral::ISA = qw(Literal);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $self = new Literal(@_);
-	bless($self, $class);
-	return $self;
-}
+use base qw(Literal);
 
 package BooleanLiteral;
 
-@BooleanLiteral::ISA = qw(Literal);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $self = new Literal(@_);
-	bless($self, $class);
-	return $self;
-}
+use base qw(Literal);
 
 #
-#	3.10	Type Declaration
+#	3.11	Type Declaration
 #
 
 package TypeDeclarator;
 
-@TypeDeclarator::ISA = qw(node);
+use base qw(node);
 
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
 	$self->{prefix} = $parser->YYData->{symbtab}->GetPrefix();
-	$parser->YYData->{symbtab}->Insert($self->{idf},$self);
+	$self->{_typeprefix} = $parser->YYData->{symbtab}->GetTypePrefix();
 	$self->line_stamp($parser);
 	if ($parser->YYData->{doc} ne '') {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
+	$parser->YYData->{symbtab}->Insert($self);
 	$parser->YYData->{curr_node} = $self;
-	return $self;
+	if (exists $self->{type}) {
+		$self->{local_type} = 1 if (TypeDeclarator->IsaLocal($parser, $self->{type}));
+	}
 }
 
 sub Lookup {
 	my $proto = shift;
 	my $class = ref($proto) || $proto;
-	my($parser,$name) = @_;
-	my $node = $parser->YYData->{symbtab}->Lookup($name);
-	if (defined $node) {
-	 	if (	    ! $node->isa($class)
-	 			and ! $node->isa('StructType')
-	 			and ! $node->isa('UnionType')
-	 			and ! $node->isa('ForwardStructType')
-	 			and ! $node->isa('ForwardUnionType')
-	 			and ! $node->isa('EnumType')
-	 			and ! $node->isa('Interface')
-	 			and ! $node->isa('ForwardInterface')
-	 			and ! $node->isa('RegularValue')
-	 			and ! $node->isa('BoxedValue')
-	 			and ! $node->isa('AbstractValue')
-	 			and ! $node->isa('ForwardRegularValue')
-	 			and ! $node->isa('ForwardAbstractValue') ) {
+	my($parser, $name) = @_;
+	my $defn = $parser->YYData->{symbtab}->Lookup($name);
+	if (defined $defn) {
+		if (	    ! $defn->isa($class)
+				and ! $defn->isa('_ConstructedType')
+				and ! $defn->isa('_ForwardConstructedType')
+				and ! $defn->isa('BaseInterface')
+				and ! $defn->isa('ForwardBaseInterface') ) {
 			$parser->Error("'$name' is not a type nor a value.\n");
 		}
+		return $defn->{full};
+	} else {
+		return '';
 	}
-	return $node;
+}
+
+sub GetDefn {
+	my $proto = shift;
+	my $class = ref($proto) || $proto;
+	my($parser, $type) = @_;
+	return undef unless ($type);
+	if (ref $type) {
+		return $type;
+	} else {
+		my $defn = $parser->YYData->{symbtab}->Lookup($type);
+		return $defn;
+	}
+}
+
+sub GetEffectiveType {
+	my $proto = shift;
+	my $class = ref($proto) || $proto;
+	my($parser, $type) = @_;
+	my $defn = TypeDeclarator->GetDefn($parser, $type);
+	unless (defined $defn) {
+		$parser->Error(__PACKAGE__ . "::GetEffectiveType ERROR_INTERNAL ($type).\n");
+		return undef;
+	}
+	while (	    $defn->isa('TypeDeclarator')
+			and ! exists $defn->{array_size} ) {
+		$defn = TypeDeclarator->GetDefn($parser, $defn->{type});
+		unless (defined $defn) {
+			$parser->Error(__PACKAGE__ . "::GetEffectiveType ERROR_INTERNAL ($defn->{type}).\n");
+			return undef;
+		}
+	}
+	return $defn;
 }
 
 sub CheckDeprecated {
 	my $proto = shift;
 	my $class = ref($proto) || $proto;
-	my($parser,$type) = @_;
-	if (		defined $type
-			and $parser->YYData->{IDL_version} ge '2.4' ) {
-		if (	   $type->isa('StringType')
-				or $type->isa('WideStringType') ) {
-			if (exists $type->{max}) {
+	my($parser, $type) = @_;
+	my $defn = TypeDeclarator->GetDefn($parser, $type);
+	return unless (defined $defn);
+	if ($Parser::IDL_version ge '2.4') {
+		if (	   $defn->isa('StringType')
+				or $defn->isa('WideStringType') ) {
+			if (exists $defn->{max}) {
 				$parser->Deprecated("Anonymous type.\n");
 			}
-		} elsif	(  $type->isa('FixedPtType') ) {
-			if (exists $type->{d}) {
-				$parser->Deprecated("Anonymous type.\n");
-			}
-		} elsif	(  $type->isa('SequenceType') ) {
+		} elsif	(  $defn->isa('FixedPtType') ) {
+			$parser->Deprecated("Anonymous type.\n");
+		} elsif	(  $defn->isa('SequenceType') ) {
 			$parser->Deprecated("Anonymous type.\n");
 		}
 	}
@@ -1299,34 +1354,44 @@ sub CheckDeprecated {
 sub CheckForward {
 	my $proto = shift;
 	my $class = ref($proto) || $proto;
-	my($parser,$type) = @_;
-	while (		defined $type
-			and (  $type->isa('SequenceType')
-				or (   $type->isa('TypeDeclarator')
-				   and ! exists $type->{array_size} ) ) ) {
-		last if (exists $type->{modifier});		# native
-		$type = $type->{type};
-	}
-	if (		defined $type
-			and (  $type->isa('ForwardStructType')
-				or $type->isa('ForwardUnionType') ) ) {
-		if (! exists $type->{fwd}) {
-			$parser->Error("'$type->{idf}' is declared, but not defined.\n");
+
+	my($parser, $type) = @_;
+	my $defn = TypeDeclarator->GetDefn($parser, $type);
+	return unless (defined $defn);
+	while (		   $defn->isa('SequenceType')
+				or $defn->isa('TypeDeclarator') ) {
+		last if (exists $defn->{array_size});
+		last if (exists $defn->{modifier});		# native
+		$defn = TypeDeclarator->GetDefn($parser, $defn->{type});
+		unless (defined $defn) {
+			$parser->Error(__PACKAGE__ . "::CheckForward ERROR_INTERNAL ($defn->{type}).\n");
+			return undef;
 		}
 	}
+	if ($defn->isa('_ForwardConstructedType')) {
+		$parser->Error("'$defn->{idf}' is declared, but not defined.\n");
+	}
+}
+
+sub IsaLocal {
+	my $proto = shift;
+	my $class = ref($proto) || $proto;
+
+	my($parser, $type) = @_;
+	return undef unless ($type);
+	my $defn = TypeDeclarator->GetDefn($parser, $type);
+	return exists $defn->{local_type} if ($defn);
+	$parser->Error(__PACKAGE__ . "::IsaLocal ERROR_INTERNAL ($type).\n");
+	return undef;
 }
 
 package TypeDeclarators;
 
-@TypeDeclarators::ISA = qw(node);
+use base qw(node);
 
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
 	my @list;
 	foreach (@{$self->{list_expr}}) {
 		my @array_size = @{$_};
@@ -1345,180 +1410,106 @@ sub new {
 					idf					=>	$idf
 			);
 		}
-		push @list, $decl;
+		push @list, $decl->{full};
 	}
-	$self->configure(list_value	=>	\@list);
-	$self->line_stamp($parser);
-	return $self;
+	$self->configure(list_decl	=>	\@list);
 }
 
 #
-#	3.10.1	Basic Types
+#	3.11.1	Basic Types
 #
 
 package BasicType;
 
-@BasicType::ISA = qw(node);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	return $self;
-}
+use base qw(node);
 
 sub visit {
 	my $self = shift;
-	my($visitor) = @_;
-	$visitor->visitBasicType($self);
+	my $class = ref $self;
+	my $visitor = shift;
+	my $func = 'visit' . $class;
+	if($visitor->can($func)) {
+		$visitor->$func($self,@_);
+	} else {
+		$visitor->visitBasicType($self);
+	}
 }
 
 sub visitName {
 	my $self = shift;
 	my $class = ref $self;
 	my $visitor = shift;
-	return $visitor->visitNameBasicType($self,@_);
+	my $func = 'visitName' . $class;
+	if ($visitor->can($func)) {
+		return $visitor->$func($self,@_);
+	} else {
+		return $visitor->visitNameBasicType($self,@_);
+	}
 }
 
 package FloatingPtType;
 
-@FloatingPtType::ISA = qw(BasicType);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $self = new BasicType(@_);
-	bless($self, $class);
-	return $self;
-}
+use base qw(BasicType);
 
 package IntegerType;
 
-@IntegerType::ISA = qw(BasicType);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $self = new BasicType(@_);
-	bless($self, $class);
-	return $self;
-}
+use base qw(BasicType);
 
 package CharType;
 
-@CharType::ISA = qw(BasicType);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $self = new BasicType(@_);
-	bless($self, $class);
-	return $self;
-}
+use base qw(BasicType);
 
 package WideCharType;
 
-@WideCharType::ISA = qw(BasicType);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $self = new BasicType(@_);
-	bless($self, $class);
-	return $self;
-}
+use base qw(BasicType);
 
 package BooleanType;
 
-@BooleanType::ISA = qw(BasicType);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $self = new BasicType(@_);
-	bless($self, $class);
-	return $self;
-}
+use base qw(BasicType);
 
 package OctetType;
 
-@OctetType::ISA = qw(BasicType);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $self = new BasicType(@_);
-	bless($self, $class);
-	return $self;
-}
+use base qw(BasicType);
 
 package AnyType;
 
-@AnyType::ISA = qw(BasicType);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $self = new BasicType(@_);
-	bless($self, $class);
-	return $self;
-}
+use base qw(BasicType);
 
 package ObjectType;
 
-@ObjectType::ISA = qw(BasicType);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $self = new BasicType(@_);
-	bless($self, $class);
-	return $self;
-}
+use base qw(BasicType);
 
 package ValueBaseType;
 
-@ValueBaseType::ISA = qw(node);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	return $self;
-}
+use base qw(BasicType);
 
 #
-#	3.10.2	Constructed Types
+#	3.11.2	Constructed Types
 #
-#	3.10.2.1	Structures
+
+package _ConstructedType;
+
+use base qw(node);
+
+#	3.11.2.1	Structures
 #
 
 package StructType;
 
-@StructType::ISA = qw(node);
+use base qw(_ConstructedType);
 
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
 	$self->{prefix} = $parser->YYData->{symbtab}->GetPrefix();
-	$parser->YYData->{symbtab}->Insert($self->{idf},$self);
-	$parser->YYData->{symbtab}->PushCurrentScope($self);
-	$parser->YYData->{symbtab}->Insert($self->{idf},new Dummy($self));
+	$self->{_typeprefix} = $parser->YYData->{symbtab}->GetTypePrefix();
 	$self->line_stamp($parser);
 	if ($parser->YYData->{doc} ne '') {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
+	$parser->YYData->{symbtab}->PushCurrentScope($self);
 	$parser->YYData->{curr_node} = $self;
-	return $self;
 }
 
 sub Configure {
@@ -1530,6 +1521,7 @@ sub Configure {
 		foreach (@{$_->{list_value}}) {
 			push @list, $_;
 		}
+		$self->{local_type} = 1 if (TypeDeclarator->IsaLocal($parser, $_->{type}));
 	}
 	$self->configure(list_value	=>	\@list);	# list of 'Single' or 'Array'
 	return $self;
@@ -1537,15 +1529,11 @@ sub Configure {
 
 package Members;
 
-@Members::ISA = qw(node);
+use base qw(node);
 
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
 	my @list;
 	foreach (@{$self->{list_expr}}) {
 		my $member;
@@ -1557,7 +1545,7 @@ sub new {
 					idf				=>	$idf,
 					array_size		=>	\@array_size
 			);
-			if ($parser->YYData->{IDL_version} ge '2.4') {
+			if ($Parser::IDL_version ge '2.4') {
 				$parser->Deprecated("Anonymous type (array).\n");
 			}
 		} else {
@@ -1566,96 +1554,79 @@ sub new {
 					idf				=>	$idf,
 			);
 		}
-		push @list, $member;
+		push @list, $member->{full};
 	}
 	$self->configure(list_value	=>	\@list);
 	TypeDeclarator->CheckDeprecated($parser,$self->{type});
 	TypeDeclarator->CheckForward($parser,$self->{type});
-	return $self;
 }
 
 package Array;							# idf, type, array_size
 
-@Array::ISA = qw(node);
+use base qw(node);
 
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
-	$parser->YYData->{symbtab}->Insert($self->{idf},$self);
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
+	$parser->YYData->{symbtab}->Insert($self);
 	if ($parser->YYData->{doc} ne '') {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
 	$parser->YYData->{curr_node} = $self;
-	return $self;
 }
 
 package Single;							# idf, type
 
-@Single::ISA = qw(node);
+use base qw(node);
 
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
-	$parser->YYData->{symbtab}->Insert($self->{idf},$self);
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
+	$parser->YYData->{symbtab}->Insert($self);
 	if ($parser->YYData->{doc} ne '') {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
 	$parser->YYData->{curr_node} = $self;
-	return $self;
 }
 
-#	3.10.2.2	Discriminated Unions
+#	3.11.2.2	Discriminated Unions
 #
 
 package UnionType;
 
-@UnionType::ISA = qw(node);
+use base qw(_ConstructedType);
 
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
 	$self->{prefix} = $parser->YYData->{symbtab}->GetPrefix();
-	$parser->YYData->{symbtab}->Insert($self->{idf},$self);
-	$parser->YYData->{symbtab}->PushCurrentScope($self);
-	$parser->YYData->{symbtab}->Insert($self->{idf},new Dummy($self));
+	$self->{_typeprefix} = $parser->YYData->{symbtab}->GetTypePrefix();
 	$self->line_stamp($parser);
 	if ($parser->YYData->{doc} ne '') {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
+	$parser->YYData->{symbtab}->PushCurrentScope($self);
 	$parser->YYData->{curr_node} = $self;
-	return $self;
 }
 
 sub Configure {
 	my $self = shift;
 	my $parser = shift;
 	$self->configure(@_);
-	my $type = $self->{type};
-	if ($type->isa('TypeDeclarator')) {
-		while (	    $type->isa('TypeDeclarator')
-				and ! exists $type->{array_size} ) {
-			$type = $type->{type};
-		}
-		if (		! $type->isa('IntegerType')
-				and ! $type->isa('CharType')
-				and ! $type->isa('BooleanType')
-				and ! $type->isa('EnumType') ) {
-			$parser->Error("'$type->{idf}' refers a bad type for union.\n");
+	my $dis = $self->{type};
+	my $defn = TypeDeclarator->GetEffectiveType($parser, $dis);
+	if (defined $defn) {
+		if (		! $defn->isa('IntegerType')
+				and ! $defn->isa('CharType')
+				and ! $defn->isa('BooleanType')
+				and ! $defn->isa('EnumType') ) {
+			my $idf = $defn->{idf} if (exists $defn->{idf});
+			$idf ||= $dis->{idf} if (exists $dis->{idf});
+			$idf ||= $dis;
+			$parser->Error("'$idf' refers a bad type for union discriminator.\n");
 			return $self;
 		}
 	}
@@ -1663,6 +1634,7 @@ sub Configure {
 	my @list_all;
 	foreach my $case (@{$self->{list_expr}}) {
 		my $elt = $case->{element};
+		$self->{local_type} = 1 if (TypeDeclarator->IsaLocal($parser, $elt->{type}));
 		my @list;
 		foreach (@{$case->{list_label}}) {
 			my $key;
@@ -1673,7 +1645,7 @@ sub Configure {
 			} else {
 				# now, type is known
 				my $cst = new Expression($parser,
-						type				=>	$type,
+						type				=>	$dis,
 						list_expr			=>	$_
 				);
 				$key = $cst->{value};
@@ -1692,9 +1664,9 @@ sub Configure {
 	}
 	$self->configure(list_value	=>	\@list_all);
 	$self->configure(hash_value	=>	\%hash);
-	if ($type->isa('EnumType')) {
+	if ($defn->isa('EnumType')) {
 		my $all = 1;
-		foreach (@{$type->{list_value}}) {
+		foreach (@{$defn->{list_value}}) {
 			$all = 0 unless (exists $hash{$_});
 		}
 		if ($all) {
@@ -1713,48 +1685,26 @@ sub Configure {
 
 package Case;
 
-@Case::ISA = qw(node);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	return $self;
-}
+use base qw(node);
 
 package Default;
 
-@Default::ISA = qw(node);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	return $self;
-}
+use base qw(node);
 
 package Element;
 
-@Element::ISA = qw(node);
+use base qw(node);
 
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
 	TypeDeclarator->CheckDeprecated($parser,$self->{type});
 	TypeDeclarator->CheckForward($parser,$self->{type});
 	my @array_size = @{$self->{list_expr}};
 	my $idf = shift @array_size;
 	my $value;
 	if (@array_size) {
-		if ($parser->YYData->{IDL_version} ge '2.4') {
+		if ($Parser::IDL_version ge '2.4') {
 			$parser->Deprecated("Anonymous type (array).\n");
 		}
 		$value = new Array($parser,
@@ -1768,35 +1718,54 @@ sub new {
 				idf				=>	$idf,
 		);
 	}
-	$self->configure(value	=>	$value);	# 'Array' or 'Single'
-	return $self;
+	$self->configure(value	=>	$value->{full});	# 'Array' or 'Single'
 }
 
-#	3.10.2.3	Enumerations
+#	3.11.2.3	Constructed Recursive Types and Forward Declarations
+#
+
+package _ForwardConstructedType;
+
+use base qw(node);
+
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
+	$self->{prefix} = $parser->YYData->{symbtab}->GetPrefix();
+	$self->{_typeprefix} = $parser->YYData->{symbtab}->GetTypePrefix();
+	$self->line_stamp($parser);
+	$parser->YYData->{symbtab}->InsertForward($self);
+}
+
+package ForwardStructType;
+
+use base qw(_ForwardConstructedType);
+
+package ForwardUnionType;
+
+use base qw(_ForwardConstructedType);
+
+#	3.11.2.4	Enumerations
 #
 
 package EnumType;
 
+use base qw(_ConstructedType);
+
 use constant ULONG_MAX		=> 4294967295;
 
-@EnumType::ISA = qw(node);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
 	$self->{prefix} = $parser->YYData->{symbtab}->GetPrefix();
-	$parser->YYData->{symbtab}->Insert($self->{idf},$self);
+	$self->{_typeprefix} = $parser->YYData->{symbtab}->GetTypePrefix();
 	$self->line_stamp($parser);
 	if ($parser->YYData->{doc} ne '') {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
+	$parser->YYData->{symbtab}->Insert($self);
 	$parser->YYData->{curr_node} = $self;
-	return $self;
 }
 
 sub Configure {
@@ -1812,7 +1781,7 @@ sub Configure {
 			$parser->Error("enum '$_->{idf}' is duplicate.\n");
 		} else {
 			$hash{$_->{idf}} = $idx;
-			push @list, $_;
+			push @list, $_->{full};
 		}
 		$_->configure(
 				type		=>	$self,
@@ -1822,168 +1791,89 @@ sub Configure {
 	}
 	$self->configure(list_value	=>	\@list);	# list of 'Enum'
 	if ($idx > ULONG_MAX) {
-		$parser->Error("too many enum for '$self->{type}'.\n");
+		$parser->Error("too many enum for '$self->{idf}'.\n");
 	}
 	return $self;
 }
 
 package Enum;
 
-@Enum::ISA = qw(node);
+use base qw(node);
 
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
-	$parser->YYData->{symbtab}->Insert($self->{idf},$self);
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
 	if ($parser->YYData->{doc} ne '') {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
+	$parser->YYData->{symbtab}->Insert($self);
 	$parser->YYData->{curr_node} = $self;
-	return $self;
 }
 
 #
-#	3.10.3	Constructed Recursive Types and Forward Declarations
+#	3.11.3	Template Types
 #
 
-package ForwardStructType;
+package _TemplateType;
 
-@ForwardStructType::ISA = qw(node);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
-	$self->{prefix} = $parser->YYData->{symbtab}->GetPrefix();
-	$parser->YYData->{symbtab}->InsertForward($self->{idf},$self);
-	$self->line_stamp($parser);
-	return $self;
-}
-
-package ForwardUnionType;
-
-@ForwardUnionType::ISA = qw(node);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
-	$self->{prefix} = $parser->YYData->{symbtab}->GetPrefix();
-	$parser->YYData->{symbtab}->InsertForward($self->{idf},$self);
-	$self->line_stamp($parser);
-	return $self;
-}
-
-#
-#	3.10.4	Template Types
-#
+use base qw(node);
 
 package SequenceType;
 
-@SequenceType::ISA = qw(node);
+use base qw(_TemplateType);
 
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
 	$self->line_stamp($parser);
-	TypeDeclarator->CheckDeprecated($parser,$self->{type});
-	return $self;
+	$parser->YYData->{symbtab}->InsertBogus($self);
+	TypeDeclarator->CheckDeprecated($parser, $self->{type});
+	$self->{local_type} = 1 if (TypeDeclarator->IsaLocal($parser, $self->{type}));
 }
 
 package StringType;
 
-@StringType::ISA = qw(node);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	return $self;
-}
+use base qw(_TemplateType);
 
 package WideStringType;
 
-@WideStringType::ISA = qw(node);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	return $self;
-}
+use base qw(_TemplateType);
 
 package FixedPtType;
 
-@FixedPtType::ISA = qw(node);
+use base qw(_TemplateType);
 
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
 	$self->line_stamp($parser);
-	return $self;
 }
 
+package FixedPtConstType;
+
+use base qw(_TemplateType);
+
 #
-#	3.11	Exception Declaration
+#	3.12	Exception Declaration
 #
 
 package Exception;
 
-@Exception::ISA = qw(node);
+use base qw(node);
 
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
 	$self->{prefix} = $parser->YYData->{symbtab}->GetPrefix();
-	$parser->YYData->{symbtab}->Insert($self->{idf},$self);
-	$parser->YYData->{symbtab}->PushCurrentScope($self);
-	$parser->YYData->{symbtab}->Insert($self->{idf},new Dummy($self));
+	$self->{_typeprefix} = $parser->YYData->{symbtab}->GetTypePrefix();
 	$self->line_stamp($parser);
 	if ($parser->YYData->{doc} ne '') {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
+	$parser->YYData->{symbtab}->PushCurrentScope($self);
 	$parser->YYData->{curr_node} = $self;
-	return $self;
-}
-
-sub Lookup {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my($parser,$name) = @_;
-	my $node = $parser->YYData->{symbtab}->Lookup($name);
-	if (defined $node
-	 && ! $node->isa($class) ) {
-		$parser->Error("'$name' is not a $class.\n");
-	}
-	return $node;
 }
 
 sub Configure {
@@ -1995,49 +1885,61 @@ sub Configure {
 		foreach (@{$_->{list_value}}) {
 			push @list, $_;
 		}
+		$self->{local_type} = 1 if (TypeDeclarator->IsaLocal($parser, $_->{type}));
 	}
 	$self->configure(list_value	=>	\@list);	# list of 'Single' or 'Array'
 	return $self;
 }
 
+sub Lookup {
+	my $proto = shift;
+	my $class = ref($proto) || $proto;
+	my($parser, $name) = @_;
+	my $defn = $parser->YYData->{symbtab}->Lookup($name);
+	if (defined $defn) {
+		unless ($defn->isa($class)) {
+			$parser->Error("'$name' is not a $class.\n");
+		}
+		return $defn->{full};
+	} else {
+		return '';
+	}
+}
+
 #
-#	3.12	Operation Declaration
+#	3.13	Operation Declaration
 #
 
 package Operation;
 
-@Operation::ISA = qw(node);
+use base qw(node);
 
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
-	$parser->YYData->{symbtab}->Insert($self->{idf},$self)
-			unless($self->{idf} =~ /^_/);		# _get_ or _set_
-	$parser->YYData->{unnamed_symbtab} = new UnnamedSymbtab($parser);
-	$self->line_stamp($parser);
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
 	my $type = $self->{type};
-	TypeDeclarator->CheckDeprecated($parser,$type);
-	TypeDeclarator->CheckForward($parser,$type);
-	if (defined $parser->YYData->{curr_itf}) {
-		$self->{itf} = $parser->YYData->{curr_itf}->{coll};
-		$parser->YYData->{curr_itf}->{hash_attribute_operation}{$self->{idf}} = $self
-				unless($self->{idf} =~ /^_/);		# _get_ or _set_
-	} else {
-		$parser->Error(__PACKAGE__,"::new ERROR_INTERNAL.\n");
-	}
-	if (exists $type->{idf}) {
-		$parser->YYData->{unnamed_symbtab}->InsertUsed($type->{idf});
-	}
+	$self->line_stamp($parser);
 	if ($parser->YYData->{doc} ne '') {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
+	$parser->YYData->{symbtab}->Insert($self);
+	$parser->YYData->{unnamed_symbtab} = new UnnamedSymbtab($parser);
+	TypeDeclarator->CheckDeprecated($parser, $type);
+	TypeDeclarator->CheckForward($parser, $type);
+	if (defined $parser->YYData->{curr_itf}) {
+		$self->{itf} = $parser->YYData->{curr_itf}->{full};
+		$parser->YYData->{curr_itf}->{hash_attribute_operation}{$self->{idf}} = $self->{full}
+				unless($self->{idf} =~ /^_/);		# _get_ or _set_
+	} else {
+		$parser->Error(__PACKAGE__ . "::new ERROR_INTERNAL.\n");
+	}
+	unless (ref $type) {
+		if ($type =~ /::([0-9A-Z_a-z]+)$/) {
+			$parser->YYData->{unnamed_symbtab}->InsertUsed($1);
+		}
+	}
 	$parser->YYData->{curr_node} = $self;
-	return $self;
 }
 
 sub _CheckOneway {
@@ -2045,7 +1947,8 @@ sub _CheckOneway {
 	my($parser) = @_;
 	if (exists $self->{modifier} and $self->{modifier} eq 'oneway') {
 		# 3.12.1	Operation Attribute
-		if (! $self->{type}->isa('VoidType')) {
+		my $type = $self->{type};
+		unless (ref $type or $type->isa('VoidType')) {
 			$parser->Error("return type of '$self->{idf}' is not 'void'.\n");
 		}
 		foreach ( @{$self->{list_param}} ) {
@@ -2084,96 +1987,76 @@ sub Configure {
 
 package Parameter;
 
-@Parameter::ISA = qw(node);
+use base qw(node);
 
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
 	$self->line_stamp($parser);
 	my $type = $self->{type};
-	TypeDeclarator->CheckDeprecated($parser,$type);
-	TypeDeclarator->CheckForward($parser,$type);
-	if (exists $type->{idf}) {
-		$parser->YYData->{unnamed_symbtab}->InsertUsed($type->{idf});
+	unless (ref $type) {
+		if ($type =~ /::([0-9A-Z_a-z]+)$/) {
+			$parser->YYData->{unnamed_symbtab}->InsertUsed($1);
+		}
 	}
+	TypeDeclarator->CheckDeprecated($parser, $type);
+	TypeDeclarator->CheckForward($parser, $type);
 	$parser->YYData->{unnamed_symbtab}->Insert($self->{idf});
 	if ($parser->YYData->{doc} ne '') {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
 	$parser->YYData->{curr_node} = $self;
-	return $self;
 }
 
 package VoidType;
 
-@VoidType::ISA = qw(node);
-
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	return $self;
-}
+use base qw(node);
 
 #
-#	3.13	Attribute Declaration
+#	3.14	Attribute Declaration
 #
 
 package Attributes;
 
-@Attributes::ISA = qw(node);
+use base qw(node);
 
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
 	my @list;
 	foreach (@{$self->{list_expr}}) {
 		my $attr = new Attribute($parser,
 				modifier			=>	$self->{modifier},
 				type				=>	$self->{type},
-				idf					=>	$_
+				idf					=>	$_,
+				list_getraise		=>	$self->{list_getraise},
+				list_setraise		=>	$self->{list_setraise}
 		);
-		push @list, $attr;
+		push @list, $attr->{full};
 	}
-	$self->configure(
-			list_value	=>	\@list		# attribute
-	);
-	$self->line_stamp($parser);
-	return $self;
+	$self->configure(list_decl	=>	\@list);
 }
 
 package Attribute;
 
-@Attribute::ISA = qw(node);
+use base qw(node);
 
-sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
-	my $parser = shift;
-	my $self = new node(@_);
-	bless($self, $class);
-	# specific
-	$parser->YYData->{symbtab}->Insert($self->{idf},$self);
-	if (defined $parser->YYData->{curr_itf}) {
-		$self->{itf} = $parser->YYData->{curr_itf}->{coll};
-		$parser->YYData->{curr_itf}->{hash_attribute_operation}{$self->{idf}} = $self;
-	} else {
-		$parser->Error(__PACKAGE__,"::new ERROR_INTERNAL.\n");
-	}
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
+	return unless ($self->{idf});
 	if ($parser->YYData->{doc} ne '') {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
+	}
+	$self->line_stamp($parser);
+	$parser->YYData->{symbtab}->Insert($self);
+	if (defined $parser->YYData->{curr_itf}) {
+		$self->{itf} = $parser->YYData->{curr_itf}->{full};
+		$parser->YYData->{curr_itf}->{hash_attribute_operation}{$self->{idf}} = $self->{full};
+	} else {
+		$parser->Error(__PACKAGE__ . "::new ERROR_INTERNAL.\n");
 	}
 	$parser->YYData->{curr_node} = $self;
 	my $op = new Operation($parser,
@@ -2181,7 +2064,8 @@ sub new {
 			idf					=>	'_get_' . $self->{idf}
 	);
 	$op->Configure($parser,
-			list_param		=>	[]
+			list_param		=>	[],
+			list_raise		=>	$self->{list_getraise}
 	);
 	$self->configure(
 			_get		=>	$op
@@ -2201,14 +2085,368 @@ sub new {
 												type	=>	$self->{type},
 												idf		=>	'new' . ucfirst $self->{idf}
 										)
-									]
+									],
+				list_raise		=>	$self->{list_setraise}
 		);
 		$self->configure(
 				_set		=>	$op
 		);
 	}
+}
+
+#
+#	3.15	Repository Identity Related Declarations
+#
+
+package TypeId;
+
+use base qw(node);
+
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
+	my $node = $parser->YYData->{symbtab}->Lookup($self->{idf});
+	if (defined $node) {
+		if (       $node->isa('Modules')
+				or $node->isa('BaseInterface')
+				or $node->isa('ForwardBaseInterface')
+				or $node->isa('StateMember')
+				or $node->isa('Constant')
+				or $node->isa('TypeDeclarator')
+				or $node->isa('Enum')
+				or $node->isa('Exception')
+				or $node->isa('Operation')
+				or $node->isa('Attribute')
+				or $node->isa('Provides')
+				or $node->isa('Uses')
+				or $node->isa('Emits')
+				or $node->isa('Publishes')
+				or $node->isa('Consumes')
+				or $node->isa('Factory')
+				or $node->isa('Finder') ) {
+			if (exists $node->{id}) {
+				$parser->Warning("TypeId/pragma conflict for '$self->{idf}'.\n");
+			}
+			if (exists $node->{typeid}) {
+				$parser->Error("TypeId redefinition for '$self->{idf}'.\n");
+			} else {
+				$parser->YYData->{symbtab}->CheckID($node, $self->{value});
+				$node->{typeid} = $self->{value};
+			}
+		} else {
+			$parser->Error("Typeid not allowed for '$self->{idf}'.\n");
+		}
+	}
+}
+
+package TypePrefix;
+
+use base qw(node);
+
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
+	unless ($self->{value} =~ /^[0-9A-Za-z_:\.\/\-]*$/) {
+		$parser->Warning("Invalid TypePrefix format for \"$self->{value}\".\n");
+	}
+	if ($self->{idf}) {
+		my $node = $parser->YYData->{symbtab}->Lookup($self->{idf});
+		if (defined $node) {
+			if (       $node->isa('Modules')
+					or $node->isa('Interface')
+					or $node->isa('ForwardInterface')
+					or $node->isa('Value')
+					or $node->isa('ForwardValue')
+					or $node->isa('Specification') ) {
+				if ($node->{prefix}) {
+					$parser->Warning("TypePrefix/pragma conflict for '$self->{idf}'.\n");
+				}
+				$node->{typeprefix} = $self->{value};
+				$node->{_typeprefix} = $self->{value};
+				$parser->YYData->{symbtab}->{typeprefix}->{$node->{full}} = $self->{value} . '/' . $node->{idf};
+			} else {
+				$parser->Error("Typeprefix not allowed for '$self->{idf}'.\n");
+			}
+		}
+	} else {
+		$parser->YYData->{symbtab}->{typeprefix}->{''} = $self->{value};
+	}
+}
+
+#
+#	3.16	Event Declaration
+#
+
+package Event;
+
+use base qw(Value);
+
+package RegularEvent;
+
+use base qw(Event);
+
+sub _CheckInheritance {
+	my $self = shift;
+	my($parser) = @_;
+	if (exists $self->{inheritance}) {
+		if (    exists $self->{inheritance}->{modifier}		# truncatable
+			and exists $self->{modifier} ) {				# custom
+			$parser->Error("'truncatable' is used in a custom event.\n");
+		}
+	}
+}
+
+sub _CheckLocal {
+	# A local type may be used as a parameter, attribute, return type, or exception
+	# declaration of a local interface or of a valuetype.
+}
+
+package AbstractEvent;
+
+use base qw(Event);
+
+sub _CheckInheritance {
+	# empty
+}
+
+sub _CheckLocal {
+	# A local type may be used as a parameter, attribute, return type, or exception
+	# declaration of a local interface or of a valuetype.
+}
+
+package ForwardEvent;
+
+use base qw(ForwardValue);
+
+package ForwardRegularEvent;
+
+use base qw(ForwardEvent);
+
+package ForwardAbstractEvent;
+
+use base qw(ForwardEvent);
+
+#
+#	3.17	Component Declaration
+#
+
+package Component;
+
+use base qw(BaseInterface);
+
+sub _CheckInheritance {
+}
+
+package ForwardComponent;
+
+use base qw(ForwardBaseInterface);
+
+package Provides;
+
+use base qw(node);
+
+package Uses;
+
+use base qw(node);
+
+package Emits;
+
+use base qw(node);
+
+package Publishes;
+
+use base qw(node);
+
+package Consumes;
+
+use base qw(node);
+
+#
+#	3.18	Home Declaration
+#
+
+package Home;
+
+use base qw(BaseInterface);
+
+sub _CheckInheritance {
+}
+
+package Factory;
+
+use base qw(node);
+
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
+	$parser->YYData->{symbtab}->Insert($self);
+	$parser->YYData->{unnamed_symbtab} = new UnnamedSymbtab($parser);
+	if (defined $parser->YYData->{curr_itf}) {
+		$self->{itf} = $parser->YYData->{curr_itf}->{full};
+		$parser->YYData->{curr_itf}->{hash_attribute_operation}{$self->{idf}} = $self;
+	} else {
+		$parser->Error(__PACKAGE__ . "::new ERROR_INTERNAL.\n");
+	}
+	if ($parser->YYData->{doc} ne '') {
+		$self->{doc} = $parser->YYData->{doc};
+		$parser->YYData->{doc} = '';
+	}
+	$parser->YYData->{curr_node} = $self;
+}
+
+sub Configure {
+	my $self = shift;
+	my $parser = shift;
+	$self->configure(@_);
+	my @list_in = ();
+	foreach ( @{$self->{list_param}} ) {
+		if      ($_->{attr} eq 'in') {
+			unshift @list_in, $_;
+		}
+	}
+	$self->{list_in} = \@list_in;
+	$self->{list_inout} = [];
+	$self->{list_out} = [];
 	return $self;
 }
+
+package Finder;
+
+use base qw(node);
+
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
+	$parser->YYData->{symbtab}->Insert($self);
+	$parser->YYData->{unnamed_symbtab} = new UnnamedSymbtab($parser);
+	if (defined $parser->YYData->{curr_itf}) {
+		$self->{itf} = $parser->YYData->{curr_itf}->{full};
+		$parser->YYData->{curr_itf}->{hash_attribute_operation}{$self->{idf}} = $self;
+	} else {
+		$parser->Error(__PACKAGE__,"::new ERROR_INTERNAL.\n");
+	}
+	if ($parser->YYData->{doc} ne '') {
+		$self->{doc} = $parser->YYData->{doc};
+		$parser->YYData->{doc} = '';
+	}
+	$parser->YYData->{curr_node} = $self;
+}
+
+sub Configure {
+	my $self = shift;
+	my $parser = shift;
+	$self->configure(@_);
+	my @list_in = ();
+	foreach ( @{$self->{list_param}} ) {
+		if      ($_->{attr} eq 'in') {
+			unshift @list_in, $_;
+		}
+	}
+	$self->{list_in} = \@list_in;
+	$self->{list_inout} = [];
+	$self->{list_out} = [];
+	return $self;
+}
+
+=pod
+
+	node
+		Specification -
+		Import -
+		Modules - NEW
+		Module
+		(BaseInterface) -
+			(Interface)
+				RegularInterface
+				LocalInterface
+				AbstractInterface
+			(Value)
+				RegularValue
+				BoxedValue
+				AbstractValue
+				(Event) -
+					RegularEvent
+					AbstractEvent
+			Component
+			Home
+		(ForwardBaseInterface)
+			(ForwardInterface) -
+				ForwardRegularInterface
+				ForwardLocalInterface
+				ForwardAbstractInterface
+			(ForwardValue) -
+				ForwardRegularValue -
+				ForwardAbstractValue -
+				(ForwardEvent) -
+					ForwardRegularEvent -
+					ForwardAbstractEvent -
+			ForwardComponent -
+		InheritanceSpec
+		StateMembers
+		StateMember
+		Initializer
+		Expression
+		Constant
+		UnaryOp -
+		BinaryOp -
+		(Literal)
+			IntegerLiteral -
+			StringLiteral -
+			WideStringLiteral -
+			CharacterLiteral -
+			WideCharacterLiteral -
+			FixedPtLiteral -
+			FloatingLiteral -
+			BooleanLiteral -
+		TypeDeclarator
+		TypeDeclarators
+		(BasicType)
+			FloatingPtType -
+			IntegerType -
+			CharType -
+			WideCharType -
+			BooleanType -
+			OctetType -
+			AnyType -
+			ObjectType -
+			ValueBaseType -
+		(_ConstructedType)
+			StructType
+			UnionType
+			EnumType
+		(_ForwardConstructedType)
+			ForwardStructType -
+			ForwardUnionType -
+		Members
+		Array
+		Single
+		Case -
+		Default -
+		Element
+		Enum
+		(_TemplateType) -
+			SequenceType
+			StringType -
+			WideStringType -
+			FixedPtType
+			FixedPtConstType - NEW
+		Exception
+		Operation
+		Parameter
+		VoidType -
+		Attributes
+		Attribute
+		TypeId
+		TypePrefix
+		Provides
+		Uses
+		Emits
+		Publishes
+		Consumes
+		Factory
+		Finder
+
+=cut
 
 1;
 
