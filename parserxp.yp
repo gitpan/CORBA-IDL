@@ -1101,7 +1101,7 @@ positive_int_const
 type_dcl
 :	declspec	type_dcl_def
 		{
-			$_[2]->configure(
+			$_[2]->Configure($_[0],
 					'declspec'			=>	$_[1]
 			) if ($_[2]);
 		}
@@ -1110,7 +1110,7 @@ type_dcl
 type_dcl_def
 :	props	TYPEDEF	type_declarator
 		{
-			$_[3]->configure(
+			$_[3]->Configure($_[0],
 					'props'				=>	$_[1]
 			);
 		}
@@ -1494,7 +1494,15 @@ member_list
 
 /* 71 */
 member
-:	type_spec	declarators	check_semicolon
+:	props	simple_type_spec	declarators	check_semicolon
+		{
+			new Members($_[0],
+					'props'				=>	$_[1],
+					'type'				=>	$_[2],
+					'list_expr'			=>	$_[3]
+			);
+		}
+|	constr_type_spec	declarators	check_semicolon
 		{
 			new Members($_[0],
 					'type'				=>	$_[1],
@@ -1641,7 +1649,15 @@ case_label
 
 /* 77 */
 element_spec
-:	type_spec	declarator
+:	props	simple_type_spec	declarator
+		{
+			new Element($_[0],
+					'props'			=>	$_[1],
+					'type'			=>	$_[2],
+					'list_expr'		=>	$_[3]
+			);
+		}
+|	constr_type_spec	declarator
 		{
 			new Element($_[0],
 					'type'			=>	$_[1],

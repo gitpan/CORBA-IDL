@@ -1,5 +1,10 @@
 Revision history for Perl extension CORBA::IDL.
 
+2.42  Tue Jul 27 12:30:00 2004
+	- node.pm : 'float' 0 is out of range (ticket 7114 on rt.cpan.org)
+	- bug : [props] for 'typedef'
+	- parserxp.yp : add [props] for member
+
 2.41  Mon Jun  7 08:30:00 2004
 	- better support of 'import' 
 

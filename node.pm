@@ -8,7 +8,7 @@ use UNIVERSAL;
 package CORBA::IDL::node;
 
 use vars qw($VERSION);
-$VERSION = '2.41';
+$VERSION = '2.42';
 
 sub _Build {
 	my $proto = shift;
@@ -1216,6 +1216,7 @@ sub _CheckRange {
 			return undef;
 		}
 	} elsif (  $type->isa('FloatingPtType') ) {
+		return $value if ($value == 0);
 		my $abs_v = abs $value;
 		if (     $type->{value} eq 'float' ) {
 			if ($abs_v >= FLT_MIN and $abs_v <= FLT_MAX) {
@@ -1390,8 +1391,6 @@ sub _Init {
 		my $decl;
 		if (@array_size) {
 			$decl = new TypeDeclarator($parser,
-					declspec			=>	$self->{declspec},
-					props				=>	$self->{props},
 					type				=>	$self->{type},
 					idf					=>	$idf,
 					array_size			=>	\@array_size
@@ -1399,8 +1398,6 @@ sub _Init {
 			TypeDeclarator->CheckDeprecated($parser, $self->{type});
 		} else {
 			$decl = new TypeDeclarator($parser,
-					declspec			=>	$self->{declspec},
-					props				=>	$self->{props},
 					type				=>	$self->{type},
 					idf					=>	$idf
 			);
@@ -1408,6 +1405,17 @@ sub _Init {
 		push @list, $decl->{full};
 	}
 	$self->configure(list_decl	=>	\@list);
+}
+
+sub Configure {
+	my $self = shift;
+	my $parser = shift;
+	$self->configure(@_);
+	foreach (@{$self->{list_decl}}) {
+		my $defn = $parser->YYData->{symbtab}->Lookup($_);
+		$defn->configure(@_);
+	}
+	return $self;
 }
 
 package TypeDeclarator;
@@ -1668,6 +1676,7 @@ sub _Init {
 		my $idf = shift @array_size;
 		if (@array_size) {
 			$member = new Member($parser,
+					props			=>	$self->{props},
 					type			=>	$self->{type},
 					idf				=>	$idf,
 					array_size		=>	\@array_size,
@@ -1677,6 +1686,7 @@ sub _Init {
 					if ($Parser::IDL_version ge '2.4');
 		} else {
 			$member = new Member($parser,
+					props			=>	$self->{props},
 					type			=>	$self->{type},
 					idf				=>	$idf,
 					deprecated		=>	TypeDeclarator->IsDeprecated($parser, $self->{type}),
