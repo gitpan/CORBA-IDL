@@ -695,6 +695,9 @@ sub Run {
 					or die "can't open $file ($!).\n";
 			$parser->YYData->{srcname} = shift || $file;
 		}
+		my @st = stat($parser->YYData->{srcname});
+		$parser->YYData->{srcname_size} = $st[7];
+		$parser->YYData->{srcname_mtime} = $st[9];
 	}
 
 	$parser->_InitLexico();

@@ -75,6 +75,12 @@ sub visitSpecification {
 	my ($node) = @_;
 	$self->reset_tab();
 	print "source $self->{srcname} \n\n";
+	if (exists $node->{list_import}) {
+		foreach (@{$node->{list_import}}) {
+			$self->_get_defn($_)->visit($self);
+		}
+		print "\n";
+	}
 	foreach (@{$node->{list_decl}}) {
 		$self->_get_defn($_)->visit($self);
 	}
@@ -88,6 +94,11 @@ sub visitImport {
 	my $self = shift;
 	my ($node) = @_;
 	print $self->get_tab(), "import $node->{value}\n";
+	$self->inc_tab();
+	foreach (@{$node->{list_decl}}) {
+		print $self->get_tab(),$_,"\n";
+	}
+	$self->dec_tab();
 }
 
 #

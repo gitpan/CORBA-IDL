@@ -65,6 +65,11 @@ sub visitType {
 sub visitSpecification {
 	my $self = shift;
 	my ($node) = @_;
+	if (exists $node->{list_import}) {
+		foreach (@{$node->{list_import}}) {
+			$_->visit($self);
+		}
+	}
 	foreach (@{$node->{list_export}}) {
 		$self->{symbtab}->Lookup($_)->visit($self);
 	}
@@ -73,6 +78,14 @@ sub visitSpecification {
 #
 #	3.6		Import Declaration
 #
+
+sub visitImport {
+	my $self = shift;
+	my ($node) = @_;
+	foreach (@{$node->{list_decl}}) {
+		$self->{symbtab}->Lookup($_)->visit($self);
+	}
+}
 
 #
 #	3.7		Module Declaration

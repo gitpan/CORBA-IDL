@@ -398,7 +398,6 @@ sub InsertForward {
 						return;
 					}
 				}
-				return;
 			}
 		} else {
 			$self->{msg} ||= "Identifier '$name' already exists.\n";
@@ -718,6 +717,7 @@ sub Import {
 	my $self = shift;
 	my($node) = @_;
 
+	my %imports = ($node->{value} => 1) ;
 	my $dirname = $self->{parser}->YYData->{opt_i};
 	my $fullname = $node->{value};
 	$fullname =~ s/::/_/g;
@@ -744,8 +744,9 @@ sub Import {
 			foreach (values %{$scope->{entry}}) {
 				next if (ref $_ ne 'Entry');
 				next if (exists $self->{scopes}->{$_->{scope}});
-				$self->_Import($_->{scope});
+				$self->_Import($_->{scope}, \%imports);
 			}
+			$node->{list_decl} = [ keys %imports ];
 		} else {
 			$self->{parser}->Error("'$node->{value}' can't imported (bad type).\n");
 		}
@@ -756,8 +757,9 @@ sub Import {
 
 sub _Import {
 	my $self = shift;
-	my($full) = @_;
+	my($full, $r_import) = @_;
 
+	$r_import->{$full} = 1;
 	my $dirname = $self->{parser}->YYData->{opt_i};
 	my $fullname = $full;
 	$fullname =~ s/::/_/g;
@@ -767,10 +769,14 @@ sub _Import {
 	my $scope = eval('$main::' . $fullname);
 	if (defined $scope and $scope->isa('CORBA::IDL::Scope')) {
 		$self->{scopes}->{$full} = $scope;
+		my $root = $full;
+		$root =~ s/::([0-9A-Z_a-z]+)$//;
+		my $name = lc $1;
+		$self->{scopes}->{$root}->_Insert($name, bless({'scope' => $full}, 'Entry'));
 		foreach (values %{$scope->{entry}}) {
 			next if (ref $_ ne 'Entry');
 			next if (exists $self->{scopes}->{$_->{scope}});
-			$self->_Import($_->{scope});
+			$self->_Import($_->{scope}, $r_import);
 		}
 	} else {
 		$self->{parser}->Error("_Import: INTERNAL_ERROR ($full).\n");
