@@ -7,7 +7,7 @@ use UNIVERSAL;
 
 package node;
 use vars qw($VERSION);
-$VERSION = '2.02';
+$VERSION = '2.03';
 
 sub _Build {
 	my $proto = shift;
@@ -1363,10 +1363,7 @@ sub CheckForward {
 		last if (exists $defn->{array_size});
 		last if (exists $defn->{modifier});		# native
 		$defn = TypeDeclarator->GetDefn($parser, $defn->{type});
-		unless (defined $defn) {
-			$parser->Error(__PACKAGE__ . "::CheckForward ERROR_INTERNAL ($defn->{type}).\n");
-			return undef;
-		}
+		return unless (defined $defn);
 	}
 	if ($defn->isa('_ForwardConstructedType')) {
 		$parser->Error("'$defn->{idf}' is declared, but not defined.\n");

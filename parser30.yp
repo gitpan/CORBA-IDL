@@ -127,6 +127,12 @@ definitions
 			unshift(@{$_[2]},$_[1]->getRef());
 			$_[2];
 		}
+|	definition	imports	definitions
+		{
+			$_[0]->Error("import after definition.\n");
+			unshift(@{$_[3]},$_[1]->getRef());
+			$_[3];
+		}
 ;
 
 /* 2 */
@@ -218,6 +224,15 @@ definition
 			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
 			$_[1];						#default action
+		}
+|	IDENTIFIER		error	';'
+		{
+			# when IDENTIFIER is a future keyword
+			$_[0]->Error("'$_[1]' unexpected.\n");
+			$_[0]->YYErrok();
+			new node($_[0],
+					'idf'					=>	$_[1]
+			);
 		}
 ;
 

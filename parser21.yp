@@ -125,6 +125,15 @@ definition
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
+|	IDENTIFIER		error	';'
+		{
+			# when IDENTIFIER is a future keyword
+			$_[0]->Error("'$_[1]' unexpected.\n");
+			$_[0]->YYErrok();
+			new node($_[0],
+					'idf'					=>	$_[1]
+			);
+		}
 ;
 
 /* 3 */		/* 3.5.1	Module Declaration */
