@@ -26,6 +26,7 @@ See also:
     CORBA::C - Implements CORBA C language mapping
     CORBA::JAVA - Implements CORBA Java language mapping
     CORBA::HTML - Implements HTML documentation 
+    CORBA::XMLSchemas - Implements WSDL/SOAP interworking
 
 References:
 -----------

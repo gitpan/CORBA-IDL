@@ -85,46 +85,16 @@ definitions
 
 /* 2 */
 definition
-:	type_dcl		';'
+:	type_dcl		check_semicolon
 										#default action
-|	const_dcl		';'
+|	const_dcl		check_semicolon
 										#default action
-|	except_dcl		';'
+|	except_dcl		check_semicolon
 										#default action
-|	interface		';'
+|	interface		check_semicolon
 										#default action
-|	module			';'
+|	module			check_semicolon
 										#default action
-|	type_dcl		error
-		{
-			$_[0]->Warning("';' expected.\n");
-			$_[0]->YYErrok();
-			$_[1];						#default action
-		}
-|	const_dcl		error
-		{
-			$_[0]->Warning("';' expected.\n");
-			$_[0]->YYErrok();
-			$_[1];						#default action
-		}
-|	except_dcl		error
-		{
-			$_[0]->Warning("';' expected.\n");
-			$_[0]->YYErrok();
-			$_[1];						#default action
-		}
-|	interface		error
-		{
-			$_[0]->Warning("';' expected.\n");
-			$_[0]->YYErrok();
-			$_[1];						#default action
-		}
-|	module			error
-		{
-			$_[0]->Warning("';' expected.\n");
-			$_[0]->YYErrok();
-			$_[1];						#default action
-		}
 |	IDENTIFIER		error	';'
 		{
 			# when IDENTIFIER is a future keyword
@@ -133,6 +103,16 @@ definition
 			new node($_[0],
 					'idf'					=>	$_[1]
 			);
+		}
+;
+
+check_semicolon
+:	';'
+										#default action
+|	error
+		{
+			$_[0]->Warning("';' expected.\n");
+			$_[0]->YYErrok();
 		}
 ;
 
@@ -151,7 +131,13 @@ module
 			$_[0]->Error("definition declaration expected.\n");
 			$_[0]->YYErrok();
 		}
-|	module_header	error
+|	module_header	'{'	'}'
+		{
+			$_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
+			$_[0]->Error("Empty module.\n");
+			$_[0]->YYErrok();
+		}
+|	module_header	error	'}'
 		{
 			$_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
 			$_[0]->Error("'\x7b' expected.\n");
@@ -225,20 +211,11 @@ forward_dcl
 
 /* 7 */
 interface_header
-:	INTERFACE	IDENTIFIER
+:	INTERFACE	IDENTIFIER	interface_inheritance_spec
 		{
 			new RegularInterface($_[0],
-					'idf'					=>	$_[2]
-			);
-		}
-|	INTERFACE	IDENTIFIER	interface_inheritance_spec
-		{
-			my $inheritance = new InheritanceSpec($_[0],
-					'list_interface'		=>	$_[4]
-			);
-			new RegularInterface($_[0],
-					'idf'					=>	$_[3],
-					'inheritance'			=>	$inheritance
+					'idf'					=>	$_[2],
+					'inheritance'			=>	$_[3]
 			);
 		}
 |	INTERFACE	error
@@ -268,59 +245,33 @@ exports
 
 /* 9 */
 export
-:	type_dcl		';'
+:	type_dcl		check_semicolon
 										#default action
-|	const_dcl		';'
+|	const_dcl		check_semicolon
 										#default action
-|	except_dcl		';'
+|	except_dcl		check_semicolon
 										#default action
-|	attr_dcl		';'
+|	attr_dcl		check_semicolon
 										#default action
-|	op_dcl			';'
+|	op_dcl			check_semicolon
 										#default action
-|	type_dcl		error
-		{
-			$_[0]->Warning("';' expected.\n");
-			$_[0]->YYErrok();
-			$_[1];						#default action
-		}
-|	const_dcl		error
-		{
-			$_[0]->Warning("';' expected.\n");
-			$_[0]->YYErrok();
-			$_[1];						#default action
-		}
-|	except_dcl		error
-		{
-			$_[0]->Warning("';' expected.\n");
-			$_[0]->YYErrok();
-			$_[1];						#default action
-		}
-|	attr_dcl		error
-		{
-			$_[0]->Warning("';' expected.\n");
-			$_[0]->YYErrok();
-			$_[1];						#default action
-		}
-|	op_dcl			error
-		{
-			$_[0]->Warning("';' expected.\n");
-			$_[0]->YYErrok();
-			$_[1];						#default action
-		}
 ;
 
 /* 10 */
 interface_inheritance_spec
 :	':'	interface_names
 		{
-			$_[2];
+			new InheritanceSpec($_[0],
+					'list_interface'		=>	$_[2]
+			);
 		}
 |	':'	error
 		{
 			$_[0]->Error("Interface name expected.\n");
 			$_[0]->YYErrok();
 		}
+|	/* empty */
+										#default action
 ;
 
 interface_names
@@ -672,11 +623,6 @@ type_declarator
 					'list_expr'			=>	$_[2]
 			);
 		}
-|	type_spec	error
-		{
-			$_[0]->Error("declarator expected.\n");
-			$_[0]->YYErrok();
-		}
 ;
 
 /* 29 */
@@ -696,6 +642,13 @@ simple_type_spec
 |	scoped_name
 		{
 			TypeDeclarator->Lookup($_[0],$_[1]);
+		}
+|	VOID
+		{
+			$_[0]->Error("simple_type_spec expected.\n");
+			new VoidType($_[0],
+					'value'				=>	$_[1]
+			);
 		}
 ;
 
@@ -768,6 +721,16 @@ declarator
 simple_declarator
 :	IDENTIFIER
 										#default action
+|	error	','
+		{
+			$_[0]->Error("Identifier expected.\n");
+			$_[0]->YYErrok();
+		}
+|	error	';'
+		{
+			$_[0]->Error("Identifier expected.\n");
+			$_[0]->YYErrok();
+		}
 ;
 
 /* 37 */	/* 3.8.4	Complex Declarator */
@@ -970,6 +933,11 @@ struct_header
 					'idf'				=>	$_[2]
 			);
 		}
+|	STRUCT	error
+		{
+			$_[0]->Error("Identifier expected.\n");
+			$_[0]->YYErrok();
+		}
 ;
 
 /* 55 */
@@ -987,17 +955,8 @@ member_list
 
 /* 56 */
 member
-:	type_spec	declarators	';'
+:	type_spec	declarators	check_semicolon
 		{
-			new Members($_[0],
-					'type'				=>	$_[1],
-					'list_expr'			=>	$_[2]
-			);
-		}
-|	type_spec	declarators	error
-		{
-			$_[0]->Error("';' expected.\n");
-			$_[0]->YYErrok();
 			new Members($_[0],
 					'type'				=>	$_[1],
 					'list_expr'			=>	$_[2]
@@ -1048,6 +1007,11 @@ union_header
 					'idf'				=>	$_[2],
 			);
 		}
+|	UNION	error
+		{
+			$_[0]->Error("Identifier expected.\n");
+			$_[0]->YYErrok();
+		}
 ;
 
 /* 58 */
@@ -1081,17 +1045,8 @@ switch_body
 
 /* 60 */
 case
-:	case_labels	element_spec	';'
+:	case_labels	element_spec	check_semicolon
 		{
-			new Case($_[0],
-					'list_label'		=>	$_[1],
-					'element'			=>	$_[2]
-			);
-		}
-|	case_labels	element_spec	error
-		{
-			$_[0]->Error("';' expected.\n");
-			$_[0]->YYErrok();
 			new Case($_[0],
 					'list_label'		=>	$_[1],
 					'element'			=>	$_[2]
@@ -1339,11 +1294,6 @@ attr_dcl
 					'list_expr'			=>	$_[4]
 			);
 		}
-|	attr_mod	ATTRIBUTE	param_type_spec	error
-		{
-			$_[0]->Error("declarator expected.\n");
-			$_[0]->YYErrok();
-		}
 |	attr_mod	ATTRIBUTE	error
 		{
 			$_[0]->Error("type expected.\n");
@@ -1414,24 +1364,7 @@ exception_header
 
 /* 72 */	/* 3.10	Operation Declaration */
 op_dcl
-:	op_header	parameter_dcls
-		{
-			delete $_[0]->YYData->{unnamed_symbtab}
-					if (exists $_[0]->YYData->{unnamed_symbtab});
-			$_[1]->Configure($_[0],
-					'list_param'	=>	$_[2]
-			) if (defined $_[1]);
-		}
-|	op_header	parameter_dcls	raises_expr
-		{
-			delete $_[0]->YYData->{unnamed_symbtab}
-					if (exists $_[0]->YYData->{unnamed_symbtab});
-			$_[1]->Configure($_[0],
-					'list_param'	=>	$_[2],
-					'list_raise'	=>	$_[3]
-			) if (defined $_[1]);
-		}
-|	op_header	parameter_dcls	raises_expr	context_expr
+:	op_header	parameter_dcls	raises_expr	context_expr
 		{
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
@@ -1439,15 +1372,6 @@ op_dcl
 					'list_param'	=>	$_[2],
 					'list_raise'	=>	$_[3],
 					'list_context'	=>	$_[4]
-			) if (defined $_[1]);
-		}
-|	op_header	parameter_dcls				context_expr
-		{
-			delete $_[0]->YYData->{unnamed_symbtab}
-					if (exists $_[0]->YYData->{unnamed_symbtab});
-			$_[1]->Configure($_[0],
-					'list_param'	=>	$_[2],
-					'list_context'	=>	$_[3]
 			) if (defined $_[1]);
 		}
 |	op_header	error
@@ -1490,13 +1414,18 @@ op_attribute
 
 /* 74 */
 op_type_spec
-:	param_type_spec
+:	op_param_type_spec
 										#default action
 |	VOID
 		{
 			new VoidType($_[0],
 					'value'				=>	$_[1]
 			);
+		}
+|	sequence_type
+		{
+			$_[0]->Error("op_type_spec expected.\n");
+			$_[1];						#default action
 		}
 ;
 
@@ -1506,8 +1435,23 @@ parameter_dcls
 		{
 			$_[2];
 		}
+|	'('	param_dcls	','	'...'	')'
+		{
+			$_[0]->Error("'...' unexpected.\n");
+			$_[2];
+		}
+|	'('	param_dcls	','	')'
+		{
+			$_[0]->Warning("',' unexpected.\n");
+			$_[2];
+		}
 |	'('	')'
 		{
+			undef;
+		}
+|	'('	'...'	')'
+		{
+			$_[0]->Error("'...' unexpected.\n");
 			undef;
 		}
 |	'('	error		')'
@@ -1522,15 +1466,10 @@ param_dcls
 		{
 			[$_[1]];
 		}
-|	param_dcl	','	param_dcls
+|	param_dcls	','	param_dcl
 		{
-			unshift(@{$_[3]},$_[1]);
-			$_[3];
-		}
-|	param_dcl	','
-		{
-			$_[0]->Warning("',' unexpected.\n");
-			[$_[1]];
+			push(@{$_[1]},$_[3]);
+			$_[1];
 		}
 |	param_dcl	';'
 		{
@@ -1559,6 +1498,11 @@ param_attribute
 										#default action
 |	INOUT
 										#default action
+|	/* empty */
+		{
+			$_[0]->Error("(in|out|inout) expected.\n");
+			$_[0]->YYErrok();
+		}
 ;
 
 /* 78 */	/* 3.10.3	Raises Expressions */
@@ -1577,6 +1521,8 @@ raises_expr
 			$_[0]->Error("'(' expected.\n");
 			$_[0]->YYErrok();
 		}
+|	/* empty */
+										#default action
 ;
 
 exception_names
@@ -1614,6 +1560,8 @@ context_expr
 			$_[0]->Error("'(' expected.\n");
 			$_[0]->YYErrok();
 		}
+|	/* empty */
+										#default action
 ;
 
 string_literals
@@ -1630,6 +1578,26 @@ string_literals
 
 /* 80 */
 param_type_spec
+:	op_param_type_spec
+										#default action
+|	VOID
+		{
+			$_[0]->Error("param_type_spec expected.\n");
+			$_[1];						#default action
+		}
+|	sequence_type
+		{
+			$_[0]->Error("param_type_spec expected.\n");
+			$_[1];						#default action
+		}
+|	constr_type_spec
+		{
+			$_[0]->Error("param_type_spec expected.\n");
+			$_[1];						#default action
+		}
+;
+
+op_param_type_spec
 :	base_type_spec
 										#default action
 |	string_type

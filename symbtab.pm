@@ -4,7 +4,7 @@
 
 use strict;
 
-package Scope;
+package CORBA::IDL::Scope;
 
 sub new {
 	my $proto = shift;
@@ -32,7 +32,7 @@ sub _Lookup {
 
 ##############################################################################
 
-package Symbtab;
+package CORBA::IDL::Symbtab;
 
 sub new {
 	my $proto = shift;
@@ -45,7 +45,7 @@ sub new {
 	$self->{parser} = $parser;
 
 	$self->{scopes} = {
-		''		=> new Scope($self, 'Module', '', '')
+		''		=> new CORBA::IDL::Scope($self, 'Module', '', '')
 	};
 	$self->{prefix} = {};
 	$self->{typeprefix} = {};
@@ -104,7 +104,7 @@ sub PushCurrentRoot {
 			$self->{msg} ||= "Identifier '$name' already exists.\n";
 			$self->{parser}->Error($self->{msg});
 			unless (exists $self->{scopes}->{$new_scope}) {
-				$self->{scopes}->{$new_scope} = new Scope($self, $class, $new_scope, $name);
+				$self->{scopes}->{$new_scope} = new CORBA::IDL::Scope($self, $class, $new_scope, $name);
 				my $modules = bless {
 						idf					=> $name,
 						full				=> $new_scope,
@@ -114,13 +114,15 @@ sub PushCurrentRoot {
 				}, 'Modules';
 				$modules->{typeprefix} = $node->{typeprefix}
 						if (exists $node->{typeprefix});
+				$modules->{declspec} = $node->{declspec}
+						if (exists $node->{declspec});
 				$self->{scopes}->{$new_scope}->_Insert($name, $modules);
 			}
 		}
 	} else {
 		$self->{scopes}->{$scope}->_Insert($name, bless({'scope' => $new_scope}, 'Entry'));
 		$self->_CheckCMapping($new_scope);
-		$self->{scopes}->{$new_scope} = new Scope($self, $class, $new_scope, $name);
+		$self->{scopes}->{$new_scope} = new CORBA::IDL::Scope($self, $class, $new_scope, $name);
 		my $modules = bless {
 				idf					=> $name,
 				full				=> $new_scope,
@@ -130,6 +132,8 @@ sub PushCurrentRoot {
 		}, 'Modules';
 		$modules->{typeprefix} = $node->{typeprefix}
 				if (exists $node->{typeprefix});
+		$modules->{declspec} = $node->{declspec}
+				if (exists $node->{declspec});
 		$self->{scopes}->{$new_scope}->_Insert($name, $modules);
 	}
 
@@ -215,20 +219,20 @@ sub PushCurrentScope {
 			$node->{typeprefix} = $prev->{typeprefix}
 					if (exists $prev->{typeprefix});
 			$self->{scopes}->{$scope}->_Insert($name, bless({'scope' => $new_scope}, 'Entry'));
-			$self->{scopes}->{$new_scope} = new Scope($self, $class, $new_scope, $name);
+			$self->{scopes}->{$new_scope} = new CORBA::IDL::Scope($self, $class, $new_scope, $name);
 			$self->{scopes}->{$new_scope}->_Insert($name, $node);
 		} else {
 			$self->{msg} ||= "Identifier '$name' already exists.\n";
 			$self->{parser}->Error($self->{msg});
 			unless (exists $self->{scopes}->{$new_scope}) {
-				$self->{scopes}->{$new_scope} = new Scope($self, $class, $new_scope, $name);
+				$self->{scopes}->{$new_scope} = new CORBA::IDL::Scope($self, $class, $new_scope, $name);
 				$self->{scopes}->{$new_scope}->_Insert($name, $node);
 			}
 		}
 	} else {
 		$self->{scopes}->{$scope}->_Insert($name, bless({'scope' => $new_scope}, 'Entry'));
 		$self->_CheckCMapping($new_scope);
-		$self->{scopes}->{$new_scope} = new Scope($self, $class, $new_scope, $name);
+		$self->{scopes}->{$new_scope} = new CORBA::IDL::Scope($self, $class, $new_scope, $name);
 		$self->{scopes}->{$new_scope}->_Insert($name, $node);
 	}
 
@@ -686,7 +690,7 @@ sub CheckForward {
 
 	foreach my $scope (values %{$self->{scopes}}) {
 		foreach my $entry (values %{$scope->{entry}}) {
-			if (ref($entry) =~ /^Forward/) {
+			if ($entry->isa('_ForwardConstructedType')) {
 				$self->{parser}->Error("'$entry->{idf}' never defined.\n");
 			}
 		}
@@ -721,7 +725,7 @@ sub Import {
 	$filename = $dirname . '/' . $filename if ($dirname);
 	require $filename;
 	my $scope = eval('$main::' . $fullname);
-	if (defined $scope and $scope->isa('Scope')) {
+	if (defined $scope and $scope->isa('CORBA::IDL::Scope')) {
 		my $class = $scope->{class};
 		if (       $class eq 'Module'
 				or $class eq 'RegularInterface'
@@ -761,7 +765,7 @@ sub _Import {
 	$filename = $dirname . '/' . $filename if ($dirname);
 	require $filename;
 	my $scope = eval('$main::' . $fullname);
-	if (defined $scope and $scope->isa('Scope')) {
+	if (defined $scope and $scope->isa('CORBA::IDL::Scope')) {
 		$self->{scopes}->{$full} = $scope;
 		foreach (values %{$scope->{entry}}) {
 			next if (ref $_ ne 'Entry');
@@ -814,7 +818,7 @@ sub Dump {
 
 ##############################################################################
 
-package UnnamedSymbtab;
+package CORBA::IDL::UnnamedSymbtab;
 
 sub new {
 	my $proto = shift;

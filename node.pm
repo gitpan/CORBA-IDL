@@ -5,9 +5,12 @@ use UNIVERSAL;
 #			Interface Definition Language (OMG IDL CORBA v3.0)
 #
 
-package node;
+package CORBA::IDL;
+
 use vars qw($VERSION);
-$VERSION = '2.05';
+$VERSION = '2.20';
+
+package CORBA::IDL::node;
 
 sub _Build {
 	my $proto = shift;
@@ -25,7 +28,7 @@ sub new {
 	my $proto = shift;
 	my $class = ref($proto) || $proto;
 	my $parser = shift;
-	my $self = _Build node(@_);
+	my $self = _Build CORBA::IDL::node(@_);
 	bless($self, $class);
 	$self->_Init($parser);		# specialized or default
 	return $self
@@ -38,8 +41,8 @@ sub _Init {
 sub configure {
 	my $self = shift;
 	my %attr = @_;
-	my ($key,$value);
-	while ( ($key,$value) = each(%attr) ) {
+	my ($key, $value);
+	while ( ($key, $value) = each(%attr) ) {
 		if (defined $value) {
 			$self->{$key} = $value;
 		}
@@ -82,31 +85,45 @@ sub getInheritance {
 	return @list;
 }
 
-sub visit {
-	# overloaded in : BasicType, Literal
+sub getProperty {
 	my $self = shift;
-	my $class = ref $self;
-	my $visitor = shift;
-	my $func = 'visit' . $class;
-	if($visitor->can($func)) {
-		$visitor->$func($self,@_);
-	} else {
-		warn "Please implement a function '$func' in '",ref $visitor,"'.\n";
-	}
+	my ($key) = @_;
+	return undef unless (exists $self->{props});
+	return undef unless (exists $self->{props}->{$key});
+	return $self->{props}->{$key};
 }
 
-sub visitName {
-	# overloaded in : BasicType, BaseInterface
+sub visit {
 	my $self = shift;
 	my $class = ref $self;
 	my $visitor = shift;
-	my $func = 'visitName' . $class;
-	if($visitor->can($func)) {
-		return $visitor->$func($self,@_);
-	} else {
-		warn "Please implement a function '$func' in '",ref $visitor,"'.\n";
-		return undef;
+	no strict "refs";
+	while ($class ne "CORBA::IDL::node") {
+		my $func = 'visit' . $class;
+		if ($visitor->can($func)) {
+			return $visitor->$func($self, @_);
+		}
+		$class = ${"$class\::ISA"}[0];
 	}
+	warn "Please implement a function 'visit",ref $self,"' in '",ref $visitor,"'.\n";
+	return undef;
+}
+
+# deprecated in favor of 'visit'
+sub visitName {
+	my $self = shift;
+	my $class = ref $self;
+	my $visitor = shift;
+	no strict "refs";
+	while ($class ne "CORBA::IDL::node") {
+		my $func = 'visitName' . $class;
+		if ($visitor->can($func)) {
+			return $visitor->$func($self, @_);
+		}
+		$class = ${"$class\::ISA"}[0];
+	}
+	warn "Please implement a function 'visitName",ref $self,"' in '",ref $visitor,"'.\n";
+	return undef;
 }
 
 #
@@ -115,7 +132,7 @@ sub visitName {
 
 package Specification;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 sub _Init {
 	my $self = shift;
@@ -146,7 +163,7 @@ sub _Init {
 
 package Import;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 sub _Init {
 	my $self = shift;
@@ -160,11 +177,11 @@ sub _Init {
 
 package Modules;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 package Module;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 sub _Init {
 	my $self = shift;
@@ -214,7 +231,7 @@ sub Configure {
 
 package BaseInterface;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 sub _Init {
 	my $self = shift;
@@ -241,10 +258,12 @@ sub _InsertInherited {
 	foreach ($self->getInheritance()) {
 		my $base = $parser->YYData->{symbtab}->Lookup($_);
 		foreach (keys %{$base->{hash_attribute_operation}}) {
-			next if ($_->isa('Initializer'));
-#			next if ($_->isa('Factory'));
-#			next if ($_->isa('Finder'));
 			my $name = $base->{hash_attribute_operation}{$_};
+			my $defn = $parser->YYData->{symbtab}->Lookup($name);
+			next if ($defn->isa('Initializer'));
+			next if ($defn->isa('StateMember'));
+#			next if ($defn->isa('Factory'));
+#			next if ($defn->isa('Finder'));
 			if (exists $self->{hash_attribute_operation}{$_}) {
 				if ($self->{hash_attribute_operation}{$_} ne $name) {
 					$parser->Error("multi inheritance of '$_'.\n");
@@ -281,7 +300,7 @@ sub Configure {
 sub Lookup {
 	my $proto = shift;
 	my $class = ref($proto) || $proto;
-	my($parser,$name) = @_;
+	my ($parser, $name) = @_;
 	my $defn = $parser->YYData->{symbtab}->Lookup($name);
 	if (defined $defn) {
 	 	if ($defn->isa('Forward' . $class)) {
@@ -295,25 +314,13 @@ sub Lookup {
 	}
 }
 
-sub visitName {
-	my $self = shift;
-	my $class = ref $self;
-	my $visitor = shift;
-	my $func = 'visitName' . $class;
-	if ($visitor->can($func)) {
-		return $visitor->$func($self,@_);
-	} else {
-		return $visitor->visitNameBaseInterface($self,@_);
-	}
-}
-
 #
 #	3.8.2	Interface Inheritance Specification
 #
 
 package InheritanceSpec;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 sub _Init {
 	my $self = shift;
@@ -329,8 +336,10 @@ sub _Init {
 				$hash{$name} = 1;
 				$self->{hash_interface}->{$name} = 1;
 				my $base = $parser->YYData->{symbtab}->Lookup($name);
-				foreach (keys %{$base->{inheritance}->{hash_interface}}) {
-					$self->{hash_interface}->{$_} = 1;
+				if (exists $base->{inheritance}) {
+					foreach (keys %{$base->{inheritance}->{hash_interface}}) {
+						$self->{hash_interface}->{$_} = 1;
+					}
 				}
 			}
 		}
@@ -344,8 +353,10 @@ sub _Init {
 				$hash{$name} = 1;
 				$self->{hash_interface}->{$name} = 1;
 				my $base = $parser->YYData->{symbtab}->Lookup($name);
-				foreach (keys %{$base->{inheritance}->{hash_interface}}) {
-					$self->{hash_interface}->{$_} = 1;
+				if (exists $base->{inheritance}) {
+					foreach (keys %{$base->{inheritance}->{hash_interface}}) {
+						$self->{hash_interface}->{$_} = 1;
+					}
 				}
 			}
 		}
@@ -362,7 +373,7 @@ use base qw(Interface);
 
 sub _CheckInheritance {
 	my $self = shift;
-	my($parser) = @_;
+	my ($parser) = @_;
 	if (exists $self->{inheritance}) {
 		foreach (@{$self->{inheritance}->{list_interface}}) {
 			my $base = $parser->YYData->{symbtab}->Lookup($_);
@@ -376,7 +387,7 @@ sub _CheckInheritance {
 
 sub _CheckLocal {
 	my $self = shift;
-	my($parser) = @_;
+	my ($parser) = @_;
 
 	# A local type may not appear as a parameter, attribute, return type, or exception
 	# declaration of an unconstrained interface or as a state member of a valuetype.
@@ -405,7 +416,7 @@ sub _CheckLocal {
 
 package ForwardBaseInterface;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 sub _Init {
 	my $self = shift;
@@ -443,7 +454,7 @@ use base qw(Interface);
 
 sub _CheckInheritance {
 	my $self = shift;
-	my($parser) = @_;
+	my ($parser) = @_;
 	if (exists $self->{inheritance}) {
 		foreach (@{$self->{inheritance}->{list_interface}}) {
 			my $base = $parser->YYData->{symbtab}->Lookup($_);
@@ -458,7 +469,7 @@ sub _CheckInheritance {
 
 sub _CheckLocal {
 	my $self = shift;
-	my($parser) = @_;
+	my ($parser) = @_;
 
 	# A local type may not appear as a parameter, attribute, return type, or exception
 	# declaration of an unconstrained interface or as a state member of a valuetype.
@@ -518,11 +529,36 @@ use base qw(Value);
 
 sub _CheckInheritance {
 	my $self = shift;
-	my($parser) = @_;
+	my ($parser) = @_;
 	if (exists $self->{inheritance}) {
 		if (    exists $self->{inheritance}->{modifier}		# truncatable
 			and exists $self->{modifier} ) {				# custom
 			$parser->Error("'truncatable' is used in a custom value.\n");
+		}
+		if (exists $self->{inheritance}->{list_interface}) {
+			my $nb = 0;
+			foreach (@{$self->{inheritance}->{list_interface}}) {
+				my $base = $parser->YYData->{symbtab}->Lookup($_);
+				if ($base->isa('RegularInterface')) {
+					$nb ++;
+				}
+			}
+			$parser->Error("'$self->{idf}' inherits from more than once regular interface.\n")
+					if ($nb > 1);
+		}
+		if (exists $self->{inheritance}->{list_value}) {
+			my $nb = 0;
+			foreach (@{$self->{inheritance}->{list_value}}) {
+				my $base = $parser->YYData->{symbtab}->Lookup($_);
+				if ($base->isa('RegularValue')) {
+					$nb ++;
+				}
+				if ($base->isa('BoxedValue')) {
+					$parser->Error("'$_' is a boxed value.\n")
+				}
+			}
+			$parser->Error("'$self->{idf}' inherits from more than once regular value.\n")
+					if ($nb > 1);
 		}
 	}
 }
@@ -530,15 +566,16 @@ sub _CheckInheritance {
 sub Configure {
 	my $self = shift;
 	my $parser = shift;
-	$self->SUPER::Configure($parser,@_);
+	$self->SUPER::Configure($parser, @_);
 	my @list;
 	foreach my $value_element (@{$self->{list_decl}}) {
 		next unless (ref $value_element eq 'StateMembers');
 		foreach (@{$value_element->{list_decl}}) {
 			push @list, $_;
+			$self->{deprecated} = 1 if (TypeDeclarator->IsDeprecated($parser, $_));
 		}
 	}
-	$self->configure(list_value		=>	\@list);	# list of 'StateMember'
+	$self->configure(list_member	=>	\@list);	# list of 'StateMember'
 	return $self;
 }
 
@@ -553,11 +590,13 @@ sub _CheckLocal {
 
 package StateMembers;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 sub _Init {
 	my $self = shift;
 	my ($parser) = @_;
+	TypeDeclarator->CheckDeprecated($parser, $self->{type});
+	TypeDeclarator->CheckForward($parser, $self->{type});
 	my @list;
 	foreach (@{$self->{list_expr}}) {
 		my $member;
@@ -565,26 +604,29 @@ sub _Init {
 		my $idf = shift @array_size;
 		if (@array_size) {
 			$member = new StateMember($parser,
+					declspec		=>	$self->{declspec},
+					props			=>	$self->{props},
 					modifier		=>	$self->{modifier},
 					type			=>	$self->{type},
 					idf				=>	$idf,
-					array_size		=>	\@array_size
+					array_size		=>	\@array_size,
+					deprecated		=>	1,
 			);
-			if ($Parser::IDL_version ge '2.4') {
-				$parser->Deprecated("Anonymous type (array).\n");
-			}
+			$parser->Deprecated("Anonymous type (array).\n")
+					if ($Parser::IDL_version ge '2.4');
 		} else {
 			$member = new StateMember($parser,
+					declspec		=>	$self->{declspec},
+					props			=>	$self->{props},
 					modifier		=>	$self->{modifier},
 					type			=>	$self->{type},
 					idf				=>	$idf,
+					deprecated		=>	TypeDeclarator->IsDeprecated($parser, $self->{type}),
 			);
 		}
 		push @list, $member->{full};
 	}
 	$self->configure(list_decl	=>	\@list);
-	TypeDeclarator->CheckDeprecated($parser,$self->{type});
-	TypeDeclarator->CheckForward($parser,$self->{type});
 	# A local type may not appear as a parameter, attribute, return type, or exception
 	# declaration of an unconstrained interface or as a state member of a valuetype.
 	if (TypeDeclarator->IsaLocal($parser, $self->{type})) {
@@ -596,7 +638,7 @@ sub _Init {
 
 package StateMember;					# modifier, idf, type[, array_size]
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 sub _Init {
 	my $self = shift;
@@ -620,13 +662,13 @@ sub _Init {
 
 package Initializer;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 sub _Init {
 	my $self = shift;
 	my ($parser) = @_;
 	$parser->YYData->{symbtab}->Insert($self);
-	$parser->YYData->{unnamed_symbtab} = new UnnamedSymbtab($parser);
+	$parser->YYData->{unnamed_symbtab} = new CORBA::IDL::UnnamedSymbtab($parser);
 	if (defined $parser->YYData->{curr_itf}) {
 		$self->{itf} = $parser->YYData->{curr_itf}->{full};
 		$parser->YYData->{curr_itf}->{hash_attribute_operation}{$self->{idf}} = $self->{full}
@@ -690,6 +732,7 @@ sub Configure {
 			$parser->Info("$self->{type}->{idf} is a value type.\n");
 		}
 	}
+	$self->{deprecated} = 1 if (TypeDeclarator->IsDeprecated($parser, $type));
 	return $self;
 }
 
@@ -702,7 +745,29 @@ package AbstractValue;
 use base qw(Value);
 
 sub _CheckInheritance {
-	# empty
+	my $self = shift;
+	my ($parser) = @_;
+	if (exists $self->{inheritance}) {
+		if (exists $self->{inheritance}->{list_interface}) {
+			my $nb = 0;
+			foreach (@{$self->{inheritance}->{list_interface}}) {
+				my $base = $parser->YYData->{symbtab}->Lookup($_);
+				if ($base->isa('RegularInterface')) {
+					$nb ++;
+				}
+			}
+			$parser->Error("'$self->{idf}' inherits from more than once regular interface.\n")
+					if ($nb > 1);
+		}
+		if (exists $self->{inheritance}->{list_value}) {
+			foreach (@{$self->{inheritance}->{list_value}}) {
+				my $base = $parser->YYData->{symbtab}->Lookup($_);
+				unless ($base->isa('AbstractValue')) {
+					$parser->Error("'$_' is not abstract value.\n");
+				}
+			}
+		}
+	}
 }
 
 sub _CheckLocal {
@@ -732,7 +797,7 @@ use base qw(ForwardValue);
 
 package Expression;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 sub _Init {
 	my $self = shift;
@@ -773,16 +838,16 @@ sub _Init {
 use Math::BigInt;
 use Math::BigFloat;
 
-use constant UCHAR_MAX		=> new Math::BigInt(                       '255');
-use constant SHRT_MIN		=> new Math::BigInt(                   '-32 768');
-use constant SHRT_MAX		=> new Math::BigInt(                    '32 767');
-use constant USHRT_MAX		=> new Math::BigInt(                    '65 535');
-use constant LONG_MIN		=> new Math::BigInt(            '-2 147 483 648');
-use constant LONG_MAX		=> new Math::BigInt(             '2 147 483 647');
-use constant ULONG_MAX		=> new Math::BigInt(             '4 294 967 295');
-use constant LLONG_MIN		=> new Math::BigInt('-9 223 372 036 854 775 808');
-use constant LLONG_MAX		=> new Math::BigInt( '9 223 372 036 854 775 807');
-use constant ULLONG_MAX		=> new Math::BigInt('18 446 744 073 709 551 615');
+use constant UCHAR_MAX		=> new Math::BigInt(                 '255');
+use constant SHRT_MIN		=> new Math::BigInt(              '-32768');
+use constant SHRT_MAX		=> new Math::BigInt(               '32767');
+use constant USHRT_MAX		=> new Math::BigInt(               '65535');
+use constant LONG_MIN		=> new Math::BigInt(         '-2147483648');
+use constant LONG_MAX		=> new Math::BigInt(          '2147483647');
+use constant ULONG_MAX		=> new Math::BigInt(          '4294967295');
+use constant LLONG_MIN		=> new Math::BigInt('-9223372036854775808');
+use constant LLONG_MAX		=> new Math::BigInt( '9223372036854775807');
+use constant ULLONG_MAX		=> new Math::BigInt('18446744073709551615');
 use constant FLT_MAX  		=> new Math::BigFloat(         '3.40282347e+38' );
 use constant DBL_MAX  		=> new Math::BigFloat('1.79769313486231571e+308');
 use constant LDBL_MAX 		=> new Math::BigFloat('1.79769313486231571e+308');
@@ -792,7 +857,7 @@ use constant LDBL_MIN 		=> new Math::BigFloat('2.22507385850720138e-308');
 
 sub Eval {
 	my $self = shift;
-	my($parser) = @_;
+	my ($parser) = @_;
 	my @list_expr = @{$self->{list_expr}};		# create a copy
 	my $type = TypeDeclarator->GetEffectiveType($parser, $self->{type});
 	if (defined $type) {
@@ -803,41 +868,41 @@ sub Eval {
 }
 
 sub _EvalBinop {
-	my($parser,$type,$elt,$list_expr) = @_;
+	my ($parser, $type, $elt, $list_expr, $bypass) = @_;
 	if (	   $type->isa('IntegerType')
 			or $type->isa('OctetType') ) {
-		my $right = _Eval($parser,$type,$list_expr);
+		my $right = _Eval($parser, $type, $list_expr, 1);
 		return undef unless (defined $right);
-		my $left = _Eval($parser,$type,$list_expr);
+		my $left = _Eval($parser, $type, $list_expr, 1);
 		return undef unless (defined $left);
 		if (	  $elt->{op} eq '|' ) {
 			my $value = new Math::BigInt($left->bior($right));
-			return _CheckRange($parser,$type,$value);
+			return _CheckRange($parser, $type, $value, $bypass);
 		} elsif ( $elt->{op} eq '^' ) {
 			my $value = new Math::BigInt($left->bxor($right));
-			return _CheckRange($parser,$type,$value);
+			return _CheckRange($parser, $type, $value, $bypass);
 		} elsif ( $elt->{op} eq '&' ) {
 			my $value = new Math::BigInt($left->band($right));
-			return _CheckRange($parser,$type,$value);
+			return _CheckRange($parser, $type, $value, $bypass);
 		} elsif ( $elt->{op} eq '+' ) {
 			my $value = new Math::BigInt($left->badd($right));
-			return _CheckRange($parser,$type,$value);
+			return _CheckRange($parser, $type, $value, $bypass);
 		} elsif ( $elt->{op} eq '-' ) {
 			my $value = new Math::BigInt($left->bsub($right));
-			return _CheckRange($parser,$type,$value);
+			return _CheckRange($parser, $type, $value, $bypass);
 		} elsif ( $elt->{op} eq '*' ) {
 			my $value = new Math::BigInt($left->bmul($right));
-			return _CheckRange($parser,$type,$value);
+			return _CheckRange($parser, $type, $value, $bypass);
 		} elsif ( $elt->{op} eq '/' ) {
 			my $value = new Math::BigInt($left->bdiv($right));
-			return _CheckRange($parser,$type,$value);
+			return _CheckRange($parser, $type, $value, $bypass);
 		} elsif ( $elt->{op} eq '%' ) {
 			my $value = new Math::BigInt($left->bmod($right));
-			return _CheckRange($parser,$type,$value);
+			return _CheckRange($parser, $type, $value, $bypass);
 		} elsif ( $elt->{op} eq '>>' ) {
 			if (0 <= $right and $right < 64) {
 				my $value = new Math::BigInt($left->brsft($right));
-				return _CheckRange($parser,$type,$value);
+				return _CheckRange($parser, $type, $value, $bypass);
 			} else {
 				$parser->Error("shift operation out of range.\n");
 				return undef;
@@ -845,7 +910,7 @@ sub _EvalBinop {
 		} elsif ( $elt->{op} eq '<<' ) {
 			if (0 <= $right and $right < 64) {
 				my $value = new Math::BigInt($left->blsft($right));
-				return _CheckRange($parser,$type,$value);
+				return _CheckRange($parser, $type, $value, $bypass);
 			} else {
 				$parser->Error("shift operation out of range.\n");
 				return undef;
@@ -855,22 +920,22 @@ sub _EvalBinop {
 			return undef;
 		}
 	} elsif (  $type->isa('FloatingPtType') ) {
-		my $right = _Eval($parser,$type,$list_expr);
+		my $right = _Eval($parser, $type, $list_expr);
 		return undef unless (defined $right);
-		my $left = _Eval($parser,$type,$list_expr);
+		my $left = _Eval($parser, $type, $list_expr);
 		return undef unless (defined $left);
 		if (      $elt->{op} eq '+' ) {
 			my $value = new Math::BigFloat($left->fadd($right));
-			return _CheckRange($parser,$type,$value);
+			return _CheckRange($parser, $type, $value);
 		} elsif ( $elt->{op} eq '-' ) {
 			my $value = new Math::BigFloat($left->fsub($right));
-			return _CheckRange($parser,$type,$value);
+			return _CheckRange($parser, $type, $value);
 		} elsif ( $elt->{op} eq '*' ) {
 			my $value = new Math::BigFloat($left->fmul($right));
-			return _CheckRange($parser,$type,$value);
+			return _CheckRange($parser, $type, $value);
 		} elsif ( $elt->{op} eq '/' ) {
 			my $value = new Math::BigFloat($left->fdiv($right));
-			return _CheckRange($parser,$type,$value);
+			return _CheckRange($parser, $type, $value);
 		} elsif (  $elt->{op} eq '|'
 				or $elt->{op} eq '^'
 				or $elt->{op} eq '&'
@@ -883,22 +948,22 @@ sub _EvalBinop {
 			return undef;
 		}
 	} elsif (  $type->isa('FixedPtConstType') ) {
-		my $right = _Eval($parser,$type,$list_expr);
+		my $right = _Eval($parser, $type, $list_expr);
 		return undef unless (defined $right);
-		my $left = _Eval($parser,$type,$list_expr);
+		my $left = _Eval($parser, $type, $list_expr);
 		return undef unless (defined $left);
 		if (      $elt->{op} eq '+' ) {
 			my $value = new Math::BigFloat($left->fadd($right));
-			return _CheckRange($parser,$type,$value);
+			return _CheckRange($parser, $type, $value);
 		} elsif ( $elt->{op} eq '-' ) {
 			my $value = new Math::BigFloat($left->fsub($right));
-			return _CheckRange($parser,$type,$value);
+			return _CheckRange($parser, $type, $value);
 		} elsif ( $elt->{op} eq '*' ) {
 			my $value = new Math::BigFloat($left->fmul($right));
-			return _CheckRange($parser,$type,$value);
+			return _CheckRange($parser, $type, $value);
 		} elsif ( $elt->{op} eq '/' ) {
 			my $value = new Math::BigFloat($left->fdiv($right));
-			return _CheckRange($parser,$type,$value);
+			return _CheckRange($parser, $type, $value);
 		} elsif (  $elt->{op} eq '|'
 				or $elt->{op} eq '^'
 				or $elt->{op} eq '&'
@@ -918,31 +983,47 @@ sub _EvalBinop {
 }
 
 sub _EvalUnop {
-	my($parser,$type,$elt,$list_expr) = @_;
+	my ($parser, $type, $elt, $list_expr, $bypass) = @_;
 	if (	   $type->isa('IntegerType')
 			or $type->isa('OctetType') ) {
-		my $right = _Eval($parser,$type,$list_expr);
+		my $right = _Eval($parser, $type, $list_expr, 1);
 		return undef unless (defined $right);
 		if (	  $elt->{op} eq '+' ) {
-			return _CheckRange($parser,$type,$right);
+			return _CheckRange($parser, $type, $right, $bypass);
 		} elsif ( $elt->{op} eq '-' ) {
 			my $value = new Math::BigInt($right->bneg());
-			return _CheckRange($parser,$type,$value);
+			return _CheckRange($parser, $type, $value, $bypass);
 		} elsif ( $elt->{op} eq '~' ) {
-			my $value = new Math::BigInt($right->bnot());
-			return _CheckRange($parser,$type,$value);
+			my $cpl;
+			if      ($type->{value} eq 'short') {
+				$cpl = USHRT_MAX;
+			} elsif ($type->{value} eq 'unsigned short') {
+				$cpl = USHRT_MAX;
+			} elsif ($type->{value} eq 'long') {
+				$cpl = ULONG_MAX;
+			} elsif ($type->{value} eq 'unsigned long') {
+				$cpl = ULONG_MAX;
+			} elsif ($type->{value} eq 'long long') {
+				$cpl = ULLONG_MAX;
+			} elsif ($type->{value} eq 'unsigned long long') {
+				$cpl = ULLONG_MAX;
+			} elsif ($type->{value} eq 'octet') {
+				$cpl = UCHAR_MAX;
+			}
+			my $value = new Math::BigInt($right->bxor($cpl));
+			return _CheckRange($parser, $type, $value, $bypass);
 		} else {
 			$parser->Error("_EvalUnop (int) : INTERNAL ERROR.\n");
 			return undef;
 		}
 	} elsif (  $type->isa('FloatingPtType') ) {
-		my $right = _Eval($parser,$type,$list_expr);
+		my $right = _Eval($parser, $type, $list_expr);
 		return undef unless (defined $right);
 		if (	  $elt->{op} eq '+' ) {
-			return _CheckRange($parser,$type,$right);
+			return _CheckRange($parser, $type, $right);
 		} elsif ( $elt->{op} eq '-' ) {
 			my $value = new Math::BigFloat($right->fneg());
-			return _CheckRange($parser,$type,$value);
+			return _CheckRange($parser, $type, $value);
 		} elsif (  $elt->{op} eq '~' ) {
 			$parser->Error("'$elt->{op}' is not valid for '$type'.\n");
 			return undef;
@@ -951,13 +1032,13 @@ sub _EvalUnop {
 			return undef;
 		}
 	} elsif (  $type->isa('FixedPtConstType') ) {
-		my $right = _Eval($parser,$type,$list_expr);
+		my $right = _Eval($parser, $type, $list_expr);
 		return undef unless (defined $right);
 		if (	  $elt->{op} eq '+' ) {
-			return _CheckRange($parser,$type,$right);
+			return _CheckRange($parser, $type, $right);
 		} elsif ( $elt->{op} eq '-' ) {
 			my $value = new Math::BigFloat($right->fneg());
-			return _CheckRange($parser,$type,$value);
+			return _CheckRange($parser, $type, $value);
 		} elsif (  $elt->{op} eq '~' ) {
 			$parser->Error("'$elt->{op}' is not valid for '$type'.\n");
 			return undef;
@@ -972,7 +1053,7 @@ sub _EvalUnop {
 }
 
 sub _Eval {
-	my ($parser, $type, $list_expr) = @_;
+	my ($parser, $type, $list_expr, $bypass) = @_;
 	my $elt = pop @$list_expr;
 	return undef unless (defined $elt);
 	return undef unless ($elt);
@@ -981,14 +1062,14 @@ sub _Eval {
 		return undef unless (defined $elt);
 	}
 	if      ($elt->isa('BinaryOp'))	{
-		return _EvalBinop($parser,$type,$elt,$list_expr);
+		return _EvalBinop($parser, $type, $elt, $list_expr, $bypass);
 	} elsif ($elt->isa('UnaryOp')) {
-		return _EvalUnop($parser,$type,$elt,$list_expr);
+		return _EvalUnop($parser, $type, $elt, $list_expr, $bypass);
 	} elsif ($elt->isa('Constant')) {
 		if (ref $type eq ref $elt->{value}->{type}) {
-			return _CheckRange($parser,$type,$elt->{value}->{value});
+			return _CheckRange($parser, $type, $elt->{value}->{value}, $bypass);
 		} elsif ($type->isa('IntegerType') and $elt->{value}->{type}->isa('OctetType')) {
-			return _CheckRange($parser,$type,$elt->{value}->{value});
+			return _CheckRange($parser, $type, $elt->{value}->{value}, $bypass);
 		} else {
 			$parser->Error("'$elt->{value}->{value}' is not a '$type->{value}'.\n");
 			return undef;
@@ -1002,23 +1083,23 @@ sub _Eval {
 		}
 	} elsif ($elt->isa('IntegerLiteral')) {
 		if ($type->isa('IntegerType')) {
-			return _CheckRange($parser,$type,$elt->{value});
+			return _CheckRange($parser, $type, $elt->{value}, $bypass);
 		} elsif ($type->isa('OctetType')) {
-			return _CheckRange($parser,$type,$elt->{value});
+			return _CheckRange($parser, $type, $elt->{value}, $bypass);
 		} else {
 			$parser->Error("'$elt->{value}' is not a '$type->{value}'.\n");
 			return undef;
 		}
 	} elsif ($elt->isa('StringLiteral')) {
 		if ($type->isa('StringType')) {
-			return _CheckRange($parser,$type,$elt->{value});
+			return _CheckRange($parser, $type, $elt->{value});
 		} else {
 			$parser->Error("'$elt->{value}' is not a '$type->{value}'.\n");
 			return undef;
 		}
 	} elsif ($elt->isa('WideStringLiteral')) {
 		if ($type->isa('WideStringType')) {
-			return _CheckRange($parser,$type,$elt->{value});
+			return _CheckRange($parser, $type, $elt->{value});
 		} else {
 			$parser->Error("'$elt->{value}' is not a '$type->{value}'.\n");
 			return undef;
@@ -1039,14 +1120,14 @@ sub _Eval {
 		}
 	} elsif ($elt->isa('FixedPtLiteral')) {
 		if ($type->isa('FixedPtConstType')) {
-			return _CheckRange($parser,$type,$elt->{value});
+			return _CheckRange($parser, $type, $elt->{value});
 		} else {
 			$parser->Error("'$elt->{value}' is not a '$type->{value}'.\n");
 			return undef;
 		}
 	} elsif ($elt->isa('FloatingPtLiteral')) {
 		if ($type->isa('FloatingPtType')) {
-			return _CheckRange($parser,$type,$elt->{value});
+			return _CheckRange($parser, $type, $elt->{value});
 		} else {
 			$parser->Error("'$elt->{value}' is not a '$type->{value}'.\n");
 			return undef;
@@ -1065,7 +1146,8 @@ sub _Eval {
 }
 
 sub _CheckRange {
-	my($parser,$type,$value) = @_;
+	my ($parser, $type, $value, $bypass) = @_;
+	return $value if (defined $bypass);
 	if (       $type->isa('IntegerType') ) {
 		if (     $type->{value} eq 'short' ) {
 			if ($value >= SHRT_MIN and $value <= SHRT_MAX) {
@@ -1152,7 +1234,7 @@ sub _CheckRange {
 	} elsif (  $type->isa('StringType')
 			or $type->isa('WideStringType') ) {
 		if (exists $type->{max}) {
-			my @lst = split //,$value;
+			my @lst = split //, $value;
 			my $len = @lst;
 			if ($len <= $type->{max}->{value}) {
 				return $value;
@@ -1167,7 +1249,7 @@ sub _CheckRange {
 
 package Constant;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 sub _Init {
 	my $self = shift;
@@ -1215,7 +1297,7 @@ sub _Init {
 sub Lookup {
 	my $proto = shift;
 	my $class = ref($proto) || $proto;
-	my($parser,$name) = @_;
+	my ($parser, $name) = @_;
 	my $defn = $parser->YYData->{symbtab}->Lookup($name);
 	if (defined $defn) {
 	 	if (		! $defn->isa($class)
@@ -1230,11 +1312,11 @@ sub Lookup {
 
 package UnaryOp;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 package BinaryOp;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 #
 #	3.2.5	Literals
@@ -1242,19 +1324,7 @@ use base qw(node);
 
 package Literal;
 
-use base qw(node);
-
-sub visit {
-	my $self = shift;
-	my $class = ref $self;
-	my $visitor = shift;
-	my $func = 'visit' . $class;
-	if($visitor->can($func)) {
-		$visitor->$func($self,@_);
-	} else {
-		$visitor->visitLiteral($self,@_);
-	}
-}
+use base qw(CORBA::IDL::node);
 
 package IntegerLiteral;
 
@@ -1292,9 +1362,43 @@ use base qw(Literal);
 #	3.11	Type Declaration
 #
 
+package TypeDeclarators;
+
+use base qw(CORBA::IDL::node);
+
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
+	my @list;
+	foreach (@{$self->{list_expr}}) {
+		my @array_size = @{$_};
+		my $idf = shift @array_size;
+		my $decl;
+		if (@array_size) {
+			$decl = new TypeDeclarator($parser,
+					declspec			=>	$self->{declspec},
+					props				=>	$self->{props},
+					type				=>	$self->{type},
+					idf					=>	$idf,
+					array_size			=>	\@array_size
+			);
+			TypeDeclarator->CheckDeprecated($parser, $self->{type});
+		} else {
+			$decl = new TypeDeclarator($parser,
+					declspec			=>	$self->{declspec},
+					props				=>	$self->{props},
+					type				=>	$self->{type},
+					idf					=>	$idf
+			);
+		}
+		push @list, $decl->{full};
+	}
+	$self->configure(list_decl	=>	\@list);
+}
+
 package TypeDeclarator;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 sub _Init {
 	my $self = shift;
@@ -1310,13 +1414,14 @@ sub _Init {
 	$parser->YYData->{curr_node} = $self;
 	if (exists $self->{type}) {
 		$self->{local_type} = 1 if (TypeDeclarator->IsaLocal($parser, $self->{type}));
+		$self->{deprecated} = 1 if (TypeDeclarator->IsDeprecated($parser, $self->{type}));
 	}
 }
 
 sub Lookup {
 	my $proto = shift;
 	my $class = ref($proto) || $proto;
-	my($parser, $name) = @_;
+	my ($parser, $name) = @_;
 	my $defn = $parser->YYData->{symbtab}->Lookup($name);
 	if (defined $defn) {
 		if (	    ! $defn->isa($class)
@@ -1335,7 +1440,7 @@ sub Lookup {
 sub GetDefn {
 	my $proto = shift;
 	my $class = ref($proto) || $proto;
-	my($parser, $type) = @_;
+	my ($parser, $type) = @_;
 	return undef unless ($type);
 	if (ref $type) {
 		return $type;
@@ -1348,7 +1453,7 @@ sub GetDefn {
 sub GetEffectiveType {
 	my $proto = shift;
 	my $class = ref($proto) || $proto;
-	my($parser, $type) = @_;
+	my ($parser, $type) = @_;
 	my $defn = TypeDeclarator->GetDefn($parser, $type);
 	unless (defined $defn) {
 		$parser->Error(__PACKAGE__ . "::GetEffectiveType ERROR_INTERNAL ($type).\n");
@@ -1368,28 +1473,40 @@ sub GetEffectiveType {
 sub CheckDeprecated {
 	my $proto = shift;
 	my $class = ref($proto) || $proto;
-	my($parser, $type) = @_;
+	my ($parser, $type) = @_;
 	my $defn = TypeDeclarator->GetDefn($parser, $type);
 	return unless (defined $defn);
-	if ($Parser::IDL_version ge '2.4') {
-		if (	   $defn->isa('StringType')
-				or $defn->isa('WideStringType') ) {
-			if (exists $defn->{max}) {
-				$parser->Deprecated("Anonymous type.\n");
-			}
-		} elsif	(  $defn->isa('FixedPtType') ) {
-			$parser->Deprecated("Anonymous type.\n");
-		} elsif	(  $defn->isa('SequenceType') ) {
-			$parser->Deprecated("Anonymous type.\n");
+	if (	   $defn->isa('StringType')
+			or $defn->isa('WideStringType') ) {
+		if (exists $defn->{max}) {
+			$defn->configure(deprecated	=>	1);
+			$parser->Deprecated("Anonymous type.\n")
+					if ($Parser::IDL_version ge '2.4');
 		}
+	} elsif	(  $defn->isa('FixedPtType') ) {
+		$defn->configure(deprecated	=>	1);
+		$parser->Deprecated("Anonymous type.\n")
+				if ($Parser::IDL_version ge '2.4');
+	} elsif	(  $defn->isa('SequenceType') ) {
+		$defn->configure(deprecated	=>	1);
+		$parser->Deprecated("Anonymous type.\n")
+				if ($Parser::IDL_version ge '2.4');
 	}
+}
+
+sub IsDeprecated {
+	my $proto = shift;
+	my $class = ref($proto) || $proto;
+	my ($parser, $type) = @_;
+	my $defn = TypeDeclarator->GetDefn($parser, $type);
+	return (exists $defn->{deprecated} ? 1 : undef);
 }
 
 sub CheckForward {
 	my $proto = shift;
 	my $class = ref($proto) || $proto;
 
-	my($parser, $type) = @_;
+	my ($parser, $type) = @_;
 	my $defn = TypeDeclarator->GetDefn($parser, $type);
 	return unless (defined $defn);
 	while (		   $defn->isa('SequenceType')
@@ -1408,42 +1525,12 @@ sub IsaLocal {
 	my $proto = shift;
 	my $class = ref($proto) || $proto;
 
-	my($parser, $type) = @_;
+	my ($parser, $type) = @_;
 	return undef unless ($type);
 	my $defn = TypeDeclarator->GetDefn($parser, $type);
 	return exists $defn->{local_type} if ($defn);
 	$parser->Error(__PACKAGE__ . "::IsaLocal ERROR_INTERNAL ($type).\n");
 	return undef;
-}
-
-package TypeDeclarators;
-
-use base qw(node);
-
-sub _Init {
-	my $self = shift;
-	my ($parser) = @_;
-	my @list;
-	foreach (@{$self->{list_expr}}) {
-		my @array_size = @{$_};
-		my $idf = shift @array_size;
-		my $decl;
-		if (@array_size) {
-			$decl = new TypeDeclarator($parser,
-					type				=>	$self->{type},
-					idf					=>	$idf,
-					array_size			=>	\@array_size
-			);
-			TypeDeclarator->CheckDeprecated($parser,$self->{type});
-		} else {
-			$decl = new TypeDeclarator($parser,
-					type				=>	$self->{type},
-					idf					=>	$idf
-			);
-		}
-		push @list, $decl->{full};
-	}
-	$self->configure(list_decl	=>	\@list);
 }
 
 #
@@ -1452,31 +1539,7 @@ sub _Init {
 
 package BasicType;
 
-use base qw(node);
-
-sub visit {
-	my $self = shift;
-	my $class = ref $self;
-	my $visitor = shift;
-	my $func = 'visit' . $class;
-	if($visitor->can($func)) {
-		$visitor->$func($self,@_);
-	} else {
-		$visitor->visitBasicType($self,@_);
-	}
-}
-
-sub visitName {
-	my $self = shift;
-	my $class = ref $self;
-	my $visitor = shift;
-	my $func = 'visitName' . $class;
-	if ($visitor->can($func)) {
-		return $visitor->$func($self,@_);
-	} else {
-		return $visitor->visitNameBasicType($self,@_);
-	}
-}
+use base qw(CORBA::IDL::node);
 
 package FloatingPtType;
 
@@ -1520,7 +1583,7 @@ use base qw(BasicType);
 
 package _ConstructedType;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 #	3.11.2.1	Structures
 #
@@ -1549,67 +1612,54 @@ sub Configure {
 	$self->configure(@_);
 	my @list;
 	foreach (@{$self->{list_expr}}) {
-		foreach (@{$_->{list_value}}) {
+		foreach (@{$_->{list_member}}) {
 			push @list, $_;
+			$self->{deprecated} = 1 if (TypeDeclarator->IsDeprecated($parser, $_));
 		}
 		$self->{local_type} = 1 if (TypeDeclarator->IsaLocal($parser, $_->{type}));
 	}
-	$self->configure(list_value	=>	\@list);	# list of 'Single' or 'Array'
+	$self->configure(list_member	=>	\@list);	# list of 'Member'
 	return $self;
 }
 
 package Members;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 sub _Init {
 	my $self = shift;
 	my ($parser) = @_;
+	TypeDeclarator->CheckDeprecated($parser, $self->{type});
+	TypeDeclarator->CheckForward($parser, $self->{type});
 	my @list;
 	foreach (@{$self->{list_expr}}) {
 		my $member;
 		my @array_size = @{$_};
 		my $idf = shift @array_size;
 		if (@array_size) {
-			$member = new Array($parser,
+			$member = new Member($parser,
 					type			=>	$self->{type},
 					idf				=>	$idf,
-					array_size		=>	\@array_size
+					array_size		=>	\@array_size,
+					deprecated		=>	1,
 			);
-			if ($Parser::IDL_version ge '2.4') {
-				$parser->Deprecated("Anonymous type (array).\n");
-			}
+			$parser->Deprecated("Anonymous type (array).\n")
+					if ($Parser::IDL_version ge '2.4');
 		} else {
-			$member = new Single($parser,
+			$member = new Member($parser,
 					type			=>	$self->{type},
 					idf				=>	$idf,
+					deprecated		=>	TypeDeclarator->IsDeprecated($parser, $self->{type}),
 			);
 		}
 		push @list, $member->{full};
 	}
-	$self->configure(list_value	=>	\@list);
-	TypeDeclarator->CheckDeprecated($parser,$self->{type});
-	TypeDeclarator->CheckForward($parser,$self->{type});
+	$self->configure(list_member	=>	\@list);
 }
 
-package Array;							# idf, type, array_size
+package Member;							# idf, type[, array_size]
 
-use base qw(node);
-
-sub _Init {
-	my $self = shift;
-	my ($parser) = @_;
-	$parser->YYData->{symbtab}->Insert($self);
-	if ($parser->YYData->{doc} ne '') {
-		$self->{doc} = $parser->YYData->{doc};
-		$parser->YYData->{doc} = '';
-	}
-	$parser->YYData->{curr_node} = $self;
-}
-
-package Single;							# idf, type
-
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 sub _Init {
 	my $self = shift;
@@ -1666,6 +1716,7 @@ sub Configure {
 	foreach my $case (@{$self->{list_expr}}) {
 		my $elt = $case->{element};
 		$self->{local_type} = 1 if (TypeDeclarator->IsaLocal($parser, $elt->{type}));
+		$self->{deprecated} = 1 if (TypeDeclarator->IsDeprecated($parser, $elt->{value}));
 		my @list;
 		foreach (@{$case->{list_label}}) {
 			my $key;
@@ -1693,11 +1744,11 @@ sub Configure {
 		}
 		$case->{list_label} = \@list;
 	}
-	$self->configure(list_value	=>	\@list_all);
-	$self->configure(hash_value	=>	\%hash);
+	$self->configure(list_member	=>	\@list_all);
+	$self->configure(hash_member	=>	\%hash);
 	if ($defn->isa('EnumType')) {
 		my $all = 1;
-		foreach (@{$defn->{list_value}}) {
+		foreach (@{$defn->{list_member}}) {
 			$all = 0 unless (exists $hash{$_});
 		}
 		if ($all) {
@@ -1716,40 +1767,41 @@ sub Configure {
 
 package Case;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 package Default;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 package Element;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 sub _Init {
 	my $self = shift;
 	my ($parser) = @_;
-	TypeDeclarator->CheckDeprecated($parser,$self->{type});
-	TypeDeclarator->CheckForward($parser,$self->{type});
+	TypeDeclarator->CheckDeprecated($parser, $self->{type});
+	TypeDeclarator->CheckForward($parser, $self->{type});
 	my @array_size = @{$self->{list_expr}};
 	my $idf = shift @array_size;
 	my $value;
 	if (@array_size) {
-		if ($Parser::IDL_version ge '2.4') {
-			$parser->Deprecated("Anonymous type (array).\n");
-		}
-		$value = new Array($parser,
+		$value = new Member($parser,
 				type			=>	$self->{type},
 				idf				=>	$idf,
-				array_size		=>	\@array_size
+				array_size		=>	\@array_size,
+				deprecated		=>	1,
 		);
+		$parser->Deprecated("Anonymous type (array).\n")
+				if ($Parser::IDL_version ge '2.4');
 	} else {
-		$value = new Single($parser,
+		$value = new Member($parser,
 				type			=>	$self->{type},
 				idf				=>	$idf,
+				deprecated		=>	TypeDeclarator->IsDeprecated($parser, $self->{type}),
 		);
 	}
-	$self->configure(value	=>	$value->{full});	# 'Array' or 'Single'
+	$self->configure(value	=>	$value->{full});	# 'Member'
 }
 
 #	3.11.2.3	Constructed Recursive Types and Forward Declarations
@@ -1757,7 +1809,7 @@ sub _Init {
 
 package _ForwardConstructedType;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 sub _Init {
 	my $self = shift;
@@ -1766,6 +1818,9 @@ sub _Init {
 	$self->{_typeprefix} = $parser->YYData->{symbtab}->GetTypePrefix();
 	$self->line_stamp($parser);
 	$parser->YYData->{symbtab}->InsertForward($self);
+	$parser->Error("Forward constructed not supported.\n")
+			if ($parser->YYData->{forward_constructed_forbidden});
+
 }
 
 package ForwardStructType;
@@ -1820,7 +1875,7 @@ sub Configure {
 		);
 		$idx++;
 	}
-	$self->configure(list_value	=>	\@list);	# list of 'Enum'
+	$self->configure(list_member	=>	\@list);	# list of 'Enum'    #### ????
 	if ($idx > ULONG_MAX) {
 		$parser->Error("too many enum for '$self->{idf}'.\n");
 	}
@@ -1829,7 +1884,7 @@ sub Configure {
 
 package Enum;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 sub _Init {
 	my $self = shift;
@@ -1848,7 +1903,7 @@ sub _Init {
 
 package _TemplateType;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 package SequenceType;
 
@@ -1891,7 +1946,7 @@ use base qw(_TemplateType);
 
 package Exception;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 sub _Init {
 	my $self = shift;
@@ -1913,19 +1968,19 @@ sub Configure {
 	$self->configure(@_);
 	my @list;
 	foreach (@{$self->{list_expr}}) {
-		foreach (@{$_->{list_value}}) {
+		foreach (@{$_->{list_member}}) {
 			push @list, $_;
 		}
 		$self->{local_type} = 1 if (TypeDeclarator->IsaLocal($parser, $_->{type}));
 	}
-	$self->configure(list_value	=>	\@list);	# list of 'Single' or 'Array'
+	$self->configure(list_member	=>	\@list);	# list of 'Member'
 	return $self;
 }
 
 sub Lookup {
 	my $proto = shift;
 	my $class = ref($proto) || $proto;
-	my($parser, $name) = @_;
+	my ($parser, $name) = @_;
 	my $defn = $parser->YYData->{symbtab}->Lookup($name);
 	if (defined $defn) {
 		unless ($defn->isa($class)) {
@@ -1943,7 +1998,7 @@ sub Lookup {
 
 package Operation;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 sub _Init {
 	my $self = shift;
@@ -1955,7 +2010,7 @@ sub _Init {
 		$parser->YYData->{doc} = '';
 	}
 	$parser->YYData->{symbtab}->Insert($self);
-	$parser->YYData->{unnamed_symbtab} = new UnnamedSymbtab($parser);
+	$parser->YYData->{unnamed_symbtab} = new CORBA::IDL::UnnamedSymbtab($parser);
 	TypeDeclarator->CheckDeprecated($parser, $type);
 	TypeDeclarator->CheckForward($parser, $type);
 	if (defined $parser->YYData->{curr_itf}) {
@@ -1975,7 +2030,7 @@ sub _Init {
 
 sub _CheckOneway {
 	my $self = shift;
-	my($parser) = @_;
+	my ($parser) = @_;
 	if (exists $self->{modifier} and $self->{modifier} eq 'oneway') {
 		# 3.12.1	Operation Attribute
 		my $type = $self->{type};
@@ -1983,6 +2038,7 @@ sub _CheckOneway {
 			$parser->Error("return type of '$self->{idf}' is not 'void'.\n");
 		}
 		foreach ( @{$self->{list_param}} ) {
+			next if ($_->isa('Ellipsis'));
 			if ($_->{attr} ne 'in') {
 				$parser->Error("parameter '$_->{idf}' is not 'in'.\n");
 			}
@@ -2002,6 +2058,7 @@ sub Configure {
 	my @list_inout = ();
 	my @list_out = ();
 	foreach ( @{$self->{list_param}} ) {
+		next if ($_->isa('Ellipsis'));
 		if      ($_->{attr} eq 'in') {
 			push @list_in, $_;
 		} elsif ($_->{attr} eq 'inout') {
@@ -2018,7 +2075,7 @@ sub Configure {
 
 package Parameter;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 sub _Init {
 	my $self = shift;
@@ -2042,7 +2099,11 @@ sub _Init {
 
 package VoidType;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
+
+package Ellipsis;
+
+use base qw(CORBA::IDL::node);
 
 #
 #	3.14	Attribute Declaration
@@ -2050,7 +2111,7 @@ use base qw(node);
 
 package Attributes;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 sub _Init {
 	my $self = shift;
@@ -2058,6 +2119,8 @@ sub _Init {
 	my @list;
 	foreach (@{$self->{list_expr}}) {
 		my $attr = new Attribute($parser,
+				declspec			=>	$self->{declspec},
+				props				=>	$self->{props},
 				modifier			=>	$self->{modifier},
 				type				=>	$self->{type},
 				idf					=>	$_,
@@ -2071,7 +2134,7 @@ sub _Init {
 
 package Attribute;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 sub _Init {
 	my $self = shift;
@@ -2131,7 +2194,7 @@ sub _Init {
 
 package TypeId;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 sub _Init {
 	my $self = shift;
@@ -2172,7 +2235,7 @@ sub _Init {
 
 package TypePrefix;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 sub _Init {
 	my $self = shift;
@@ -2218,7 +2281,7 @@ use base qw(Event);
 
 sub _CheckInheritance {
 	my $self = shift;
-	my($parser) = @_;
+	my ($parser) = @_;
 	if (exists $self->{inheritance}) {
 		if (    exists $self->{inheritance}->{modifier}		# truncatable
 			and exists $self->{modifier} ) {				# custom
@@ -2274,23 +2337,23 @@ use base qw(ForwardBaseInterface);
 
 package Provides;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 package Uses;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 package Emits;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 package Publishes;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 package Consumes;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 #
 #	3.18	Home Declaration
@@ -2305,13 +2368,13 @@ sub _CheckInheritance {
 
 package Factory;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 sub _Init {
 	my $self = shift;
 	my ($parser) = @_;
 	$parser->YYData->{symbtab}->Insert($self);
-	$parser->YYData->{unnamed_symbtab} = new UnnamedSymbtab($parser);
+	$parser->YYData->{unnamed_symbtab} = new CORBA::IDL::UnnamedSymbtab($parser);
 	if (defined $parser->YYData->{curr_itf}) {
 		$self->{itf} = $parser->YYData->{curr_itf}->{full};
 		$parser->YYData->{curr_itf}->{hash_attribute_operation}{$self->{idf}} = $self->{full}
@@ -2343,13 +2406,13 @@ sub Configure {
 
 package Finder;
 
-use base qw(node);
+use base qw(CORBA::IDL::node);
 
 sub _Init {
 	my $self = shift;
 	my ($parser) = @_;
 	$parser->YYData->{symbtab}->Insert($self);
-	$parser->YYData->{unnamed_symbtab} = new UnnamedSymbtab($parser);
+	$parser->YYData->{unnamed_symbtab} = new CORBA::IDL::UnnamedSymbtab($parser);
 	if (defined $parser->YYData->{curr_itf}) {
 		$self->{itf} = $parser->YYData->{curr_itf}->{full};
 		$parser->YYData->{curr_itf}->{hash_attribute_operation}{$self->{idf}} = $self->{full}
@@ -2377,6 +2440,16 @@ sub Configure {
 	$self->{list_inout} = [];
 	$self->{list_out} = [];
 	return $self;
+}
+
+package CodeFragment;
+
+use base qw(CORBA::IDL::node);
+
+sub _Init {
+	my $self = shift;
+	my ($parser) = @_;
+	$self->line_stamp($parser);
 }
 
 =for tree
@@ -2449,8 +2522,7 @@ sub Configure {
 			ForwardStructType -
 			ForwardUnionType -
 		Members
-		Array
-		Single
+		Member
 		Case -
 		Default -
 		Element
@@ -2465,6 +2537,7 @@ sub Configure {
 		Operation
 		Parameter
 		VoidType -
+		Ellipsis -
 		Attributes
 		Attribute
 		TypeId

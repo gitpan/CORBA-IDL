@@ -5,12 +5,13 @@
 #
 
 use strict;
+
 use Math::BigInt;
 use Math::BigFloat;
 
 sub Error {
 	my $parser = shift;
-	my($msg) = @_;
+	my ($msg) = @_;
 
 	$msg ||= "Syntax error.\n";
 
@@ -31,7 +32,7 @@ sub Error {
 
 sub Warning {
 	my $parser = shift;
-	my($msg) = @_;
+	my ($msg) = @_;
 
 	$msg ||= ".\n";
 
@@ -48,7 +49,7 @@ sub Warning {
 
 sub Info {
 	my $parser = shift;
-	my($msg) = @_;
+	my ($msg) = @_;
 
 	$msg ||= ".\n";
 
@@ -65,7 +66,7 @@ sub Info {
 
 sub Deprecated {
 	my $parser = shift;
-	my($msg) = @_;
+	my ($msg) = @_;
 
 	$msg ||= ".\n";
 
@@ -82,15 +83,15 @@ sub Deprecated {
 
 sub _StringLexer {
 	my $parser = shift;
-	my($token) = @_;
+	my ($token) = @_;
 	my $str = '';
 
-	while ($parser->YYData->{INPUT}) {
+	while ($parser->YYData->{line}) {
 
-		for ($parser->YYData->{INPUT}) {
+		for ($parser->YYData->{line}) {
 
 			s/^\"//
-				and return($token,$str);
+				and return ($token, $str);
 
 			s/^([^"\\]+)//
 				and $str .= $1,		# any character except single quote or backslash
@@ -143,57 +144,57 @@ sub _StringLexer {
 
 	$parser->Error("untermined string.\n");
 	$parser->YYData->{lineno} ++;
-	return ($token,$str);
+	return ($token, $str);
 }
 
 sub _CharLexer {
 	my $parser = shift;
-	my($token) = @_;
+	my ($token) = @_;
 
-	$_ = $parser->YYData->{INPUT};
+	$_ = $parser->YYData->{line};
 	s/^([^'\\])\'//
-		and return ($token,$1);		# any character except single quote or backslash
+		and return ($token, $1);		# any character except single quote or backslash
 
 	s/^\\n\'//
-		and return ($token,"\n");	# new line
+		and return ($token, "\n");	# new line
 	s/^\\t\'//
-		and return ($token,"\t");	# horizontal tab
+		and return ($token, "\t");	# horizontal tab
 	s/^\\v\'//
-		and return ($token,"\013");	# vertical tab
+		and return ($token, "\013");	# vertical tab
 	s/^\\b\'//
-		and return ($token,"\b");	# backspace
+		and return ($token, "\b");	# backspace
 	s/^\\r\'//
-		and return ($token,"\r");	# carriage return
+		and return ($token, "\r");	# carriage return
 	s/^\\f\'//
-		and return ($token,"\f");	# form feed
+		and return ($token, "\f");	# form feed
 	s/^\\a\'//
-		and return ($token,"\a");	# alert
+		and return ($token, "\a");	# alert
 	s/^\\([\?'"])\'//
-		and return ($token,$1);		# backslash, question mark, single quote, double quote
+		and return ($token, $1);		# backslash, question mark, single quote, double quote
 	s/^\\([0-7]{1,3})\'//
-		and return ($token,chr oct $1);
+		and return ($token, chr oct $1);
 	s/^\\x([0-9A-Fa-f]{1,2})\'//
-		and return ($token,chr hex $1);
+		and return ($token, chr hex $1);
 	if ($token eq 'WIDE_STRING_LITERAL') {
 		s/^\\u([0-9A-Fa-f]{1,4})\'//
-			and return ($token,chr hex $1);
+			and return ($token, chr hex $1);
 	}
 
 	s/^\\([^\s\(\)\[\]\{\}<>,;:="]*)//
 		and $parser->Error("invalid escape sequence $1.\n"),
-		    return ($token,' ');
+		    return ($token, ' ');
 
 	s/^([^\s\(\)\[\]\{\}<>,;:="]*)//
 		and $parser->Error("invalid character $1.\n"),
-		    return ($token,' ');
+		    return ($token, ' ');
 
 	print "INTERNAL_ERROR:_CharLexer $_\n";
-	return ($token,' ');
+	return ($token, ' ');
 }
 
 sub _Identifier {
 	my $parser = shift;
-	my($ident) = @_;
+	my ($ident) = @_;
 
 	my $key = uc $ident;
 	if (exists $parser->YYData->{keyword}{$key}) {
@@ -220,7 +221,7 @@ sub _Identifier {
 
 sub _EscIdentifier {
 	my $parser = shift;
-	my($ident) = @_;
+	my ($ident) = @_;
 
 	if ($Parser::IDL_version ge '2.3') {
 		my $key = uc $ident;
@@ -230,40 +231,40 @@ sub _EscIdentifier {
 	} else {
 		$parser->Warning("Escaped identifier is not allowed.\n");
 	}
-	return ('IDENTIFIER',$ident);
+	return ('IDENTIFIER', $ident);
 }
 
 sub _OctInteger {
 	my $parser = shift;
-	my($str) = @_;
+	my ($str) = @_;
 
 	my $val = new Math::BigInt(0);
-	foreach (split //,$str) {
+	foreach (split //, $str) {
 		$val = $val * new Math::BigInt(8) + new Math::BigInt(oct $_);
 	}
-	return('INTEGER_LITERAL',$val);
+	return ('INTEGER_LITERAL', $val);
 }
 
 sub _HexInteger {
 	my $parser = shift;
-	my($str) = @_;
+	my ($str) = @_;
 
 	my $val = new Math::BigInt(0);
-	foreach (split //,$str) {
+	foreach (split //, $str) {
 		$val = $val * new Math::BigInt(16) + new Math::BigInt(hex $_);
 	}
-	return('INTEGER_LITERAL',$val);
+	return ('INTEGER_LITERAL', $val);
 }
 
 sub _CommentLexer {
 	my $parser = shift;
 
 	while (1) {
-		    $parser->YYData->{INPUT}
-		or  $parser->YYData->{INPUT} = <YYIN>
+		    $parser->YYData->{line}
+		or  $parser->YYData->{line} = readline $parser->YYData->{fh}
 		or  return;
 
-		for ($parser->YYData->{INPUT}) {
+		for ($parser->YYData->{line}) {
 			s/^\n//
 					and $parser->YYData->{lineno} ++,
 					last;
@@ -281,16 +282,18 @@ sub _DocLexer {
 	$parser->YYData->{doc} = '';
 	my $flag = 1;
 	while (1) {
-		    $parser->YYData->{INPUT}
-		or  $parser->YYData->{INPUT} = <YYIN>
+		    $parser->YYData->{line}
+		or  $parser->YYData->{line} = readline $parser->YYData->{fh}
 		or  return;
 
-		for ($parser->YYData->{INPUT}) {
+		for ($parser->YYData->{line}) {
 			s/^(\n)//
 					and $parser->YYData->{lineno} ++,
 						$parser->YYData->{doc} .= $1,
 						$flag = 0,
 						last;
+			s/^\r//
+					and last;
 			s/^\*\///
 					and return;
 			unless ($flag) {
@@ -298,13 +301,36 @@ sub _DocLexer {
 						and $flag = 1,
 						last;
 			}
-			s/^([ \r\t\f\013]+)//
+			s/^([ \t\f\013]+)//
 					and $parser->YYData->{doc} .= $1,
 					last;
 			s/^(.)//
 					and $parser->YYData->{doc} .= $1,
 					$flag = 1,
 					last;
+		}
+	}
+}
+
+sub _CodeLexer {
+	my $parser = shift;
+	my $frag = "";
+
+	while (1) {
+		    $parser->YYData->{line}
+		or  $parser->YYData->{line} = readline $parser->YYData->{fh}
+		or  return;
+
+		for ($parser->YYData->{line}) {
+			s/^(\n)//
+					and $parser->YYData->{lineno} ++,
+						$frag .= $1,
+						last;
+			s/^%\}//
+					and return ('CODE_FRAGMENT', $frag);
+			s/^(.)//
+					and $frag .= $1,
+						last;
 		}
 	}
 }
@@ -346,12 +372,12 @@ sub _Lexer {
 	my $parser = shift;
 
 	while (1) {
-		    $parser->YYData->{INPUT}
-		or  $parser->YYData->{INPUT} = <YYIN>
+		    $parser->YYData->{line}
+		or  $parser->YYData->{line} = readline $parser->YYData->{fh}
 		or  return('',undef);
 
 		unless (exists $parser->YYData->{srcname}) {
-			if ($parser->YYData->{INPUT} =~ /^#\s*(line\s+)?\d+\s+["<]([^\s">]+)[">]\s*\n/ ) {
+			if ($parser->YYData->{line} =~ /^#\s*(line\s+)?\d+\s+["<]([^\s">]+)[">]\s*\n/ ) {
 				$parser->YYData->{srcname} = $2;
 			} else {
 				print "INTERNAL_ERROR:_Lexer\n";
@@ -363,7 +389,7 @@ sub _Lexer {
 			}
 		}
 
-		for ($parser->YYData->{INPUT}) {
+		for ($parser->YYData->{line}) {
 			s/^#\s+[\d]+\s+"<[^>]+>"\s*\n//							# cpp 3.2.3 ("<build-in>", "<command line>")
 					and last;
 
@@ -415,37 +441,56 @@ sub _Lexer {
 					    $parser->YYData->{curr_node} = undef,
 					    last;
 
+			s/^%\{//										# code fragment
+					and return $parser->_CodeLexer();
+
+			if ($parser->YYData->{prop}) {
+				s/^([A-Za-z][0-9A-Za-z_]*)//
+						and return ('PROP_KEY', $1);
+
+				s/^\(([^\)]+)\)//
+						and return ('PROP_VALUE', $1);
+			}
+
+			if ($parser->YYData->{native}) {
+				s/^([^\)]+)\)//
+						and return ('NATIVE_TYPE', $1);
+			}
+
+			s/^__declspec\s*\(\s*([A-Za-z]*)\s*\)//
+					and return ('DECLSPEC', $1);
+
 			s/^([0-9]+)([Dd])//
 					and $parser->YYData->{lexeme} = $1 . $2,
-					    return('FIXED_PT_LITERAL',new Math::BigFloat($1));
+					    return ('FIXED_PT_LITERAL', new Math::BigFloat($1));
 			s/^([0-9]+\.)([Dd])//
 					and $parser->YYData->{lexeme} = $1 . $2,
-					    return('FIXED_PT_LITERAL',new Math::BigFloat($1));
+					    return ('FIXED_PT_LITERAL', new Math::BigFloat($1));
 			s/^(\.[0-9]+)([Dd])//
 					and $parser->YYData->{lexeme} = $1 . $2,
-					    return('FIXED_PT_LITERAL',new Math::BigFloat($1));
+					    return ('FIXED_PT_LITERAL', new Math::BigFloat($1));
 			s/^([0-9]+\.[0-9]+)([Dd])//
 					and $parser->YYData->{lexeme} = $1 . $2,
-					    return('FIXED_PT_LITERAL',new Math::BigFloat($1));
+					    return ('FIXED_PT_LITERAL', new Math::BigFloat($1));
 
 			s/^([0-9]+\.[0-9]+[Ee][+\-]?[0-9]+)//
 					and $parser->YYData->{lexeme} = $1,
-					    return('FLOATING_PT_LITERAL',new Math::BigFloat($1));
+					    return ('FLOATING_PT_LITERAL', new Math::BigFloat($1));
 			s/^([0-9]+[Ee][+\-]?[0-9]+)//
 					and $parser->YYData->{lexeme} = $1,
-					    return('FLOATING_PT_LITERAL',new Math::BigFloat($1));
+					    return ('FLOATING_PT_LITERAL', new Math::BigFloat($1));
 			s/^(\.[0-9]+[Ee][+\-]?[0-9]+)//
 					and $parser->YYData->{lexeme} = $1,
-					    return('FLOATING_PT_LITERAL',new Math::BigFloat($1));
+					    return ('FLOATING_PT_LITERAL', new Math::BigFloat($1));
 			s/^([0-9]+\.[0-9]+)//
 					and $parser->YYData->{lexeme} = $1,
-					    return('FLOATING_PT_LITERAL',new Math::BigFloat($1));
+					    return ('FLOATING_PT_LITERAL', new Math::BigFloat($1));
 			s/^([0-9]+\.)//
 					and $parser->YYData->{lexeme} = $1,
-					    return('FLOATING_PT_LITERAL',new Math::BigFloat($1));
+					    return ('FLOATING_PT_LITERAL', new Math::BigFloat($1));
 			s/^(\.[0-9]+)//
 					and $parser->YYData->{lexeme} = $1,
-					    return('FLOATING_PT_LITERAL',new Math::BigFloat($1));
+					    return ('FLOATING_PT_LITERAL', new Math::BigFloat($1));
 
 			s/^0([0-7]+)//
 					and $parser->YYData->{lexeme} = '0' . $1,
@@ -455,10 +500,10 @@ sub _Lexer {
 					    return $parser->_HexInteger($2);
 			s/^(0)//
 					and $parser->YYData->{lexeme} = $1,
-					    return('INTEGER_LITERAL',new Math::BigInt($1));
+					    return ('INTEGER_LITERAL', new Math::BigInt($1));
 			s/^([1-9][0-9]*)//
 					and $parser->YYData->{lexeme} = $1,
-					    return('INTEGER_LITERAL',new Math::BigInt($1));
+					    return ('INTEGER_LITERAL', new Math::BigInt($1));
 
 			s/^\"//
 					and return $parser->_StringLexer('STRING_LITERAL');
@@ -490,14 +535,16 @@ sub _Lexer {
 					and return $parser->_EscIdentifier($1);
 
 			s/^(<<)//
-					and return($1,$1);
+					and return ($1, $1);
 			s/^(>>)//
-					and return($1,$1);
+					and return ($1, $1);
 			s/^(::)//
-					and return($1,$1);
+					and return ($1, $1);
+			s/^(\.\.\.)//
+					and return ($1, $1);
 
 			s/^([\+&\/%\*~\|\-\^\(\)\[\]\{\}<>,;:=])//
-					and return($1,$1);						# punctuators
+					and return ($1, $1);					# punctuators
 
 			s/^([\S]+)//
 					and $parser->Error("lexer error $1.\n"),
@@ -584,12 +631,12 @@ sub getopts {			# from Getopt::Std
 	no strict;
 	my $parser = shift;
 	local($argumentative) = @_;
-	local(@args,$_,$first,$rest);
+	local(@args, $_, $first, $rest);
 
 	$parser->YYData->{args} = [];
 	@args = split( / */, $argumentative );
 	while (@ARGV && ($_ = $ARGV[0]) =~ /^-(.)(.*)/) {
-		($first,$rest) = ($1,$2);
+		($first, $rest) = ($1, $2);
 		if (/^--$/) {	# early exit if --
 			shift(@ARGV);
 			last;
@@ -619,23 +666,47 @@ sub getopts {			# from Getopt::Std
 sub Run {
 	my $parser = shift;
 	my $preprocessor = $parser->YYData->{preprocessor};
-	my @args;
 
-	@args = @{$parser->YYData->{args}}
-			if (exists $parser->YYData->{args});
-	push @args, @_;
+	if ($preprocessor) {
+		my @args;
+		@args = @{$parser->YYData->{args}}
+				if (exists $parser->YYData->{args});
+		push @args, @_;
 
-	open(YYIN,"$preprocessor @args|")
-		|| die "can't open @_ ($!).\n";
+		open $parser->YYData->{fh}, "$preprocessor @args|"
+				or die "can't open @_ ($!).\n";
+	} else {
+		my $file = shift;
+		if (ref $file) {
+			$parser->YYData->{fh} = $file;
+			$parser->YYData->{srcname} = shift;
+		} else {
+			open $parser->YYData->{fh}, $file
+					or die "can't open $file ($!).\n";
+			$parser->YYData->{srcname} = shift || $file;
+		}
+	}
 
 	$parser->_InitLexico();
 	$parser->YYData->{doc} = '';
 	$parser->YYData->{curr_node} = undef;
 	$parser->YYData->{curr_itf} = undef;
+	$parser->YYData->{prop} = 0;
+	$parser->YYData->{native} = 0;
 	$parser->YYParse(
 			yylex	=> \&_Lexer,
-			yyerror	=> sub { return; }
+			yyerror	=> sub { return; },
+#			yydebug	=> 0x17,
 	);
+
+#    Bit Value    Outputs
+#    0x01         Token reading (useful for Lexer debugging)
+#    0x02         States information
+#    0x04         Driver actions (shifts, reduces, accept...)
+#    0x08         Parse Stack dump
+#    0x10         Error Recovery tracing
+
+	close $parser->YYData->{fh};
 }
 
 1;

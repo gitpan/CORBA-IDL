@@ -16,6 +16,7 @@ WriteMakefile(
                         'parser23.pm'   => '$(INST_LIBDIR)/IDL/parser23.pm',
                         'parser24.pm'   => '$(INST_LIBDIR)/IDL/parser24.pm',
                         'parser30.pm'   => '$(INST_LIBDIR)/IDL/parser30.pm',
+                        'parserxp.pm'   => '$(INST_LIBDIR)/IDL/parserxp.pm',
                         'repos_id.pm'   => '$(INST_LIBDIR)/IDL/repos_id.pm',
                         'symbtab.pm'    => '$(INST_LIBDIR)/IDL/symbtab.pm',
     },

@@ -1,5 +1,12 @@
 Revision history for Perl extension CORBA::IDL.
 
+2.20  Thu Feb 19 18:30:00 2004
+	- modifications of the AST (not compatible with 2.0x version)
+	- node.pm : bug with Math::BigInt 1.66 (Perl 5.8)
+	- add parser for XPIDL (Mozilla)
+	- idl.pl : add option -h (display help)
+	- idl.pl : add optinn -v (display version)
+
 2.05  Wed Dec 17 12:30:00 2003
 	- improvement for EnumType
         - improvement for value and boxed value 

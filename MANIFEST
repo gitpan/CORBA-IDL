@@ -8,6 +8,7 @@ parser22.pm
 parser23.pm
 parser24.pm
 parser30.pm
+parserxp.pm
 repos_id.pm
 symbtab.pm
 parser20.yp
@@ -16,6 +17,7 @@ parser22.yp
 parser23.yp
 parser24.yp
 parser30.yp
+parserxp.yp
 idl.pl
 TypeCode.idl
 makefile.yapp
