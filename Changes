@@ -1,5 +1,9 @@
 Revision history for Perl extension CORBA::IDL.
 
+2.21  Mon Feb 23 08:30:00 2004
+	- pb prerequisite vs VERSION
+	- node.pm : bug with Math::BigInt 1.66 (Perl 5.8)
+
 2.20  Thu Feb 19 18:30:00 2004
 	- modifications of the AST (not compatible with 2.0x version)
 	- node.pm : bug with Math::BigInt 1.66 (Perl 5.8)

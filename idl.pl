@@ -25,10 +25,10 @@ if ($^O eq 'MSWin32') {
 }
 $parser->getopts("hi:vx");
 if ($parser->YYData->{opt_v}) {
-	print "CORBA::IDL $CORBA::IDL::VERSION\n";
+	print "CORBA::IDL $CORBA::IDL::node::VERSION\n";
 	print "IDL $Parser::IDL_version\n";
 	print "$0\n";
-	print "Perl $]\n";
+	print "Perl $] on $^O\n";
 	exit;
 }
 if ($parser->YYData->{opt_h}) {

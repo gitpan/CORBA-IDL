@@ -5,12 +5,10 @@ use UNIVERSAL;
 #			Interface Definition Language (OMG IDL CORBA v3.0)
 #
 
-package CORBA::IDL;
+package CORBA::IDL::node;
 
 use vars qw($VERSION);
-$VERSION = '2.20';
-
-package CORBA::IDL::node;
+$VERSION = '2.21';
 
 sub _Build {
 	my $proto = shift;
@@ -875,33 +873,34 @@ sub _EvalBinop {
 		return undef unless (defined $right);
 		my $left = _Eval($parser, $type, $list_expr, 1);
 		return undef unless (defined $left);
+		my $value = new Math::BigInt($left);
 		if (	  $elt->{op} eq '|' ) {
-			my $value = new Math::BigInt($left->bior($right));
+			$value->bior($right);
 			return _CheckRange($parser, $type, $value, $bypass);
 		} elsif ( $elt->{op} eq '^' ) {
-			my $value = new Math::BigInt($left->bxor($right));
+			$value->bxor($right);
 			return _CheckRange($parser, $type, $value, $bypass);
 		} elsif ( $elt->{op} eq '&' ) {
-			my $value = new Math::BigInt($left->band($right));
+			$value->band($right);
 			return _CheckRange($parser, $type, $value, $bypass);
 		} elsif ( $elt->{op} eq '+' ) {
-			my $value = new Math::BigInt($left->badd($right));
+			$value->badd($right);
 			return _CheckRange($parser, $type, $value, $bypass);
 		} elsif ( $elt->{op} eq '-' ) {
-			my $value = new Math::BigInt($left->bsub($right));
+			$value->bsub($right);
 			return _CheckRange($parser, $type, $value, $bypass);
 		} elsif ( $elt->{op} eq '*' ) {
-			my $value = new Math::BigInt($left->bmul($right));
+			$value->bmul($right);
 			return _CheckRange($parser, $type, $value, $bypass);
 		} elsif ( $elt->{op} eq '/' ) {
-			my $value = new Math::BigInt($left->bdiv($right));
+			$value->bdiv($right);
 			return _CheckRange($parser, $type, $value, $bypass);
 		} elsif ( $elt->{op} eq '%' ) {
-			my $value = new Math::BigInt($left->bmod($right));
+			$value->bmod($right);
 			return _CheckRange($parser, $type, $value, $bypass);
 		} elsif ( $elt->{op} eq '>>' ) {
 			if (0 <= $right and $right < 64) {
-				my $value = new Math::BigInt($left->brsft($right));
+				$value->brsft($right);
 				return _CheckRange($parser, $type, $value, $bypass);
 			} else {
 				$parser->Error("shift operation out of range.\n");
@@ -909,7 +908,7 @@ sub _EvalBinop {
 			}
 		} elsif ( $elt->{op} eq '<<' ) {
 			if (0 <= $right and $right < 64) {
-				my $value = new Math::BigInt($left->blsft($right));
+				$value->blsft($right);
 				return _CheckRange($parser, $type, $value, $bypass);
 			} else {
 				$parser->Error("shift operation out of range.\n");
@@ -924,17 +923,18 @@ sub _EvalBinop {
 		return undef unless (defined $right);
 		my $left = _Eval($parser, $type, $list_expr);
 		return undef unless (defined $left);
+		my $value = new Math::BigFloat($left);
 		if (      $elt->{op} eq '+' ) {
-			my $value = new Math::BigFloat($left->fadd($right));
+			$value->fadd($right);
 			return _CheckRange($parser, $type, $value);
 		} elsif ( $elt->{op} eq '-' ) {
-			my $value = new Math::BigFloat($left->fsub($right));
+			$value->fsub($right);
 			return _CheckRange($parser, $type, $value);
 		} elsif ( $elt->{op} eq '*' ) {
-			my $value = new Math::BigFloat($left->fmul($right));
+			$value->fmul($right);
 			return _CheckRange($parser, $type, $value);
 		} elsif ( $elt->{op} eq '/' ) {
-			my $value = new Math::BigFloat($left->fdiv($right));
+			$value->fdiv($right);
 			return _CheckRange($parser, $type, $value);
 		} elsif (  $elt->{op} eq '|'
 				or $elt->{op} eq '^'
@@ -952,17 +952,18 @@ sub _EvalBinop {
 		return undef unless (defined $right);
 		my $left = _Eval($parser, $type, $list_expr);
 		return undef unless (defined $left);
+		my $value = new Math::BigFloat($left);
 		if (      $elt->{op} eq '+' ) {
-			my $value = new Math::BigFloat($left->fadd($right));
+			$value->fadd($right);
 			return _CheckRange($parser, $type, $value);
 		} elsif ( $elt->{op} eq '-' ) {
-			my $value = new Math::BigFloat($left->fsub($right));
+			$value->fsub($right);
 			return _CheckRange($parser, $type, $value);
 		} elsif ( $elt->{op} eq '*' ) {
-			my $value = new Math::BigFloat($left->fmul($right));
+			$value->fmul($right);
 			return _CheckRange($parser, $type, $value);
 		} elsif ( $elt->{op} eq '/' ) {
-			my $value = new Math::BigFloat($left->fdiv($right));
+			$value->fdiv($right);
 			return _CheckRange($parser, $type, $value);
 		} elsif (  $elt->{op} eq '|'
 				or $elt->{op} eq '^'
@@ -988,10 +989,11 @@ sub _EvalUnop {
 			or $type->isa('OctetType') ) {
 		my $right = _Eval($parser, $type, $list_expr, 1);
 		return undef unless (defined $right);
+		my $value = new Math::BigInt($right);
 		if (	  $elt->{op} eq '+' ) {
 			return _CheckRange($parser, $type, $right, $bypass);
 		} elsif ( $elt->{op} eq '-' ) {
-			my $value = new Math::BigInt($right->bneg());
+			$value->bneg();
 			return _CheckRange($parser, $type, $value, $bypass);
 		} elsif ( $elt->{op} eq '~' ) {
 			my $cpl;
@@ -1010,7 +1012,7 @@ sub _EvalUnop {
 			} elsif ($type->{value} eq 'octet') {
 				$cpl = UCHAR_MAX;
 			}
-			my $value = new Math::BigInt($right->bxor($cpl));
+			$value->bxor($cpl);
 			return _CheckRange($parser, $type, $value, $bypass);
 		} else {
 			$parser->Error("_EvalUnop (int) : INTERNAL ERROR.\n");
@@ -1019,10 +1021,11 @@ sub _EvalUnop {
 	} elsif (  $type->isa('FloatingPtType') ) {
 		my $right = _Eval($parser, $type, $list_expr);
 		return undef unless (defined $right);
+		my $value = new Math::BigFloat($right);
 		if (	  $elt->{op} eq '+' ) {
 			return _CheckRange($parser, $type, $right);
 		} elsif ( $elt->{op} eq '-' ) {
-			my $value = new Math::BigFloat($right->fneg());
+			$value->fneg();
 			return _CheckRange($parser, $type, $value);
 		} elsif (  $elt->{op} eq '~' ) {
 			$parser->Error("'$elt->{op}' is not valid for '$type'.\n");
@@ -1034,10 +1037,11 @@ sub _EvalUnop {
 	} elsif (  $type->isa('FixedPtConstType') ) {
 		my $right = _Eval($parser, $type, $list_expr);
 		return undef unless (defined $right);
+		my $value = new Math::BigFloat($right);
 		if (	  $elt->{op} eq '+' ) {
 			return _CheckRange($parser, $type, $right);
 		} elsif ( $elt->{op} eq '-' ) {
-			my $value = new Math::BigFloat($right->fneg());
+			$value->fneg();
 			return _CheckRange($parser, $type, $value);
 		} elsif (  $elt->{op} eq '~' ) {
 			$parser->Error("'$elt->{op}' is not valid for '$type'.\n");
