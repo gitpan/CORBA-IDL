@@ -1,7 +1,7 @@
 
 YAPP=yapp -s -v -m
 CP=copy
-RM=del
+RM=-del
 
 all: parser30.pm parser24.pm parser23.pm parser22.pm parser21.pm parser20.pm
 	$(RM) Parser.pm

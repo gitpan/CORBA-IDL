@@ -502,110 +502,111 @@ sub new {
 	{#State 0
 		ACTIONS => {
 			'' => -2,
-			'NATIVE' => 28,
+			'NATIVE' => 29,
 			'ABSTRACT' => 2,
-			'STRUCT' => 30,
+			'STRUCT' => 31,
 			'VALUETYPE' => 9,
-			'TYPEDEF' => 33,
+			'TYPEDEF' => 34,
 			'MODULE' => 12,
-			'IDENTIFIER' => 35,
-			'UNION' => 36,
-			'error' => 17,
-			'CONST' => 19,
-			'EXCEPTION' => 21,
-			'CUSTOM' => 39,
-			'ENUM' => 24,
+			'IDENTIFIER' => 36,
+			'UNION' => 37,
+			'error' => 18,
+			'CONST' => 20,
+			'EXCEPTION' => 22,
+			'CUSTOM' => 40,
+			'ENUM' => 25,
 			'INTERFACE' => -32
 		},
 		GOTOS => {
 			'value_forward_dcl' => 1,
-			'const_dcl' => 26,
-			'interface_header' => 27,
+			'const_dcl' => 27,
+			'interface_header' => 28,
 			'except_dcl' => 3,
-			'value_header' => 29,
+			'value_header' => 30,
 			'specification' => 4,
 			'module_header' => 5,
 			'interface' => 6,
 			'value_box_dcl' => 7,
 			'value_abs_header' => 8,
 			'value_dcl' => 10,
-			'struct_type' => 31,
-			'union_type' => 34,
-			'exception_header' => 32,
+			'struct_type' => 32,
+			'union_type' => 35,
+			'exception_header' => 33,
 			'struct_header' => 11,
 			'interface_dcl' => 13,
 			'value' => 14,
-			'enum_type' => 15,
-			'forward_dcl' => 16,
-			'module' => 37,
-			'enum_header' => 18,
-			'value_abs_dcl' => 20,
-			'type_dcl' => 38,
-			'union_header' => 22,
-			'definitions' => 23,
-			'definition' => 40,
-			'interface_mod' => 25
+			'value_box_header' => 15,
+			'enum_type' => 16,
+			'forward_dcl' => 17,
+			'module' => 38,
+			'enum_header' => 19,
+			'value_abs_dcl' => 21,
+			'type_dcl' => 39,
+			'union_header' => 23,
+			'definitions' => 24,
+			'definition' => 41,
+			'interface_mod' => 26
 		}
 	},
 	{#State 1
-		DEFAULT => -62
+		DEFAULT => -65
 	},
 	{#State 2
 		ACTIONS => {
-			'error' => 42,
-			'VALUETYPE' => 41,
+			'error' => 43,
+			'VALUETYPE' => 42,
 			'INTERFACE' => -31
 		}
 	},
 	{#State 3
 		ACTIONS => {
-			'error' => 44,
-			";" => 43
+			'error' => 45,
+			";" => 44
 		}
 	},
 	{#State 4
 		ACTIONS => {
-			'' => 45
+			'' => 46
 		}
 	},
 	{#State 5
 		ACTIONS => {
-			"{" => 47,
-			'error' => 46
+			"{" => 48,
+			'error' => 47
 		}
 	},
 	{#State 6
 		ACTIONS => {
-			'error' => 49,
-			";" => 48
+			'error' => 50,
+			";" => 49
 		}
 	},
 	{#State 7
-		DEFAULT => -61
+		DEFAULT => -64
 	},
 	{#State 8
 		ACTIONS => {
-			"{" => 50
+			"{" => 51
 		}
 	},
 	{#State 9
 		ACTIONS => {
-			'error' => 51,
-			'IDENTIFIER' => 52
+			'error' => 52,
+			'IDENTIFIER' => 53
 		}
 	},
 	{#State 10
-		DEFAULT => -59
+		DEFAULT => -62
 	},
 	{#State 11
 		ACTIONS => {
-			"{" => 53
+			"{" => 54
 		}
 	},
 	{#State 12
 		ACTIONS => {
-			'error' => 54,
-			'IDENTIFIER' => 55
+			'error' => 55,
+			'IDENTIFIER' => 56
 		}
 	},
 	{#State 13
@@ -613,211 +614,265 @@ sub new {
 	},
 	{#State 14
 		ACTIONS => {
-			'error' => 57,
-			";" => 56
+			'error' => 58,
+			";" => 57
 		}
 	},
 	{#State 15
-		DEFAULT => -175
+		ACTIONS => {
+			'CHAR' => 85,
+			'OBJECT' => 86,
+			'VALUEBASE' => 87,
+			'FIXED' => 61,
+			'SEQUENCE' => 63,
+			'STRUCT' => 31,
+			'DOUBLE' => 91,
+			'LONG' => 92,
+			'STRING' => 93,
+			"::" => 94,
+			'WSTRING' => 96,
+			'UNSIGNED' => 72,
+			'SHORT' => 74,
+			'BOOLEAN' => 98,
+			'IDENTIFIER' => 100,
+			'UNION' => 37,
+			'WCHAR' => 75,
+			'FLOAT' => 82,
+			'OCTET' => 80,
+			'ENUM' => 25,
+			'ANY' => 84
+		},
+		GOTOS => {
+			'unsigned_int' => 59,
+			'floating_pt_type' => 60,
+			'signed_int' => 62,
+			'char_type' => 65,
+			'value_base_type' => 64,
+			'object_type' => 66,
+			'octet_type' => 67,
+			'scoped_name' => 68,
+			'wide_char_type' => 69,
+			'type_spec' => 71,
+			'signed_long_int' => 70,
+			'string_type' => 73,
+			'struct_header' => 11,
+			'unsigned_longlong_int' => 76,
+			'any_type' => 77,
+			'base_type_spec' => 78,
+			'enum_type' => 79,
+			'enum_header' => 19,
+			'union_header' => 23,
+			'unsigned_short_int' => 81,
+			'signed_longlong_int' => 83,
+			'wide_string_type' => 88,
+			'boolean_type' => 89,
+			'integer_type' => 90,
+			'signed_short_int' => 95,
+			'struct_type' => 97,
+			'union_type' => 99,
+			'sequence_type' => 101,
+			'unsigned_long_int' => 102,
+			'template_type_spec' => 103,
+			'constr_type_spec' => 104,
+			'simple_type_spec' => 105,
+			'fixed_pt_type' => 106
+		}
 	},
 	{#State 16
-		DEFAULT => -25
+		DEFAULT => -179
 	},
 	{#State 17
-		DEFAULT => -3
+		DEFAULT => -25
 	},
 	{#State 18
-		ACTIONS => {
-			"{" => 59,
-			'error' => 58
-		}
+		DEFAULT => -3
 	},
 	{#State 19
 		ACTIONS => {
-			'CHAR' => 79,
-			'SHORT' => 71,
-			'BOOLEAN' => 91,
-			'IDENTIFIER' => 92,
-			'FIXED' => 62,
-			'WCHAR' => 72,
-			'DOUBLE' => 83,
-			'error' => 74,
-			'LONG' => 84,
-			'STRING' => 85,
-			"::" => 87,
-			'OCTET' => 75,
-			'FLOAT' => 77,
-			'WSTRING' => 89,
-			'UNSIGNED' => 69
-		},
-		GOTOS => {
-			'unsigned_int' => 60,
-			'floating_pt_type' => 61,
-			'signed_int' => 63,
-			'wide_string_type' => 80,
-			'integer_type' => 82,
-			'boolean_type' => 81,
-			'char_type' => 64,
-			'octet_type' => 65,
-			'scoped_name' => 66,
-			'fixed_pt_const_type' => 86,
-			'wide_char_type' => 67,
-			'signed_long_int' => 68,
-			'signed_short_int' => 88,
-			'const_type' => 90,
-			'string_type' => 70,
-			'unsigned_longlong_int' => 73,
-			'unsigned_long_int' => 93,
-			'unsigned_short_int' => 76,
-			'signed_longlong_int' => 78
+			"{" => 108,
+			'error' => 107
 		}
 	},
 	{#State 20
-		DEFAULT => -60
+		ACTIONS => {
+			'CHAR' => 85,
+			'SHORT' => 74,
+			'BOOLEAN' => 98,
+			'IDENTIFIER' => 100,
+			'FIXED' => 110,
+			'WCHAR' => 75,
+			'DOUBLE' => 91,
+			'error' => 116,
+			'LONG' => 92,
+			'STRING' => 93,
+			"::" => 94,
+			'OCTET' => 80,
+			'FLOAT' => 82,
+			'WSTRING' => 96,
+			'UNSIGNED' => 72
+		},
+		GOTOS => {
+			'unsigned_int' => 59,
+			'floating_pt_type' => 109,
+			'signed_int' => 62,
+			'wide_string_type' => 117,
+			'integer_type' => 119,
+			'boolean_type' => 118,
+			'char_type' => 111,
+			'octet_type' => 112,
+			'scoped_name' => 113,
+			'fixed_pt_const_type' => 120,
+			'wide_char_type' => 114,
+			'signed_long_int' => 70,
+			'signed_short_int' => 95,
+			'const_type' => 121,
+			'string_type' => 115,
+			'unsigned_longlong_int' => 76,
+			'unsigned_long_int' => 102,
+			'unsigned_short_int' => 81,
+			'signed_longlong_int' => 83
+		}
 	},
 	{#State 21
-		ACTIONS => {
-			'error' => 94,
-			'IDENTIFIER' => 95
-		}
+		DEFAULT => -63
 	},
 	{#State 22
 		ACTIONS => {
-			'SWITCH' => 96
+			'error' => 122,
+			'IDENTIFIER' => 123
 		}
 	},
 	{#State 23
-		DEFAULT => -1
+		ACTIONS => {
+			'SWITCH' => 124
+		}
 	},
 	{#State 24
-		ACTIONS => {
-			'error' => 97,
-			'IDENTIFIER' => 98
-		}
+		DEFAULT => -1
 	},
 	{#State 25
 		ACTIONS => {
-			'INTERFACE' => 99
+			'error' => 125,
+			'IDENTIFIER' => 126
 		}
 	},
 	{#State 26
 		ACTIONS => {
-			'error' => 101,
-			";" => 100
+			'INTERFACE' => 127
 		}
 	},
 	{#State 27
 		ACTIONS => {
-			"{" => 102
+			'error' => 129,
+			";" => 128
 		}
 	},
 	{#State 28
 		ACTIONS => {
-			'error' => 103,
-			'IDENTIFIER' => 105
-		},
-		GOTOS => {
-			'simple_declarator' => 104
+			"{" => 130
 		}
 	},
 	{#State 29
 		ACTIONS => {
-			"{" => 106
+			'error' => 131,
+			'IDENTIFIER' => 133
+		},
+		GOTOS => {
+			'simple_declarator' => 132
 		}
 	},
 	{#State 30
 		ACTIONS => {
-			'IDENTIFIER' => 107
+			"{" => 134
 		}
 	},
 	{#State 31
-		DEFAULT => -173
+		ACTIONS => {
+			'IDENTIFIER' => 135
+		}
 	},
 	{#State 32
-		ACTIONS => {
-			"{" => 109,
-			'error' => 108
-		}
+		DEFAULT => -177
 	},
 	{#State 33
 		ACTIONS => {
-			'CHAR' => 79,
-			'OBJECT' => 127,
-			'VALUEBASE' => 128,
-			'FIXED' => 111,
-			'SEQUENCE' => 112,
-			'STRUCT' => 30,
-			'DOUBLE' => 83,
-			'LONG' => 84,
-			'STRING' => 85,
-			"::" => 87,
-			'WSTRING' => 89,
-			'UNSIGNED' => 69,
-			'SHORT' => 71,
-			'BOOLEAN' => 91,
-			'IDENTIFIER' => 92,
-			'UNION' => 36,
-			'WCHAR' => 72,
-			'error' => 125,
-			'FLOAT' => 77,
-			'OCTET' => 75,
-			'ENUM' => 24,
-			'ANY' => 126
-		},
-		GOTOS => {
-			'unsigned_int' => 60,
-			'floating_pt_type' => 110,
-			'signed_int' => 63,
-			'char_type' => 114,
-			'value_base_type' => 113,
-			'object_type' => 115,
-			'octet_type' => 116,
-			'scoped_name' => 117,
-			'wide_char_type' => 118,
-			'type_spec' => 119,
-			'signed_long_int' => 68,
-			'type_declarator' => 120,
-			'string_type' => 121,
-			'struct_header' => 11,
-			'unsigned_longlong_int' => 73,
-			'any_type' => 122,
-			'base_type_spec' => 123,
-			'enum_type' => 124,
-			'enum_header' => 18,
-			'union_header' => 22,
-			'unsigned_short_int' => 76,
-			'signed_longlong_int' => 78,
-			'wide_string_type' => 129,
-			'boolean_type' => 130,
-			'integer_type' => 131,
-			'signed_short_int' => 88,
-			'struct_type' => 132,
-			'union_type' => 133,
-			'sequence_type' => 134,
-			'unsigned_long_int' => 93,
-			'template_type_spec' => 135,
-			'constr_type_spec' => 136,
-			'simple_type_spec' => 137,
-			'fixed_pt_type' => 138
+			"{" => 137,
+			'error' => 136
 		}
 	},
 	{#State 34
-		DEFAULT => -174
+		ACTIONS => {
+			'CHAR' => 85,
+			'OBJECT' => 86,
+			'VALUEBASE' => 87,
+			'FIXED' => 61,
+			'SEQUENCE' => 63,
+			'STRUCT' => 31,
+			'DOUBLE' => 91,
+			'LONG' => 92,
+			'STRING' => 93,
+			"::" => 94,
+			'WSTRING' => 96,
+			'UNSIGNED' => 72,
+			'SHORT' => 74,
+			'BOOLEAN' => 98,
+			'IDENTIFIER' => 100,
+			'UNION' => 37,
+			'WCHAR' => 75,
+			'error' => 140,
+			'FLOAT' => 82,
+			'OCTET' => 80,
+			'ENUM' => 25,
+			'ANY' => 84
+		},
+		GOTOS => {
+			'unsigned_int' => 59,
+			'floating_pt_type' => 60,
+			'signed_int' => 62,
+			'char_type' => 65,
+			'value_base_type' => 64,
+			'object_type' => 66,
+			'octet_type' => 67,
+			'scoped_name' => 68,
+			'wide_char_type' => 69,
+			'type_spec' => 138,
+			'signed_long_int' => 70,
+			'type_declarator' => 139,
+			'string_type' => 73,
+			'struct_header' => 11,
+			'unsigned_longlong_int' => 76,
+			'any_type' => 77,
+			'base_type_spec' => 78,
+			'enum_type' => 79,
+			'enum_header' => 19,
+			'union_header' => 23,
+			'unsigned_short_int' => 81,
+			'signed_longlong_int' => 83,
+			'wide_string_type' => 88,
+			'boolean_type' => 89,
+			'integer_type' => 90,
+			'signed_short_int' => 95,
+			'struct_type' => 97,
+			'union_type' => 99,
+			'sequence_type' => 101,
+			'unsigned_long_int' => 102,
+			'template_type_spec' => 103,
+			'constr_type_spec' => 104,
+			'simple_type_spec' => 105,
+			'fixed_pt_type' => 106
+		}
 	},
 	{#State 35
-		ACTIONS => {
-			'error' => 139
-		}
+		DEFAULT => -178
 	},
 	{#State 36
 		ACTIONS => {
-			'IDENTIFIER' => 140
+			'error' => 141
 		}
 	},
 	{#State 37
 		ACTIONS => {
-			'error' => 142,
-			";" => 141
+			'IDENTIFIER' => 142
 		}
 	},
 	{#State 38
@@ -829,3516 +884,3508 @@ sub new {
 	{#State 39
 		ACTIONS => {
 			'error' => 146,
-			'VALUETYPE' => 145
+			";" => 145
 		}
 	},
 	{#State 40
 		ACTIONS => {
-			'NATIVE' => 28,
+			'error' => 148,
+			'VALUETYPE' => 147
+		}
+	},
+	{#State 41
+		ACTIONS => {
+			'NATIVE' => 29,
 			'ABSTRACT' => 2,
-			'STRUCT' => 30,
+			'STRUCT' => 31,
 			'VALUETYPE' => 9,
-			'TYPEDEF' => 33,
+			'TYPEDEF' => 34,
 			'MODULE' => 12,
-			'IDENTIFIER' => 35,
-			'UNION' => 36,
-			'CONST' => 19,
-			'EXCEPTION' => 21,
-			'CUSTOM' => 39,
-			'ENUM' => 24,
+			'IDENTIFIER' => 36,
+			'UNION' => 37,
+			'CONST' => 20,
+			'EXCEPTION' => 22,
+			'CUSTOM' => 40,
+			'ENUM' => 25,
 			'INTERFACE' => -32
 		},
 		DEFAULT => -4,
 		GOTOS => {
 			'value_forward_dcl' => 1,
-			'const_dcl' => 26,
-			'interface_header' => 27,
+			'const_dcl' => 27,
+			'interface_header' => 28,
 			'except_dcl' => 3,
-			'value_header' => 29,
+			'value_header' => 30,
 			'module_header' => 5,
 			'interface' => 6,
 			'value_box_dcl' => 7,
 			'value_abs_header' => 8,
 			'value_dcl' => 10,
-			'struct_type' => 31,
-			'union_type' => 34,
-			'exception_header' => 32,
+			'struct_type' => 32,
+			'union_type' => 35,
+			'exception_header' => 33,
 			'struct_header' => 11,
 			'interface_dcl' => 13,
 			'value' => 14,
-			'enum_type' => 15,
-			'forward_dcl' => 16,
-			'module' => 37,
-			'enum_header' => 18,
-			'value_abs_dcl' => 20,
-			'type_dcl' => 38,
-			'union_header' => 22,
-			'definitions' => 147,
-			'definition' => 40,
-			'interface_mod' => 25
-		}
-	},
-	{#State 41
-		ACTIONS => {
-			'error' => 148,
-			'IDENTIFIER' => 149
+			'value_box_header' => 15,
+			'enum_type' => 16,
+			'forward_dcl' => 17,
+			'module' => 38,
+			'enum_header' => 19,
+			'value_abs_dcl' => 21,
+			'type_dcl' => 39,
+			'definitions' => 149,
+			'union_header' => 23,
+			'definition' => 41,
+			'interface_mod' => 26
 		}
 	},
 	{#State 42
-		DEFAULT => -72
+		ACTIONS => {
+			'error' => 150,
+			'IDENTIFIER' => 151
+		}
 	},
 	{#State 43
-		DEFAULT => -8
+		DEFAULT => -76
 	},
 	{#State 44
-		DEFAULT => -14
+		DEFAULT => -8
 	},
 	{#State 45
-		DEFAULT => 0
+		DEFAULT => -14
 	},
 	{#State 46
-		DEFAULT => -21
+		DEFAULT => 0
 	},
 	{#State 47
+		DEFAULT => -21
+	},
+	{#State 48
 		ACTIONS => {
-			'TYPEDEF' => 33,
-			'IDENTIFIER' => 35,
-			'NATIVE' => 28,
+			'TYPEDEF' => 34,
+			'IDENTIFIER' => 36,
+			'NATIVE' => 29,
 			'MODULE' => 12,
 			'ABSTRACT' => 2,
-			'UNION' => 36,
-			'STRUCT' => 30,
-			'error' => 150,
-			'CONST' => 19,
-			'CUSTOM' => 39,
-			'EXCEPTION' => 21,
+			'UNION' => 37,
+			'STRUCT' => 31,
+			'error' => 152,
+			'CONST' => 20,
+			'CUSTOM' => 40,
+			'EXCEPTION' => 22,
 			'VALUETYPE' => 9,
-			'ENUM' => 24,
+			'ENUM' => 25,
 			'INTERFACE' => -32
 		},
 		GOTOS => {
 			'value_forward_dcl' => 1,
-			'const_dcl' => 26,
-			'interface_header' => 27,
+			'const_dcl' => 27,
+			'interface_header' => 28,
 			'except_dcl' => 3,
-			'value_header' => 29,
+			'value_header' => 30,
 			'module_header' => 5,
 			'interface' => 6,
 			'value_box_dcl' => 7,
 			'value_abs_header' => 8,
 			'value_dcl' => 10,
-			'struct_type' => 31,
-			'union_type' => 34,
-			'exception_header' => 32,
+			'struct_type' => 32,
+			'union_type' => 35,
+			'exception_header' => 33,
 			'struct_header' => 11,
 			'interface_dcl' => 13,
 			'value' => 14,
-			'enum_type' => 15,
-			'forward_dcl' => 16,
-			'module' => 37,
-			'enum_header' => 18,
-			'value_abs_dcl' => 20,
-			'type_dcl' => 38,
-			'union_header' => 22,
-			'definitions' => 151,
-			'definition' => 40,
-			'interface_mod' => 25
+			'value_box_header' => 15,
+			'enum_type' => 16,
+			'forward_dcl' => 17,
+			'module' => 38,
+			'enum_header' => 19,
+			'value_abs_dcl' => 21,
+			'type_dcl' => 39,
+			'definitions' => 153,
+			'union_header' => 23,
+			'definition' => 41,
+			'interface_mod' => 26
 		}
-	},
-	{#State 48
-		DEFAULT => -9
 	},
 	{#State 49
-		DEFAULT => -15
+		DEFAULT => -9
 	},
 	{#State 50
-		ACTIONS => {
-			'CHAR' => -308,
-			'OBJECT' => -308,
-			'ONEWAY' => 152,
-			'VALUEBASE' => -308,
-			'NATIVE' => 28,
-			'VOID' => -308,
-			'STRUCT' => 30,
-			'DOUBLE' => -308,
-			'LONG' => -308,
-			'STRING' => -308,
-			"::" => -308,
-			'WSTRING' => -308,
-			'UNSIGNED' => -308,
-			'SHORT' => -308,
-			'TYPEDEF' => 33,
-			'BOOLEAN' => -308,
-			'IDENTIFIER' => -308,
-			'UNION' => 36,
-			'READONLY' => 163,
-			'WCHAR' => -308,
-			'ATTRIBUTE' => -291,
-			'error' => 157,
-			'CONST' => 19,
-			"}" => 158,
-			'EXCEPTION' => 21,
-			'OCTET' => -308,
-			'FLOAT' => -308,
-			'ENUM' => 24,
-			'ANY' => -308
-		},
-		GOTOS => {
-			'const_dcl' => 159,
-			'op_mod' => 153,
-			'except_dcl' => 154,
-			'op_attribute' => 155,
-			'attr_mod' => 156,
-			'exports' => 160,
-			'export' => 161,
-			'struct_type' => 31,
-			'op_header' => 162,
-			'exception_header' => 32,
-			'union_type' => 34,
-			'struct_header' => 11,
-			'enum_type' => 15,
-			'op_dcl' => 164,
-			'enum_header' => 18,
-			'attr_dcl' => 165,
-			'type_dcl' => 166,
-			'union_header' => 22
-		}
+		DEFAULT => -15
 	},
 	{#State 51
-		DEFAULT => -82
+		ACTIONS => {
+			'PRIVATE' => 155,
+			'ONEWAY' => 156,
+			'FACTORY' => 163,
+			'UNSIGNED' => -312,
+			'SHORT' => -312,
+			'WCHAR' => -312,
+			'error' => 165,
+			'CONST' => 20,
+			"}" => 166,
+			'EXCEPTION' => 22,
+			'OCTET' => -312,
+			'FLOAT' => -312,
+			'ENUM' => 25,
+			'ANY' => -312,
+			'CHAR' => -312,
+			'OBJECT' => -312,
+			'NATIVE' => 29,
+			'VALUEBASE' => -312,
+			'VOID' => -312,
+			'STRUCT' => 31,
+			'DOUBLE' => -312,
+			'LONG' => -312,
+			'STRING' => -312,
+			"::" => -312,
+			'WSTRING' => -312,
+			'BOOLEAN' => -312,
+			'TYPEDEF' => 34,
+			'IDENTIFIER' => -312,
+			'UNION' => 37,
+			'READONLY' => 172,
+			'ATTRIBUTE' => -295,
+			'PUBLIC' => 173
+		},
+		GOTOS => {
+			'init_header_param' => 154,
+			'const_dcl' => 167,
+			'op_mod' => 157,
+			'state_member' => 159,
+			'except_dcl' => 158,
+			'op_attribute' => 160,
+			'attr_mod' => 161,
+			'state_mod' => 162,
+			'exports' => 168,
+			'_export' => 169,
+			'export' => 170,
+			'init_header' => 164,
+			'struct_type' => 32,
+			'op_header' => 171,
+			'exception_header' => 33,
+			'union_type' => 35,
+			'struct_header' => 11,
+			'enum_type' => 16,
+			'op_dcl' => 174,
+			'init_dcl' => 175,
+			'enum_header' => 19,
+			'attr_dcl' => 176,
+			'type_dcl' => 177,
+			'union_header' => 23
+		}
 	},
 	{#State 52
-		ACTIONS => {
-			'CHAR' => 79,
-			'OBJECT' => 127,
-			'VALUEBASE' => 128,
-			'FIXED' => 111,
-			'SEQUENCE' => 112,
-			'STRUCT' => 30,
-			'DOUBLE' => 83,
-			'LONG' => 84,
-			'STRING' => 85,
-			"::" => 87,
-			'WSTRING' => 89,
-			'UNSIGNED' => 69,
-			'SHORT' => 71,
-			'BOOLEAN' => 91,
-			'IDENTIFIER' => 92,
-			":" => 169,
-			'UNION' => 36,
-			'WCHAR' => 72,
-			"{" => -78,
-			'SUPPORTS' => 170,
-			'FLOAT' => 77,
-			'OCTET' => 75,
-			'ENUM' => 24,
-			'ANY' => 126
-		},
-		DEFAULT => -63,
-		GOTOS => {
-			'unsigned_int' => 60,
-			'floating_pt_type' => 110,
-			'signed_int' => 63,
-			'char_type' => 114,
-			'value_base_type' => 113,
-			'object_type' => 115,
-			'octet_type' => 116,
-			'scoped_name' => 117,
-			'wide_char_type' => 118,
-			'type_spec' => 167,
-			'signed_long_int' => 68,
-			'string_type' => 121,
-			'struct_header' => 11,
-			'unsigned_longlong_int' => 73,
-			'any_type' => 122,
-			'base_type_spec' => 123,
-			'enum_type' => 124,
-			'enum_header' => 18,
-			'union_header' => 22,
-			'unsigned_short_int' => 76,
-			'signed_longlong_int' => 78,
-			'wide_string_type' => 129,
-			'boolean_type' => 130,
-			'integer_type' => 131,
-			'signed_short_int' => 88,
-			'value_inheritance_spec' => 168,
-			'struct_type' => 132,
-			'union_type' => 133,
-			'sequence_type' => 134,
-			'unsigned_long_int' => 93,
-			'template_type_spec' => 135,
-			'constr_type_spec' => 136,
-			'simple_type_spec' => 137,
-			'fixed_pt_type' => 138,
-			'supported_interface_spec' => 171
-		}
+		DEFAULT => -86
 	},
 	{#State 53
 		ACTIONS => {
-			'CHAR' => 79,
-			'OBJECT' => 127,
-			'VALUEBASE' => 128,
-			'FIXED' => 111,
-			'SEQUENCE' => 112,
-			'STRUCT' => 30,
-			'DOUBLE' => 83,
-			'LONG' => 84,
-			'STRING' => 85,
-			"::" => 87,
-			'WSTRING' => 89,
-			'UNSIGNED' => 69,
-			'SHORT' => 71,
-			'BOOLEAN' => 91,
-			'IDENTIFIER' => 92,
-			'UNION' => 36,
-			'WCHAR' => 72,
-			'error' => 173,
-			'FLOAT' => 77,
-			'OCTET' => 75,
-			'ENUM' => 24,
-			'ANY' => 126
+			":" => 179,
+			";" => -66,
+			"{" => -82,
+			'error' => -66,
+			'SUPPORTS' => 180
 		},
+		DEFAULT => -69,
 		GOTOS => {
-			'unsigned_int' => 60,
-			'floating_pt_type' => 110,
-			'signed_int' => 63,
-			'char_type' => 114,
-			'value_base_type' => 113,
-			'object_type' => 115,
-			'octet_type' => 116,
-			'scoped_name' => 117,
-			'wide_char_type' => 118,
-			'signed_long_int' => 68,
-			'type_spec' => 172,
-			'string_type' => 121,
-			'struct_header' => 11,
-			'unsigned_longlong_int' => 73,
-			'any_type' => 122,
-			'base_type_spec' => 123,
-			'enum_type' => 124,
-			'enum_header' => 18,
-			'member_list' => 174,
-			'union_header' => 22,
-			'unsigned_short_int' => 76,
-			'signed_longlong_int' => 78,
-			'wide_string_type' => 129,
-			'boolean_type' => 130,
-			'integer_type' => 131,
-			'signed_short_int' => 88,
-			'member' => 175,
-			'struct_type' => 132,
-			'union_type' => 133,
-			'sequence_type' => 134,
-			'unsigned_long_int' => 93,
-			'template_type_spec' => 135,
-			'constr_type_spec' => 136,
-			'simple_type_spec' => 137,
-			'fixed_pt_type' => 138
+			'supported_interface_spec' => 181,
+			'value_inheritance_spec' => 178
 		}
 	},
 	{#State 54
-		DEFAULT => -23
-	},
-	{#State 55
-		DEFAULT => -22
-	},
-	{#State 56
-		DEFAULT => -11
-	},
-	{#State 57
-		DEFAULT => -17
-	},
-	{#State 58
-		DEFAULT => -263
-	},
-	{#State 59
 		ACTIONS => {
-			'error' => 176,
-			'IDENTIFIER' => 178
+			'CHAR' => 85,
+			'OBJECT' => 86,
+			'VALUEBASE' => 87,
+			'FIXED' => 61,
+			'SEQUENCE' => 63,
+			'STRUCT' => 31,
+			'DOUBLE' => 91,
+			'LONG' => 92,
+			'STRING' => 93,
+			"::" => 94,
+			'WSTRING' => 96,
+			'UNSIGNED' => 72,
+			'SHORT' => 74,
+			'BOOLEAN' => 98,
+			'IDENTIFIER' => 100,
+			'UNION' => 37,
+			'WCHAR' => 75,
+			'error' => 183,
+			'FLOAT' => 82,
+			'OCTET' => 80,
+			'ENUM' => 25,
+			'ANY' => 84
 		},
 		GOTOS => {
-			'enumerators' => 179,
-			'enumerator' => 177
+			'unsigned_int' => 59,
+			'floating_pt_type' => 60,
+			'signed_int' => 62,
+			'char_type' => 65,
+			'value_base_type' => 64,
+			'object_type' => 66,
+			'octet_type' => 67,
+			'scoped_name' => 68,
+			'wide_char_type' => 69,
+			'signed_long_int' => 70,
+			'type_spec' => 182,
+			'string_type' => 73,
+			'struct_header' => 11,
+			'unsigned_longlong_int' => 76,
+			'any_type' => 77,
+			'base_type_spec' => 78,
+			'enum_type' => 79,
+			'enum_header' => 19,
+			'member_list' => 184,
+			'union_header' => 23,
+			'unsigned_short_int' => 81,
+			'signed_longlong_int' => 83,
+			'wide_string_type' => 88,
+			'boolean_type' => 89,
+			'integer_type' => 90,
+			'signed_short_int' => 95,
+			'member' => 185,
+			'struct_type' => 97,
+			'union_type' => 99,
+			'sequence_type' => 101,
+			'unsigned_long_int' => 102,
+			'template_type_spec' => 103,
+			'constr_type_spec' => 104,
+			'simple_type_spec' => 105,
+			'fixed_pt_type' => 106
 		}
 	},
-	{#State 60
-		DEFAULT => -212
+	{#State 55
+		DEFAULT => -23
 	},
-	{#State 61
-		DEFAULT => -125
+	{#State 56
+		DEFAULT => -22
 	},
-	{#State 62
-		DEFAULT => -342
+	{#State 57
+		DEFAULT => -11
 	},
-	{#State 63
-		DEFAULT => -211
+	{#State 58
+		DEFAULT => -17
 	},
-	{#State 64
-		DEFAULT => -122
-	},
-	{#State 65
-		DEFAULT => -130
-	},
-	{#State 66
-		ACTIONS => {
-			"::" => 180
-		},
-		DEFAULT => -129
-	},
-	{#State 67
-		DEFAULT => -123
-	},
-	{#State 68
-		DEFAULT => -214
-	},
-	{#State 69
-		ACTIONS => {
-			'SHORT' => 181,
-			'LONG' => 182
-		}
-	},
-	{#State 70
-		DEFAULT => -126
-	},
-	{#State 71
+	{#State 59
 		DEFAULT => -216
 	},
-	{#State 72
-		DEFAULT => -226
+	{#State 60
+		DEFAULT => -190
 	},
-	{#State 73
-		DEFAULT => -221
+	{#State 61
+		ACTIONS => {
+			"<" => 187,
+			'error' => 186
+		}
 	},
-	{#State 74
-		DEFAULT => -120
-	},
-	{#State 75
-		DEFAULT => -228
-	},
-	{#State 76
-		DEFAULT => -219
-	},
-	{#State 77
-		DEFAULT => -208
-	},
-	{#State 78
+	{#State 62
 		DEFAULT => -215
 	},
-	{#State 79
-		DEFAULT => -225
-	},
-	{#State 80
-		DEFAULT => -127
-	},
-	{#State 81
-		DEFAULT => -124
-	},
-	{#State 82
-		DEFAULT => -121
-	},
-	{#State 83
-		DEFAULT => -209
-	},
-	{#State 84
+	{#State 63
 		ACTIONS => {
-			'DOUBLE' => 183,
-			'LONG' => 184
-		},
-		DEFAULT => -217
-	},
-	{#State 85
-		ACTIONS => {
-			"<" => 185
-		},
-		DEFAULT => -277
-	},
-	{#State 86
-		DEFAULT => -128
-	},
-	{#State 87
-		ACTIONS => {
-			'error' => 186,
-			'IDENTIFIER' => 187
+			"<" => 189,
+			'error' => 188
 		}
 	},
-	{#State 88
-		DEFAULT => -213
+	{#State 64
+		DEFAULT => -198
 	},
-	{#State 89
+	{#State 65
+		DEFAULT => -192
+	},
+	{#State 66
+		DEFAULT => -197
+	},
+	{#State 67
+		DEFAULT => -195
+	},
+	{#State 68
 		ACTIONS => {
-			"<" => 188
+			"::" => 190
 		},
-		DEFAULT => -280
+		DEFAULT => -189
 	},
-	{#State 90
+	{#State 69
+		DEFAULT => -193
+	},
+	{#State 70
+		DEFAULT => -218
+	},
+	{#State 71
+		DEFAULT => -68
+	},
+	{#State 72
 		ACTIONS => {
-			'error' => 189,
-			'IDENTIFIER' => 190
+			'SHORT' => 191,
+			'LONG' => 192
 		}
 	},
-	{#State 91
-		DEFAULT => -227
+	{#State 73
+		DEFAULT => -200
 	},
-	{#State 92
-		DEFAULT => -54
-	},
-	{#State 93
+	{#State 74
 		DEFAULT => -220
 	},
+	{#State 75
+		DEFAULT => -230
+	},
+	{#State 76
+		DEFAULT => -225
+	},
+	{#State 77
+		DEFAULT => -196
+	},
+	{#State 78
+		DEFAULT => -187
+	},
+	{#State 79
+		DEFAULT => -205
+	},
+	{#State 80
+		DEFAULT => -232
+	},
+	{#State 81
+		DEFAULT => -223
+	},
+	{#State 82
+		DEFAULT => -212
+	},
+	{#State 83
+		DEFAULT => -219
+	},
+	{#State 84
+		DEFAULT => -233
+	},
+	{#State 85
+		DEFAULT => -229
+	},
+	{#State 86
+		DEFAULT => -234
+	},
+	{#State 87
+		DEFAULT => -347
+	},
+	{#State 88
+		DEFAULT => -201
+	},
+	{#State 89
+		DEFAULT => -194
+	},
+	{#State 90
+		DEFAULT => -191
+	},
+	{#State 91
+		DEFAULT => -213
+	},
+	{#State 92
+		ACTIONS => {
+			'DOUBLE' => 193,
+			'LONG' => 194
+		},
+		DEFAULT => -221
+	},
+	{#State 93
+		ACTIONS => {
+			"<" => 195
+		},
+		DEFAULT => -281
+	},
 	{#State 94
-		DEFAULT => -299
+		ACTIONS => {
+			'error' => 196,
+			'IDENTIFIER' => 197
+		}
 	},
 	{#State 95
-		DEFAULT => -298
+		DEFAULT => -217
 	},
 	{#State 96
 		ACTIONS => {
-			'error' => 192,
-			"(" => 191
-		}
+			"<" => 198
+		},
+		DEFAULT => -284
 	},
 	{#State 97
-		DEFAULT => -265
+		DEFAULT => -203
 	},
 	{#State 98
-		DEFAULT => -264
+		DEFAULT => -231
 	},
 	{#State 99
-		ACTIONS => {
-			'error' => 193,
-			'IDENTIFIER' => 194
-		}
+		DEFAULT => -204
 	},
 	{#State 100
-		DEFAULT => -7
+		DEFAULT => -57
 	},
 	{#State 101
-		DEFAULT => -13
-	},
-	{#State 102
-		ACTIONS => {
-			'CHAR' => -308,
-			'OBJECT' => -308,
-			'ONEWAY' => 152,
-			'VALUEBASE' => -308,
-			'NATIVE' => 28,
-			'VOID' => -308,
-			'STRUCT' => 30,
-			'DOUBLE' => -308,
-			'LONG' => -308,
-			'STRING' => -308,
-			"::" => -308,
-			'WSTRING' => -308,
-			'UNSIGNED' => -308,
-			'SHORT' => -308,
-			'TYPEDEF' => 33,
-			'BOOLEAN' => -308,
-			'IDENTIFIER' => -308,
-			'UNION' => 36,
-			'READONLY' => 163,
-			'WCHAR' => -308,
-			'ATTRIBUTE' => -291,
-			'error' => 195,
-			'CONST' => 19,
-			"}" => 196,
-			'EXCEPTION' => 21,
-			'OCTET' => -308,
-			'FLOAT' => -308,
-			'ENUM' => 24,
-			'ANY' => -308
-		},
-		GOTOS => {
-			'const_dcl' => 159,
-			'op_mod' => 153,
-			'except_dcl' => 154,
-			'op_attribute' => 155,
-			'attr_mod' => 156,
-			'exports' => 197,
-			'export' => 161,
-			'struct_type' => 31,
-			'op_header' => 162,
-			'exception_header' => 32,
-			'union_type' => 34,
-			'struct_header' => 11,
-			'enum_type' => 15,
-			'op_dcl' => 164,
-			'enum_header' => 18,
-			'attr_dcl' => 165,
-			'type_dcl' => 166,
-			'union_header' => 22,
-			'interface_body' => 198
-		}
-	},
-	{#State 103
-		DEFAULT => -178
-	},
-	{#State 104
-		DEFAULT => -176
-	},
-	{#State 105
-		DEFAULT => -206
-	},
-	{#State 106
-		ACTIONS => {
-			'PRIVATE' => 200,
-			'ONEWAY' => 152,
-			'FACTORY' => 204,
-			'UNSIGNED' => -308,
-			'SHORT' => -308,
-			'WCHAR' => -308,
-			'error' => 206,
-			'CONST' => 19,
-			"}" => 207,
-			'EXCEPTION' => 21,
-			'OCTET' => -308,
-			'FLOAT' => -308,
-			'ENUM' => 24,
-			'ANY' => -308,
-			'CHAR' => -308,
-			'OBJECT' => -308,
-			'NATIVE' => 28,
-			'VALUEBASE' => -308,
-			'VOID' => -308,
-			'STRUCT' => 30,
-			'DOUBLE' => -308,
-			'LONG' => -308,
-			'STRING' => -308,
-			"::" => -308,
-			'WSTRING' => -308,
-			'BOOLEAN' => -308,
-			'TYPEDEF' => 33,
-			'IDENTIFIER' => -308,
-			'UNION' => 36,
-			'READONLY' => 163,
-			'ATTRIBUTE' => -291,
-			'PUBLIC' => 210
-		},
-		GOTOS => {
-			'init_header_param' => 199,
-			'const_dcl' => 159,
-			'op_mod' => 153,
-			'value_elements' => 208,
-			'except_dcl' => 154,
-			'state_member' => 201,
-			'op_attribute' => 155,
-			'attr_mod' => 156,
-			'state_mod' => 202,
-			'value_element' => 203,
-			'export' => 209,
-			'init_header' => 205,
-			'struct_type' => 31,
-			'op_header' => 162,
-			'exception_header' => 32,
-			'union_type' => 34,
-			'struct_header' => 11,
-			'enum_type' => 15,
-			'op_dcl' => 164,
-			'init_dcl' => 211,
-			'enum_header' => 18,
-			'attr_dcl' => 165,
-			'type_dcl' => 166,
-			'union_header' => 22
-		}
-	},
-	{#State 107
-		DEFAULT => -233
-	},
-	{#State 108
-		DEFAULT => -297
-	},
-	{#State 109
-		ACTIONS => {
-			'CHAR' => 79,
-			'OBJECT' => 127,
-			'VALUEBASE' => 128,
-			'FIXED' => 111,
-			'SEQUENCE' => 112,
-			'STRUCT' => 30,
-			'DOUBLE' => 83,
-			'LONG' => 84,
-			'STRING' => 85,
-			"::" => 87,
-			'WSTRING' => 89,
-			'UNSIGNED' => 69,
-			'SHORT' => 71,
-			'BOOLEAN' => 91,
-			'IDENTIFIER' => 92,
-			'UNION' => 36,
-			'WCHAR' => 72,
-			'error' => 212,
-			"}" => 214,
-			'FLOAT' => 77,
-			'OCTET' => 75,
-			'ENUM' => 24,
-			'ANY' => 126
-		},
-		GOTOS => {
-			'unsigned_int' => 60,
-			'floating_pt_type' => 110,
-			'signed_int' => 63,
-			'char_type' => 114,
-			'value_base_type' => 113,
-			'object_type' => 115,
-			'octet_type' => 116,
-			'scoped_name' => 117,
-			'wide_char_type' => 118,
-			'signed_long_int' => 68,
-			'type_spec' => 172,
-			'string_type' => 121,
-			'struct_header' => 11,
-			'unsigned_longlong_int' => 73,
-			'any_type' => 122,
-			'base_type_spec' => 123,
-			'enum_type' => 124,
-			'enum_header' => 18,
-			'member_list' => 213,
-			'union_header' => 22,
-			'unsigned_short_int' => 76,
-			'signed_longlong_int' => 78,
-			'wide_string_type' => 129,
-			'boolean_type' => 130,
-			'integer_type' => 131,
-			'signed_short_int' => 88,
-			'member' => 175,
-			'struct_type' => 132,
-			'union_type' => 133,
-			'sequence_type' => 134,
-			'unsigned_long_int' => 93,
-			'template_type_spec' => 135,
-			'constr_type_spec' => 136,
-			'simple_type_spec' => 137,
-			'fixed_pt_type' => 138
-		}
-	},
-	{#State 110
-		DEFAULT => -186
-	},
-	{#State 111
-		ACTIONS => {
-			"<" => 216,
-			'error' => 215
-		}
-	},
-	{#State 112
-		ACTIONS => {
-			"<" => 218,
-			'error' => 217
-		}
-	},
-	{#State 113
-		DEFAULT => -194
-	},
-	{#State 114
-		DEFAULT => -188
-	},
-	{#State 115
-		DEFAULT => -193
-	},
-	{#State 116
-		DEFAULT => -191
-	},
-	{#State 117
-		ACTIONS => {
-			"::" => 180
-		},
-		DEFAULT => -185
-	},
-	{#State 118
-		DEFAULT => -189
-	},
-	{#State 119
-		ACTIONS => {
-			'error' => 221,
-			'IDENTIFIER' => 225
-		},
-		GOTOS => {
-			'declarators' => 219,
-			'declarator' => 220,
-			'simple_declarator' => 223,
-			'array_declarator' => 224,
-			'complex_declarator' => 222
-		}
-	},
-	{#State 120
-		DEFAULT => -172
-	},
-	{#State 121
-		DEFAULT => -196
-	},
-	{#State 122
-		DEFAULT => -192
-	},
-	{#State 123
-		DEFAULT => -183
-	},
-	{#State 124
-		DEFAULT => -201
-	},
-	{#State 125
-		DEFAULT => -177
-	},
-	{#State 126
-		DEFAULT => -229
-	},
-	{#State 127
-		DEFAULT => -230
-	},
-	{#State 128
-		DEFAULT => -343
-	},
-	{#State 129
-		DEFAULT => -197
-	},
-	{#State 130
-		DEFAULT => -190
-	},
-	{#State 131
-		DEFAULT => -187
-	},
-	{#State 132
 		DEFAULT => -199
 	},
-	{#State 133
-		DEFAULT => -200
+	{#State 102
+		DEFAULT => -224
 	},
-	{#State 134
-		DEFAULT => -195
+	{#State 103
+		DEFAULT => -188
 	},
-	{#State 135
-		DEFAULT => -184
+	{#State 104
+		DEFAULT => -186
 	},
-	{#State 136
+	{#State 105
+		DEFAULT => -185
+	},
+	{#State 106
+		DEFAULT => -202
+	},
+	{#State 107
+		DEFAULT => -267
+	},
+	{#State 108
+		ACTIONS => {
+			'error' => 199,
+			'IDENTIFIER' => 201
+		},
+		GOTOS => {
+			'enumerators' => 202,
+			'enumerator' => 200
+		}
+	},
+	{#State 109
+		DEFAULT => -129
+	},
+	{#State 110
+		DEFAULT => -346
+	},
+	{#State 111
+		DEFAULT => -126
+	},
+	{#State 112
+		DEFAULT => -134
+	},
+	{#State 113
+		ACTIONS => {
+			"::" => 190
+		},
+		DEFAULT => -133
+	},
+	{#State 114
+		DEFAULT => -127
+	},
+	{#State 115
+		DEFAULT => -130
+	},
+	{#State 116
+		DEFAULT => -124
+	},
+	{#State 117
+		DEFAULT => -131
+	},
+	{#State 118
+		DEFAULT => -128
+	},
+	{#State 119
+		DEFAULT => -125
+	},
+	{#State 120
+		DEFAULT => -132
+	},
+	{#State 121
+		ACTIONS => {
+			'error' => 203,
+			'IDENTIFIER' => 204
+		}
+	},
+	{#State 122
+		DEFAULT => -303
+	},
+	{#State 123
+		DEFAULT => -302
+	},
+	{#State 124
+		ACTIONS => {
+			'error' => 206,
+			"(" => 205
+		}
+	},
+	{#State 125
+		DEFAULT => -269
+	},
+	{#State 126
+		DEFAULT => -268
+	},
+	{#State 127
+		ACTIONS => {
+			'error' => 207,
+			'IDENTIFIER' => 208
+		}
+	},
+	{#State 128
+		DEFAULT => -7
+	},
+	{#State 129
+		DEFAULT => -13
+	},
+	{#State 130
+		ACTIONS => {
+			'PRIVATE' => 155,
+			'ONEWAY' => 156,
+			'FACTORY' => 163,
+			'UNSIGNED' => -312,
+			'SHORT' => -312,
+			'WCHAR' => -312,
+			'error' => 209,
+			'CONST' => 20,
+			"}" => 210,
+			'EXCEPTION' => 22,
+			'OCTET' => -312,
+			'FLOAT' => -312,
+			'ENUM' => 25,
+			'ANY' => -312,
+			'CHAR' => -312,
+			'OBJECT' => -312,
+			'NATIVE' => 29,
+			'VALUEBASE' => -312,
+			'VOID' => -312,
+			'STRUCT' => 31,
+			'DOUBLE' => -312,
+			'LONG' => -312,
+			'STRING' => -312,
+			"::" => -312,
+			'WSTRING' => -312,
+			'BOOLEAN' => -312,
+			'TYPEDEF' => 34,
+			'IDENTIFIER' => -312,
+			'UNION' => 37,
+			'READONLY' => 172,
+			'ATTRIBUTE' => -295,
+			'PUBLIC' => 173
+		},
+		GOTOS => {
+			'init_header_param' => 154,
+			'const_dcl' => 167,
+			'op_mod' => 157,
+			'state_member' => 159,
+			'except_dcl' => 158,
+			'op_attribute' => 160,
+			'attr_mod' => 161,
+			'state_mod' => 162,
+			'exports' => 211,
+			'_export' => 169,
+			'export' => 170,
+			'init_header' => 164,
+			'struct_type' => 32,
+			'op_header' => 171,
+			'exception_header' => 33,
+			'union_type' => 35,
+			'struct_header' => 11,
+			'enum_type' => 16,
+			'op_dcl' => 174,
+			'init_dcl' => 175,
+			'enum_header' => 19,
+			'attr_dcl' => 176,
+			'type_dcl' => 177,
+			'union_header' => 23,
+			'interface_body' => 212
+		}
+	},
+	{#State 131
 		DEFAULT => -182
 	},
+	{#State 132
+		DEFAULT => -180
+	},
+	{#State 133
+		DEFAULT => -210
+	},
+	{#State 134
+		ACTIONS => {
+			'PRIVATE' => 155,
+			'ONEWAY' => 156,
+			'FACTORY' => 163,
+			'UNSIGNED' => -312,
+			'SHORT' => -312,
+			'WCHAR' => -312,
+			'error' => 215,
+			'CONST' => 20,
+			"}" => 216,
+			'EXCEPTION' => 22,
+			'OCTET' => -312,
+			'FLOAT' => -312,
+			'ENUM' => 25,
+			'ANY' => -312,
+			'CHAR' => -312,
+			'OBJECT' => -312,
+			'NATIVE' => 29,
+			'VALUEBASE' => -312,
+			'VOID' => -312,
+			'STRUCT' => 31,
+			'DOUBLE' => -312,
+			'LONG' => -312,
+			'STRING' => -312,
+			"::" => -312,
+			'WSTRING' => -312,
+			'BOOLEAN' => -312,
+			'TYPEDEF' => 34,
+			'IDENTIFIER' => -312,
+			'UNION' => 37,
+			'READONLY' => 172,
+			'ATTRIBUTE' => -295,
+			'PUBLIC' => 173
+		},
+		GOTOS => {
+			'init_header_param' => 154,
+			'const_dcl' => 167,
+			'op_mod' => 157,
+			'value_elements' => 217,
+			'except_dcl' => 158,
+			'state_member' => 213,
+			'op_attribute' => 160,
+			'attr_mod' => 161,
+			'state_mod' => 162,
+			'value_element' => 214,
+			'export' => 218,
+			'init_header' => 164,
+			'struct_type' => 32,
+			'op_header' => 171,
+			'exception_header' => 33,
+			'union_type' => 35,
+			'struct_header' => 11,
+			'enum_type' => 16,
+			'op_dcl' => 174,
+			'init_dcl' => 219,
+			'enum_header' => 19,
+			'attr_dcl' => 176,
+			'type_dcl' => 177,
+			'union_header' => 23
+		}
+	},
+	{#State 135
+		DEFAULT => -237
+	},
+	{#State 136
+		DEFAULT => -301
+	},
 	{#State 137
-		DEFAULT => -181
+		ACTIONS => {
+			'CHAR' => 85,
+			'OBJECT' => 86,
+			'VALUEBASE' => 87,
+			'FIXED' => 61,
+			'SEQUENCE' => 63,
+			'STRUCT' => 31,
+			'DOUBLE' => 91,
+			'LONG' => 92,
+			'STRING' => 93,
+			"::" => 94,
+			'WSTRING' => 96,
+			'UNSIGNED' => 72,
+			'SHORT' => 74,
+			'BOOLEAN' => 98,
+			'IDENTIFIER' => 100,
+			'UNION' => 37,
+			'WCHAR' => 75,
+			'error' => 220,
+			"}" => 222,
+			'FLOAT' => 82,
+			'OCTET' => 80,
+			'ENUM' => 25,
+			'ANY' => 84
+		},
+		GOTOS => {
+			'unsigned_int' => 59,
+			'floating_pt_type' => 60,
+			'signed_int' => 62,
+			'char_type' => 65,
+			'value_base_type' => 64,
+			'object_type' => 66,
+			'octet_type' => 67,
+			'scoped_name' => 68,
+			'wide_char_type' => 69,
+			'signed_long_int' => 70,
+			'type_spec' => 182,
+			'string_type' => 73,
+			'struct_header' => 11,
+			'unsigned_longlong_int' => 76,
+			'any_type' => 77,
+			'base_type_spec' => 78,
+			'enum_type' => 79,
+			'enum_header' => 19,
+			'member_list' => 221,
+			'union_header' => 23,
+			'unsigned_short_int' => 81,
+			'signed_longlong_int' => 83,
+			'wide_string_type' => 88,
+			'boolean_type' => 89,
+			'integer_type' => 90,
+			'signed_short_int' => 95,
+			'member' => 185,
+			'struct_type' => 97,
+			'union_type' => 99,
+			'sequence_type' => 101,
+			'unsigned_long_int' => 102,
+			'template_type_spec' => 103,
+			'constr_type_spec' => 104,
+			'simple_type_spec' => 105,
+			'fixed_pt_type' => 106
+		}
 	},
 	{#State 138
-		DEFAULT => -198
+		ACTIONS => {
+			'error' => 225,
+			'IDENTIFIER' => 229
+		},
+		GOTOS => {
+			'declarators' => 223,
+			'declarator' => 224,
+			'simple_declarator' => 227,
+			'array_declarator' => 228,
+			'complex_declarator' => 226
+		}
 	},
 	{#State 139
-		ACTIONS => {
-			";" => 226
-		}
+		DEFAULT => -176
 	},
 	{#State 140
-		DEFAULT => -243
+		DEFAULT => -181
 	},
 	{#State 141
-		DEFAULT => -10
+		ACTIONS => {
+			";" => 230
+		}
 	},
 	{#State 142
-		DEFAULT => -16
+		DEFAULT => -247
 	},
 	{#State 143
-		DEFAULT => -6
+		DEFAULT => -10
 	},
 	{#State 144
-		DEFAULT => -12
+		DEFAULT => -16
 	},
 	{#State 145
-		ACTIONS => {
-			'error' => 227,
-			'IDENTIFIER' => 228
-		}
+		DEFAULT => -6
 	},
 	{#State 146
-		DEFAULT => -84
+		DEFAULT => -12
 	},
 	{#State 147
-		DEFAULT => -5
+		ACTIONS => {
+			'error' => 231,
+			'IDENTIFIER' => 232
+		}
 	},
 	{#State 148
-		DEFAULT => -71
+		DEFAULT => -88
 	},
 	{#State 149
-		ACTIONS => {
-			"{" => -69,
-			'SUPPORTS' => 170,
-			":" => 169
-		},
-		DEFAULT => -64,
-		GOTOS => {
-			'supported_interface_spec' => 171,
-			'value_inheritance_spec' => 229
-		}
+		DEFAULT => -5
 	},
 	{#State 150
-		ACTIONS => {
-			"}" => 230
-		}
+		DEFAULT => -75
 	},
 	{#State 151
 		ACTIONS => {
-			"}" => 231
+			"{" => -73,
+			'SUPPORTS' => 180,
+			":" => 179
+		},
+		DEFAULT => -67,
+		GOTOS => {
+			'supported_interface_spec' => 181,
+			'value_inheritance_spec' => 233
 		}
 	},
 	{#State 152
-		DEFAULT => -309
+		ACTIONS => {
+			"}" => 234
+		}
 	},
 	{#State 153
 		ACTIONS => {
-			'CHAR' => 79,
-			'SHORT' => 71,
-			'BOOLEAN' => 91,
-			'OBJECT' => 127,
-			'IDENTIFIER' => 92,
-			'VALUEBASE' => 128,
-			'VOID' => 237,
-			'WCHAR' => 72,
-			'DOUBLE' => 83,
-			'LONG' => 84,
-			'STRING' => 85,
-			"::" => 87,
-			'OCTET' => 75,
-			'FLOAT' => 77,
-			'WSTRING' => 89,
-			'UNSIGNED' => 69,
-			'ANY' => 126
-		},
-		GOTOS => {
-			'unsigned_int' => 60,
-			'floating_pt_type' => 110,
-			'signed_int' => 63,
-			'wide_string_type' => 236,
-			'integer_type' => 131,
-			'boolean_type' => 130,
-			'char_type' => 114,
-			'value_base_type' => 113,
-			'object_type' => 115,
-			'octet_type' => 116,
-			'scoped_name' => 232,
-			'wide_char_type' => 118,
-			'signed_long_int' => 68,
-			'signed_short_int' => 88,
-			'string_type' => 233,
-			'op_type_spec' => 238,
-			'base_type_spec' => 234,
-			'unsigned_longlong_int' => 73,
-			'any_type' => 122,
-			'unsigned_long_int' => 93,
-			'param_type_spec' => 235,
-			'unsigned_short_int' => 76,
-			'signed_longlong_int' => 78
+			"}" => 235
 		}
 	},
 	{#State 154
 		ACTIONS => {
-			'error' => 240,
-			";" => 239
+			'error' => 237,
+			";" => 236
 		}
 	},
 	{#State 155
-		DEFAULT => -307
+		DEFAULT => -107
 	},
 	{#State 156
-		ACTIONS => {
-			'ATTRIBUTE' => 241
-		}
+		DEFAULT => -313
 	},
 	{#State 157
 		ACTIONS => {
-			"}" => 242
+			'CHAR' => 85,
+			'SHORT' => 74,
+			'BOOLEAN' => 98,
+			'OBJECT' => 86,
+			'IDENTIFIER' => 100,
+			'VALUEBASE' => 87,
+			'VOID' => 243,
+			'WCHAR' => 75,
+			'DOUBLE' => 91,
+			'LONG' => 92,
+			'STRING' => 93,
+			"::" => 94,
+			'OCTET' => 80,
+			'FLOAT' => 82,
+			'WSTRING' => 96,
+			'UNSIGNED' => 72,
+			'ANY' => 84
+		},
+		GOTOS => {
+			'unsigned_int' => 59,
+			'floating_pt_type' => 60,
+			'signed_int' => 62,
+			'wide_string_type' => 242,
+			'integer_type' => 90,
+			'boolean_type' => 89,
+			'char_type' => 65,
+			'value_base_type' => 64,
+			'object_type' => 66,
+			'octet_type' => 67,
+			'scoped_name' => 238,
+			'wide_char_type' => 69,
+			'signed_long_int' => 70,
+			'signed_short_int' => 95,
+			'string_type' => 239,
+			'op_type_spec' => 244,
+			'base_type_spec' => 240,
+			'unsigned_longlong_int' => 76,
+			'any_type' => 77,
+			'unsigned_long_int' => 102,
+			'param_type_spec' => 241,
+			'unsigned_short_int' => 81,
+			'signed_longlong_int' => 83
 		}
 	},
 	{#State 158
-		DEFAULT => -66
+		ACTIONS => {
+			'error' => 246,
+			";" => 245
+		}
 	},
 	{#State 159
-		ACTIONS => {
-			'error' => 244,
-			";" => 243
-		}
+		DEFAULT => -40
 	},
 	{#State 160
-		ACTIONS => {
-			"}" => 245
-		}
+		DEFAULT => -311
 	},
 	{#State 161
 		ACTIONS => {
-			'ONEWAY' => 152,
-			'NATIVE' => 28,
-			'STRUCT' => 30,
-			'TYPEDEF' => 33,
-			'UNION' => 36,
-			'READONLY' => 163,
-			'ATTRIBUTE' => -291,
-			'CONST' => 19,
-			"}" => -37,
-			'EXCEPTION' => 21,
-			'ENUM' => 24
-		},
-		DEFAULT => -308,
-		GOTOS => {
-			'const_dcl' => 159,
-			'op_mod' => 153,
-			'except_dcl' => 154,
-			'op_attribute' => 155,
-			'attr_mod' => 156,
-			'exports' => 246,
-			'export' => 161,
-			'struct_type' => 31,
-			'op_header' => 162,
-			'exception_header' => 32,
-			'union_type' => 34,
-			'struct_header' => 11,
-			'enum_type' => 15,
-			'op_dcl' => 164,
-			'enum_header' => 18,
-			'attr_dcl' => 165,
-			'type_dcl' => 166,
-			'union_header' => 22
+			'ATTRIBUTE' => 247
 		}
 	},
 	{#State 162
 		ACTIONS => {
-			'error' => 248,
-			"(" => 247
+			'CHAR' => 85,
+			'OBJECT' => 86,
+			'VALUEBASE' => 87,
+			'FIXED' => 61,
+			'SEQUENCE' => 63,
+			'STRUCT' => 31,
+			'DOUBLE' => 91,
+			'LONG' => 92,
+			'STRING' => 93,
+			"::" => 94,
+			'WSTRING' => 96,
+			'UNSIGNED' => 72,
+			'SHORT' => 74,
+			'BOOLEAN' => 98,
+			'IDENTIFIER' => 100,
+			'UNION' => 37,
+			'WCHAR' => 75,
+			'error' => 249,
+			'FLOAT' => 82,
+			'OCTET' => 80,
+			'ENUM' => 25,
+			'ANY' => 84
 		},
 		GOTOS => {
-			'parameter_dcls' => 249
+			'unsigned_int' => 59,
+			'floating_pt_type' => 60,
+			'signed_int' => 62,
+			'char_type' => 65,
+			'value_base_type' => 64,
+			'object_type' => 66,
+			'octet_type' => 67,
+			'scoped_name' => 68,
+			'wide_char_type' => 69,
+			'type_spec' => 248,
+			'signed_long_int' => 70,
+			'string_type' => 73,
+			'struct_header' => 11,
+			'unsigned_longlong_int' => 76,
+			'any_type' => 77,
+			'base_type_spec' => 78,
+			'enum_type' => 79,
+			'enum_header' => 19,
+			'union_header' => 23,
+			'unsigned_short_int' => 81,
+			'signed_longlong_int' => 83,
+			'wide_string_type' => 88,
+			'boolean_type' => 89,
+			'integer_type' => 90,
+			'signed_short_int' => 95,
+			'struct_type' => 97,
+			'union_type' => 99,
+			'sequence_type' => 101,
+			'unsigned_long_int' => 102,
+			'template_type_spec' => 103,
+			'constr_type_spec' => 104,
+			'simple_type_spec' => 105,
+			'fixed_pt_type' => 106
 		}
 	},
 	{#State 163
-		DEFAULT => -290
+		ACTIONS => {
+			'error' => 250,
+			'IDENTIFIER' => 251
+		}
 	},
 	{#State 164
 		ACTIONS => {
-			'error' => 251,
-			";" => 250
+			'error' => 253,
+			"(" => 252
 		}
 	},
 	{#State 165
 		ACTIONS => {
-			'error' => 253,
-			";" => 252
+			"}" => 254
 		}
 	},
 	{#State 166
-		ACTIONS => {
-			'error' => 255,
-			";" => 254
-		}
+		DEFAULT => -70
 	},
 	{#State 167
-		DEFAULT => -65
+		ACTIONS => {
+			'error' => 256,
+			";" => 255
+		}
 	},
 	{#State 168
-		DEFAULT => -80
+		ACTIONS => {
+			"}" => 257
+		}
 	},
 	{#State 169
 		ACTIONS => {
-			'TRUNCATABLE' => 257
+			'PRIVATE' => 155,
+			'ONEWAY' => 156,
+			'FACTORY' => 163,
+			'CONST' => 20,
+			'EXCEPTION' => 22,
+			"}" => -37,
+			'ENUM' => 25,
+			'NATIVE' => 29,
+			'STRUCT' => 31,
+			'TYPEDEF' => 34,
+			'UNION' => 37,
+			'READONLY' => 172,
+			'ATTRIBUTE' => -295,
+			'PUBLIC' => 173
 		},
-		DEFAULT => -90,
+		DEFAULT => -312,
 		GOTOS => {
-			'inheritance_mod' => 256
+			'init_header_param' => 154,
+			'const_dcl' => 167,
+			'op_mod' => 157,
+			'state_member' => 159,
+			'except_dcl' => 158,
+			'op_attribute' => 160,
+			'attr_mod' => 161,
+			'state_mod' => 162,
+			'exports' => 258,
+			'_export' => 169,
+			'export' => 170,
+			'init_header' => 164,
+			'struct_type' => 32,
+			'op_header' => 171,
+			'exception_header' => 33,
+			'union_type' => 35,
+			'struct_header' => 11,
+			'enum_type' => 16,
+			'op_dcl' => 174,
+			'init_dcl' => 175,
+			'enum_header' => 19,
+			'attr_dcl' => 176,
+			'type_dcl' => 177,
+			'union_header' => 23
 		}
 	},
 	{#State 170
-		ACTIONS => {
-			'error' => 259,
-			'IDENTIFIER' => 92,
-			"::" => 87
-		},
-		GOTOS => {
-			'scoped_name' => 258,
-			'interface_names' => 261,
-			'interface_name' => 260
-		}
+		DEFAULT => -39
 	},
 	{#State 171
-		DEFAULT => -88
-	},
-	{#State 172
 		ACTIONS => {
-			'IDENTIFIER' => 225
+			'error' => 260,
+			"(" => 259
 		},
 		GOTOS => {
-			'declarators' => 262,
-			'declarator' => 220,
-			'simple_declarator' => 223,
-			'array_declarator' => 224,
-			'complex_declarator' => 222
+			'parameter_dcls' => 261
 		}
 	},
+	{#State 172
+		DEFAULT => -294
+	},
 	{#State 173
-		ACTIONS => {
-			"}" => 263
-		}
+		DEFAULT => -106
 	},
 	{#State 174
 		ACTIONS => {
-			"}" => 264
+			'error' => 263,
+			";" => 262
 		}
 	},
 	{#State 175
-		ACTIONS => {
-			'CHAR' => 79,
-			'OBJECT' => 127,
-			'VALUEBASE' => 128,
-			'FIXED' => 111,
-			'SEQUENCE' => 112,
-			'STRUCT' => 30,
-			'DOUBLE' => 83,
-			'LONG' => 84,
-			'STRING' => 85,
-			"::" => 87,
-			'WSTRING' => 89,
-			'UNSIGNED' => 69,
-			'SHORT' => 71,
-			'BOOLEAN' => 91,
-			'IDENTIFIER' => 92,
-			'UNION' => 36,
-			'WCHAR' => 72,
-			'FLOAT' => 77,
-			'OCTET' => 75,
-			'ENUM' => 24,
-			'ANY' => 126
-		},
-		DEFAULT => -234,
-		GOTOS => {
-			'unsigned_int' => 60,
-			'floating_pt_type' => 110,
-			'signed_int' => 63,
-			'char_type' => 114,
-			'value_base_type' => 113,
-			'object_type' => 115,
-			'octet_type' => 116,
-			'scoped_name' => 117,
-			'wide_char_type' => 118,
-			'signed_long_int' => 68,
-			'type_spec' => 172,
-			'string_type' => 121,
-			'struct_header' => 11,
-			'unsigned_longlong_int' => 73,
-			'any_type' => 122,
-			'base_type_spec' => 123,
-			'enum_type' => 124,
-			'enum_header' => 18,
-			'member_list' => 265,
-			'union_header' => 22,
-			'unsigned_short_int' => 76,
-			'signed_longlong_int' => 78,
-			'wide_string_type' => 129,
-			'boolean_type' => 130,
-			'integer_type' => 131,
-			'signed_short_int' => 88,
-			'member' => 175,
-			'struct_type' => 132,
-			'union_type' => 133,
-			'sequence_type' => 134,
-			'unsigned_long_int' => 93,
-			'template_type_spec' => 135,
-			'constr_type_spec' => 136,
-			'simple_type_spec' => 137,
-			'fixed_pt_type' => 138
-		}
+		DEFAULT => -41
 	},
 	{#State 176
 		ACTIONS => {
-			"}" => 266
+			'error' => 265,
+			";" => 264
 		}
 	},
 	{#State 177
 		ACTIONS => {
-			";" => 267,
-			"," => 268
-		},
-		DEFAULT => -266
+			'error' => 267,
+			";" => 266
+		}
 	},
 	{#State 178
-		DEFAULT => -270
+		DEFAULT => -84
 	},
 	{#State 179
 		ACTIONS => {
-			"}" => 269
+			'TRUNCATABLE' => 269
+		},
+		DEFAULT => -94,
+		GOTOS => {
+			'inheritance_mod' => 268
 		}
 	},
 	{#State 180
 		ACTIONS => {
-			'error' => 270,
-			'IDENTIFIER' => 271
+			'error' => 271,
+			'IDENTIFIER' => 100,
+			"::" => 94
+		},
+		GOTOS => {
+			'scoped_name' => 270,
+			'interface_names' => 273,
+			'interface_name' => 272
 		}
 	},
 	{#State 181
-		DEFAULT => -222
+		DEFAULT => -92
 	},
 	{#State 182
 		ACTIONS => {
-			'LONG' => 272
+			'IDENTIFIER' => 229
 		},
-		DEFAULT => -223
+		GOTOS => {
+			'declarators' => 274,
+			'declarator' => 224,
+			'simple_declarator' => 227,
+			'array_declarator' => 228,
+			'complex_declarator' => 226
+		}
 	},
 	{#State 183
-		DEFAULT => -210
+		ACTIONS => {
+			"}" => 275
+		}
 	},
 	{#State 184
-		DEFAULT => -218
+		ACTIONS => {
+			"}" => 276
+		}
 	},
 	{#State 185
 		ACTIONS => {
-			'FLOATING_PT_LITERAL' => 291,
-			'CHARACTER_LITERAL' => 273,
-			'WIDE_CHARACTER_LITERAL' => 274,
-			"::" => 87,
-			'INTEGER_LITERAL' => 294,
-			"(" => 278,
-			'IDENTIFIER' => 92,
-			'STRING_LITERAL' => 296,
-			'FIXED_PT_LITERAL' => 297,
-			"+" => 298,
-			'error' => 282,
-			"-" => 300,
-			'WIDE_STRING_LITERAL' => 286,
-			'FALSE' => 285,
-			"~" => 301,
-			'TRUE' => 288
+			'CHAR' => 85,
+			'OBJECT' => 86,
+			'VALUEBASE' => 87,
+			'FIXED' => 61,
+			'SEQUENCE' => 63,
+			'STRUCT' => 31,
+			'DOUBLE' => 91,
+			'LONG' => 92,
+			'STRING' => 93,
+			"::" => 94,
+			'WSTRING' => 96,
+			'UNSIGNED' => 72,
+			'SHORT' => 74,
+			'BOOLEAN' => 98,
+			'IDENTIFIER' => 100,
+			'UNION' => 37,
+			'WCHAR' => 75,
+			'FLOAT' => 82,
+			'OCTET' => 80,
+			'ENUM' => 25,
+			'ANY' => 84
 		},
+		DEFAULT => -238,
 		GOTOS => {
-			'string_literal' => 290,
-			'primary_expr' => 292,
-			'and_expr' => 293,
-			'scoped_name' => 275,
-			'positive_int_const' => 276,
-			'wide_string_literal' => 277,
-			'boolean_literal' => 279,
-			'mult_expr' => 295,
-			'const_exp' => 280,
-			'or_expr' => 281,
-			'unary_expr' => 299,
-			'xor_expr' => 283,
-			'shift_expr' => 284,
-			'literal' => 287,
-			'unary_operator' => 302,
-			'add_expr' => 289
+			'unsigned_int' => 59,
+			'floating_pt_type' => 60,
+			'signed_int' => 62,
+			'char_type' => 65,
+			'value_base_type' => 64,
+			'object_type' => 66,
+			'octet_type' => 67,
+			'scoped_name' => 68,
+			'wide_char_type' => 69,
+			'signed_long_int' => 70,
+			'type_spec' => 182,
+			'string_type' => 73,
+			'struct_header' => 11,
+			'unsigned_longlong_int' => 76,
+			'any_type' => 77,
+			'base_type_spec' => 78,
+			'enum_type' => 79,
+			'enum_header' => 19,
+			'member_list' => 277,
+			'union_header' => 23,
+			'unsigned_short_int' => 81,
+			'signed_longlong_int' => 83,
+			'wide_string_type' => 88,
+			'boolean_type' => 89,
+			'integer_type' => 90,
+			'signed_short_int' => 95,
+			'member' => 185,
+			'struct_type' => 97,
+			'union_type' => 99,
+			'sequence_type' => 101,
+			'unsigned_long_int' => 102,
+			'template_type_spec' => 103,
+			'constr_type_spec' => 104,
+			'simple_type_spec' => 105,
+			'fixed_pt_type' => 106
 		}
 	},
 	{#State 186
-		DEFAULT => -56
+		DEFAULT => -345
 	},
 	{#State 187
-		DEFAULT => -55
-	},
-	{#State 188
 		ACTIONS => {
-			'FLOATING_PT_LITERAL' => 291,
-			'CHARACTER_LITERAL' => 273,
-			'WIDE_CHARACTER_LITERAL' => 274,
-			"::" => 87,
-			'INTEGER_LITERAL' => 294,
-			"(" => 278,
-			'IDENTIFIER' => 92,
-			'STRING_LITERAL' => 296,
-			'FIXED_PT_LITERAL' => 297,
-			"+" => 298,
-			'error' => 304,
-			"-" => 300,
-			'WIDE_STRING_LITERAL' => 286,
-			'FALSE' => 285,
-			"~" => 301,
-			'TRUE' => 288
+			'FLOATING_PT_LITERAL' => 296,
+			'CHARACTER_LITERAL' => 278,
+			'WIDE_CHARACTER_LITERAL' => 279,
+			"::" => 94,
+			'INTEGER_LITERAL' => 299,
+			"(" => 283,
+			'IDENTIFIER' => 100,
+			'STRING_LITERAL' => 301,
+			'FIXED_PT_LITERAL' => 302,
+			"+" => 303,
+			'error' => 287,
+			"-" => 305,
+			'WIDE_STRING_LITERAL' => 291,
+			'FALSE' => 290,
+			"~" => 306,
+			'TRUE' => 293
 		},
 		GOTOS => {
-			'string_literal' => 290,
-			'primary_expr' => 292,
-			'and_expr' => 293,
-			'scoped_name' => 275,
-			'positive_int_const' => 303,
-			'wide_string_literal' => 277,
-			'boolean_literal' => 279,
-			'mult_expr' => 295,
-			'const_exp' => 280,
-			'or_expr' => 281,
-			'unary_expr' => 299,
-			'xor_expr' => 283,
-			'shift_expr' => 284,
-			'literal' => 287,
-			'unary_operator' => 302,
-			'add_expr' => 289
+			'string_literal' => 295,
+			'primary_expr' => 297,
+			'and_expr' => 298,
+			'scoped_name' => 280,
+			'positive_int_const' => 281,
+			'wide_string_literal' => 282,
+			'boolean_literal' => 284,
+			'mult_expr' => 300,
+			'const_exp' => 285,
+			'or_expr' => 286,
+			'unary_expr' => 304,
+			'xor_expr' => 288,
+			'shift_expr' => 289,
+			'literal' => 292,
+			'unary_operator' => 307,
+			'add_expr' => 294
 		}
 	},
+	{#State 188
+		DEFAULT => -279
+	},
 	{#State 189
-		DEFAULT => -119
+		ACTIONS => {
+			'CHAR' => 85,
+			'OBJECT' => 86,
+			'VALUEBASE' => 87,
+			'FIXED' => 61,
+			'SEQUENCE' => 63,
+			'DOUBLE' => 91,
+			'LONG' => 92,
+			'STRING' => 93,
+			"::" => 94,
+			'WSTRING' => 96,
+			'UNSIGNED' => 72,
+			'SHORT' => 74,
+			'BOOLEAN' => 98,
+			'IDENTIFIER' => 100,
+			'WCHAR' => 75,
+			'error' => 308,
+			'FLOAT' => 82,
+			'OCTET' => 80,
+			'ANY' => 84
+		},
+		GOTOS => {
+			'unsigned_int' => 59,
+			'floating_pt_type' => 60,
+			'signed_int' => 62,
+			'wide_string_type' => 88,
+			'integer_type' => 90,
+			'boolean_type' => 89,
+			'char_type' => 65,
+			'value_base_type' => 64,
+			'object_type' => 66,
+			'octet_type' => 67,
+			'scoped_name' => 68,
+			'wide_char_type' => 69,
+			'signed_long_int' => 70,
+			'signed_short_int' => 95,
+			'string_type' => 73,
+			'sequence_type' => 101,
+			'unsigned_longlong_int' => 76,
+			'any_type' => 77,
+			'base_type_spec' => 78,
+			'unsigned_long_int' => 102,
+			'template_type_spec' => 103,
+			'unsigned_short_int' => 81,
+			'simple_type_spec' => 309,
+			'fixed_pt_type' => 106,
+			'signed_longlong_int' => 83
+		}
 	},
 	{#State 190
 		ACTIONS => {
-			'error' => 305,
-			"=" => 306
+			'error' => 310,
+			'IDENTIFIER' => 311
 		}
 	},
 	{#State 191
-		ACTIONS => {
-			'CHAR' => 79,
-			'SHORT' => 71,
-			'BOOLEAN' => 91,
-			'IDENTIFIER' => 92,
-			'error' => 310,
-			'LONG' => 314,
-			"::" => 87,
-			'ENUM' => 24,
-			'UNSIGNED' => 69
-		},
-		GOTOS => {
-			'switch_type_spec' => 311,
-			'unsigned_int' => 60,
-			'signed_int' => 63,
-			'integer_type' => 313,
-			'boolean_type' => 312,
-			'unsigned_longlong_int' => 73,
-			'char_type' => 307,
-			'enum_type' => 309,
-			'unsigned_long_int' => 93,
-			'scoped_name' => 308,
-			'enum_header' => 18,
-			'signed_long_int' => 68,
-			'unsigned_short_int' => 76,
-			'signed_short_int' => 88,
-			'signed_longlong_int' => 78
-		}
+		DEFAULT => -226
 	},
 	{#State 192
-		DEFAULT => -242
+		ACTIONS => {
+			'LONG' => 312
+		},
+		DEFAULT => -227
 	},
 	{#State 193
+		DEFAULT => -214
+	},
+	{#State 194
+		DEFAULT => -222
+	},
+	{#State 195
+		ACTIONS => {
+			'FLOATING_PT_LITERAL' => 296,
+			'CHARACTER_LITERAL' => 278,
+			'WIDE_CHARACTER_LITERAL' => 279,
+			"::" => 94,
+			'INTEGER_LITERAL' => 299,
+			"(" => 283,
+			'IDENTIFIER' => 100,
+			'STRING_LITERAL' => 301,
+			'FIXED_PT_LITERAL' => 302,
+			"+" => 303,
+			'error' => 314,
+			"-" => 305,
+			'WIDE_STRING_LITERAL' => 291,
+			'FALSE' => 290,
+			"~" => 306,
+			'TRUE' => 293
+		},
+		GOTOS => {
+			'string_literal' => 295,
+			'primary_expr' => 297,
+			'and_expr' => 298,
+			'scoped_name' => 280,
+			'positive_int_const' => 313,
+			'wide_string_literal' => 282,
+			'boolean_literal' => 284,
+			'mult_expr' => 300,
+			'const_exp' => 285,
+			'or_expr' => 286,
+			'unary_expr' => 304,
+			'xor_expr' => 288,
+			'shift_expr' => 289,
+			'literal' => 292,
+			'unary_operator' => 307,
+			'add_expr' => 294
+		}
+	},
+	{#State 196
+		DEFAULT => -59
+	},
+	{#State 197
+		DEFAULT => -58
+	},
+	{#State 198
+		ACTIONS => {
+			'FLOATING_PT_LITERAL' => 296,
+			'CHARACTER_LITERAL' => 278,
+			'WIDE_CHARACTER_LITERAL' => 279,
+			"::" => 94,
+			'INTEGER_LITERAL' => 299,
+			"(" => 283,
+			'IDENTIFIER' => 100,
+			'STRING_LITERAL' => 301,
+			'FIXED_PT_LITERAL' => 302,
+			"+" => 303,
+			'error' => 316,
+			"-" => 305,
+			'WIDE_STRING_LITERAL' => 291,
+			'FALSE' => 290,
+			"~" => 306,
+			'TRUE' => 293
+		},
+		GOTOS => {
+			'string_literal' => 295,
+			'primary_expr' => 297,
+			'and_expr' => 298,
+			'scoped_name' => 280,
+			'positive_int_const' => 315,
+			'wide_string_literal' => 282,
+			'boolean_literal' => 284,
+			'mult_expr' => 300,
+			'const_exp' => 285,
+			'or_expr' => 286,
+			'unary_expr' => 304,
+			'xor_expr' => 288,
+			'shift_expr' => 289,
+			'literal' => 292,
+			'unary_operator' => 307,
+			'add_expr' => 294
+		}
+	},
+	{#State 199
+		ACTIONS => {
+			"}" => 317
+		}
+	},
+	{#State 200
+		ACTIONS => {
+			";" => 318,
+			"," => 319
+		},
+		DEFAULT => -270
+	},
+	{#State 201
+		DEFAULT => -274
+	},
+	{#State 202
+		ACTIONS => {
+			"}" => 320
+		}
+	},
+	{#State 203
+		DEFAULT => -123
+	},
+	{#State 204
+		ACTIONS => {
+			'error' => 321,
+			"=" => 322
+		}
+	},
+	{#State 205
+		ACTIONS => {
+			'CHAR' => 85,
+			'SHORT' => 74,
+			'BOOLEAN' => 98,
+			'IDENTIFIER' => 100,
+			'error' => 326,
+			'LONG' => 330,
+			"::" => 94,
+			'ENUM' => 25,
+			'UNSIGNED' => 72
+		},
+		GOTOS => {
+			'switch_type_spec' => 327,
+			'unsigned_int' => 59,
+			'signed_int' => 62,
+			'integer_type' => 329,
+			'boolean_type' => 328,
+			'unsigned_longlong_int' => 76,
+			'char_type' => 323,
+			'enum_type' => 325,
+			'unsigned_long_int' => 102,
+			'scoped_name' => 324,
+			'enum_header' => 19,
+			'signed_long_int' => 70,
+			'unsigned_short_int' => 81,
+			'signed_short_int' => 95,
+			'signed_longlong_int' => 83
+		}
+	},
+	{#State 206
+		DEFAULT => -246
+	},
+	{#State 207
 		ACTIONS => {
 			"{" => -35
 		},
 		DEFAULT => -30
 	},
-	{#State 194
+	{#State 208
 		ACTIONS => {
 			"{" => -33,
-			":" => 315
+			":" => 331
 		},
 		DEFAULT => -29,
 		GOTOS => {
-			'interface_inheritance_spec' => 316
-		}
-	},
-	{#State 195
-		ACTIONS => {
-			"}" => 317
-		}
-	},
-	{#State 196
-		DEFAULT => -26
-	},
-	{#State 197
-		DEFAULT => -36
-	},
-	{#State 198
-		ACTIONS => {
-			"}" => 318
-		}
-	},
-	{#State 199
-		ACTIONS => {
-			'error' => 320,
-			";" => 319
-		}
-	},
-	{#State 200
-		DEFAULT => -103
-	},
-	{#State 201
-		DEFAULT => -97
-	},
-	{#State 202
-		ACTIONS => {
-			'CHAR' => 79,
-			'OBJECT' => 127,
-			'VALUEBASE' => 128,
-			'FIXED' => 111,
-			'SEQUENCE' => 112,
-			'STRUCT' => 30,
-			'DOUBLE' => 83,
-			'LONG' => 84,
-			'STRING' => 85,
-			"::" => 87,
-			'WSTRING' => 89,
-			'UNSIGNED' => 69,
-			'SHORT' => 71,
-			'BOOLEAN' => 91,
-			'IDENTIFIER' => 92,
-			'UNION' => 36,
-			'WCHAR' => 72,
-			'error' => 322,
-			'FLOAT' => 77,
-			'OCTET' => 75,
-			'ENUM' => 24,
-			'ANY' => 126
-		},
-		GOTOS => {
-			'unsigned_int' => 60,
-			'floating_pt_type' => 110,
-			'signed_int' => 63,
-			'char_type' => 114,
-			'value_base_type' => 113,
-			'object_type' => 115,
-			'octet_type' => 116,
-			'scoped_name' => 117,
-			'wide_char_type' => 118,
-			'type_spec' => 321,
-			'signed_long_int' => 68,
-			'string_type' => 121,
-			'struct_header' => 11,
-			'unsigned_longlong_int' => 73,
-			'any_type' => 122,
-			'base_type_spec' => 123,
-			'enum_type' => 124,
-			'enum_header' => 18,
-			'union_header' => 22,
-			'unsigned_short_int' => 76,
-			'signed_longlong_int' => 78,
-			'wide_string_type' => 129,
-			'boolean_type' => 130,
-			'integer_type' => 131,
-			'signed_short_int' => 88,
-			'struct_type' => 132,
-			'union_type' => 133,
-			'sequence_type' => 134,
-			'unsigned_long_int' => 93,
-			'template_type_spec' => 135,
-			'constr_type_spec' => 136,
-			'simple_type_spec' => 137,
-			'fixed_pt_type' => 138
-		}
-	},
-	{#State 203
-		ACTIONS => {
-			'PRIVATE' => 200,
-			'ONEWAY' => 152,
-			'FACTORY' => 204,
-			'CONST' => 19,
-			'EXCEPTION' => 21,
-			"}" => -76,
-			'ENUM' => 24,
-			'NATIVE' => 28,
-			'STRUCT' => 30,
-			'TYPEDEF' => 33,
-			'UNION' => 36,
-			'READONLY' => 163,
-			'ATTRIBUTE' => -291,
-			'PUBLIC' => 210
-		},
-		DEFAULT => -308,
-		GOTOS => {
-			'init_header_param' => 199,
-			'const_dcl' => 159,
-			'op_mod' => 153,
-			'value_elements' => 323,
-			'except_dcl' => 154,
-			'state_member' => 201,
-			'op_attribute' => 155,
-			'attr_mod' => 156,
-			'state_mod' => 202,
-			'value_element' => 203,
-			'export' => 209,
-			'init_header' => 205,
-			'struct_type' => 31,
-			'op_header' => 162,
-			'exception_header' => 32,
-			'union_type' => 34,
-			'struct_header' => 11,
-			'enum_type' => 15,
-			'op_dcl' => 164,
-			'init_dcl' => 211,
-			'enum_header' => 18,
-			'attr_dcl' => 165,
-			'type_dcl' => 166,
-			'union_header' => 22
-		}
-	},
-	{#State 204
-		ACTIONS => {
-			'error' => 324,
-			'IDENTIFIER' => 325
-		}
-	},
-	{#State 205
-		ACTIONS => {
-			'error' => 327,
-			"(" => 326
-		}
-	},
-	{#State 206
-		ACTIONS => {
-			"}" => 328
-		}
-	},
-	{#State 207
-		DEFAULT => -73
-	},
-	{#State 208
-		ACTIONS => {
-			"}" => 329
+			'interface_inheritance_spec' => 332
 		}
 	},
 	{#State 209
-		DEFAULT => -96
+		ACTIONS => {
+			"}" => 333
+		}
 	},
 	{#State 210
-		DEFAULT => -102
+		DEFAULT => -26
 	},
 	{#State 211
-		DEFAULT => -98
+		DEFAULT => -36
 	},
 	{#State 212
 		ACTIONS => {
-			"}" => 330
+			"}" => 334
 		}
 	},
 	{#State 213
-		ACTIONS => {
-			"}" => 331
-		}
+		DEFAULT => -101
 	},
 	{#State 214
-		DEFAULT => -294
+		ACTIONS => {
+			'PRIVATE' => 155,
+			'ONEWAY' => 156,
+			'FACTORY' => 163,
+			'CONST' => 20,
+			'EXCEPTION' => 22,
+			"}" => -80,
+			'ENUM' => 25,
+			'NATIVE' => 29,
+			'STRUCT' => 31,
+			'TYPEDEF' => 34,
+			'UNION' => 37,
+			'READONLY' => 172,
+			'ATTRIBUTE' => -295,
+			'PUBLIC' => 173
+		},
+		DEFAULT => -312,
+		GOTOS => {
+			'init_header_param' => 154,
+			'const_dcl' => 167,
+			'op_mod' => 157,
+			'value_elements' => 335,
+			'except_dcl' => 158,
+			'state_member' => 213,
+			'op_attribute' => 160,
+			'attr_mod' => 161,
+			'state_mod' => 162,
+			'value_element' => 214,
+			'export' => 218,
+			'init_header' => 164,
+			'struct_type' => 32,
+			'op_header' => 171,
+			'exception_header' => 33,
+			'union_type' => 35,
+			'struct_header' => 11,
+			'enum_type' => 16,
+			'op_dcl' => 174,
+			'init_dcl' => 219,
+			'enum_header' => 19,
+			'attr_dcl' => 176,
+			'type_dcl' => 177,
+			'union_header' => 23
+		}
 	},
 	{#State 215
-		DEFAULT => -341
+		ACTIONS => {
+			"}" => 336
+		}
 	},
 	{#State 216
-		ACTIONS => {
-			'FLOATING_PT_LITERAL' => 291,
-			'CHARACTER_LITERAL' => 273,
-			'WIDE_CHARACTER_LITERAL' => 274,
-			"::" => 87,
-			'INTEGER_LITERAL' => 294,
-			"(" => 278,
-			'IDENTIFIER' => 92,
-			'STRING_LITERAL' => 296,
-			'FIXED_PT_LITERAL' => 297,
-			"+" => 298,
-			'error' => 333,
-			"-" => 300,
-			'WIDE_STRING_LITERAL' => 286,
-			'FALSE' => 285,
-			"~" => 301,
-			'TRUE' => 288
-		},
-		GOTOS => {
-			'string_literal' => 290,
-			'primary_expr' => 292,
-			'and_expr' => 293,
-			'scoped_name' => 275,
-			'positive_int_const' => 332,
-			'wide_string_literal' => 277,
-			'boolean_literal' => 279,
-			'mult_expr' => 295,
-			'const_exp' => 280,
-			'or_expr' => 281,
-			'unary_expr' => 299,
-			'xor_expr' => 283,
-			'shift_expr' => 284,
-			'literal' => 287,
-			'unary_operator' => 302,
-			'add_expr' => 289
-		}
+		DEFAULT => -77
 	},
 	{#State 217
-		DEFAULT => -275
-	},
-	{#State 218
 		ACTIONS => {
-			'CHAR' => 79,
-			'OBJECT' => 127,
-			'VALUEBASE' => 128,
-			'FIXED' => 111,
-			'SEQUENCE' => 112,
-			'DOUBLE' => 83,
-			'LONG' => 84,
-			'STRING' => 85,
-			"::" => 87,
-			'WSTRING' => 89,
-			'UNSIGNED' => 69,
-			'SHORT' => 71,
-			'BOOLEAN' => 91,
-			'IDENTIFIER' => 92,
-			'WCHAR' => 72,
-			'error' => 334,
-			'FLOAT' => 77,
-			'OCTET' => 75,
-			'ANY' => 126
-		},
-		GOTOS => {
-			'unsigned_int' => 60,
-			'floating_pt_type' => 110,
-			'signed_int' => 63,
-			'wide_string_type' => 129,
-			'integer_type' => 131,
-			'boolean_type' => 130,
-			'char_type' => 114,
-			'value_base_type' => 113,
-			'object_type' => 115,
-			'octet_type' => 116,
-			'scoped_name' => 117,
-			'wide_char_type' => 118,
-			'signed_long_int' => 68,
-			'signed_short_int' => 88,
-			'string_type' => 121,
-			'sequence_type' => 134,
-			'unsigned_longlong_int' => 73,
-			'any_type' => 122,
-			'base_type_spec' => 123,
-			'unsigned_long_int' => 93,
-			'template_type_spec' => 135,
-			'unsigned_short_int' => 76,
-			'simple_type_spec' => 335,
-			'fixed_pt_type' => 138,
-			'signed_longlong_int' => 78
+			"}" => 337
 		}
 	},
+	{#State 218
+		DEFAULT => -100
+	},
 	{#State 219
-		DEFAULT => -179
+		DEFAULT => -102
 	},
 	{#State 220
 		ACTIONS => {
-			"," => 336
-		},
-		DEFAULT => -202
+			"}" => 338
+		}
 	},
 	{#State 221
-		DEFAULT => -180
+		ACTIONS => {
+			"}" => 339
+		}
 	},
 	{#State 222
-		DEFAULT => -205
+		DEFAULT => -298
 	},
 	{#State 223
-		DEFAULT => -204
+		DEFAULT => -183
 	},
 	{#State 224
-		DEFAULT => -207
+		ACTIONS => {
+			"," => 340
+		},
+		DEFAULT => -206
 	},
 	{#State 225
-		ACTIONS => {
-			"[" => 339
-		},
-		DEFAULT => -206,
-		GOTOS => {
-			'fixed_array_sizes' => 337,
-			'fixed_array_size' => 338
-		}
+		DEFAULT => -184
 	},
 	{#State 226
-		DEFAULT => -18
+		DEFAULT => -209
 	},
 	{#State 227
-		DEFAULT => -83
+		DEFAULT => -208
 	},
 	{#State 228
-		ACTIONS => {
-			'SUPPORTS' => 170,
-			":" => 169
-		},
-		DEFAULT => -79,
-		GOTOS => {
-			'supported_interface_spec' => 171,
-			'value_inheritance_spec' => 340
-		}
+		DEFAULT => -211
 	},
 	{#State 229
-		DEFAULT => -70
+		ACTIONS => {
+			"[" => 343
+		},
+		DEFAULT => -210,
+		GOTOS => {
+			'fixed_array_sizes' => 341,
+			'fixed_array_size' => 342
+		}
 	},
 	{#State 230
-		DEFAULT => -20
+		DEFAULT => -18
 	},
 	{#State 231
-		DEFAULT => -19
+		DEFAULT => -87
 	},
 	{#State 232
 		ACTIONS => {
-			"::" => 180
+			'SUPPORTS' => 180,
+			":" => 179
 		},
-		DEFAULT => -337
+		DEFAULT => -83,
+		GOTOS => {
+			'supported_interface_spec' => 181,
+			'value_inheritance_spec' => 344
+		}
 	},
 	{#State 233
-		DEFAULT => -335
+		DEFAULT => -74
 	},
 	{#State 234
-		DEFAULT => -334
+		DEFAULT => -20
 	},
 	{#State 235
-		DEFAULT => -310
+		DEFAULT => -19
 	},
 	{#State 236
-		DEFAULT => -336
+		DEFAULT => -108
 	},
 	{#State 237
-		DEFAULT => -311
+		DEFAULT => -109
 	},
 	{#State 238
 		ACTIONS => {
-			'error' => 341,
-			'IDENTIFIER' => 342
-		}
+			"::" => 190
+		},
+		DEFAULT => -341
 	},
 	{#State 239
-		DEFAULT => -41
+		DEFAULT => -339
 	},
 	{#State 240
-		DEFAULT => -46
+		DEFAULT => -338
 	},
 	{#State 241
-		ACTIONS => {
-			'CHAR' => 79,
-			'SHORT' => 71,
-			'BOOLEAN' => 91,
-			'OBJECT' => 127,
-			'IDENTIFIER' => 92,
-			'VALUEBASE' => 128,
-			'WCHAR' => 72,
-			'DOUBLE' => 83,
-			'error' => 343,
-			'LONG' => 84,
-			'STRING' => 85,
-			"::" => 87,
-			'OCTET' => 75,
-			'FLOAT' => 77,
-			'WSTRING' => 89,
-			'UNSIGNED' => 69,
-			'ANY' => 126
-		},
-		GOTOS => {
-			'unsigned_int' => 60,
-			'floating_pt_type' => 110,
-			'signed_int' => 63,
-			'wide_string_type' => 236,
-			'integer_type' => 131,
-			'boolean_type' => 130,
-			'char_type' => 114,
-			'value_base_type' => 113,
-			'object_type' => 115,
-			'octet_type' => 116,
-			'scoped_name' => 232,
-			'wide_char_type' => 118,
-			'signed_long_int' => 68,
-			'signed_short_int' => 88,
-			'string_type' => 233,
-			'base_type_spec' => 234,
-			'unsigned_longlong_int' => 73,
-			'any_type' => 122,
-			'unsigned_long_int' => 93,
-			'param_type_spec' => 344,
-			'unsigned_short_int' => 76,
-			'signed_longlong_int' => 78
-		}
+		DEFAULT => -314
 	},
 	{#State 242
-		DEFAULT => -68
+		DEFAULT => -340
 	},
 	{#State 243
-		DEFAULT => -40
+		DEFAULT => -315
 	},
 	{#State 244
-		DEFAULT => -45
+		ACTIONS => {
+			'error' => 345,
+			'IDENTIFIER' => 346
+		}
 	},
 	{#State 245
-		DEFAULT => -67
+		DEFAULT => -44
 	},
 	{#State 246
-		DEFAULT => -38
+		DEFAULT => -49
 	},
 	{#State 247
 		ACTIONS => {
-			'error' => 346,
-			")" => 350,
-			'OUT' => 351,
-			'INOUT' => 347,
-			'IN' => 345
+			'CHAR' => 85,
+			'SHORT' => 74,
+			'BOOLEAN' => 98,
+			'OBJECT' => 86,
+			'IDENTIFIER' => 100,
+			'VALUEBASE' => 87,
+			'WCHAR' => 75,
+			'DOUBLE' => 91,
+			'error' => 347,
+			'LONG' => 92,
+			'STRING' => 93,
+			"::" => 94,
+			'OCTET' => 80,
+			'FLOAT' => 82,
+			'WSTRING' => 96,
+			'UNSIGNED' => 72,
+			'ANY' => 84
 		},
 		GOTOS => {
-			'param_dcl' => 352,
-			'param_dcls' => 349,
-			'param_attribute' => 348
+			'unsigned_int' => 59,
+			'floating_pt_type' => 60,
+			'signed_int' => 62,
+			'wide_string_type' => 242,
+			'integer_type' => 90,
+			'boolean_type' => 89,
+			'char_type' => 65,
+			'value_base_type' => 64,
+			'object_type' => 66,
+			'octet_type' => 67,
+			'scoped_name' => 238,
+			'wide_char_type' => 69,
+			'signed_long_int' => 70,
+			'signed_short_int' => 95,
+			'string_type' => 239,
+			'base_type_spec' => 240,
+			'unsigned_longlong_int' => 76,
+			'any_type' => 77,
+			'unsigned_long_int' => 102,
+			'param_type_spec' => 348,
+			'unsigned_short_int' => 81,
+			'signed_longlong_int' => 83
 		}
 	},
 	{#State 248
-		DEFAULT => -304
+		ACTIONS => {
+			'error' => 350,
+			'IDENTIFIER' => 229
+		},
+		GOTOS => {
+			'declarators' => 349,
+			'declarator' => 224,
+			'simple_declarator' => 227,
+			'array_declarator' => 228,
+			'complex_declarator' => 226
+		}
 	},
 	{#State 249
 		ACTIONS => {
-			'RAISES' => 356,
-			'CONTEXT' => 353
-		},
-		DEFAULT => -300,
-		GOTOS => {
-			'context_expr' => 355,
-			'raises_expr' => 354
+			";" => 351
 		}
 	},
 	{#State 250
-		DEFAULT => -43
+		DEFAULT => -115
 	},
 	{#State 251
-		DEFAULT => -48
+		DEFAULT => -114
 	},
 	{#State 252
-		DEFAULT => -42
-	},
-	{#State 253
-		DEFAULT => -47
-	},
-	{#State 254
-		DEFAULT => -39
-	},
-	{#State 255
-		DEFAULT => -44
-	},
-	{#State 256
 		ACTIONS => {
-			'error' => 359,
-			'IDENTIFIER' => 92,
-			"::" => 87
+			'error' => 356,
+			")" => 357,
+			'IN' => 354
 		},
 		GOTOS => {
-			'scoped_name' => 357,
-			'value_name' => 358,
-			'value_names' => 360
+			'init_param_decls' => 353,
+			'init_param_attribute' => 352,
+			'init_param_decl' => 355
 		}
+	},
+	{#State 253
+		DEFAULT => -113
+	},
+	{#State 254
+		DEFAULT => -72
+	},
+	{#State 255
+		DEFAULT => -43
+	},
+	{#State 256
+		DEFAULT => -48
 	},
 	{#State 257
-		DEFAULT => -89
+		DEFAULT => -71
 	},
 	{#State 258
-		ACTIONS => {
-			"::" => 180
-		},
-		DEFAULT => -53
+		DEFAULT => -38
 	},
 	{#State 259
-		DEFAULT => -94
-	},
-	{#State 260
 		ACTIONS => {
-			"," => 361
+			'error' => 359,
+			")" => 363,
+			'OUT' => 364,
+			'INOUT' => 360,
+			'IN' => 358
 		},
-		DEFAULT => -51
-	},
-	{#State 261
-		DEFAULT => -93
-	},
-	{#State 262
-		ACTIONS => {
-			'error' => 363,
-			";" => 362
+		GOTOS => {
+			'param_dcl' => 365,
+			'param_dcls' => 362,
+			'param_attribute' => 361
 		}
 	},
+	{#State 260
+		DEFAULT => -308
+	},
+	{#State 261
+		ACTIONS => {
+			'RAISES' => 369,
+			'CONTEXT' => 366
+		},
+		DEFAULT => -304,
+		GOTOS => {
+			'context_expr' => 368,
+			'raises_expr' => 367
+		}
+	},
+	{#State 262
+		DEFAULT => -46
+	},
 	{#State 263
-		DEFAULT => -232
+		DEFAULT => -51
 	},
 	{#State 264
-		DEFAULT => -231
+		DEFAULT => -45
 	},
 	{#State 265
-		DEFAULT => -235
+		DEFAULT => -50
 	},
 	{#State 266
-		DEFAULT => -262
+		DEFAULT => -42
 	},
 	{#State 267
-		DEFAULT => -269
+		DEFAULT => -47
 	},
 	{#State 268
 		ACTIONS => {
-			'IDENTIFIER' => 178
+			'error' => 372,
+			'IDENTIFIER' => 100,
+			"::" => 94
 		},
-		DEFAULT => -268,
 		GOTOS => {
-			'enumerators' => 364,
-			'enumerator' => 177
+			'scoped_name' => 370,
+			'value_name' => 371,
+			'value_names' => 373
 		}
 	},
 	{#State 269
-		DEFAULT => -261
+		DEFAULT => -93
 	},
 	{#State 270
-		DEFAULT => -58
+		ACTIONS => {
+			"::" => 190
+		},
+		DEFAULT => -56
 	},
 	{#State 271
-		DEFAULT => -57
+		DEFAULT => -98
 	},
 	{#State 272
-		DEFAULT => -224
+		ACTIONS => {
+			"," => 374
+		},
+		DEFAULT => -54
 	},
 	{#State 273
-		DEFAULT => -160
+		DEFAULT => -97
 	},
 	{#State 274
-		DEFAULT => -161
+		ACTIONS => {
+			'error' => 376,
+			";" => 375
+		}
 	},
 	{#State 275
-		ACTIONS => {
-			"::" => 180
-		},
-		DEFAULT => -153
+		DEFAULT => -236
 	},
 	{#State 276
-		ACTIONS => {
-			">" => 365
-		}
+		DEFAULT => -235
 	},
 	{#State 277
-		DEFAULT => -159
+		DEFAULT => -239
 	},
 	{#State 278
-		ACTIONS => {
-			'FLOATING_PT_LITERAL' => 291,
-			'CHARACTER_LITERAL' => 273,
-			'WIDE_CHARACTER_LITERAL' => 274,
-			"::" => 87,
-			'INTEGER_LITERAL' => 294,
-			"(" => 278,
-			'IDENTIFIER' => 92,
-			'STRING_LITERAL' => 296,
-			'FIXED_PT_LITERAL' => 297,
-			"+" => 298,
-			'error' => 367,
-			"-" => 300,
-			'WIDE_STRING_LITERAL' => 286,
-			'FALSE' => 285,
-			"~" => 301,
-			'TRUE' => 288
-		},
-		GOTOS => {
-			'mult_expr' => 295,
-			'string_literal' => 290,
-			'boolean_literal' => 279,
-			'primary_expr' => 292,
-			'const_exp' => 366,
-			'and_expr' => 293,
-			'or_expr' => 281,
-			'unary_expr' => 299,
-			'scoped_name' => 275,
-			'xor_expr' => 283,
-			'shift_expr' => 284,
-			'wide_string_literal' => 277,
-			'literal' => 287,
-			'unary_operator' => 302,
-			'add_expr' => 289
-		}
-	},
-	{#State 279
 		DEFAULT => -164
 	},
+	{#State 279
+		DEFAULT => -165
+	},
 	{#State 280
-		DEFAULT => -171
+		ACTIONS => {
+			"::" => 190
+		},
+		DEFAULT => -157
 	},
 	{#State 281
 		ACTIONS => {
-			"|" => 368
-		},
-		DEFAULT => -131
+			"," => 377
+		}
 	},
 	{#State 282
-		ACTIONS => {
-			">" => 369
-		}
+		DEFAULT => -163
 	},
 	{#State 283
 		ACTIONS => {
-			"^" => 370
+			'FLOATING_PT_LITERAL' => 296,
+			'CHARACTER_LITERAL' => 278,
+			'WIDE_CHARACTER_LITERAL' => 279,
+			"::" => 94,
+			'INTEGER_LITERAL' => 299,
+			"(" => 283,
+			'IDENTIFIER' => 100,
+			'STRING_LITERAL' => 301,
+			'FIXED_PT_LITERAL' => 302,
+			"+" => 303,
+			'error' => 379,
+			"-" => 305,
+			'WIDE_STRING_LITERAL' => 291,
+			'FALSE' => 290,
+			"~" => 306,
+			'TRUE' => 293
 		},
-		DEFAULT => -132
+		GOTOS => {
+			'mult_expr' => 300,
+			'string_literal' => 295,
+			'boolean_literal' => 284,
+			'primary_expr' => 297,
+			'const_exp' => 378,
+			'and_expr' => 298,
+			'or_expr' => 286,
+			'unary_expr' => 304,
+			'scoped_name' => 280,
+			'xor_expr' => 288,
+			'shift_expr' => 289,
+			'wide_string_literal' => 282,
+			'literal' => 292,
+			'unary_operator' => 307,
+			'add_expr' => 294
+		}
 	},
 	{#State 284
-		ACTIONS => {
-			"<<" => 371,
-			">>" => 372
-		},
-		DEFAULT => -136
+		DEFAULT => -168
 	},
 	{#State 285
-		DEFAULT => -170
+		DEFAULT => -175
 	},
 	{#State 286
 		ACTIONS => {
-			'WIDE_STRING_LITERAL' => 286
+			"|" => 380
 		},
-		DEFAULT => -167,
-		GOTOS => {
-			'wide_string_literal' => 373
-		}
+		DEFAULT => -135
 	},
 	{#State 287
-		DEFAULT => -154
+		ACTIONS => {
+			">" => 381
+		}
 	},
 	{#State 288
-		DEFAULT => -169
+		ACTIONS => {
+			"^" => 382
+		},
+		DEFAULT => -136
 	},
 	{#State 289
 		ACTIONS => {
-			"+" => 374,
-			"-" => 375
+			"<<" => 383,
+			">>" => 384
+		},
+		DEFAULT => -140
+	},
+	{#State 290
+		DEFAULT => -174
+	},
+	{#State 291
+		ACTIONS => {
+			'WIDE_STRING_LITERAL' => 291
+		},
+		DEFAULT => -171,
+		GOTOS => {
+			'wide_string_literal' => 385
+		}
+	},
+	{#State 292
+		DEFAULT => -158
+	},
+	{#State 293
+		DEFAULT => -173
+	},
+	{#State 294
+		ACTIONS => {
+			"+" => 386,
+			"-" => 387
+		},
+		DEFAULT => -142
+	},
+	{#State 295
+		DEFAULT => -162
+	},
+	{#State 296
+		DEFAULT => -167
+	},
+	{#State 297
+		DEFAULT => -153
+	},
+	{#State 298
+		ACTIONS => {
+			"&" => 388
 		},
 		DEFAULT => -138
 	},
-	{#State 290
-		DEFAULT => -158
-	},
-	{#State 291
-		DEFAULT => -163
-	},
-	{#State 292
-		DEFAULT => -149
-	},
-	{#State 293
-		ACTIONS => {
-			"&" => 376
-		},
-		DEFAULT => -134
-	},
-	{#State 294
-		DEFAULT => -157
-	},
-	{#State 295
-		ACTIONS => {
-			"%" => 378,
-			"*" => 377,
-			"/" => 379
-		},
-		DEFAULT => -141
-	},
-	{#State 296
-		ACTIONS => {
-			'STRING_LITERAL' => 296
-		},
-		DEFAULT => -165,
-		GOTOS => {
-			'string_literal' => 380
-		}
-	},
-	{#State 297
-		DEFAULT => -162
-	},
-	{#State 298
-		DEFAULT => -151
-	},
 	{#State 299
-		DEFAULT => -144
+		DEFAULT => -161
 	},
 	{#State 300
-		DEFAULT => -150
+		ACTIONS => {
+			"%" => 390,
+			"*" => 389,
+			"/" => 391
+		},
+		DEFAULT => -145
 	},
 	{#State 301
-		DEFAULT => -152
+		ACTIONS => {
+			'STRING_LITERAL' => 301
+		},
+		DEFAULT => -169,
+		GOTOS => {
+			'string_literal' => 392
+		}
 	},
 	{#State 302
-		ACTIONS => {
-			'FLOATING_PT_LITERAL' => 291,
-			'IDENTIFIER' => 92,
-			'STRING_LITERAL' => 296,
-			'CHARACTER_LITERAL' => 273,
-			'FIXED_PT_LITERAL' => 297,
-			'WIDE_CHARACTER_LITERAL' => 274,
-			"::" => 87,
-			'FALSE' => 285,
-			'WIDE_STRING_LITERAL' => 286,
-			'INTEGER_LITERAL' => 294,
-			"(" => 278,
-			'TRUE' => 288
-		},
-		GOTOS => {
-			'string_literal' => 290,
-			'boolean_literal' => 279,
-			'scoped_name' => 275,
-			'primary_expr' => 381,
-			'literal' => 287,
-			'wide_string_literal' => 277
-		}
+		DEFAULT => -166
 	},
 	{#State 303
-		ACTIONS => {
-			">" => 382
-		}
+		DEFAULT => -155
 	},
 	{#State 304
-		ACTIONS => {
-			">" => 383
-		}
+		DEFAULT => -148
 	},
 	{#State 305
-		DEFAULT => -118
+		DEFAULT => -154
 	},
 	{#State 306
-		ACTIONS => {
-			'FLOATING_PT_LITERAL' => 291,
-			'CHARACTER_LITERAL' => 273,
-			'WIDE_CHARACTER_LITERAL' => 274,
-			"::" => 87,
-			'INTEGER_LITERAL' => 294,
-			"(" => 278,
-			'IDENTIFIER' => 92,
-			'STRING_LITERAL' => 296,
-			'FIXED_PT_LITERAL' => 297,
-			"+" => 298,
-			'error' => 385,
-			"-" => 300,
-			'WIDE_STRING_LITERAL' => 286,
-			'FALSE' => 285,
-			"~" => 301,
-			'TRUE' => 288
-		},
-		GOTOS => {
-			'mult_expr' => 295,
-			'string_literal' => 290,
-			'boolean_literal' => 279,
-			'primary_expr' => 292,
-			'const_exp' => 384,
-			'and_expr' => 293,
-			'or_expr' => 281,
-			'unary_expr' => 299,
-			'scoped_name' => 275,
-			'xor_expr' => 283,
-			'shift_expr' => 284,
-			'wide_string_literal' => 277,
-			'literal' => 287,
-			'unary_operator' => 302,
-			'add_expr' => 289
-		}
+		DEFAULT => -156
 	},
 	{#State 307
-		DEFAULT => -245
+		ACTIONS => {
+			'FLOATING_PT_LITERAL' => 296,
+			'IDENTIFIER' => 100,
+			'STRING_LITERAL' => 301,
+			'CHARACTER_LITERAL' => 278,
+			'FIXED_PT_LITERAL' => 302,
+			'WIDE_CHARACTER_LITERAL' => 279,
+			"::" => 94,
+			'FALSE' => 290,
+			'WIDE_STRING_LITERAL' => 291,
+			'INTEGER_LITERAL' => 299,
+			"(" => 283,
+			'TRUE' => 293
+		},
+		GOTOS => {
+			'string_literal' => 295,
+			'boolean_literal' => 284,
+			'scoped_name' => 280,
+			'primary_expr' => 393,
+			'literal' => 292,
+			'wide_string_literal' => 282
+		}
 	},
 	{#State 308
 		ACTIONS => {
-			"::" => 180
-		},
-		DEFAULT => -248
+			">" => 394
+		}
 	},
 	{#State 309
-		DEFAULT => -247
+		ACTIONS => {
+			">" => 396,
+			"," => 395
+		}
 	},
 	{#State 310
-		ACTIONS => {
-			")" => 386
-		}
+		DEFAULT => -61
 	},
 	{#State 311
-		ACTIONS => {
-			")" => 387
-		}
+		DEFAULT => -60
 	},
 	{#State 312
-		DEFAULT => -246
+		DEFAULT => -228
 	},
 	{#State 313
-		DEFAULT => -244
+		ACTIONS => {
+			">" => 397
+		}
 	},
 	{#State 314
 		ACTIONS => {
-			'LONG' => 184
-		},
-		DEFAULT => -217
+			">" => 398
+		}
 	},
 	{#State 315
 		ACTIONS => {
-			'error' => 388,
-			'IDENTIFIER' => 92,
-			"::" => 87
-		},
-		GOTOS => {
-			'scoped_name' => 258,
-			'interface_names' => 389,
-			'interface_name' => 260
+			">" => 399
 		}
 	},
 	{#State 316
-		DEFAULT => -34
-	},
-	{#State 317
-		DEFAULT => -28
-	},
-	{#State 318
-		DEFAULT => -27
-	},
-	{#State 319
-		DEFAULT => -104
-	},
-	{#State 320
-		DEFAULT => -105
-	},
-	{#State 321
-		ACTIONS => {
-			'error' => 391,
-			'IDENTIFIER' => 225
-		},
-		GOTOS => {
-			'declarators' => 390,
-			'declarator' => 220,
-			'simple_declarator' => 223,
-			'array_declarator' => 224,
-			'complex_declarator' => 222
-		}
-	},
-	{#State 322
-		ACTIONS => {
-			";" => 392
-		}
-	},
-	{#State 323
-		DEFAULT => -77
-	},
-	{#State 324
-		DEFAULT => -111
-	},
-	{#State 325
-		DEFAULT => -110
-	},
-	{#State 326
-		ACTIONS => {
-			'error' => 397,
-			")" => 398,
-			'IN' => 395
-		},
-		GOTOS => {
-			'init_param_decls' => 394,
-			'init_param_attribute' => 393,
-			'init_param_decl' => 396
-		}
-	},
-	{#State 327
-		DEFAULT => -109
-	},
-	{#State 328
-		DEFAULT => -75
-	},
-	{#State 329
-		DEFAULT => -74
-	},
-	{#State 330
-		DEFAULT => -296
-	},
-	{#State 331
-		DEFAULT => -295
-	},
-	{#State 332
-		ACTIONS => {
-			"," => 399
-		}
-	},
-	{#State 333
 		ACTIONS => {
 			">" => 400
 		}
 	},
-	{#State 334
+	{#State 317
+		DEFAULT => -266
+	},
+	{#State 318
+		DEFAULT => -273
+	},
+	{#State 319
 		ACTIONS => {
-			">" => 401
+			'IDENTIFIER' => 201
+		},
+		DEFAULT => -272,
+		GOTOS => {
+			'enumerators' => 401,
+			'enumerator' => 200
 		}
+	},
+	{#State 320
+		DEFAULT => -265
+	},
+	{#State 321
+		DEFAULT => -122
+	},
+	{#State 322
+		ACTIONS => {
+			'FLOATING_PT_LITERAL' => 296,
+			'CHARACTER_LITERAL' => 278,
+			'WIDE_CHARACTER_LITERAL' => 279,
+			"::" => 94,
+			'INTEGER_LITERAL' => 299,
+			"(" => 283,
+			'IDENTIFIER' => 100,
+			'STRING_LITERAL' => 301,
+			'FIXED_PT_LITERAL' => 302,
+			"+" => 303,
+			'error' => 403,
+			"-" => 305,
+			'WIDE_STRING_LITERAL' => 291,
+			'FALSE' => 290,
+			"~" => 306,
+			'TRUE' => 293
+		},
+		GOTOS => {
+			'mult_expr' => 300,
+			'string_literal' => 295,
+			'boolean_literal' => 284,
+			'primary_expr' => 297,
+			'const_exp' => 402,
+			'and_expr' => 298,
+			'or_expr' => 286,
+			'unary_expr' => 304,
+			'scoped_name' => 280,
+			'xor_expr' => 288,
+			'shift_expr' => 289,
+			'wide_string_literal' => 282,
+			'literal' => 292,
+			'unary_operator' => 307,
+			'add_expr' => 294
+		}
+	},
+	{#State 323
+		DEFAULT => -249
+	},
+	{#State 324
+		ACTIONS => {
+			"::" => 190
+		},
+		DEFAULT => -252
+	},
+	{#State 325
+		DEFAULT => -251
+	},
+	{#State 326
+		ACTIONS => {
+			")" => 404
+		}
+	},
+	{#State 327
+		ACTIONS => {
+			")" => 405
+		}
+	},
+	{#State 328
+		DEFAULT => -250
+	},
+	{#State 329
+		DEFAULT => -248
+	},
+	{#State 330
+		ACTIONS => {
+			'LONG' => 194
+		},
+		DEFAULT => -221
+	},
+	{#State 331
+		ACTIONS => {
+			'error' => 406,
+			'IDENTIFIER' => 100,
+			"::" => 94
+		},
+		GOTOS => {
+			'scoped_name' => 270,
+			'interface_names' => 407,
+			'interface_name' => 272
+		}
+	},
+	{#State 332
+		DEFAULT => -34
+	},
+	{#State 333
+		DEFAULT => -28
+	},
+	{#State 334
+		DEFAULT => -27
 	},
 	{#State 335
-		ACTIONS => {
-			">" => 403,
-			"," => 402
-		}
-	},
-	{#State 336
-		ACTIONS => {
-			'IDENTIFIER' => 225
-		},
-		GOTOS => {
-			'declarators' => 404,
-			'declarator' => 220,
-			'simple_declarator' => 223,
-			'array_declarator' => 224,
-			'complex_declarator' => 222
-		}
-	},
-	{#State 337
-		DEFAULT => -282
-	},
-	{#State 338
-		ACTIONS => {
-			"[" => 339
-		},
-		DEFAULT => -283,
-		GOTOS => {
-			'fixed_array_sizes' => 405,
-			'fixed_array_size' => 338
-		}
-	},
-	{#State 339
-		ACTIONS => {
-			'FLOATING_PT_LITERAL' => 291,
-			'CHARACTER_LITERAL' => 273,
-			'WIDE_CHARACTER_LITERAL' => 274,
-			"::" => 87,
-			'INTEGER_LITERAL' => 294,
-			"(" => 278,
-			'IDENTIFIER' => 92,
-			'STRING_LITERAL' => 296,
-			'FIXED_PT_LITERAL' => 297,
-			"+" => 298,
-			'error' => 407,
-			"-" => 300,
-			'WIDE_STRING_LITERAL' => 286,
-			'FALSE' => 285,
-			"~" => 301,
-			'TRUE' => 288
-		},
-		GOTOS => {
-			'string_literal' => 290,
-			'primary_expr' => 292,
-			'and_expr' => 293,
-			'scoped_name' => 275,
-			'positive_int_const' => 406,
-			'wide_string_literal' => 277,
-			'boolean_literal' => 279,
-			'mult_expr' => 295,
-			'const_exp' => 280,
-			'or_expr' => 281,
-			'unary_expr' => 299,
-			'xor_expr' => 283,
-			'shift_expr' => 284,
-			'literal' => 287,
-			'unary_operator' => 302,
-			'add_expr' => 289
-		}
-	},
-	{#State 340
 		DEFAULT => -81
 	},
-	{#State 341
-		DEFAULT => -306
+	{#State 336
+		DEFAULT => -79
 	},
-	{#State 342
-		DEFAULT => -305
+	{#State 337
+		DEFAULT => -78
 	},
-	{#State 343
-		DEFAULT => -289
+	{#State 338
+		DEFAULT => -300
 	},
-	{#State 344
+	{#State 339
+		DEFAULT => -299
+	},
+	{#State 340
 		ACTIONS => {
-			'error' => 408,
-			'IDENTIFIER' => 105
+			'IDENTIFIER' => 229
 		},
 		GOTOS => {
-			'simple_declarators' => 410,
-			'simple_declarator' => 409
+			'declarators' => 408,
+			'declarator' => 224,
+			'simple_declarator' => 227,
+			'array_declarator' => 228,
+			'complex_declarator' => 226
 		}
+	},
+	{#State 341
+		DEFAULT => -286
+	},
+	{#State 342
+		ACTIONS => {
+			"[" => 343
+		},
+		DEFAULT => -287,
+		GOTOS => {
+			'fixed_array_sizes' => 409,
+			'fixed_array_size' => 342
+		}
+	},
+	{#State 343
+		ACTIONS => {
+			'FLOATING_PT_LITERAL' => 296,
+			'CHARACTER_LITERAL' => 278,
+			'WIDE_CHARACTER_LITERAL' => 279,
+			"::" => 94,
+			'INTEGER_LITERAL' => 299,
+			"(" => 283,
+			'IDENTIFIER' => 100,
+			'STRING_LITERAL' => 301,
+			'FIXED_PT_LITERAL' => 302,
+			"+" => 303,
+			'error' => 411,
+			"-" => 305,
+			'WIDE_STRING_LITERAL' => 291,
+			'FALSE' => 290,
+			"~" => 306,
+			'TRUE' => 293
+		},
+		GOTOS => {
+			'string_literal' => 295,
+			'primary_expr' => 297,
+			'and_expr' => 298,
+			'scoped_name' => 280,
+			'positive_int_const' => 410,
+			'wide_string_literal' => 282,
+			'boolean_literal' => 284,
+			'mult_expr' => 300,
+			'const_exp' => 285,
+			'or_expr' => 286,
+			'unary_expr' => 304,
+			'xor_expr' => 288,
+			'shift_expr' => 289,
+			'literal' => 292,
+			'unary_operator' => 307,
+			'add_expr' => 294
+		}
+	},
+	{#State 344
+		DEFAULT => -85
 	},
 	{#State 345
-		DEFAULT => -320
+		DEFAULT => -310
 	},
 	{#State 346
-		ACTIONS => {
-			")" => 411
-		}
+		DEFAULT => -309
 	},
 	{#State 347
-		DEFAULT => -322
+		DEFAULT => -293
 	},
 	{#State 348
 		ACTIONS => {
-			'CHAR' => 79,
-			'SHORT' => 71,
-			'BOOLEAN' => 91,
-			'OBJECT' => 127,
-			'IDENTIFIER' => 92,
-			'VALUEBASE' => 128,
-			'WCHAR' => 72,
-			'DOUBLE' => 83,
-			'LONG' => 84,
-			'STRING' => 85,
-			"::" => 87,
-			'OCTET' => 75,
-			'FLOAT' => 77,
-			'WSTRING' => 89,
-			'UNSIGNED' => 69,
-			'ANY' => 126
+			'error' => 412,
+			'IDENTIFIER' => 133
 		},
 		GOTOS => {
-			'unsigned_int' => 60,
-			'floating_pt_type' => 110,
-			'signed_int' => 63,
-			'wide_string_type' => 236,
-			'integer_type' => 131,
-			'boolean_type' => 130,
-			'char_type' => 114,
-			'value_base_type' => 113,
-			'object_type' => 115,
-			'octet_type' => 116,
-			'scoped_name' => 232,
-			'wide_char_type' => 118,
-			'signed_long_int' => 68,
-			'signed_short_int' => 88,
-			'string_type' => 233,
-			'base_type_spec' => 234,
-			'unsigned_longlong_int' => 73,
-			'any_type' => 122,
-			'unsigned_long_int' => 93,
-			'param_type_spec' => 412,
-			'unsigned_short_int' => 76,
-			'signed_longlong_int' => 78
+			'simple_declarators' => 414,
+			'simple_declarator' => 413
 		}
 	},
 	{#State 349
 		ACTIONS => {
-			")" => 413
+			";" => 415
 		}
 	},
 	{#State 350
-		DEFAULT => -313
+		ACTIONS => {
+			";" => 416
+		}
 	},
 	{#State 351
-		DEFAULT => -321
+		DEFAULT => -105
 	},
 	{#State 352
 		ACTIONS => {
-			";" => 414,
-			"," => 415
+			'CHAR' => 85,
+			'SHORT' => 74,
+			'BOOLEAN' => 98,
+			'OBJECT' => 86,
+			'IDENTIFIER' => 100,
+			'VALUEBASE' => 87,
+			'WCHAR' => 75,
+			'DOUBLE' => 91,
+			'LONG' => 92,
+			'STRING' => 93,
+			"::" => 94,
+			'OCTET' => 80,
+			'FLOAT' => 82,
+			'WSTRING' => 96,
+			'UNSIGNED' => 72,
+			'ANY' => 84
 		},
-		DEFAULT => -315
+		GOTOS => {
+			'unsigned_int' => 59,
+			'floating_pt_type' => 60,
+			'signed_int' => 62,
+			'wide_string_type' => 242,
+			'integer_type' => 90,
+			'boolean_type' => 89,
+			'char_type' => 65,
+			'value_base_type' => 64,
+			'object_type' => 66,
+			'octet_type' => 67,
+			'scoped_name' => 238,
+			'wide_char_type' => 69,
+			'signed_long_int' => 70,
+			'signed_short_int' => 95,
+			'string_type' => 239,
+			'base_type_spec' => 240,
+			'unsigned_longlong_int' => 76,
+			'any_type' => 77,
+			'unsigned_long_int' => 102,
+			'param_type_spec' => 417,
+			'unsigned_short_int' => 81,
+			'signed_longlong_int' => 83
+		}
 	},
 	{#State 353
 		ACTIONS => {
-			'error' => 417,
-			"(" => 416
+			")" => 418
 		}
 	},
 	{#State 354
-		ACTIONS => {
-			'CONTEXT' => 353
-		},
-		DEFAULT => -301,
-		GOTOS => {
-			'context_expr' => 418
-		}
+		DEFAULT => -119
 	},
 	{#State 355
-		DEFAULT => -303
+		ACTIONS => {
+			"," => 419
+		},
+		DEFAULT => -116
 	},
 	{#State 356
 		ACTIONS => {
-			'error' => 420,
-			"(" => 419
+			")" => 420
 		}
 	},
 	{#State 357
-		ACTIONS => {
-			"::" => 180
-		},
-		DEFAULT => -95
+		DEFAULT => -110
 	},
 	{#State 358
-		ACTIONS => {
-			"," => 421
-		},
-		DEFAULT => -91
+		DEFAULT => -324
 	},
 	{#State 359
-		DEFAULT => -87
+		ACTIONS => {
+			")" => 421
+		}
 	},
 	{#State 360
-		ACTIONS => {
-			'SUPPORTS' => 170
-		},
-		DEFAULT => -85,
-		GOTOS => {
-			'supported_interface_spec' => 422
-		}
+		DEFAULT => -326
 	},
 	{#State 361
 		ACTIONS => {
-			'IDENTIFIER' => 92,
-			"::" => 87
+			'CHAR' => 85,
+			'SHORT' => 74,
+			'BOOLEAN' => 98,
+			'OBJECT' => 86,
+			'IDENTIFIER' => 100,
+			'VALUEBASE' => 87,
+			'WCHAR' => 75,
+			'DOUBLE' => 91,
+			'LONG' => 92,
+			'STRING' => 93,
+			"::" => 94,
+			'OCTET' => 80,
+			'FLOAT' => 82,
+			'WSTRING' => 96,
+			'UNSIGNED' => 72,
+			'ANY' => 84
 		},
 		GOTOS => {
-			'scoped_name' => 258,
-			'interface_names' => 423,
-			'interface_name' => 260
+			'unsigned_int' => 59,
+			'floating_pt_type' => 60,
+			'signed_int' => 62,
+			'wide_string_type' => 242,
+			'integer_type' => 90,
+			'boolean_type' => 89,
+			'char_type' => 65,
+			'value_base_type' => 64,
+			'object_type' => 66,
+			'octet_type' => 67,
+			'scoped_name' => 238,
+			'wide_char_type' => 69,
+			'signed_long_int' => 70,
+			'signed_short_int' => 95,
+			'string_type' => 239,
+			'base_type_spec' => 240,
+			'unsigned_longlong_int' => 76,
+			'any_type' => 77,
+			'unsigned_long_int' => 102,
+			'param_type_spec' => 422,
+			'unsigned_short_int' => 81,
+			'signed_longlong_int' => 83
 		}
 	},
 	{#State 362
-		DEFAULT => -236
+		ACTIONS => {
+			")" => 423
+		}
 	},
 	{#State 363
-		DEFAULT => -237
+		DEFAULT => -317
 	},
 	{#State 364
-		DEFAULT => -267
+		DEFAULT => -325
 	},
 	{#State 365
-		DEFAULT => -276
+		ACTIONS => {
+			";" => 424,
+			"," => 425
+		},
+		DEFAULT => -319
 	},
 	{#State 366
 		ACTIONS => {
-			")" => 424
+			'error' => 427,
+			"(" => 426
 		}
 	},
 	{#State 367
 		ACTIONS => {
-			")" => 425
+			'CONTEXT' => 366
+		},
+		DEFAULT => -305,
+		GOTOS => {
+			'context_expr' => 428
 		}
 	},
 	{#State 368
-		ACTIONS => {
-			'FLOATING_PT_LITERAL' => 291,
-			'IDENTIFIER' => 92,
-			'STRING_LITERAL' => 296,
-			'CHARACTER_LITERAL' => 273,
-			"+" => 298,
-			'FIXED_PT_LITERAL' => 297,
-			'WIDE_CHARACTER_LITERAL' => 274,
-			"-" => 300,
-			"::" => 87,
-			'FALSE' => 285,
-			'WIDE_STRING_LITERAL' => 286,
-			'INTEGER_LITERAL' => 294,
-			"~" => 301,
-			"(" => 278,
-			'TRUE' => 288
-		},
-		GOTOS => {
-			'mult_expr' => 295,
-			'string_literal' => 290,
-			'boolean_literal' => 279,
-			'primary_expr' => 292,
-			'and_expr' => 293,
-			'unary_expr' => 299,
-			'scoped_name' => 275,
-			'xor_expr' => 426,
-			'shift_expr' => 284,
-			'wide_string_literal' => 277,
-			'literal' => 287,
-			'unary_operator' => 302,
-			'add_expr' => 289
-		}
+		DEFAULT => -307
 	},
 	{#State 369
-		DEFAULT => -278
+		ACTIONS => {
+			'error' => 430,
+			"(" => 429
+		}
 	},
 	{#State 370
 		ACTIONS => {
-			'FLOATING_PT_LITERAL' => 291,
-			'IDENTIFIER' => 92,
-			'STRING_LITERAL' => 296,
-			'CHARACTER_LITERAL' => 273,
-			"+" => 298,
-			'FIXED_PT_LITERAL' => 297,
-			'WIDE_CHARACTER_LITERAL' => 274,
-			"-" => 300,
-			"::" => 87,
-			'FALSE' => 285,
-			'WIDE_STRING_LITERAL' => 286,
-			'INTEGER_LITERAL' => 294,
-			"~" => 301,
-			"(" => 278,
-			'TRUE' => 288
+			"::" => 190
 		},
-		GOTOS => {
-			'mult_expr' => 295,
-			'string_literal' => 290,
-			'boolean_literal' => 279,
-			'primary_expr' => 292,
-			'and_expr' => 427,
-			'unary_expr' => 299,
-			'scoped_name' => 275,
-			'shift_expr' => 284,
-			'wide_string_literal' => 277,
-			'literal' => 287,
-			'unary_operator' => 302,
-			'add_expr' => 289
-		}
+		DEFAULT => -99
 	},
 	{#State 371
 		ACTIONS => {
-			'FLOATING_PT_LITERAL' => 291,
-			'IDENTIFIER' => 92,
-			'STRING_LITERAL' => 296,
-			'CHARACTER_LITERAL' => 273,
-			"+" => 298,
-			'FIXED_PT_LITERAL' => 297,
-			'WIDE_CHARACTER_LITERAL' => 274,
-			"-" => 300,
-			"::" => 87,
-			'FALSE' => 285,
-			'WIDE_STRING_LITERAL' => 286,
-			'INTEGER_LITERAL' => 294,
-			"~" => 301,
-			"(" => 278,
-			'TRUE' => 288
+			"," => 431
 		},
-		GOTOS => {
-			'mult_expr' => 295,
-			'string_literal' => 290,
-			'boolean_literal' => 279,
-			'primary_expr' => 292,
-			'unary_expr' => 299,
-			'scoped_name' => 275,
-			'wide_string_literal' => 277,
-			'literal' => 287,
-			'unary_operator' => 302,
-			'add_expr' => 428
-		}
+		DEFAULT => -95
 	},
 	{#State 372
-		ACTIONS => {
-			'FLOATING_PT_LITERAL' => 291,
-			'IDENTIFIER' => 92,
-			'STRING_LITERAL' => 296,
-			'CHARACTER_LITERAL' => 273,
-			"+" => 298,
-			'FIXED_PT_LITERAL' => 297,
-			'WIDE_CHARACTER_LITERAL' => 274,
-			"-" => 300,
-			"::" => 87,
-			'FALSE' => 285,
-			'WIDE_STRING_LITERAL' => 286,
-			'INTEGER_LITERAL' => 294,
-			"~" => 301,
-			"(" => 278,
-			'TRUE' => 288
-		},
-		GOTOS => {
-			'mult_expr' => 295,
-			'string_literal' => 290,
-			'boolean_literal' => 279,
-			'primary_expr' => 292,
-			'unary_expr' => 299,
-			'scoped_name' => 275,
-			'wide_string_literal' => 277,
-			'literal' => 287,
-			'unary_operator' => 302,
-			'add_expr' => 429
-		}
+		DEFAULT => -91
 	},
 	{#State 373
-		DEFAULT => -168
+		ACTIONS => {
+			'SUPPORTS' => 180
+		},
+		DEFAULT => -89,
+		GOTOS => {
+			'supported_interface_spec' => 432
+		}
 	},
 	{#State 374
 		ACTIONS => {
-			'FLOATING_PT_LITERAL' => 291,
-			'IDENTIFIER' => 92,
-			'STRING_LITERAL' => 296,
-			'CHARACTER_LITERAL' => 273,
-			"+" => 298,
-			'FIXED_PT_LITERAL' => 297,
-			'WIDE_CHARACTER_LITERAL' => 274,
-			"-" => 300,
-			"::" => 87,
-			'FALSE' => 285,
-			'WIDE_STRING_LITERAL' => 286,
-			'INTEGER_LITERAL' => 294,
-			"~" => 301,
-			"(" => 278,
-			'TRUE' => 288
+			'IDENTIFIER' => 100,
+			"::" => 94
 		},
 		GOTOS => {
-			'mult_expr' => 430,
-			'string_literal' => 290,
-			'boolean_literal' => 279,
-			'primary_expr' => 292,
-			'unary_expr' => 299,
-			'scoped_name' => 275,
-			'wide_string_literal' => 277,
-			'literal' => 287,
-			'unary_operator' => 302
+			'scoped_name' => 270,
+			'interface_names' => 433,
+			'interface_name' => 272
 		}
 	},
 	{#State 375
-		ACTIONS => {
-			'FLOATING_PT_LITERAL' => 291,
-			'IDENTIFIER' => 92,
-			'STRING_LITERAL' => 296,
-			'CHARACTER_LITERAL' => 273,
-			"+" => 298,
-			'FIXED_PT_LITERAL' => 297,
-			'WIDE_CHARACTER_LITERAL' => 274,
-			"-" => 300,
-			"::" => 87,
-			'FALSE' => 285,
-			'WIDE_STRING_LITERAL' => 286,
-			'INTEGER_LITERAL' => 294,
-			"~" => 301,
-			"(" => 278,
-			'TRUE' => 288
-		},
-		GOTOS => {
-			'mult_expr' => 431,
-			'string_literal' => 290,
-			'boolean_literal' => 279,
-			'primary_expr' => 292,
-			'unary_expr' => 299,
-			'scoped_name' => 275,
-			'wide_string_literal' => 277,
-			'literal' => 287,
-			'unary_operator' => 302
-		}
+		DEFAULT => -240
 	},
 	{#State 376
-		ACTIONS => {
-			'FLOATING_PT_LITERAL' => 291,
-			'IDENTIFIER' => 92,
-			'STRING_LITERAL' => 296,
-			'CHARACTER_LITERAL' => 273,
-			"+" => 298,
-			'FIXED_PT_LITERAL' => 297,
-			'WIDE_CHARACTER_LITERAL' => 274,
-			"-" => 300,
-			"::" => 87,
-			'FALSE' => 285,
-			'WIDE_STRING_LITERAL' => 286,
-			'INTEGER_LITERAL' => 294,
-			"~" => 301,
-			"(" => 278,
-			'TRUE' => 288
-		},
-		GOTOS => {
-			'mult_expr' => 295,
-			'string_literal' => 290,
-			'boolean_literal' => 279,
-			'primary_expr' => 292,
-			'unary_expr' => 299,
-			'scoped_name' => 275,
-			'shift_expr' => 432,
-			'wide_string_literal' => 277,
-			'literal' => 287,
-			'unary_operator' => 302,
-			'add_expr' => 289
-		}
+		DEFAULT => -241
 	},
 	{#State 377
 		ACTIONS => {
-			'FLOATING_PT_LITERAL' => 291,
-			'IDENTIFIER' => 92,
-			'STRING_LITERAL' => 296,
-			'CHARACTER_LITERAL' => 273,
-			"+" => 298,
-			'FIXED_PT_LITERAL' => 297,
-			'WIDE_CHARACTER_LITERAL' => 274,
-			"-" => 300,
-			"::" => 87,
-			'FALSE' => 285,
-			'WIDE_STRING_LITERAL' => 286,
-			'INTEGER_LITERAL' => 294,
-			"~" => 301,
-			"(" => 278,
-			'TRUE' => 288
+			'FLOATING_PT_LITERAL' => 296,
+			'CHARACTER_LITERAL' => 278,
+			'WIDE_CHARACTER_LITERAL' => 279,
+			"::" => 94,
+			'INTEGER_LITERAL' => 299,
+			"(" => 283,
+			'IDENTIFIER' => 100,
+			'STRING_LITERAL' => 301,
+			'FIXED_PT_LITERAL' => 302,
+			"+" => 303,
+			'error' => 435,
+			"-" => 305,
+			'WIDE_STRING_LITERAL' => 291,
+			'FALSE' => 290,
+			"~" => 306,
+			'TRUE' => 293
 		},
 		GOTOS => {
-			'string_literal' => 290,
-			'boolean_literal' => 279,
-			'primary_expr' => 292,
-			'unary_expr' => 433,
-			'scoped_name' => 275,
-			'wide_string_literal' => 277,
-			'literal' => 287,
-			'unary_operator' => 302
+			'string_literal' => 295,
+			'primary_expr' => 297,
+			'and_expr' => 298,
+			'scoped_name' => 280,
+			'positive_int_const' => 434,
+			'wide_string_literal' => 282,
+			'boolean_literal' => 284,
+			'mult_expr' => 300,
+			'const_exp' => 285,
+			'or_expr' => 286,
+			'unary_expr' => 304,
+			'xor_expr' => 288,
+			'shift_expr' => 289,
+			'literal' => 292,
+			'unary_operator' => 307,
+			'add_expr' => 294
 		}
 	},
 	{#State 378
 		ACTIONS => {
-			'FLOATING_PT_LITERAL' => 291,
-			'IDENTIFIER' => 92,
-			'STRING_LITERAL' => 296,
-			'CHARACTER_LITERAL' => 273,
-			"+" => 298,
-			'FIXED_PT_LITERAL' => 297,
-			'WIDE_CHARACTER_LITERAL' => 274,
-			"-" => 300,
-			"::" => 87,
-			'FALSE' => 285,
-			'WIDE_STRING_LITERAL' => 286,
-			'INTEGER_LITERAL' => 294,
-			"~" => 301,
-			"(" => 278,
-			'TRUE' => 288
-		},
-		GOTOS => {
-			'string_literal' => 290,
-			'boolean_literal' => 279,
-			'primary_expr' => 292,
-			'unary_expr' => 434,
-			'scoped_name' => 275,
-			'wide_string_literal' => 277,
-			'literal' => 287,
-			'unary_operator' => 302
+			")" => 436
 		}
 	},
 	{#State 379
 		ACTIONS => {
-			'FLOATING_PT_LITERAL' => 291,
-			'IDENTIFIER' => 92,
-			'STRING_LITERAL' => 296,
-			'CHARACTER_LITERAL' => 273,
-			"+" => 298,
-			'FIXED_PT_LITERAL' => 297,
-			'WIDE_CHARACTER_LITERAL' => 274,
-			"-" => 300,
-			"::" => 87,
-			'FALSE' => 285,
-			'WIDE_STRING_LITERAL' => 286,
-			'INTEGER_LITERAL' => 294,
-			"~" => 301,
-			"(" => 278,
-			'TRUE' => 288
-		},
-		GOTOS => {
-			'string_literal' => 290,
-			'boolean_literal' => 279,
-			'primary_expr' => 292,
-			'unary_expr' => 435,
-			'scoped_name' => 275,
-			'wide_string_literal' => 277,
-			'literal' => 287,
-			'unary_operator' => 302
+			")" => 437
 		}
 	},
 	{#State 380
-		DEFAULT => -166
+		ACTIONS => {
+			'FLOATING_PT_LITERAL' => 296,
+			'IDENTIFIER' => 100,
+			'STRING_LITERAL' => 301,
+			'CHARACTER_LITERAL' => 278,
+			"+" => 303,
+			'FIXED_PT_LITERAL' => 302,
+			'WIDE_CHARACTER_LITERAL' => 279,
+			"-" => 305,
+			"::" => 94,
+			'FALSE' => 290,
+			'WIDE_STRING_LITERAL' => 291,
+			'INTEGER_LITERAL' => 299,
+			"~" => 306,
+			"(" => 283,
+			'TRUE' => 293
+		},
+		GOTOS => {
+			'mult_expr' => 300,
+			'string_literal' => 295,
+			'boolean_literal' => 284,
+			'primary_expr' => 297,
+			'and_expr' => 298,
+			'unary_expr' => 304,
+			'scoped_name' => 280,
+			'xor_expr' => 438,
+			'shift_expr' => 289,
+			'wide_string_literal' => 282,
+			'literal' => 292,
+			'unary_operator' => 307,
+			'add_expr' => 294
+		}
 	},
 	{#State 381
-		DEFAULT => -148
+		DEFAULT => -344
 	},
 	{#State 382
-		DEFAULT => -279
+		ACTIONS => {
+			'FLOATING_PT_LITERAL' => 296,
+			'IDENTIFIER' => 100,
+			'STRING_LITERAL' => 301,
+			'CHARACTER_LITERAL' => 278,
+			"+" => 303,
+			'FIXED_PT_LITERAL' => 302,
+			'WIDE_CHARACTER_LITERAL' => 279,
+			"-" => 305,
+			"::" => 94,
+			'FALSE' => 290,
+			'WIDE_STRING_LITERAL' => 291,
+			'INTEGER_LITERAL' => 299,
+			"~" => 306,
+			"(" => 283,
+			'TRUE' => 293
+		},
+		GOTOS => {
+			'mult_expr' => 300,
+			'string_literal' => 295,
+			'boolean_literal' => 284,
+			'primary_expr' => 297,
+			'and_expr' => 439,
+			'unary_expr' => 304,
+			'scoped_name' => 280,
+			'shift_expr' => 289,
+			'wide_string_literal' => 282,
+			'literal' => 292,
+			'unary_operator' => 307,
+			'add_expr' => 294
+		}
 	},
 	{#State 383
-		DEFAULT => -281
+		ACTIONS => {
+			'FLOATING_PT_LITERAL' => 296,
+			'IDENTIFIER' => 100,
+			'STRING_LITERAL' => 301,
+			'CHARACTER_LITERAL' => 278,
+			"+" => 303,
+			'FIXED_PT_LITERAL' => 302,
+			'WIDE_CHARACTER_LITERAL' => 279,
+			"-" => 305,
+			"::" => 94,
+			'FALSE' => 290,
+			'WIDE_STRING_LITERAL' => 291,
+			'INTEGER_LITERAL' => 299,
+			"~" => 306,
+			"(" => 283,
+			'TRUE' => 293
+		},
+		GOTOS => {
+			'mult_expr' => 300,
+			'string_literal' => 295,
+			'boolean_literal' => 284,
+			'primary_expr' => 297,
+			'unary_expr' => 304,
+			'scoped_name' => 280,
+			'wide_string_literal' => 282,
+			'literal' => 292,
+			'unary_operator' => 307,
+			'add_expr' => 440
+		}
 	},
 	{#State 384
-		DEFAULT => -116
+		ACTIONS => {
+			'FLOATING_PT_LITERAL' => 296,
+			'IDENTIFIER' => 100,
+			'STRING_LITERAL' => 301,
+			'CHARACTER_LITERAL' => 278,
+			"+" => 303,
+			'FIXED_PT_LITERAL' => 302,
+			'WIDE_CHARACTER_LITERAL' => 279,
+			"-" => 305,
+			"::" => 94,
+			'FALSE' => 290,
+			'WIDE_STRING_LITERAL' => 291,
+			'INTEGER_LITERAL' => 299,
+			"~" => 306,
+			"(" => 283,
+			'TRUE' => 293
+		},
+		GOTOS => {
+			'mult_expr' => 300,
+			'string_literal' => 295,
+			'boolean_literal' => 284,
+			'primary_expr' => 297,
+			'unary_expr' => 304,
+			'scoped_name' => 280,
+			'wide_string_literal' => 282,
+			'literal' => 292,
+			'unary_operator' => 307,
+			'add_expr' => 441
+		}
 	},
 	{#State 385
-		DEFAULT => -117
+		DEFAULT => -172
 	},
 	{#State 386
-		DEFAULT => -241
+		ACTIONS => {
+			'FLOATING_PT_LITERAL' => 296,
+			'IDENTIFIER' => 100,
+			'STRING_LITERAL' => 301,
+			'CHARACTER_LITERAL' => 278,
+			"+" => 303,
+			'FIXED_PT_LITERAL' => 302,
+			'WIDE_CHARACTER_LITERAL' => 279,
+			"-" => 305,
+			"::" => 94,
+			'FALSE' => 290,
+			'WIDE_STRING_LITERAL' => 291,
+			'INTEGER_LITERAL' => 299,
+			"~" => 306,
+			"(" => 283,
+			'TRUE' => 293
+		},
+		GOTOS => {
+			'mult_expr' => 442,
+			'string_literal' => 295,
+			'boolean_literal' => 284,
+			'primary_expr' => 297,
+			'unary_expr' => 304,
+			'scoped_name' => 280,
+			'wide_string_literal' => 282,
+			'literal' => 292,
+			'unary_operator' => 307
+		}
 	},
 	{#State 387
 		ACTIONS => {
-			"{" => 437,
-			'error' => 436
+			'FLOATING_PT_LITERAL' => 296,
+			'IDENTIFIER' => 100,
+			'STRING_LITERAL' => 301,
+			'CHARACTER_LITERAL' => 278,
+			"+" => 303,
+			'FIXED_PT_LITERAL' => 302,
+			'WIDE_CHARACTER_LITERAL' => 279,
+			"-" => 305,
+			"::" => 94,
+			'FALSE' => 290,
+			'WIDE_STRING_LITERAL' => 291,
+			'INTEGER_LITERAL' => 299,
+			"~" => 306,
+			"(" => 283,
+			'TRUE' => 293
+		},
+		GOTOS => {
+			'mult_expr' => 443,
+			'string_literal' => 295,
+			'boolean_literal' => 284,
+			'primary_expr' => 297,
+			'unary_expr' => 304,
+			'scoped_name' => 280,
+			'wide_string_literal' => 282,
+			'literal' => 292,
+			'unary_operator' => 307
 		}
 	},
 	{#State 388
-		DEFAULT => -50
+		ACTIONS => {
+			'FLOATING_PT_LITERAL' => 296,
+			'IDENTIFIER' => 100,
+			'STRING_LITERAL' => 301,
+			'CHARACTER_LITERAL' => 278,
+			"+" => 303,
+			'FIXED_PT_LITERAL' => 302,
+			'WIDE_CHARACTER_LITERAL' => 279,
+			"-" => 305,
+			"::" => 94,
+			'FALSE' => 290,
+			'WIDE_STRING_LITERAL' => 291,
+			'INTEGER_LITERAL' => 299,
+			"~" => 306,
+			"(" => 283,
+			'TRUE' => 293
+		},
+		GOTOS => {
+			'mult_expr' => 300,
+			'string_literal' => 295,
+			'boolean_literal' => 284,
+			'primary_expr' => 297,
+			'unary_expr' => 304,
+			'scoped_name' => 280,
+			'shift_expr' => 444,
+			'wide_string_literal' => 282,
+			'literal' => 292,
+			'unary_operator' => 307,
+			'add_expr' => 294
+		}
 	},
 	{#State 389
-		DEFAULT => -49
+		ACTIONS => {
+			'FLOATING_PT_LITERAL' => 296,
+			'IDENTIFIER' => 100,
+			'STRING_LITERAL' => 301,
+			'CHARACTER_LITERAL' => 278,
+			"+" => 303,
+			'FIXED_PT_LITERAL' => 302,
+			'WIDE_CHARACTER_LITERAL' => 279,
+			"-" => 305,
+			"::" => 94,
+			'FALSE' => 290,
+			'WIDE_STRING_LITERAL' => 291,
+			'INTEGER_LITERAL' => 299,
+			"~" => 306,
+			"(" => 283,
+			'TRUE' => 293
+		},
+		GOTOS => {
+			'string_literal' => 295,
+			'boolean_literal' => 284,
+			'primary_expr' => 297,
+			'unary_expr' => 445,
+			'scoped_name' => 280,
+			'wide_string_literal' => 282,
+			'literal' => 292,
+			'unary_operator' => 307
+		}
 	},
 	{#State 390
 		ACTIONS => {
-			";" => 438
+			'FLOATING_PT_LITERAL' => 296,
+			'IDENTIFIER' => 100,
+			'STRING_LITERAL' => 301,
+			'CHARACTER_LITERAL' => 278,
+			"+" => 303,
+			'FIXED_PT_LITERAL' => 302,
+			'WIDE_CHARACTER_LITERAL' => 279,
+			"-" => 305,
+			"::" => 94,
+			'FALSE' => 290,
+			'WIDE_STRING_LITERAL' => 291,
+			'INTEGER_LITERAL' => 299,
+			"~" => 306,
+			"(" => 283,
+			'TRUE' => 293
+		},
+		GOTOS => {
+			'string_literal' => 295,
+			'boolean_literal' => 284,
+			'primary_expr' => 297,
+			'unary_expr' => 446,
+			'scoped_name' => 280,
+			'wide_string_literal' => 282,
+			'literal' => 292,
+			'unary_operator' => 307
 		}
 	},
 	{#State 391
 		ACTIONS => {
-			";" => 439
+			'FLOATING_PT_LITERAL' => 296,
+			'IDENTIFIER' => 100,
+			'STRING_LITERAL' => 301,
+			'CHARACTER_LITERAL' => 278,
+			"+" => 303,
+			'FIXED_PT_LITERAL' => 302,
+			'WIDE_CHARACTER_LITERAL' => 279,
+			"-" => 305,
+			"::" => 94,
+			'FALSE' => 290,
+			'WIDE_STRING_LITERAL' => 291,
+			'INTEGER_LITERAL' => 299,
+			"~" => 306,
+			"(" => 283,
+			'TRUE' => 293
+		},
+		GOTOS => {
+			'string_literal' => 295,
+			'boolean_literal' => 284,
+			'primary_expr' => 297,
+			'unary_expr' => 447,
+			'scoped_name' => 280,
+			'wide_string_literal' => 282,
+			'literal' => 292,
+			'unary_operator' => 307
 		}
 	},
 	{#State 392
-		DEFAULT => -101
+		DEFAULT => -170
 	},
 	{#State 393
-		ACTIONS => {
-			'CHAR' => 79,
-			'SHORT' => 71,
-			'BOOLEAN' => 91,
-			'OBJECT' => 127,
-			'IDENTIFIER' => 92,
-			'VALUEBASE' => 128,
-			'WCHAR' => 72,
-			'DOUBLE' => 83,
-			'LONG' => 84,
-			'STRING' => 85,
-			"::" => 87,
-			'OCTET' => 75,
-			'FLOAT' => 77,
-			'WSTRING' => 89,
-			'UNSIGNED' => 69,
-			'ANY' => 126
-		},
-		GOTOS => {
-			'unsigned_int' => 60,
-			'floating_pt_type' => 110,
-			'signed_int' => 63,
-			'wide_string_type' => 236,
-			'integer_type' => 131,
-			'boolean_type' => 130,
-			'char_type' => 114,
-			'value_base_type' => 113,
-			'object_type' => 115,
-			'octet_type' => 116,
-			'scoped_name' => 232,
-			'wide_char_type' => 118,
-			'signed_long_int' => 68,
-			'signed_short_int' => 88,
-			'string_type' => 233,
-			'base_type_spec' => 234,
-			'unsigned_longlong_int' => 73,
-			'any_type' => 122,
-			'unsigned_long_int' => 93,
-			'param_type_spec' => 440,
-			'unsigned_short_int' => 76,
-			'signed_longlong_int' => 78
-		}
+		DEFAULT => -152
 	},
 	{#State 394
-		ACTIONS => {
-			")" => 441
-		}
+		DEFAULT => -278
 	},
 	{#State 395
-		DEFAULT => -115
+		ACTIONS => {
+			'FLOATING_PT_LITERAL' => 296,
+			'CHARACTER_LITERAL' => 278,
+			'WIDE_CHARACTER_LITERAL' => 279,
+			"::" => 94,
+			'INTEGER_LITERAL' => 299,
+			"(" => 283,
+			'IDENTIFIER' => 100,
+			'STRING_LITERAL' => 301,
+			'FIXED_PT_LITERAL' => 302,
+			"+" => 303,
+			'error' => 449,
+			"-" => 305,
+			'WIDE_STRING_LITERAL' => 291,
+			'FALSE' => 290,
+			"~" => 306,
+			'TRUE' => 293
+		},
+		GOTOS => {
+			'string_literal' => 295,
+			'primary_expr' => 297,
+			'and_expr' => 298,
+			'scoped_name' => 280,
+			'positive_int_const' => 448,
+			'wide_string_literal' => 282,
+			'boolean_literal' => 284,
+			'mult_expr' => 300,
+			'const_exp' => 285,
+			'or_expr' => 286,
+			'unary_expr' => 304,
+			'xor_expr' => 288,
+			'shift_expr' => 289,
+			'literal' => 292,
+			'unary_operator' => 307,
+			'add_expr' => 294
+		}
 	},
 	{#State 396
-		ACTIONS => {
-			"," => 442
-		},
-		DEFAULT => -112
+		DEFAULT => -277
 	},
 	{#State 397
-		ACTIONS => {
-			")" => 443
-		}
+		DEFAULT => -280
 	},
 	{#State 398
-		DEFAULT => -106
+		DEFAULT => -282
 	},
 	{#State 399
-		ACTIONS => {
-			'FLOATING_PT_LITERAL' => 291,
-			'CHARACTER_LITERAL' => 273,
-			'WIDE_CHARACTER_LITERAL' => 274,
-			"::" => 87,
-			'INTEGER_LITERAL' => 294,
-			"(" => 278,
-			'IDENTIFIER' => 92,
-			'STRING_LITERAL' => 296,
-			'FIXED_PT_LITERAL' => 297,
-			"+" => 298,
-			'error' => 445,
-			"-" => 300,
-			'WIDE_STRING_LITERAL' => 286,
-			'FALSE' => 285,
-			"~" => 301,
-			'TRUE' => 288
-		},
-		GOTOS => {
-			'string_literal' => 290,
-			'primary_expr' => 292,
-			'and_expr' => 293,
-			'scoped_name' => 275,
-			'positive_int_const' => 444,
-			'wide_string_literal' => 277,
-			'boolean_literal' => 279,
-			'mult_expr' => 295,
-			'const_exp' => 280,
-			'or_expr' => 281,
-			'unary_expr' => 299,
-			'xor_expr' => 283,
-			'shift_expr' => 284,
-			'literal' => 287,
-			'unary_operator' => 302,
-			'add_expr' => 289
-		}
+		DEFAULT => -283
 	},
 	{#State 400
-		DEFAULT => -340
+		DEFAULT => -285
 	},
 	{#State 401
-		DEFAULT => -274
+		DEFAULT => -271
 	},
 	{#State 402
-		ACTIONS => {
-			'FLOATING_PT_LITERAL' => 291,
-			'CHARACTER_LITERAL' => 273,
-			'WIDE_CHARACTER_LITERAL' => 274,
-			"::" => 87,
-			'INTEGER_LITERAL' => 294,
-			"(" => 278,
-			'IDENTIFIER' => 92,
-			'STRING_LITERAL' => 296,
-			'FIXED_PT_LITERAL' => 297,
-			"+" => 298,
-			'error' => 447,
-			"-" => 300,
-			'WIDE_STRING_LITERAL' => 286,
-			'FALSE' => 285,
-			"~" => 301,
-			'TRUE' => 288
-		},
-		GOTOS => {
-			'string_literal' => 290,
-			'primary_expr' => 292,
-			'and_expr' => 293,
-			'scoped_name' => 275,
-			'positive_int_const' => 446,
-			'wide_string_literal' => 277,
-			'boolean_literal' => 279,
-			'mult_expr' => 295,
-			'const_exp' => 280,
-			'or_expr' => 281,
-			'unary_expr' => 299,
-			'xor_expr' => 283,
-			'shift_expr' => 284,
-			'literal' => 287,
-			'unary_operator' => 302,
-			'add_expr' => 289
-		}
+		DEFAULT => -120
 	},
 	{#State 403
-		DEFAULT => -273
+		DEFAULT => -121
 	},
 	{#State 404
-		DEFAULT => -203
+		DEFAULT => -245
 	},
 	{#State 405
-		DEFAULT => -284
+		ACTIONS => {
+			"{" => 451,
+			'error' => 450
+		}
 	},
 	{#State 406
-		ACTIONS => {
-			"]" => 448
-		}
+		DEFAULT => -53
 	},
 	{#State 407
-		ACTIONS => {
-			"]" => 449
-		}
+		DEFAULT => -52
 	},
 	{#State 408
-		DEFAULT => -288
+		DEFAULT => -207
 	},
 	{#State 409
-		ACTIONS => {
-			"," => 450
-		},
-		DEFAULT => -292
+		DEFAULT => -288
 	},
 	{#State 410
-		DEFAULT => -287
+		ACTIONS => {
+			"]" => 452
+		}
 	},
 	{#State 411
-		DEFAULT => -314
+		ACTIONS => {
+			"]" => 453
+		}
 	},
 	{#State 412
-		ACTIONS => {
-			'IDENTIFIER' => 105
-		},
-		GOTOS => {
-			'simple_declarator' => 451
-		}
+		DEFAULT => -292
 	},
 	{#State 413
-		DEFAULT => -312
+		ACTIONS => {
+			"," => 454
+		},
+		DEFAULT => -296
 	},
 	{#State 414
-		DEFAULT => -318
+		DEFAULT => -291
 	},
 	{#State 415
-		ACTIONS => {
-			'OUT' => 351,
-			'INOUT' => 347,
-			'IN' => 345
-		},
-		DEFAULT => -317,
-		GOTOS => {
-			'param_dcl' => 352,
-			'param_dcls' => 452,
-			'param_attribute' => 348
-		}
+		DEFAULT => -103
 	},
 	{#State 416
-		ACTIONS => {
-			'error' => 453,
-			'STRING_LITERAL' => 296
-		},
-		GOTOS => {
-			'string_literal' => 454,
-			'string_literals' => 455
-		}
+		DEFAULT => -104
 	},
 	{#State 417
-		DEFAULT => -331
+		ACTIONS => {
+			'IDENTIFIER' => 133
+		},
+		GOTOS => {
+			'simple_declarator' => 455
+		}
 	},
 	{#State 418
-		DEFAULT => -302
+		DEFAULT => -111
 	},
 	{#State 419
 		ACTIONS => {
-			'error' => 457,
-			'IDENTIFIER' => 92,
-			"::" => 87
+			'IN' => 354
 		},
 		GOTOS => {
-			'scoped_name' => 456,
-			'exception_names' => 458,
-			'exception_name' => 459
+			'init_param_decls' => 456,
+			'init_param_attribute' => 352,
+			'init_param_decl' => 355
 		}
 	},
 	{#State 420
-		DEFAULT => -325
+		DEFAULT => -112
 	},
 	{#State 421
-		ACTIONS => {
-			'IDENTIFIER' => 92,
-			"::" => 87
-		},
-		GOTOS => {
-			'scoped_name' => 357,
-			'value_name' => 358,
-			'value_names' => 460
-		}
+		DEFAULT => -318
 	},
 	{#State 422
-		DEFAULT => -86
+		ACTIONS => {
+			'IDENTIFIER' => 133
+		},
+		GOTOS => {
+			'simple_declarator' => 457
+		}
 	},
 	{#State 423
-		DEFAULT => -52
+		DEFAULT => -316
 	},
 	{#State 424
-		DEFAULT => -155
+		DEFAULT => -322
 	},
 	{#State 425
-		DEFAULT => -156
+		ACTIONS => {
+			'OUT' => 364,
+			'INOUT' => 360,
+			'IN' => 358
+		},
+		DEFAULT => -321,
+		GOTOS => {
+			'param_dcl' => 365,
+			'param_dcls' => 458,
+			'param_attribute' => 361
+		}
 	},
 	{#State 426
 		ACTIONS => {
-			"^" => 370
+			'error' => 459,
+			'STRING_LITERAL' => 301
 		},
-		DEFAULT => -133
+		GOTOS => {
+			'string_literal' => 460,
+			'string_literals' => 461
+		}
 	},
 	{#State 427
-		ACTIONS => {
-			"&" => 376
-		},
-		DEFAULT => -135
+		DEFAULT => -335
 	},
 	{#State 428
-		ACTIONS => {
-			"+" => 374,
-			"-" => 375
-		},
-		DEFAULT => -140
+		DEFAULT => -306
 	},
 	{#State 429
 		ACTIONS => {
-			"+" => 374,
-			"-" => 375
+			'error' => 463,
+			'IDENTIFIER' => 100,
+			"::" => 94
 		},
-		DEFAULT => -139
+		GOTOS => {
+			'scoped_name' => 462,
+			'exception_names' => 464,
+			'exception_name' => 465
+		}
 	},
 	{#State 430
-		ACTIONS => {
-			"%" => 378,
-			"*" => 377,
-			"/" => 379
-		},
-		DEFAULT => -142
+		DEFAULT => -329
 	},
 	{#State 431
 		ACTIONS => {
-			"%" => 378,
-			"*" => 377,
-			"/" => 379
+			'IDENTIFIER' => 100,
+			"::" => 94
 		},
-		DEFAULT => -143
+		GOTOS => {
+			'scoped_name' => 370,
+			'value_name' => 371,
+			'value_names' => 466
+		}
 	},
 	{#State 432
+		DEFAULT => -90
+	},
+	{#State 433
+		DEFAULT => -55
+	},
+	{#State 434
 		ACTIONS => {
-			"<<" => 371,
-			">>" => 372
+			">" => 467
+		}
+	},
+	{#State 435
+		ACTIONS => {
+			">" => 468
+		}
+	},
+	{#State 436
+		DEFAULT => -159
+	},
+	{#State 437
+		DEFAULT => -160
+	},
+	{#State 438
+		ACTIONS => {
+			"^" => 382
 		},
 		DEFAULT => -137
 	},
-	{#State 433
-		DEFAULT => -145
-	},
-	{#State 434
-		DEFAULT => -147
-	},
-	{#State 435
-		DEFAULT => -146
-	},
-	{#State 436
-		DEFAULT => -240
-	},
-	{#State 437
-		ACTIONS => {
-			'error' => 464,
-			'CASE' => 461,
-			'DEFAULT' => 463
-		},
-		GOTOS => {
-			'case_labels' => 466,
-			'switch_body' => 465,
-			'case' => 462,
-			'case_label' => 467
-		}
-	},
-	{#State 438
-		DEFAULT => -99
-	},
 	{#State 439
-		DEFAULT => -100
+		ACTIONS => {
+			"&" => 388
+		},
+		DEFAULT => -139
 	},
 	{#State 440
 		ACTIONS => {
-			'IDENTIFIER' => 105
+			"+" => 386,
+			"-" => 387
 		},
-		GOTOS => {
-			'simple_declarator' => 468
-		}
+		DEFAULT => -144
 	},
 	{#State 441
-		DEFAULT => -107
+		ACTIONS => {
+			"+" => 386,
+			"-" => 387
+		},
+		DEFAULT => -143
 	},
 	{#State 442
 		ACTIONS => {
-			'IN' => 395
+			"%" => 390,
+			"*" => 389,
+			"/" => 391
 		},
-		GOTOS => {
-			'init_param_decls' => 469,
-			'init_param_attribute' => 393,
-			'init_param_decl' => 396
-		}
+		DEFAULT => -146
 	},
 	{#State 443
-		DEFAULT => -108
+		ACTIONS => {
+			"%" => 390,
+			"*" => 389,
+			"/" => 391
+		},
+		DEFAULT => -147
 	},
 	{#State 444
+		ACTIONS => {
+			"<<" => 383,
+			">>" => 384
+		},
+		DEFAULT => -141
+	},
+	{#State 445
+		DEFAULT => -149
+	},
+	{#State 446
+		DEFAULT => -151
+	},
+	{#State 447
+		DEFAULT => -150
+	},
+	{#State 448
+		ACTIONS => {
+			">" => 469
+		}
+	},
+	{#State 449
 		ACTIONS => {
 			">" => 470
 		}
 	},
-	{#State 445
-		ACTIONS => {
-			">" => 471
-		}
-	},
-	{#State 446
-		ACTIONS => {
-			">" => 472
-		}
-	},
-	{#State 447
-		ACTIONS => {
-			">" => 473
-		}
-	},
-	{#State 448
-		DEFAULT => -285
-	},
-	{#State 449
-		DEFAULT => -286
-	},
 	{#State 450
-		ACTIONS => {
-			'IDENTIFIER' => 105
-		},
-		GOTOS => {
-			'simple_declarators' => 474,
-			'simple_declarator' => 409
-		}
+		DEFAULT => -244
 	},
 	{#State 451
-		DEFAULT => -319
+		ACTIONS => {
+			'error' => 474,
+			'CASE' => 471,
+			'DEFAULT' => 473
+		},
+		GOTOS => {
+			'case_labels' => 476,
+			'switch_body' => 475,
+			'case' => 472,
+			'case_label' => 477
+		}
 	},
 	{#State 452
-		DEFAULT => -316
+		DEFAULT => -289
 	},
 	{#State 453
-		ACTIONS => {
-			")" => 475
-		}
+		DEFAULT => -290
 	},
 	{#State 454
 		ACTIONS => {
-			"," => 476
+			'IDENTIFIER' => 133
 		},
-		DEFAULT => -332
+		GOTOS => {
+			'simple_declarators' => 478,
+			'simple_declarator' => 413
+		}
 	},
 	{#State 455
-		ACTIONS => {
-			")" => 477
-		}
+		DEFAULT => -118
 	},
 	{#State 456
-		ACTIONS => {
-			"::" => 180
-		},
-		DEFAULT => -328
+		DEFAULT => -117
 	},
 	{#State 457
-		ACTIONS => {
-			")" => 478
-		}
+		DEFAULT => -323
 	},
 	{#State 458
+		DEFAULT => -320
+	},
+	{#State 459
 		ACTIONS => {
 			")" => 479
 		}
 	},
-	{#State 459
+	{#State 460
 		ACTIONS => {
 			"," => 480
 		},
-		DEFAULT => -326
-	},
-	{#State 460
-		DEFAULT => -92
+		DEFAULT => -336
 	},
 	{#State 461
 		ACTIONS => {
-			'FLOATING_PT_LITERAL' => 291,
-			'CHARACTER_LITERAL' => 273,
-			'WIDE_CHARACTER_LITERAL' => 274,
-			"::" => 87,
-			'INTEGER_LITERAL' => 294,
-			"(" => 278,
-			'IDENTIFIER' => 92,
-			'STRING_LITERAL' => 296,
-			'FIXED_PT_LITERAL' => 297,
-			"+" => 298,
-			'error' => 482,
-			"-" => 300,
-			'WIDE_STRING_LITERAL' => 286,
-			'FALSE' => 285,
-			"~" => 301,
-			'TRUE' => 288
-		},
-		GOTOS => {
-			'mult_expr' => 295,
-			'string_literal' => 290,
-			'boolean_literal' => 279,
-			'primary_expr' => 292,
-			'const_exp' => 481,
-			'and_expr' => 293,
-			'or_expr' => 281,
-			'unary_expr' => 299,
-			'scoped_name' => 275,
-			'xor_expr' => 283,
-			'shift_expr' => 284,
-			'wide_string_literal' => 277,
-			'literal' => 287,
-			'unary_operator' => 302,
-			'add_expr' => 289
+			")" => 481
 		}
 	},
 	{#State 462
 		ACTIONS => {
-			'CASE' => 461,
-			'DEFAULT' => 463
+			"::" => 190
 		},
-		DEFAULT => -249,
-		GOTOS => {
-			'case_labels' => 466,
-			'switch_body' => 483,
-			'case' => 462,
-			'case_label' => 467
-		}
+		DEFAULT => -332
 	},
 	{#State 463
 		ACTIONS => {
-			'error' => 484,
-			":" => 485
+			")" => 482
 		}
 	},
 	{#State 464
 		ACTIONS => {
-			"}" => 486
+			")" => 483
 		}
 	},
 	{#State 465
 		ACTIONS => {
-			"}" => 487
-		}
+			"," => 484
+		},
+		DEFAULT => -330
 	},
 	{#State 466
-		ACTIONS => {
-			'CHAR' => 79,
-			'OBJECT' => 127,
-			'VALUEBASE' => 128,
-			'FIXED' => 111,
-			'SEQUENCE' => 112,
-			'STRUCT' => 30,
-			'DOUBLE' => 83,
-			'LONG' => 84,
-			'STRING' => 85,
-			"::" => 87,
-			'WSTRING' => 89,
-			'UNSIGNED' => 69,
-			'SHORT' => 71,
-			'BOOLEAN' => 91,
-			'IDENTIFIER' => 92,
-			'UNION' => 36,
-			'WCHAR' => 72,
-			'FLOAT' => 77,
-			'OCTET' => 75,
-			'ENUM' => 24,
-			'ANY' => 126
-		},
-		GOTOS => {
-			'unsigned_int' => 60,
-			'floating_pt_type' => 110,
-			'signed_int' => 63,
-			'char_type' => 114,
-			'value_base_type' => 113,
-			'object_type' => 115,
-			'octet_type' => 116,
-			'scoped_name' => 117,
-			'wide_char_type' => 118,
-			'signed_long_int' => 68,
-			'type_spec' => 488,
-			'string_type' => 121,
-			'struct_header' => 11,
-			'element_spec' => 489,
-			'unsigned_longlong_int' => 73,
-			'any_type' => 122,
-			'base_type_spec' => 123,
-			'enum_type' => 124,
-			'enum_header' => 18,
-			'union_header' => 22,
-			'unsigned_short_int' => 76,
-			'signed_longlong_int' => 78,
-			'wide_string_type' => 129,
-			'boolean_type' => 130,
-			'integer_type' => 131,
-			'signed_short_int' => 88,
-			'struct_type' => 132,
-			'union_type' => 133,
-			'sequence_type' => 134,
-			'unsigned_long_int' => 93,
-			'template_type_spec' => 135,
-			'constr_type_spec' => 136,
-			'simple_type_spec' => 137,
-			'fixed_pt_type' => 138
-		}
+		DEFAULT => -96
 	},
 	{#State 467
+		DEFAULT => -342
+	},
+	{#State 468
+		DEFAULT => -343
+	},
+	{#State 469
+		DEFAULT => -275
+	},
+	{#State 470
+		DEFAULT => -276
+	},
+	{#State 471
 		ACTIONS => {
-			'CASE' => 461,
-			'DEFAULT' => 463
+			'FLOATING_PT_LITERAL' => 296,
+			'CHARACTER_LITERAL' => 278,
+			'WIDE_CHARACTER_LITERAL' => 279,
+			"::" => 94,
+			'INTEGER_LITERAL' => 299,
+			"(" => 283,
+			'IDENTIFIER' => 100,
+			'STRING_LITERAL' => 301,
+			'FIXED_PT_LITERAL' => 302,
+			"+" => 303,
+			'error' => 486,
+			"-" => 305,
+			'WIDE_STRING_LITERAL' => 291,
+			'FALSE' => 290,
+			"~" => 306,
+			'TRUE' => 293
+		},
+		GOTOS => {
+			'mult_expr' => 300,
+			'string_literal' => 295,
+			'boolean_literal' => 284,
+			'primary_expr' => 297,
+			'const_exp' => 485,
+			'and_expr' => 298,
+			'or_expr' => 286,
+			'unary_expr' => 304,
+			'scoped_name' => 280,
+			'xor_expr' => 288,
+			'shift_expr' => 289,
+			'wide_string_literal' => 282,
+			'literal' => 292,
+			'unary_operator' => 307,
+			'add_expr' => 294
+		}
+	},
+	{#State 472
+		ACTIONS => {
+			'CASE' => 471,
+			'DEFAULT' => 473
 		},
 		DEFAULT => -253,
 		GOTOS => {
-			'case_labels' => 490,
-			'case_label' => 467
+			'case_labels' => 476,
+			'switch_body' => 487,
+			'case' => 472,
+			'case_label' => 477
 		}
 	},
-	{#State 468
-		DEFAULT => -114
-	},
-	{#State 469
-		DEFAULT => -113
-	},
-	{#State 470
-		DEFAULT => -338
-	},
-	{#State 471
-		DEFAULT => -339
-	},
-	{#State 472
-		DEFAULT => -271
-	},
 	{#State 473
-		DEFAULT => -272
+		ACTIONS => {
+			'error' => 488,
+			":" => 489
+		}
 	},
 	{#State 474
-		DEFAULT => -293
+		ACTIONS => {
+			"}" => 490
+		}
 	},
 	{#State 475
-		DEFAULT => -330
+		ACTIONS => {
+			"}" => 491
+		}
 	},
 	{#State 476
 		ACTIONS => {
-			'STRING_LITERAL' => 296
+			'CHAR' => 85,
+			'OBJECT' => 86,
+			'VALUEBASE' => 87,
+			'FIXED' => 61,
+			'SEQUENCE' => 63,
+			'STRUCT' => 31,
+			'DOUBLE' => 91,
+			'LONG' => 92,
+			'STRING' => 93,
+			"::" => 94,
+			'WSTRING' => 96,
+			'UNSIGNED' => 72,
+			'SHORT' => 74,
+			'BOOLEAN' => 98,
+			'IDENTIFIER' => 100,
+			'UNION' => 37,
+			'WCHAR' => 75,
+			'FLOAT' => 82,
+			'OCTET' => 80,
+			'ENUM' => 25,
+			'ANY' => 84
 		},
 		GOTOS => {
-			'string_literal' => 454,
-			'string_literals' => 491
+			'unsigned_int' => 59,
+			'floating_pt_type' => 60,
+			'signed_int' => 62,
+			'char_type' => 65,
+			'value_base_type' => 64,
+			'object_type' => 66,
+			'octet_type' => 67,
+			'scoped_name' => 68,
+			'wide_char_type' => 69,
+			'signed_long_int' => 70,
+			'type_spec' => 492,
+			'string_type' => 73,
+			'struct_header' => 11,
+			'element_spec' => 493,
+			'unsigned_longlong_int' => 76,
+			'any_type' => 77,
+			'base_type_spec' => 78,
+			'enum_type' => 79,
+			'enum_header' => 19,
+			'union_header' => 23,
+			'unsigned_short_int' => 81,
+			'signed_longlong_int' => 83,
+			'wide_string_type' => 88,
+			'boolean_type' => 89,
+			'integer_type' => 90,
+			'signed_short_int' => 95,
+			'struct_type' => 97,
+			'union_type' => 99,
+			'sequence_type' => 101,
+			'unsigned_long_int' => 102,
+			'template_type_spec' => 103,
+			'constr_type_spec' => 104,
+			'simple_type_spec' => 105,
+			'fixed_pt_type' => 106
 		}
 	},
 	{#State 477
-		DEFAULT => -329
+		ACTIONS => {
+			'CASE' => 471,
+			'DEFAULT' => 473
+		},
+		DEFAULT => -257,
+		GOTOS => {
+			'case_labels' => 494,
+			'case_label' => 477
+		}
 	},
 	{#State 478
-		DEFAULT => -324
+		DEFAULT => -297
 	},
 	{#State 479
-		DEFAULT => -323
+		DEFAULT => -334
 	},
 	{#State 480
 		ACTIONS => {
-			'IDENTIFIER' => 92,
-			"::" => 87
+			'STRING_LITERAL' => 301
 		},
 		GOTOS => {
-			'scoped_name' => 456,
-			'exception_names' => 492,
-			'exception_name' => 459
+			'string_literal' => 460,
+			'string_literals' => 495
 		}
 	},
 	{#State 481
-		ACTIONS => {
-			'error' => 493,
-			":" => 494
-		}
-	},
-	{#State 482
-		DEFAULT => -257
-	},
-	{#State 483
-		DEFAULT => -250
-	},
-	{#State 484
-		DEFAULT => -259
-	},
-	{#State 485
-		DEFAULT => -258
-	},
-	{#State 486
-		DEFAULT => -239
-	},
-	{#State 487
-		DEFAULT => -238
-	},
-	{#State 488
-		ACTIONS => {
-			'IDENTIFIER' => 225
-		},
-		GOTOS => {
-			'declarator' => 495,
-			'simple_declarator' => 223,
-			'array_declarator' => 224,
-			'complex_declarator' => 222
-		}
-	},
-	{#State 489
-		ACTIONS => {
-			'error' => 497,
-			";" => 496
-		}
-	},
-	{#State 490
-		DEFAULT => -254
-	},
-	{#State 491
 		DEFAULT => -333
 	},
-	{#State 492
+	{#State 482
+		DEFAULT => -328
+	},
+	{#State 483
 		DEFAULT => -327
 	},
+	{#State 484
+		ACTIONS => {
+			'IDENTIFIER' => 100,
+			"::" => 94
+		},
+		GOTOS => {
+			'scoped_name' => 462,
+			'exception_names' => 496,
+			'exception_name' => 465
+		}
+	},
+	{#State 485
+		ACTIONS => {
+			'error' => 497,
+			":" => 498
+		}
+	},
+	{#State 486
+		DEFAULT => -261
+	},
+	{#State 487
+		DEFAULT => -254
+	},
+	{#State 488
+		DEFAULT => -263
+	},
+	{#State 489
+		DEFAULT => -262
+	},
+	{#State 490
+		DEFAULT => -243
+	},
+	{#State 491
+		DEFAULT => -242
+	},
+	{#State 492
+		ACTIONS => {
+			'IDENTIFIER' => 229
+		},
+		GOTOS => {
+			'declarator' => 499,
+			'simple_declarator' => 227,
+			'array_declarator' => 228,
+			'complex_declarator' => 226
+		}
+	},
 	{#State 493
-		DEFAULT => -256
+		ACTIONS => {
+			'error' => 501,
+			";" => 500
+		}
 	},
 	{#State 494
-		DEFAULT => -255
+		DEFAULT => -258
 	},
 	{#State 495
-		DEFAULT => -260
+		DEFAULT => -337
 	},
 	{#State 496
-		DEFAULT => -251
+		DEFAULT => -331
 	},
 	{#State 497
-		DEFAULT => -252
+		DEFAULT => -260
+	},
+	{#State 498
+		DEFAULT => -259
+	},
+	{#State 499
+		DEFAULT => -264
+	},
+	{#State 500
+		DEFAULT => -255
+	},
+	{#State 501
+		DEFAULT => -256
 	}
 ],
                                   yyrules  =>
@@ -4669,13 +4716,25 @@ sub
 		}
 	],
 	[#Rule 39
-		 'export', 2, undef
+		 '_export', 1, undef
 	],
 	[#Rule 40
-		 'export', 2, undef
+		 '_export', 1,
+sub
+#line 318 "parser23.yp"
+{
+			$_[0]->Error("state member unexpected.\n");
+			$_[1];						#default action
+		}
 	],
 	[#Rule 41
-		 'export', 2, undef
+		 '_export', 1,
+sub
+#line 323 "parser23.yp"
+{
+			$_[0]->Error("initializer unexpected.\n");
+			$_[1];						#default action
+		}
 	],
 	[#Rule 42
 		 'export', 2, undef
@@ -4684,39 +4743,18 @@ sub
 		 'export', 2, undef
 	],
 	[#Rule 44
-		 'export', 2,
-sub
-#line 326 "parser23.yp"
-{
-			$_[0]->Warning("';' expected.\n");
-			$_[0]->YYErrok();
-			$_[1];						#default action
-		}
+		 'export', 2, undef
 	],
 	[#Rule 45
-		 'export', 2,
-sub
-#line 332 "parser23.yp"
-{
-			$_[0]->Warning("';' expected.\n");
-			$_[0]->YYErrok();
-			$_[1];						#default action
-		}
+		 'export', 2, undef
 	],
 	[#Rule 46
-		 'export', 2,
-sub
-#line 338 "parser23.yp"
-{
-			$_[0]->Warning("';' expected.\n");
-			$_[0]->YYErrok();
-			$_[1];						#default action
-		}
+		 'export', 2, undef
 	],
 	[#Rule 47
 		 'export', 2,
 sub
-#line 344 "parser23.yp"
+#line 341 "parser23.yp"
 {
 			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
@@ -4726,7 +4764,7 @@ sub
 	[#Rule 48
 		 'export', 2,
 sub
-#line 350 "parser23.yp"
+#line 347 "parser23.yp"
 {
 			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
@@ -4734,133 +4772,174 @@ sub
 		}
 	],
 	[#Rule 49
+		 'export', 2,
+sub
+#line 353 "parser23.yp"
+{
+			$_[0]->Warning("';' expected.\n");
+			$_[0]->YYErrok();
+			$_[1];						#default action
+		}
+	],
+	[#Rule 50
+		 'export', 2,
+sub
+#line 359 "parser23.yp"
+{
+			$_[0]->Warning("';' expected.\n");
+			$_[0]->YYErrok();
+			$_[1];						#default action
+		}
+	],
+	[#Rule 51
+		 'export', 2,
+sub
+#line 365 "parser23.yp"
+{
+			$_[0]->Warning("';' expected.\n");
+			$_[0]->YYErrok();
+			$_[1];						#default action
+		}
+	],
+	[#Rule 52
 		 'interface_inheritance_spec', 2,
 sub
-#line 360 "parser23.yp"
+#line 375 "parser23.yp"
 {
 			$_[2];
 		}
 	],
-	[#Rule 50
+	[#Rule 53
 		 'interface_inheritance_spec', 2,
 sub
-#line 364 "parser23.yp"
+#line 379 "parser23.yp"
 {
 			$_[0]->Error("Interface name expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 51
+	[#Rule 54
 		 'interface_names', 1,
 sub
-#line 372 "parser23.yp"
+#line 387 "parser23.yp"
 {
 			[$_[1]];
 		}
 	],
-	[#Rule 52
+	[#Rule 55
 		 'interface_names', 3,
 sub
-#line 376 "parser23.yp"
+#line 391 "parser23.yp"
 {
 			unshift(@{$_[3]},$_[1]);
 			$_[3];
 		}
 	],
-	[#Rule 53
+	[#Rule 56
 		 'interface_name', 1,
 sub
-#line 385 "parser23.yp"
+#line 400 "parser23.yp"
 {
 				Interface->Lookup($_[0],$_[1]);
 		}
 	],
-	[#Rule 54
+	[#Rule 57
 		 'scoped_name', 1, undef
 	],
-	[#Rule 55
+	[#Rule 58
 		 'scoped_name', 2,
 sub
-#line 395 "parser23.yp"
+#line 410 "parser23.yp"
 {
 			$_[1] . $_[2];
 		}
 	],
-	[#Rule 56
+	[#Rule 59
 		 'scoped_name', 2,
 sub
-#line 399 "parser23.yp"
+#line 414 "parser23.yp"
 {
 			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 			'';
 		}
 	],
-	[#Rule 57
+	[#Rule 60
 		 'scoped_name', 3,
 sub
-#line 405 "parser23.yp"
+#line 420 "parser23.yp"
 {
 			$_[1] . $_[2] . $_[3];
 		}
 	],
-	[#Rule 58
+	[#Rule 61
 		 'scoped_name', 3,
 sub
-#line 409 "parser23.yp"
+#line 424 "parser23.yp"
 {
 			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 			$_[1];
 		}
 	],
-	[#Rule 59
-		 'value', 1, undef
-	],
-	[#Rule 60
-		 'value', 1, undef
-	],
-	[#Rule 61
-		 'value', 1, undef
-	],
 	[#Rule 62
 		 'value', 1, undef
 	],
 	[#Rule 63
+		 'value', 1, undef
+	],
+	[#Rule 64
+		 'value', 1, undef
+	],
+	[#Rule 65
+		 'value', 1, undef
+	],
+	[#Rule 66
 		 'value_forward_dcl', 2,
 sub
-#line 431 "parser23.yp"
+#line 446 "parser23.yp"
 {
 			new ForwardRegularValue($_[0],
 					'idf'				=>	$_[2]
 			);
 		}
 	],
-	[#Rule 64
+	[#Rule 67
 		 'value_forward_dcl', 3,
 sub
-#line 437 "parser23.yp"
+#line 452 "parser23.yp"
 {
 			new ForwardAbstractValue($_[0],
 					'idf'				=>	$_[3]
 			);
 		}
 	],
-	[#Rule 65
-		 'value_box_dcl', 3,
+	[#Rule 68
+		 'value_box_dcl', 2,
 sub
-#line 447 "parser23.yp"
+#line 462 "parser23.yp"
+{
+			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+			$_[0]->YYData->{curr_itf} = undef;
+			$_[1]->Configure($_[0],
+					'type'				=>	$_[2]
+			) if (defined $_[1]);
+		}
+	],
+	[#Rule 69
+		 'value_box_header', 2,
+sub
+#line 473 "parser23.yp"
 {
 			new BoxedValue($_[0],
 					'idf'				=>	$_[2],
-					'type'				=>	$_[3]
 			);
 		}
 	],
-	[#Rule 66
+	[#Rule 70
 		 'value_abs_dcl', 3,
 sub
-#line 458 "parser23.yp"
+#line 483 "parser23.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->YYData->{curr_itf} = undef;
@@ -4869,10 +4948,10 @@ sub
 			) if (defined $_[1]);
 		}
 	],
-	[#Rule 67
+	[#Rule 71
 		 'value_abs_dcl', 4,
 sub
-#line 466 "parser23.yp"
+#line 491 "parser23.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->YYData->{curr_itf} = undef;
@@ -4881,10 +4960,10 @@ sub
 			) if (defined $_[1]);
 		}
 	],
-	[#Rule 68
+	[#Rule 72
 		 'value_abs_dcl', 4,
 sub
-#line 474 "parser23.yp"
+#line 499 "parser23.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->YYData->{curr_itf} = undef;
@@ -4892,20 +4971,20 @@ sub
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 69
+	[#Rule 73
 		 'value_abs_header', 3,
 sub
-#line 484 "parser23.yp"
+#line 509 "parser23.yp"
 {
 			new AbstractValue($_[0],
 					'idf'				=>	$_[3]
 			);
 		}
 	],
-	[#Rule 70
+	[#Rule 74
 		 'value_abs_header', 4,
 sub
-#line 490 "parser23.yp"
+#line 515 "parser23.yp"
 {
 			new AbstractValue($_[0],
 					'idf'				=>	$_[3],
@@ -4913,28 +4992,28 @@ sub
 			);
 		}
 	],
-	[#Rule 71
+	[#Rule 75
 		 'value_abs_header', 3,
 sub
-#line 497 "parser23.yp"
+#line 522 "parser23.yp"
 {
 			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 72
+	[#Rule 76
 		 'value_abs_header', 2,
 sub
-#line 502 "parser23.yp"
+#line 527 "parser23.yp"
 {
 			$_[0]->Error("'valuetype' expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 73
+	[#Rule 77
 		 'value_dcl', 3,
 sub
-#line 511 "parser23.yp"
+#line 536 "parser23.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->YYData->{curr_itf} = undef;
@@ -4943,10 +5022,10 @@ sub
 			) if (defined $_[1]);
 		}
 	],
-	[#Rule 74
+	[#Rule 78
 		 'value_dcl', 4,
 sub
-#line 519 "parser23.yp"
+#line 544 "parser23.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->YYData->{curr_itf} = undef;
@@ -4955,10 +5034,10 @@ sub
 			) if (defined $_[1]);
 		}
 	],
-	[#Rule 75
+	[#Rule 79
 		 'value_dcl', 4,
 sub
-#line 527 "parser23.yp"
+#line 552 "parser23.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->YYData->{curr_itf} = undef;
@@ -4966,37 +5045,37 @@ sub
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 76
+	[#Rule 80
 		 'value_elements', 1,
 sub
-#line 537 "parser23.yp"
+#line 562 "parser23.yp"
 {
 			[$_[1]->getRef()];
 		}
 	],
-	[#Rule 77
+	[#Rule 81
 		 'value_elements', 2,
 sub
-#line 541 "parser23.yp"
+#line 566 "parser23.yp"
 {
 			unshift(@{$_[2]},$_[1]->getRef());
 			$_[2];
 		}
 	],
-	[#Rule 78
+	[#Rule 82
 		 'value_header', 2,
 sub
-#line 550 "parser23.yp"
+#line 575 "parser23.yp"
 {
 			new RegularValue($_[0],
 					'idf'				=>	$_[2]
 			);
 		}
 	],
-	[#Rule 79
+	[#Rule 83
 		 'value_header', 3,
 sub
-#line 556 "parser23.yp"
+#line 581 "parser23.yp"
 {
 			new RegularValue($_[0],
 					'modifier'			=>	$_[1],
@@ -5004,10 +5083,10 @@ sub
 			);
 		}
 	],
-	[#Rule 80
+	[#Rule 84
 		 'value_header', 3,
 sub
-#line 563 "parser23.yp"
+#line 588 "parser23.yp"
 {
 			new RegularValue($_[0],
 					'idf'				=>	$_[2],
@@ -5015,10 +5094,10 @@ sub
 			);
 		}
 	],
-	[#Rule 81
+	[#Rule 85
 		 'value_header', 4,
 sub
-#line 570 "parser23.yp"
+#line 595 "parser23.yp"
 {
 			new RegularValue($_[0],
 					'modifier'			=>	$_[1],
@@ -5027,37 +5106,37 @@ sub
 			);
 		}
 	],
-	[#Rule 82
+	[#Rule 86
 		 'value_header', 2,
 sub
-#line 578 "parser23.yp"
+#line 603 "parser23.yp"
 {
 			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 83
+	[#Rule 87
 		 'value_header', 3,
 sub
-#line 583 "parser23.yp"
+#line 608 "parser23.yp"
 {
 			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 84
+	[#Rule 88
 		 'value_header', 2,
 sub
-#line 588 "parser23.yp"
+#line 613 "parser23.yp"
 {
 			$_[0]->Error("valuetype expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 85
+	[#Rule 89
 		 'value_inheritance_spec', 3,
 sub
-#line 597 "parser23.yp"
+#line 622 "parser23.yp"
 {
 			new InheritanceSpec($_[0],
 					'modifier'			=>	$_[2],
@@ -5065,10 +5144,10 @@ sub
 			);
 		}
 	],
-	[#Rule 86
+	[#Rule 90
 		 'value_inheritance_spec', 4,
 sub
-#line 604 "parser23.yp"
+#line 629 "parser23.yp"
 {
 			new InheritanceSpec($_[0],
 					'modifier'			=>	$_[2],
@@ -5077,86 +5156,86 @@ sub
 			);
 		}
 	],
-	[#Rule 87
+	[#Rule 91
 		 'value_inheritance_spec', 3,
 sub
-#line 612 "parser23.yp"
+#line 637 "parser23.yp"
 {
 			$_[0]->Error("value_name expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 88
+	[#Rule 92
 		 'value_inheritance_spec', 1,
 sub
-#line 617 "parser23.yp"
+#line 642 "parser23.yp"
 {
 			new InheritanceSpec($_[0],
 					'list_interface'	=>	$_[1]
 			);
 		}
 	],
-	[#Rule 89
+	[#Rule 93
 		 'inheritance_mod', 1, undef
 	],
-	[#Rule 90
+	[#Rule 94
 		 'inheritance_mod', 0, undef
 	],
-	[#Rule 91
+	[#Rule 95
 		 'value_names', 1,
 sub
-#line 633 "parser23.yp"
+#line 658 "parser23.yp"
 {
 			[$_[1]];
 		}
 	],
-	[#Rule 92
+	[#Rule 96
 		 'value_names', 3,
 sub
-#line 637 "parser23.yp"
+#line 662 "parser23.yp"
 {
 			unshift(@{$_[3]},$_[1]);
 			$_[3];
 		}
 	],
-	[#Rule 93
+	[#Rule 97
 		 'supported_interface_spec', 2,
 sub
-#line 645 "parser23.yp"
+#line 670 "parser23.yp"
 {
 			$_[2];
 		}
 	],
-	[#Rule 94
+	[#Rule 98
 		 'supported_interface_spec', 2,
 sub
-#line 649 "parser23.yp"
+#line 674 "parser23.yp"
 {
 			$_[0]->Error("Interface name expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 95
+	[#Rule 99
 		 'value_name', 1,
 sub
-#line 658 "parser23.yp"
+#line 683 "parser23.yp"
 {
 			Value->Lookup($_[0],$_[1]);
 		}
 	],
-	[#Rule 96
+	[#Rule 100
 		 'value_element', 1, undef
 	],
-	[#Rule 97
+	[#Rule 101
 		 'value_element', 1, undef
 	],
-	[#Rule 98
+	[#Rule 102
 		 'value_element', 1, undef
 	],
-	[#Rule 99
+	[#Rule 103
 		 'state_member', 4,
 sub
-#line 676 "parser23.yp"
+#line 701 "parser23.yp"
 {
 			new StateMembers($_[0],
 					'modifier'			=>	$_[1],
@@ -5165,57 +5244,57 @@ sub
 			);
 		}
 	],
-	[#Rule 100
+	[#Rule 104
 		 'state_member', 4,
 sub
-#line 684 "parser23.yp"
+#line 709 "parser23.yp"
 {
 			$_[0]->Error("declarator expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 101
+	[#Rule 105
 		 'state_member', 3,
 sub
-#line 689 "parser23.yp"
+#line 714 "parser23.yp"
 {
 			$_[0]->Error("type_spec expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 102
+	[#Rule 106
 		 'state_mod', 1, undef
 	],
-	[#Rule 103
+	[#Rule 107
 		 'state_mod', 1, undef
 	],
-	[#Rule 104
+	[#Rule 108
 		 'init_dcl', 2, undef
 	],
-	[#Rule 105
+	[#Rule 109
 		 'init_dcl', 2,
 sub
-#line 707 "parser23.yp"
+#line 732 "parser23.yp"
 {
 			$_[0]->Warning("';' expected.\n");
 			$_[0]->YYErrok();
 			$_[1];						#default action
 		}
 	],
-	[#Rule 106
+	[#Rule 110
 		 'init_header_param', 3,
 sub
-#line 716 "parser23.yp"
+#line 741 "parser23.yp"
 {
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
 			$_[1];						#default action
 		}
 	],
-	[#Rule 107
+	[#Rule 111
 		 'init_header_param', 4,
 sub
-#line 722 "parser23.yp"
+#line 747 "parser23.yp"
 {
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
@@ -5224,10 +5303,10 @@ sub
 			) if (defined $_[1]);
 		}
 	],
-	[#Rule 108
+	[#Rule 112
 		 'init_header_param', 4,
 sub
-#line 730 "parser23.yp"
+#line 755 "parser23.yp"
 {
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
@@ -5235,10 +5314,10 @@ sub
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 109
+	[#Rule 113
 		 'init_header_param', 2,
 sub
-#line 737 "parser23.yp"
+#line 762 "parser23.yp"
 {
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
@@ -5246,46 +5325,46 @@ sub
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 110
+	[#Rule 114
 		 'init_header', 2,
 sub
-#line 747 "parser23.yp"
+#line 772 "parser23.yp"
 {
 			new Initializer($_[0],						# like Operation
 					'idf'				=>	$_[2]
 			);
 		}
 	],
-	[#Rule 111
+	[#Rule 115
 		 'init_header', 2,
 sub
-#line 753 "parser23.yp"
+#line 778 "parser23.yp"
 {
 			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 112
+	[#Rule 116
 		 'init_param_decls', 1,
 sub
-#line 762 "parser23.yp"
+#line 787 "parser23.yp"
 {
 			[$_[1]];
 		}
 	],
-	[#Rule 113
+	[#Rule 117
 		 'init_param_decls', 3,
 sub
-#line 766 "parser23.yp"
+#line 791 "parser23.yp"
 {
 			unshift(@{$_[3]},$_[1]);
 			$_[3];
 		}
 	],
-	[#Rule 114
+	[#Rule 118
 		 'init_param_decl', 3,
 sub
-#line 775 "parser23.yp"
+#line 800 "parser23.yp"
 {
 			new Parameter($_[0],
 					'attr'				=>	$_[1],
@@ -5294,13 +5373,13 @@ sub
 			);
 		}
 	],
-	[#Rule 115
+	[#Rule 119
 		 'init_param_attribute', 1, undef
 	],
-	[#Rule 116
+	[#Rule 120
 		 'const_dcl', 5,
 sub
-#line 793 "parser23.yp"
+#line 818 "parser23.yp"
 {
 			new Constant($_[0],
 					'type'				=>	$_[2],
@@ -5309,53 +5388,41 @@ sub
 			);
 		}
 	],
-	[#Rule 117
+	[#Rule 121
 		 'const_dcl', 5,
 sub
-#line 801 "parser23.yp"
+#line 826 "parser23.yp"
 {
 			$_[0]->Error("Expression expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 118
+	[#Rule 122
 		 'const_dcl', 4,
 sub
-#line 806 "parser23.yp"
+#line 831 "parser23.yp"
 {
 			$_[0]->Error("'=' expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 119
+	[#Rule 123
 		 'const_dcl', 3,
 sub
-#line 811 "parser23.yp"
+#line 836 "parser23.yp"
 {
 			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 120
+	[#Rule 124
 		 'const_dcl', 2,
 sub
-#line 816 "parser23.yp"
+#line 841 "parser23.yp"
 {
 			$_[0]->Error("const_type expected.\n");
 			$_[0]->YYErrok();
 		}
-	],
-	[#Rule 121
-		 'const_type', 1, undef
-	],
-	[#Rule 122
-		 'const_type', 1, undef
-	],
-	[#Rule 123
-		 'const_type', 1, undef
-	],
-	[#Rule 124
-		 'const_type', 1, undef
 	],
 	[#Rule 125
 		 'const_type', 1, undef
@@ -5370,211 +5437,182 @@ sub
 		 'const_type', 1, undef
 	],
 	[#Rule 129
-		 'const_type', 1,
-sub
-#line 841 "parser23.yp"
-{
-			TypeDeclarator->Lookup($_[0],$_[1]);
-		}
+		 'const_type', 1, undef
 	],
 	[#Rule 130
 		 'const_type', 1, undef
 	],
 	[#Rule 131
-		 'const_exp', 1, undef
+		 'const_type', 1, undef
 	],
 	[#Rule 132
-		 'or_expr', 1, undef
+		 'const_type', 1, undef
 	],
 	[#Rule 133
-		 'or_expr', 3,
+		 'const_type', 1,
 sub
-#line 859 "parser23.yp"
+#line 866 "parser23.yp"
 {
-			BuildBinop($_[1],$_[2],$_[3]);
+			TypeDeclarator->Lookup($_[0],$_[1]);
 		}
 	],
 	[#Rule 134
-		 'xor_expr', 1, undef
+		 'const_type', 1, undef
 	],
 	[#Rule 135
-		 'xor_expr', 3,
-sub
-#line 869 "parser23.yp"
-{
-			BuildBinop($_[1],$_[2],$_[3]);
-		}
+		 'const_exp', 1, undef
 	],
 	[#Rule 136
-		 'and_expr', 1, undef
+		 'or_expr', 1, undef
 	],
 	[#Rule 137
-		 'and_expr', 3,
+		 'or_expr', 3,
 sub
-#line 879 "parser23.yp"
+#line 884 "parser23.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
 	],
 	[#Rule 138
-		 'shift_expr', 1, undef
+		 'xor_expr', 1, undef
 	],
 	[#Rule 139
-		 'shift_expr', 3,
+		 'xor_expr', 3,
 sub
-#line 889 "parser23.yp"
+#line 894 "parser23.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
 	],
 	[#Rule 140
-		 'shift_expr', 3,
-sub
-#line 893 "parser23.yp"
-{
-			BuildBinop($_[1],$_[2],$_[3]);
-		}
+		 'and_expr', 1, undef
 	],
 	[#Rule 141
-		 'add_expr', 1, undef
-	],
-	[#Rule 142
-		 'add_expr', 3,
+		 'and_expr', 3,
 sub
-#line 903 "parser23.yp"
+#line 904 "parser23.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
 	],
+	[#Rule 142
+		 'shift_expr', 1, undef
+	],
 	[#Rule 143
-		 'add_expr', 3,
+		 'shift_expr', 3,
 sub
-#line 907 "parser23.yp"
+#line 914 "parser23.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
 	],
 	[#Rule 144
-		 'mult_expr', 1, undef
-	],
-	[#Rule 145
-		 'mult_expr', 3,
+		 'shift_expr', 3,
 sub
-#line 917 "parser23.yp"
+#line 918 "parser23.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
 	],
+	[#Rule 145
+		 'add_expr', 1, undef
+	],
 	[#Rule 146
-		 'mult_expr', 3,
+		 'add_expr', 3,
 sub
-#line 921 "parser23.yp"
+#line 928 "parser23.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
 	],
 	[#Rule 147
-		 'mult_expr', 3,
+		 'add_expr', 3,
 sub
-#line 925 "parser23.yp"
+#line 932 "parser23.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
 	],
 	[#Rule 148
+		 'mult_expr', 1, undef
+	],
+	[#Rule 149
+		 'mult_expr', 3,
+sub
+#line 942 "parser23.yp"
+{
+			BuildBinop($_[1],$_[2],$_[3]);
+		}
+	],
+	[#Rule 150
+		 'mult_expr', 3,
+sub
+#line 946 "parser23.yp"
+{
+			BuildBinop($_[1],$_[2],$_[3]);
+		}
+	],
+	[#Rule 151
+		 'mult_expr', 3,
+sub
+#line 950 "parser23.yp"
+{
+			BuildBinop($_[1],$_[2],$_[3]);
+		}
+	],
+	[#Rule 152
 		 'unary_expr', 2,
 sub
-#line 933 "parser23.yp"
+#line 958 "parser23.yp"
 {
 			BuildUnop($_[1],$_[2]);
 		}
 	],
-	[#Rule 149
+	[#Rule 153
 		 'unary_expr', 1, undef
 	],
-	[#Rule 150
+	[#Rule 154
 		 'unary_operator', 1, undef
 	],
-	[#Rule 151
+	[#Rule 155
 		 'unary_operator', 1, undef
 	],
-	[#Rule 152
+	[#Rule 156
 		 'unary_operator', 1, undef
 	],
-	[#Rule 153
+	[#Rule 157
 		 'primary_expr', 1,
 sub
-#line 953 "parser23.yp"
+#line 978 "parser23.yp"
 {
 			[
 				Constant->Lookup($_[0],$_[1])
 			];
 		}
 	],
-	[#Rule 154
+	[#Rule 158
 		 'primary_expr', 1,
 sub
-#line 959 "parser23.yp"
+#line 984 "parser23.yp"
 {
 			[ $_[1] ];
 		}
 	],
-	[#Rule 155
+	[#Rule 159
 		 'primary_expr', 3,
 sub
-#line 963 "parser23.yp"
+#line 988 "parser23.yp"
 {
 			$_[2];
 		}
 	],
-	[#Rule 156
+	[#Rule 160
 		 'primary_expr', 3,
 sub
-#line 967 "parser23.yp"
+#line 992 "parser23.yp"
 {
 			$_[0]->Error("Expression expected.\n");
 			$_[0]->YYErrok();
-		}
-	],
-	[#Rule 157
-		 'literal', 1,
-sub
-#line 976 "parser23.yp"
-{
-			new IntegerLiteral($_[0],
-					'value'				=>	$_[1],
-					'lexeme'			=>	$_[0]->YYData->{lexeme}
-			);
-		}
-	],
-	[#Rule 158
-		 'literal', 1,
-sub
-#line 983 "parser23.yp"
-{
-			new StringLiteral($_[0],
-					'value'				=>	$_[1]
-			);
-		}
-	],
-	[#Rule 159
-		 'literal', 1,
-sub
-#line 989 "parser23.yp"
-{
-			new WideStringLiteral($_[0],
-					'value'				=>	$_[1]
-			);
-		}
-	],
-	[#Rule 160
-		 'literal', 1,
-sub
-#line 995 "parser23.yp"
-{
-			new CharacterLiteral($_[0],
-					'value'				=>	$_[1]
-			);
 		}
 	],
 	[#Rule 161
@@ -5582,19 +5620,19 @@ sub
 sub
 #line 1001 "parser23.yp"
 {
-			new WideCharacterLiteral($_[0],
-					'value'				=>	$_[1]
+			new IntegerLiteral($_[0],
+					'value'				=>	$_[1],
+					'lexeme'			=>	$_[0]->YYData->{lexeme}
 			);
 		}
 	],
 	[#Rule 162
 		 'literal', 1,
 sub
-#line 1007 "parser23.yp"
+#line 1008 "parser23.yp"
 {
-			new FixedPtLiteral($_[0],
-					'value'				=>	$_[1],
-					'lexeme'			=>	$_[0]->YYData->{lexeme}
+			new StringLiteral($_[0],
+					'value'				=>	$_[1]
 			);
 		}
 	],
@@ -5603,88 +5641,129 @@ sub
 sub
 #line 1014 "parser23.yp"
 {
+			new WideStringLiteral($_[0],
+					'value'				=>	$_[1]
+			);
+		}
+	],
+	[#Rule 164
+		 'literal', 1,
+sub
+#line 1020 "parser23.yp"
+{
+			new CharacterLiteral($_[0],
+					'value'				=>	$_[1]
+			);
+		}
+	],
+	[#Rule 165
+		 'literal', 1,
+sub
+#line 1026 "parser23.yp"
+{
+			new WideCharacterLiteral($_[0],
+					'value'				=>	$_[1]
+			);
+		}
+	],
+	[#Rule 166
+		 'literal', 1,
+sub
+#line 1032 "parser23.yp"
+{
+			new FixedPtLiteral($_[0],
+					'value'				=>	$_[1],
+					'lexeme'			=>	$_[0]->YYData->{lexeme}
+			);
+		}
+	],
+	[#Rule 167
+		 'literal', 1,
+sub
+#line 1039 "parser23.yp"
+{
 			new FloatingPtLiteral($_[0],
 					'value'				=>	$_[1],
 					'lexeme'			=>	$_[0]->YYData->{lexeme}
 			);
 		}
 	],
-	[#Rule 164
+	[#Rule 168
 		 'literal', 1, undef
 	],
-	[#Rule 165
+	[#Rule 169
 		 'string_literal', 1, undef
 	],
-	[#Rule 166
+	[#Rule 170
 		 'string_literal', 2,
 sub
-#line 1028 "parser23.yp"
+#line 1053 "parser23.yp"
 {
 			$_[1] . $_[2];
 		}
 	],
-	[#Rule 167
+	[#Rule 171
 		 'wide_string_literal', 1, undef
 	],
-	[#Rule 168
+	[#Rule 172
 		 'wide_string_literal', 2,
 sub
-#line 1037 "parser23.yp"
+#line 1062 "parser23.yp"
 {
 			$_[1] . $_[2];
 		}
 	],
-	[#Rule 169
+	[#Rule 173
 		 'boolean_literal', 1,
 sub
-#line 1045 "parser23.yp"
+#line 1070 "parser23.yp"
 {
 			new BooleanLiteral($_[0],
 					'value'				=>	1
 			);
 		}
 	],
-	[#Rule 170
+	[#Rule 174
 		 'boolean_literal', 1,
 sub
-#line 1051 "parser23.yp"
+#line 1076 "parser23.yp"
 {
 			new BooleanLiteral($_[0],
 					'value'				=>	0
 			);
 		}
 	],
-	[#Rule 171
+	[#Rule 175
 		 'positive_int_const', 1,
 sub
-#line 1061 "parser23.yp"
+#line 1086 "parser23.yp"
 {
 			new Expression($_[0],
 					'list_expr'			=>	$_[1]
 			);
 		}
 	],
-	[#Rule 172
+	[#Rule 176
 		 'type_dcl', 2,
 sub
-#line 1071 "parser23.yp"
+#line 1096 "parser23.yp"
 {
 			$_[2];
 		}
 	],
-	[#Rule 173
+	[#Rule 177
 		 'type_dcl', 1, undef
 	],
-	[#Rule 174
+	[#Rule 178
 		 'type_dcl', 1, undef
 	],
-	[#Rule 175
+	[#Rule 179
 		 'type_dcl', 1, undef
 	],
-	[#Rule 176
+	[#Rule 180
 		 'type_dcl', 2,
 sub
-#line 1081 "parser23.yp"
+#line 1106 "parser23.yp"
 {
 			new TypeDeclarator($_[0],
 					'modifier'			=>	$_[1],
@@ -5692,28 +5771,28 @@ sub
 			);
 		}
 	],
-	[#Rule 177
+	[#Rule 181
 		 'type_dcl', 2,
 sub
-#line 1088 "parser23.yp"
+#line 1113 "parser23.yp"
 {
 			$_[0]->Error("type_declarator expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 178
+	[#Rule 182
 		 'type_dcl', 2,
 sub
-#line 1093 "parser23.yp"
+#line 1118 "parser23.yp"
 {
 			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 179
+	[#Rule 183
 		 'type_declarator', 2,
 sub
-#line 1102 "parser23.yp"
+#line 1127 "parser23.yp"
 {
 			new TypeDeclarators($_[0],
 					'type'				=>	$_[1],
@@ -5721,46 +5800,34 @@ sub
 			);
 		}
 	],
-	[#Rule 180
+	[#Rule 184
 		 'type_declarator', 2,
 sub
-#line 1109 "parser23.yp"
+#line 1134 "parser23.yp"
 {
 			$_[0]->Error("declarator expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 181
-		 'type_spec', 1, undef
-	],
-	[#Rule 182
-		 'type_spec', 1, undef
-	],
-	[#Rule 183
-		 'simple_type_spec', 1, undef
-	],
-	[#Rule 184
-		 'simple_type_spec', 1, undef
-	],
 	[#Rule 185
+		 'type_spec', 1, undef
+	],
+	[#Rule 186
+		 'type_spec', 1, undef
+	],
+	[#Rule 187
+		 'simple_type_spec', 1, undef
+	],
+	[#Rule 188
+		 'simple_type_spec', 1, undef
+	],
+	[#Rule 189
 		 'simple_type_spec', 1,
 sub
-#line 1130 "parser23.yp"
+#line 1155 "parser23.yp"
 {
 			TypeDeclarator->Lookup($_[0],$_[1]);
 		}
-	],
-	[#Rule 186
-		 'base_type_spec', 1, undef
-	],
-	[#Rule 187
-		 'base_type_spec', 1, undef
-	],
-	[#Rule 188
-		 'base_type_spec', 1, undef
-	],
-	[#Rule 189
-		 'base_type_spec', 1, undef
 	],
 	[#Rule 190
 		 'base_type_spec', 1, undef
@@ -5778,148 +5845,141 @@ sub
 		 'base_type_spec', 1, undef
 	],
 	[#Rule 195
-		 'template_type_spec', 1, undef
+		 'base_type_spec', 1, undef
 	],
 	[#Rule 196
-		 'template_type_spec', 1, undef
+		 'base_type_spec', 1, undef
 	],
 	[#Rule 197
-		 'template_type_spec', 1, undef
+		 'base_type_spec', 1, undef
 	],
 	[#Rule 198
-		 'template_type_spec', 1, undef
+		 'base_type_spec', 1, undef
 	],
 	[#Rule 199
-		 'constr_type_spec', 1, undef
+		 'template_type_spec', 1, undef
 	],
 	[#Rule 200
-		 'constr_type_spec', 1, undef
+		 'template_type_spec', 1, undef
 	],
 	[#Rule 201
-		 'constr_type_spec', 1, undef
+		 'template_type_spec', 1, undef
 	],
 	[#Rule 202
+		 'template_type_spec', 1, undef
+	],
+	[#Rule 203
+		 'constr_type_spec', 1, undef
+	],
+	[#Rule 204
+		 'constr_type_spec', 1, undef
+	],
+	[#Rule 205
+		 'constr_type_spec', 1, undef
+	],
+	[#Rule 206
 		 'declarators', 1,
 sub
-#line 1182 "parser23.yp"
+#line 1207 "parser23.yp"
 {
 			[$_[1]];
 		}
 	],
-	[#Rule 203
+	[#Rule 207
 		 'declarators', 3,
 sub
-#line 1186 "parser23.yp"
+#line 1211 "parser23.yp"
 {
 			unshift(@{$_[3]},$_[1]);
 			$_[3];
 		}
 	],
-	[#Rule 204
+	[#Rule 208
 		 'declarator', 1,
 sub
-#line 1195 "parser23.yp"
+#line 1220 "parser23.yp"
 {
 			[$_[1]];
 		}
 	],
-	[#Rule 205
+	[#Rule 209
 		 'declarator', 1, undef
 	],
-	[#Rule 206
+	[#Rule 210
 		 'simple_declarator', 1, undef
 	],
-	[#Rule 207
+	[#Rule 211
 		 'complex_declarator', 1, undef
 	],
-	[#Rule 208
-		 'floating_pt_type', 1,
-sub
-#line 1217 "parser23.yp"
-{
-			new FloatingPtType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
-	],
-	[#Rule 209
-		 'floating_pt_type', 1,
-sub
-#line 1223 "parser23.yp"
-{
-			new FloatingPtType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
-	],
-	[#Rule 210
-		 'floating_pt_type', 2,
-sub
-#line 1229 "parser23.yp"
-{
-			new FloatingPtType($_[0],
-					'value'				=>	$_[1] . ' ' . $_[2]
-			);
-		}
-	],
-	[#Rule 211
-		 'integer_type', 1, undef
-	],
 	[#Rule 212
-		 'integer_type', 1, undef
+		 'floating_pt_type', 1,
+sub
+#line 1242 "parser23.yp"
+{
+			new FloatingPtType($_[0],
+					'value'				=>	$_[1]
+			);
+		}
 	],
 	[#Rule 213
-		 'signed_int', 1, undef
+		 'floating_pt_type', 1,
+sub
+#line 1248 "parser23.yp"
+{
+			new FloatingPtType($_[0],
+					'value'				=>	$_[1]
+			);
+		}
 	],
 	[#Rule 214
-		 'signed_int', 1, undef
-	],
-	[#Rule 215
-		 'signed_int', 1, undef
-	],
-	[#Rule 216
-		 'signed_short_int', 1,
+		 'floating_pt_type', 2,
 sub
-#line 1257 "parser23.yp"
+#line 1254 "parser23.yp"
 {
-			new IntegerType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
-	],
-	[#Rule 217
-		 'signed_long_int', 1,
-sub
-#line 1267 "parser23.yp"
-{
-			new IntegerType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
-	],
-	[#Rule 218
-		 'signed_longlong_int', 2,
-sub
-#line 1277 "parser23.yp"
-{
-			new IntegerType($_[0],
+			new FloatingPtType($_[0],
 					'value'				=>	$_[1] . ' ' . $_[2]
 			);
 		}
 	],
+	[#Rule 215
+		 'integer_type', 1, undef
+	],
+	[#Rule 216
+		 'integer_type', 1, undef
+	],
+	[#Rule 217
+		 'signed_int', 1, undef
+	],
+	[#Rule 218
+		 'signed_int', 1, undef
+	],
 	[#Rule 219
-		 'unsigned_int', 1, undef
+		 'signed_int', 1, undef
 	],
 	[#Rule 220
-		 'unsigned_int', 1, undef
+		 'signed_short_int', 1,
+sub
+#line 1282 "parser23.yp"
+{
+			new IntegerType($_[0],
+					'value'				=>	$_[1]
+			);
+		}
 	],
 	[#Rule 221
-		 'unsigned_int', 1, undef
+		 'signed_long_int', 1,
+sub
+#line 1292 "parser23.yp"
+{
+			new IntegerType($_[0],
+					'value'				=>	$_[1]
+			);
+		}
 	],
 	[#Rule 222
-		 'unsigned_short_int', 2,
+		 'signed_longlong_int', 2,
 sub
-#line 1297 "parser23.yp"
+#line 1302 "parser23.yp"
 {
 			new IntegerType($_[0],
 					'value'				=>	$_[1] . ' ' . $_[2]
@@ -5927,89 +5987,108 @@ sub
 		}
 	],
 	[#Rule 223
-		 'unsigned_long_int', 2,
+		 'unsigned_int', 1, undef
+	],
+	[#Rule 224
+		 'unsigned_int', 1, undef
+	],
+	[#Rule 225
+		 'unsigned_int', 1, undef
+	],
+	[#Rule 226
+		 'unsigned_short_int', 2,
 sub
-#line 1307 "parser23.yp"
+#line 1322 "parser23.yp"
 {
 			new IntegerType($_[0],
 					'value'				=>	$_[1] . ' ' . $_[2]
 			);
 		}
 	],
-	[#Rule 224
+	[#Rule 227
+		 'unsigned_long_int', 2,
+sub
+#line 1332 "parser23.yp"
+{
+			new IntegerType($_[0],
+					'value'				=>	$_[1] . ' ' . $_[2]
+			);
+		}
+	],
+	[#Rule 228
 		 'unsigned_longlong_int', 3,
 sub
-#line 1317 "parser23.yp"
+#line 1342 "parser23.yp"
 {
 			new IntegerType($_[0],
 					'value'				=>	$_[1] . ' ' . $_[2] . ' ' . $_[3]
 			);
 		}
 	],
-	[#Rule 225
+	[#Rule 229
 		 'char_type', 1,
 sub
-#line 1327 "parser23.yp"
+#line 1352 "parser23.yp"
 {
 			new CharType($_[0],
 					'value'				=>	$_[1]
 			);
 		}
 	],
-	[#Rule 226
+	[#Rule 230
 		 'wide_char_type', 1,
 sub
-#line 1337 "parser23.yp"
+#line 1362 "parser23.yp"
 {
 			new WideCharType($_[0],
 					'value'				=>	$_[1]
 			);
 		}
 	],
-	[#Rule 227
+	[#Rule 231
 		 'boolean_type', 1,
 sub
-#line 1347 "parser23.yp"
+#line 1372 "parser23.yp"
 {
 			new BooleanType($_[0],
 					'value'				=>	$_[1]
 			);
 		}
 	],
-	[#Rule 228
+	[#Rule 232
 		 'octet_type', 1,
 sub
-#line 1357 "parser23.yp"
+#line 1382 "parser23.yp"
 {
 			new OctetType($_[0],
 					'value'				=>	$_[1]
 			);
 		}
 	],
-	[#Rule 229
+	[#Rule 233
 		 'any_type', 1,
 sub
-#line 1367 "parser23.yp"
+#line 1392 "parser23.yp"
 {
 			new AnyType($_[0],
 					'value'				=>	$_[1]
 			);
 		}
 	],
-	[#Rule 230
+	[#Rule 234
 		 'object_type', 1,
 sub
-#line 1377 "parser23.yp"
+#line 1402 "parser23.yp"
 {
 			new ObjectType($_[0],
 					'value'				=>	$_[1]
 			);
 		}
 	],
-	[#Rule 231
+	[#Rule 235
 		 'struct_type', 4,
 sub
-#line 1387 "parser23.yp"
+#line 1412 "parser23.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[1]->Configure($_[0],
@@ -6017,47 +6096,47 @@ sub
 			) if (defined $_[1]);
 		}
 	],
-	[#Rule 232
+	[#Rule 236
 		 'struct_type', 4,
 sub
-#line 1394 "parser23.yp"
+#line 1419 "parser23.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->Error("member expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 233
+	[#Rule 237
 		 'struct_header', 2,
 sub
-#line 1403 "parser23.yp"
+#line 1428 "parser23.yp"
 {
 			new StructType($_[0],
 					'idf'				=>	$_[2]
 			);
 		}
 	],
-	[#Rule 234
+	[#Rule 238
 		 'member_list', 1,
 sub
-#line 1413 "parser23.yp"
+#line 1438 "parser23.yp"
 {
 			[$_[1]];
 		}
 	],
-	[#Rule 235
+	[#Rule 239
 		 'member_list', 2,
 sub
-#line 1417 "parser23.yp"
+#line 1442 "parser23.yp"
 {
 			unshift(@{$_[2]},$_[1]);
 			$_[2];
 		}
 	],
-	[#Rule 236
+	[#Rule 240
 		 'member', 3,
 sub
-#line 1426 "parser23.yp"
+#line 1451 "parser23.yp"
 {
 			new Members($_[0],
 					'type'				=>	$_[1],
@@ -6065,10 +6144,10 @@ sub
 			);
 		}
 	],
-	[#Rule 237
+	[#Rule 241
 		 'member', 3,
 sub
-#line 1433 "parser23.yp"
+#line 1458 "parser23.yp"
 {
 			$_[0]->Error("';' expected.\n");
 			$_[0]->YYErrok();
@@ -6078,10 +6157,10 @@ sub
 			);
 		}
 	],
-	[#Rule 238
+	[#Rule 242
 		 'union_type', 8,
 sub
-#line 1446 "parser23.yp"
+#line 1471 "parser23.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[1]->Configure($_[0],
@@ -6090,97 +6169,97 @@ sub
 			) if (defined $_[1]);
 		}
 	],
-	[#Rule 239
+	[#Rule 243
 		 'union_type', 8,
 sub
-#line 1454 "parser23.yp"
+#line 1479 "parser23.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->Error("switch_body expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 240
+	[#Rule 244
 		 'union_type', 6,
 sub
-#line 1460 "parser23.yp"
+#line 1485 "parser23.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->Error("'\x7b' expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 241
+	[#Rule 245
 		 'union_type', 5,
 sub
-#line 1466 "parser23.yp"
+#line 1491 "parser23.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->Error("switch_type_spec expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 242
+	[#Rule 246
 		 'union_type', 3,
 sub
-#line 1472 "parser23.yp"
+#line 1497 "parser23.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->Error("'(' expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 243
+	[#Rule 247
 		 'union_header', 2,
 sub
-#line 1481 "parser23.yp"
+#line 1506 "parser23.yp"
 {
 			new UnionType($_[0],
 					'idf'				=>	$_[2],
 			);
 		}
 	],
-	[#Rule 244
-		 'switch_type_spec', 1, undef
-	],
-	[#Rule 245
-		 'switch_type_spec', 1, undef
-	],
-	[#Rule 246
-		 'switch_type_spec', 1, undef
-	],
-	[#Rule 247
-		 'switch_type_spec', 1, undef
-	],
 	[#Rule 248
+		 'switch_type_spec', 1, undef
+	],
+	[#Rule 249
+		 'switch_type_spec', 1, undef
+	],
+	[#Rule 250
+		 'switch_type_spec', 1, undef
+	],
+	[#Rule 251
+		 'switch_type_spec', 1, undef
+	],
+	[#Rule 252
 		 'switch_type_spec', 1,
 sub
-#line 1499 "parser23.yp"
+#line 1524 "parser23.yp"
 {
 			TypeDeclarator->Lookup($_[0],$_[1]);
 		}
 	],
-	[#Rule 249
+	[#Rule 253
 		 'switch_body', 1,
 sub
-#line 1507 "parser23.yp"
+#line 1532 "parser23.yp"
 {
 			[$_[1]];
 		}
 	],
-	[#Rule 250
+	[#Rule 254
 		 'switch_body', 2,
 sub
-#line 1511 "parser23.yp"
+#line 1536 "parser23.yp"
 {
 			unshift(@{$_[2]},$_[1]);
 			$_[2];
 		}
 	],
-	[#Rule 251
+	[#Rule 255
 		 'case', 3,
 sub
-#line 1520 "parser23.yp"
+#line 1545 "parser23.yp"
 {
 			new Case($_[0],
 					'list_label'		=>	$_[1],
@@ -6188,10 +6267,10 @@ sub
 			);
 		}
 	],
-	[#Rule 252
+	[#Rule 256
 		 'case', 3,
 sub
-#line 1527 "parser23.yp"
+#line 1552 "parser23.yp"
 {
 			$_[0]->Error("';' expected.\n");
 			$_[0]->YYErrok();
@@ -6201,72 +6280,72 @@ sub
 			);
 		}
 	],
-	[#Rule 253
+	[#Rule 257
 		 'case_labels', 1,
 sub
-#line 1539 "parser23.yp"
+#line 1564 "parser23.yp"
 {
 			[$_[1]];
 		}
 	],
-	[#Rule 254
+	[#Rule 258
 		 'case_labels', 2,
 sub
-#line 1543 "parser23.yp"
+#line 1568 "parser23.yp"
 {
 			unshift(@{$_[2]},$_[1]);
 			$_[2];
 		}
 	],
-	[#Rule 255
+	[#Rule 259
 		 'case_label', 3,
 sub
-#line 1552 "parser23.yp"
+#line 1577 "parser23.yp"
 {
 			$_[2];						# here only a expression, type is not known
 		}
 	],
-	[#Rule 256
+	[#Rule 260
 		 'case_label', 3,
 sub
-#line 1556 "parser23.yp"
+#line 1581 "parser23.yp"
 {
 			$_[0]->Error("':' expected.\n");
 			$_[0]->YYErrok();
 			$_[2];
 		}
 	],
-	[#Rule 257
+	[#Rule 261
 		 'case_label', 2,
 sub
-#line 1562 "parser23.yp"
+#line 1587 "parser23.yp"
 {
 			$_[0]->Error("Expression expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 258
+	[#Rule 262
 		 'case_label', 2,
 sub
-#line 1567 "parser23.yp"
+#line 1592 "parser23.yp"
 {
 			new Default($_[0]);
 		}
 	],
-	[#Rule 259
+	[#Rule 263
 		 'case_label', 2,
 sub
-#line 1571 "parser23.yp"
+#line 1596 "parser23.yp"
 {
 			$_[0]->Error("':' expected.\n");
 			$_[0]->YYErrok();
 			new Default($_[0]);
 		}
 	],
-	[#Rule 260
+	[#Rule 264
 		 'element_spec', 2,
 sub
-#line 1581 "parser23.yp"
+#line 1606 "parser23.yp"
 {
 			new Element($_[0],
 					'type'			=>	$_[1],
@@ -6274,102 +6353,102 @@ sub
 			);
 		}
 	],
-	[#Rule 261
+	[#Rule 265
 		 'enum_type', 4,
 sub
-#line 1592 "parser23.yp"
+#line 1617 "parser23.yp"
 {
 			$_[1]->Configure($_[0],
 					'list_expr'		=>	$_[3]
 			) if (defined $_[1]);
 		}
 	],
-	[#Rule 262
+	[#Rule 266
 		 'enum_type', 4,
 sub
-#line 1598 "parser23.yp"
+#line 1623 "parser23.yp"
 {
 			$_[0]->Error("enumerator expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 263
+	[#Rule 267
 		 'enum_type', 2,
 sub
-#line 1603 "parser23.yp"
+#line 1628 "parser23.yp"
 {
 			$_[0]->Error("'\x7b' expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 264
+	[#Rule 268
 		 'enum_header', 2,
 sub
-#line 1611 "parser23.yp"
+#line 1636 "parser23.yp"
 {
 			new EnumType($_[0],
 					'idf'				=>	$_[2],
 			);
 		}
 	],
-	[#Rule 265
+	[#Rule 269
 		 'enum_header', 2,
 sub
-#line 1617 "parser23.yp"
+#line 1642 "parser23.yp"
 {
 			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 266
+	[#Rule 270
 		 'enumerators', 1,
 sub
-#line 1625 "parser23.yp"
+#line 1650 "parser23.yp"
 {
 			[$_[1]];
 		}
 	],
-	[#Rule 267
+	[#Rule 271
 		 'enumerators', 3,
 sub
-#line 1629 "parser23.yp"
+#line 1654 "parser23.yp"
 {
 			unshift(@{$_[3]},$_[1]);
 			$_[3];
 		}
 	],
-	[#Rule 268
+	[#Rule 272
 		 'enumerators', 2,
 sub
-#line 1634 "parser23.yp"
+#line 1659 "parser23.yp"
 {
 			$_[0]->Warning("',' unexpected.\n");
 			[$_[1]];
 		}
 	],
-	[#Rule 269
+	[#Rule 273
 		 'enumerators', 2,
 sub
-#line 1639 "parser23.yp"
+#line 1664 "parser23.yp"
 {
 			$_[0]->Error("';' unexpected.\n");
 			[$_[1]];
 		}
 	],
-	[#Rule 270
+	[#Rule 274
 		 'enumerator', 1,
 sub
-#line 1648 "parser23.yp"
+#line 1673 "parser23.yp"
 {
 			new Enum($_[0],
 					'idf'				=>	$_[1]
 			);
 		}
 	],
-	[#Rule 271
+	[#Rule 275
 		 'sequence_type', 6,
 sub
-#line 1658 "parser23.yp"
+#line 1683 "parser23.yp"
 {
 			new SequenceType($_[0],
 					'value'				=>	$_[1],
@@ -6378,19 +6457,19 @@ sub
 			);
 		}
 	],
-	[#Rule 272
+	[#Rule 276
 		 'sequence_type', 6,
 sub
-#line 1666 "parser23.yp"
+#line 1691 "parser23.yp"
 {
 			$_[0]->Error("Expression expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 273
+	[#Rule 277
 		 'sequence_type', 4,
 sub
-#line 1671 "parser23.yp"
+#line 1696 "parser23.yp"
 {
 			new SequenceType($_[0],
 					'value'				=>	$_[1],
@@ -6398,131 +6477,131 @@ sub
 			);
 		}
 	],
-	[#Rule 274
+	[#Rule 278
 		 'sequence_type', 4,
 sub
-#line 1678 "parser23.yp"
+#line 1703 "parser23.yp"
 {
 			$_[0]->Error("simple_type_spec expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 275
+	[#Rule 279
 		 'sequence_type', 2,
 sub
-#line 1683 "parser23.yp"
+#line 1708 "parser23.yp"
 {
 			$_[0]->Error("'<' expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 276
-		 'string_type', 4,
-sub
-#line 1692 "parser23.yp"
-{
-			new StringType($_[0],
-					'value'				=>	$_[1],
-					'max'				=>	$_[3]
-			);
-		}
-	],
-	[#Rule 277
-		 'string_type', 1,
-sub
-#line 1699 "parser23.yp"
-{
-			new StringType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
-	],
-	[#Rule 278
-		 'string_type', 4,
-sub
-#line 1705 "parser23.yp"
-{
-			$_[0]->Error("Expression expected.\n");
-			$_[0]->YYErrok();
-		}
-	],
-	[#Rule 279
-		 'wide_string_type', 4,
-sub
-#line 1714 "parser23.yp"
-{
-			new WideStringType($_[0],
-					'value'				=>	$_[1],
-					'max'				=>	$_[3]
-			);
-		}
-	],
 	[#Rule 280
-		 'wide_string_type', 1,
+		 'string_type', 4,
 sub
-#line 1721 "parser23.yp"
+#line 1717 "parser23.yp"
 {
-			new WideStringType($_[0],
-					'value'				=>	$_[1]
+			new StringType($_[0],
+					'value'				=>	$_[1],
+					'max'				=>	$_[3]
 			);
 		}
 	],
 	[#Rule 281
-		 'wide_string_type', 4,
+		 'string_type', 1,
 sub
-#line 1727 "parser23.yp"
+#line 1724 "parser23.yp"
+{
+			new StringType($_[0],
+					'value'				=>	$_[1]
+			);
+		}
+	],
+	[#Rule 282
+		 'string_type', 4,
+sub
+#line 1730 "parser23.yp"
 {
 			$_[0]->Error("Expression expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 282
+	[#Rule 283
+		 'wide_string_type', 4,
+sub
+#line 1739 "parser23.yp"
+{
+			new WideStringType($_[0],
+					'value'				=>	$_[1],
+					'max'				=>	$_[3]
+			);
+		}
+	],
+	[#Rule 284
+		 'wide_string_type', 1,
+sub
+#line 1746 "parser23.yp"
+{
+			new WideStringType($_[0],
+					'value'				=>	$_[1]
+			);
+		}
+	],
+	[#Rule 285
+		 'wide_string_type', 4,
+sub
+#line 1752 "parser23.yp"
+{
+			$_[0]->Error("Expression expected.\n");
+			$_[0]->YYErrok();
+		}
+	],
+	[#Rule 286
 		 'array_declarator', 2,
 sub
-#line 1736 "parser23.yp"
+#line 1761 "parser23.yp"
 {
 			unshift(@{$_[2]},$_[1]);
 			$_[2];
 		}
 	],
-	[#Rule 283
+	[#Rule 287
 		 'fixed_array_sizes', 1,
 sub
-#line 1744 "parser23.yp"
+#line 1769 "parser23.yp"
 {
 			[$_[1]];
 		}
 	],
-	[#Rule 284
+	[#Rule 288
 		 'fixed_array_sizes', 2,
 sub
-#line 1748 "parser23.yp"
+#line 1773 "parser23.yp"
 {
 			unshift(@{$_[2]},$_[1]);
 			$_[2];
 		}
 	],
-	[#Rule 285
+	[#Rule 289
 		 'fixed_array_size', 3,
 sub
-#line 1757 "parser23.yp"
+#line 1782 "parser23.yp"
 {
 			$_[2];
 		}
 	],
-	[#Rule 286
+	[#Rule 290
 		 'fixed_array_size', 3,
 sub
-#line 1761 "parser23.yp"
+#line 1786 "parser23.yp"
 {
 			$_[0]->Error("Expression expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 287
+	[#Rule 291
 		 'attr_dcl', 4,
 sub
-#line 1770 "parser23.yp"
+#line 1795 "parser23.yp"
 {
 			new Attributes($_[0],
 					'modifier'			=>	$_[1],
@@ -6531,60 +6610,60 @@ sub
 			);
 		}
 	],
-	[#Rule 288
+	[#Rule 292
 		 'attr_dcl', 4,
 sub
-#line 1778 "parser23.yp"
+#line 1803 "parser23.yp"
 {
 			$_[0]->Error("declarator expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 289
+	[#Rule 293
 		 'attr_dcl', 3,
 sub
-#line 1783 "parser23.yp"
+#line 1808 "parser23.yp"
 {
 			$_[0]->Error("type expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 290
+	[#Rule 294
 		 'attr_mod', 1, undef
 	],
-	[#Rule 291
+	[#Rule 295
 		 'attr_mod', 0, undef
 	],
-	[#Rule 292
+	[#Rule 296
 		 'simple_declarators', 1,
 sub
-#line 1798 "parser23.yp"
+#line 1823 "parser23.yp"
 {
 			[$_[1]];
 		}
 	],
-	[#Rule 293
+	[#Rule 297
 		 'simple_declarators', 3,
 sub
-#line 1802 "parser23.yp"
+#line 1827 "parser23.yp"
 {
 			unshift(@{$_[3]},$_[1]);
 			$_[3];
 		}
 	],
-	[#Rule 294
+	[#Rule 298
 		 'except_dcl', 3,
 sub
-#line 1811 "parser23.yp"
+#line 1836 "parser23.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[1];
 		}
 	],
-	[#Rule 295
+	[#Rule 299
 		 'except_dcl', 4,
 sub
-#line 1816 "parser23.yp"
+#line 1841 "parser23.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[1]->Configure($_[0],
@@ -6592,49 +6671,49 @@ sub
 			) if (defined $_[1]);
 		}
 	],
-	[#Rule 296
+	[#Rule 300
 		 'except_dcl', 4,
 sub
-#line 1823 "parser23.yp"
+#line 1848 "parser23.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->Error("'members expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 297
+	[#Rule 301
 		 'except_dcl', 2,
 sub
-#line 1829 "parser23.yp"
+#line 1854 "parser23.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->Error("'\x7b' expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 298
+	[#Rule 302
 		 'exception_header', 2,
 sub
-#line 1838 "parser23.yp"
+#line 1863 "parser23.yp"
 {
 			new Exception($_[0],
 					'idf'				=>	$_[2],
 			);
 		}
 	],
-	[#Rule 299
+	[#Rule 303
 		 'exception_header', 2,
 sub
-#line 1844 "parser23.yp"
+#line 1869 "parser23.yp"
 {
 			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 300
+	[#Rule 304
 		 'op_dcl', 2,
 sub
-#line 1853 "parser23.yp"
+#line 1878 "parser23.yp"
 {
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
@@ -6643,10 +6722,10 @@ sub
 			) if (defined $_[1]);
 		}
 	],
-	[#Rule 301
+	[#Rule 305
 		 'op_dcl', 3,
 sub
-#line 1861 "parser23.yp"
+#line 1886 "parser23.yp"
 {
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
@@ -6656,10 +6735,10 @@ sub
 			) if (defined $_[1]);
 		}
 	],
-	[#Rule 302
+	[#Rule 306
 		 'op_dcl', 4,
 sub
-#line 1870 "parser23.yp"
+#line 1895 "parser23.yp"
 {
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
@@ -6670,10 +6749,10 @@ sub
 			) if (defined $_[1]);
 		}
 	],
-	[#Rule 303
+	[#Rule 307
 		 'op_dcl', 3,
 sub
-#line 1880 "parser23.yp"
+#line 1905 "parser23.yp"
 {
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
@@ -6683,10 +6762,10 @@ sub
 			) if (defined $_[1]);
 		}
 	],
-	[#Rule 304
+	[#Rule 308
 		 'op_dcl', 2,
 sub
-#line 1889 "parser23.yp"
+#line 1914 "parser23.yp"
 {
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
@@ -6694,10 +6773,10 @@ sub
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 305
+	[#Rule 309
 		 'op_header', 3,
 sub
-#line 1899 "parser23.yp"
+#line 1924 "parser23.yp"
 {
 			new Operation($_[0],
 					'modifier'			=>	$_[1],
@@ -6706,101 +6785,101 @@ sub
 			);
 		}
 	],
-	[#Rule 306
+	[#Rule 310
 		 'op_header', 3,
 sub
-#line 1907 "parser23.yp"
+#line 1932 "parser23.yp"
 {
 			$_[0]->Error("Identifier expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 307
+	[#Rule 311
 		 'op_mod', 1, undef
 	],
-	[#Rule 308
+	[#Rule 312
 		 'op_mod', 0, undef
 	],
-	[#Rule 309
+	[#Rule 313
 		 'op_attribute', 1, undef
 	],
-	[#Rule 310
+	[#Rule 314
 		 'op_type_spec', 1, undef
 	],
-	[#Rule 311
+	[#Rule 315
 		 'op_type_spec', 1,
 sub
-#line 1931 "parser23.yp"
+#line 1956 "parser23.yp"
 {
 			new VoidType($_[0],
 					'value'				=>	$_[1]
 			);
 		}
 	],
-	[#Rule 312
+	[#Rule 316
 		 'parameter_dcls', 3,
 sub
-#line 1941 "parser23.yp"
+#line 1966 "parser23.yp"
 {
 			$_[2];
 		}
 	],
-	[#Rule 313
+	[#Rule 317
 		 'parameter_dcls', 2,
 sub
-#line 1945 "parser23.yp"
+#line 1970 "parser23.yp"
 {
 			undef;
 		}
 	],
-	[#Rule 314
+	[#Rule 318
 		 'parameter_dcls', 3,
 sub
-#line 1949 "parser23.yp"
+#line 1974 "parser23.yp"
 {
 			$_[0]->Error("parameters declaration expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 315
+	[#Rule 319
 		 'param_dcls', 1,
 sub
-#line 1957 "parser23.yp"
+#line 1982 "parser23.yp"
 {
 			[$_[1]];
 		}
 	],
-	[#Rule 316
+	[#Rule 320
 		 'param_dcls', 3,
 sub
-#line 1961 "parser23.yp"
+#line 1986 "parser23.yp"
 {
 			unshift(@{$_[3]},$_[1]);
 			$_[3];
 		}
 	],
-	[#Rule 317
+	[#Rule 321
 		 'param_dcls', 2,
 sub
-#line 1966 "parser23.yp"
+#line 1991 "parser23.yp"
 {
 			$_[0]->Warning("',' unexpected.\n");
 			[$_[1]];
 		}
 	],
-	[#Rule 318
+	[#Rule 322
 		 'param_dcls', 2,
 sub
-#line 1971 "parser23.yp"
+#line 1996 "parser23.yp"
 {
 			$_[0]->Error("';' unexpected.\n");
 			[$_[1]];
 		}
 	],
-	[#Rule 319
+	[#Rule 323
 		 'param_dcl', 3,
 sub
-#line 1980 "parser23.yp"
+#line 2005 "parser23.yp"
 {
 			new Parameter($_[0],
 					'attr'				=>	$_[1],
@@ -6809,130 +6888,130 @@ sub
 			);
 		}
 	],
-	[#Rule 320
+	[#Rule 324
 		 'param_attribute', 1, undef
 	],
-	[#Rule 321
+	[#Rule 325
 		 'param_attribute', 1, undef
 	],
-	[#Rule 322
+	[#Rule 326
 		 'param_attribute', 1, undef
 	],
-	[#Rule 323
+	[#Rule 327
 		 'raises_expr', 4,
 sub
-#line 2002 "parser23.yp"
+#line 2027 "parser23.yp"
 {
 			$_[3];
 		}
 	],
-	[#Rule 324
+	[#Rule 328
 		 'raises_expr', 4,
 sub
-#line 2006 "parser23.yp"
+#line 2031 "parser23.yp"
 {
 			$_[0]->Error("name expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 325
+	[#Rule 329
 		 'raises_expr', 2,
 sub
-#line 2011 "parser23.yp"
+#line 2036 "parser23.yp"
 {
 			$_[0]->Error("'(' expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 326
+	[#Rule 330
 		 'exception_names', 1,
 sub
-#line 2019 "parser23.yp"
+#line 2044 "parser23.yp"
 {
 			[$_[1]];
 		}
 	],
-	[#Rule 327
+	[#Rule 331
 		 'exception_names', 3,
 sub
-#line 2023 "parser23.yp"
+#line 2048 "parser23.yp"
 {
 			unshift(@{$_[3]},$_[1]);
 			$_[3];
 		}
 	],
-	[#Rule 328
+	[#Rule 332
 		 'exception_name', 1,
 sub
-#line 2031 "parser23.yp"
+#line 2056 "parser23.yp"
 {
 			Exception->Lookup($_[0],$_[1]);
 		}
 	],
-	[#Rule 329
+	[#Rule 333
 		 'context_expr', 4,
 sub
-#line 2039 "parser23.yp"
+#line 2064 "parser23.yp"
 {
 			$_[3];
 		}
 	],
-	[#Rule 330
+	[#Rule 334
 		 'context_expr', 4,
 sub
-#line 2043 "parser23.yp"
+#line 2068 "parser23.yp"
 {
 			$_[0]->Error("string expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 331
+	[#Rule 335
 		 'context_expr', 2,
 sub
-#line 2048 "parser23.yp"
+#line 2073 "parser23.yp"
 {
 			$_[0]->Error("'(' expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 332
+	[#Rule 336
 		 'string_literals', 1,
 sub
-#line 2056 "parser23.yp"
+#line 2081 "parser23.yp"
 {
 			[$_[1]];
 		}
 	],
-	[#Rule 333
+	[#Rule 337
 		 'string_literals', 3,
 sub
-#line 2060 "parser23.yp"
+#line 2085 "parser23.yp"
 {
 			unshift(@{$_[3]},$_[1]);
 			$_[3];
 		}
 	],
-	[#Rule 334
+	[#Rule 338
 		 'param_type_spec', 1, undef
 	],
-	[#Rule 335
+	[#Rule 339
 		 'param_type_spec', 1, undef
 	],
-	[#Rule 336
+	[#Rule 340
 		 'param_type_spec', 1, undef
 	],
-	[#Rule 337
+	[#Rule 341
 		 'param_type_spec', 1,
 sub
-#line 2075 "parser23.yp"
+#line 2100 "parser23.yp"
 {
 			TypeDeclarator->Lookup($_[0],$_[1]);
 		}
 	],
-	[#Rule 338
+	[#Rule 342
 		 'fixed_pt_type', 6,
 sub
-#line 2083 "parser23.yp"
+#line 2108 "parser23.yp"
 {
 			new FixedPtType($_[0],
 					'value'				=>	$_[1],
@@ -6941,47 +7020,47 @@ sub
 			);
 		}
 	],
-	[#Rule 339
+	[#Rule 343
 		 'fixed_pt_type', 6,
 sub
-#line 2091 "parser23.yp"
+#line 2116 "parser23.yp"
 {
 			$_[0]->Error("Expression expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 340
+	[#Rule 344
 		 'fixed_pt_type', 4,
 sub
-#line 2096 "parser23.yp"
+#line 2121 "parser23.yp"
 {
 			$_[0]->Error("Expression expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 341
+	[#Rule 345
 		 'fixed_pt_type', 2,
 sub
-#line 2101 "parser23.yp"
+#line 2126 "parser23.yp"
 {
 			$_[0]->Error("'<' expected.\n");
 			$_[0]->YYErrok();
 		}
 	],
-	[#Rule 342
+	[#Rule 346
 		 'fixed_pt_const_type', 1,
 sub
-#line 2110 "parser23.yp"
+#line 2135 "parser23.yp"
 {
 			new FixedPtConstType($_[0],
 					'value'				=>	$_[1]
 			);
 		}
 	],
-	[#Rule 343
+	[#Rule 347
 		 'value_base_type', 1,
 sub
-#line 2120 "parser23.yp"
+#line 2145 "parser23.yp"
 {
 			new ValueBaseType($_[0],
 					'value'				=>	$_[1]
@@ -6993,7 +7072,7 @@ sub
     bless($self,$class);
 }
 
-#line 2127 "parser23.yp"
+#line 2152 "parser23.yp"
 
 
 package Parser;

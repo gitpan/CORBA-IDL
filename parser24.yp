@@ -315,11 +315,11 @@ interface_body
 ;
 
 exports
-:	export
+:	_export
 		{
 			[$_[1]->getRef()];
 		}
-|	export	exports
+|	export	_exports
 		{
 			unshift(@{$_[2]},$_[1]->getRef());
 			$_[2];
@@ -327,6 +327,21 @@ exports
 ;
 
 /* 9 */
+_export
+:	export
+										#default action
+|	state_member
+		{
+			$_[0]->Error("state member unexpected.\n");
+			$_[1];						#default action
+		}
+|	init_dcl
+		{
+			$_[0]->Error("initializer unexpected.\n");
+			$_[1];						#default action
+		}
+;
+
 export
 :	type_dcl		';'
 										#default action
@@ -459,11 +474,21 @@ value_forward_dcl
 
 /* 15 */	/*	3.8.2	Boxed Value Type */
 value_box_dcl
-:	VALUETYPE	IDENTIFIER	type_spec
+:	value_box_header	type_spec
+		{
+			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+			$_[0]->YYData->{curr_itf} = undef;
+			$_[1]->Configure($_[0],
+					'type'				=>	$_[2]
+			) if (defined $_[1]);
+		}
+;
+
+value_box_header
+:	VALUETYPE	IDENTIFIER
 		{
 			new BoxedValue($_[0],
 					'idf'				=>	$_[2],
-					'type'				=>	$_[3]
 			);
 		}
 ;

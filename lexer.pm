@@ -117,7 +117,7 @@ sub _StringLexer {
 			s/^\\v//
 				and $str .= "\013",	# vertical tab
 				    last;
-			s/^\\([\\?'"])\'//
+			s/^\\([\?'"])//
 				and $str .= $1,		# backslash, question mark, single quote, double quote
 				    last;
 
@@ -168,7 +168,7 @@ sub _CharLexer {
 		and return ($token,"\f");	# form feed
 	s/^\\a\'//
 		and return ($token,"\a");	# alert
-	s/^\\([\\?'"])\'//
+	s/^\\([\?'"])\'//
 		and return ($token,$1);		# backslash, question mark, single quote, double quote
 	s/^\\([0-7]{1,3})\'//
 		and return ($token,chr oct $1);

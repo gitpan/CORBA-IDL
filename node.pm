@@ -7,7 +7,7 @@ use UNIVERSAL;
 
 package node;
 use vars qw($VERSION);
-$VERSION = '2.04';
+$VERSION = '2.05';
 
 sub _Build {
 	my $proto = shift;
@@ -318,6 +318,7 @@ use base qw(node);
 sub _Init {
 	my $self = shift;
 	my ($parser) = @_;
+	$self->{hash_interface} = {};
 	my %hash;
 	# 3.8.5	Interface Inheritance
 	if (exists $self->{list_interface}) {
@@ -325,7 +326,12 @@ sub _Init {
 			if (exists $hash{$name}) {
 				$parser->Warning("'$name' redeclares inheritance.\n");
 			} else {
-				$hash{$name} = $_;
+				$hash{$name} = 1;
+				$self->{hash_interface}->{$name} = 1;
+				my $base = $parser->YYData->{symbtab}->Lookup($name);
+				foreach (keys %{$base->{inheritance}->{hash_interface}}) {
+					$self->{hash_interface}->{$_} = 1;
+				}
 			}
 		}
 	}
@@ -335,7 +341,12 @@ sub _Init {
 			if (exists $hash{$name}) {
 				$parser->Warning("'$name' redeclares inheritance.\n");
 			} else {
-				$hash{$name} = $_;
+				$hash{$name} = 1;
+				$self->{hash_interface}->{$name} = 1;
+				my $base = $parser->YYData->{symbtab}->Lookup($name);
+				foreach (keys %{$base->{inheritance}->{hash_interface}}) {
+					$self->{hash_interface}->{$_} = 1;
+				}
 			}
 		}
 	}
@@ -516,20 +527,20 @@ sub _CheckInheritance {
 	}
 }
 
-#sub Configure {
-#	my $self = shift;
-#	my $parser = shift;
-#	$self->SUPER::Configure($parser,@_);
-#	my @list;
-#	foreach my $value_element (@{$self->{list_decl}}) {
-#		next unless (ref $value_element eq 'StateMembers');
-#		foreach (@{$value_element->{list_decl}}) {
-#			push @list, $_;
-#		}
-#	}
-#	$self->configure(list_value	=>	\@list);	# list of 'StateMember'
-#	return $self;
-#}
+sub Configure {
+	my $self = shift;
+	my $parser = shift;
+	$self->SUPER::Configure($parser,@_);
+	my @list;
+	foreach my $value_element (@{$self->{list_decl}}) {
+		next unless (ref $value_element eq 'StateMembers');
+		foreach (@{$value_element->{list_decl}}) {
+			push @list, $_;
+		}
+	}
+	$self->configure(list_value		=>	\@list);	# list of 'StateMember'
+	return $self;
+}
 
 sub _CheckLocal {
 	# A local type may be used as a parameter, attribute, return type, or exception
@@ -657,13 +668,20 @@ sub _Init {
 	my ($parser) = @_;
 	$self->{prefix} = $parser->YYData->{symbtab}->GetPrefix();
 	$self->{_typeprefix} = $parser->YYData->{symbtab}->GetTypePrefix();
-	$parser->YYData->{symbtab}->Insert($self);
 	$self->line_stamp($parser);
 	if ($parser->YYData->{doc} ne '') {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
 	}
+	$parser->YYData->{symbtab}->PushCurrentScope($self);
+	$parser->YYData->{curr_itf} = $self;
 	$parser->YYData->{curr_node} = $self;
+}
+
+sub Configure {
+	my $self = shift;
+	my $parser = shift;
+	$self->configure(@_);
 	my $type = TypeDeclarator->GetDefn($parser, $self->{type});
 	if ($type->isa('Value')) {
 		if ($Parser::IDL_version ge '3.0') {
@@ -672,6 +690,7 @@ sub _Init {
 			$parser->Info("$self->{type}->{idf} is a value type.\n");
 		}
 	}
+	return $self;
 }
 
 #
@@ -975,7 +994,7 @@ sub _Eval {
 			return undef;
 		}
 	} elsif ($elt->isa('Enum')) {
-		if ($type eq $elt->{type}) {
+		if ($type eq $parser->YYData->{symbtab}->Lookup($elt->{type})) {
 			return $elt;
 		} else {
 			$parser->Error("'$elt->{idf}' is not a '$type->{idf}'.\n");
@@ -1796,7 +1815,7 @@ sub Configure {
 			push @list, $_->{full};
 		}
 		$_->configure(
-				type		=>	$self,
+				type		=>	$self->{full},
 				value		=>	"$idx"
 		);
 		$idx++;
@@ -2360,7 +2379,7 @@ sub Configure {
 	return $self;
 }
 
-=pod
+=for tree
 
 	node
 		Specification -
@@ -2458,7 +2477,7 @@ sub Configure {
 		Factory
 		Finder
 
-=cut
+=end tree
 
 1;
 

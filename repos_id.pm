@@ -14,14 +14,14 @@ sub new {
 	my $class = ref($proto) || $proto;
 	my $self = {};
 	bless($self, $class);
-	my($parser) = @_;
+	my ($parser) = @_;
 	$self->{symbtab} = $parser->YYData->{symbtab};
 	return $self;
 }
 
 sub _set_repos_id {
 	my $self = shift;
-	my($node) = @_;
+	my ($node) = @_;
 	if (exists $node->{typeid}) {
 		$node->{repos_id} = $node->{typeid};
 	} elsif (exists $node->{id}) {
@@ -64,7 +64,7 @@ sub visitNameType {
 
 sub visitNameSpecification {
 	my $self = shift;
-	my($node) = @_;
+	my ($node) = @_;
 	foreach (@{$node->{list_export}}) {
 		$self->{symbtab}->Lookup($_)->visitName($self);
 	}
@@ -80,7 +80,7 @@ sub visitNameSpecification {
 
 sub visitNameModules {
 	my $self = shift;
-	my($node) = @_;
+	my ($node) = @_;
 	$self->_set_repos_id($node);
 	foreach (@{$node->{list_export}}) {
 		$self->{symbtab}->Lookup($_)->visitName($self);
@@ -93,7 +93,7 @@ sub visitNameModules {
 
 sub visitNameBaseInterface {
 	my $self = shift;
-	my($node) = @_;
+	my ($node) = @_;
 	$self->_set_repos_id($node);
 	foreach (@{$node->{list_export}}) {
 		$self->{symbtab}->Lookup($_)->visitName($self);
@@ -112,6 +112,13 @@ sub visitNameInitializer {
 	# empty
 }
 
+sub visitNameBoxedValue {
+	my $self = shift;
+	my ($node) = @_;
+	$self->_set_repos_id($node);
+	$self->visitNameType($node->{type});
+}
+
 #
 #	3.10		Constant Declaration
 #
@@ -126,7 +133,7 @@ sub visitNameConstant {
 
 sub visitNameTypeDeclarator {
 	my $self = shift;
-	my($node) = @_;
+	my ($node) = @_;
 	unless (exists $node->{modifier}) {		# native IDL2.2
 		$self->_set_repos_id($node);
 		$self->visitNameType($node->{type});
@@ -147,7 +154,7 @@ sub visitNameBasicType {
 
 sub visitNameStructType {
 	my $self = shift;
-	my($node) = @_;
+	my ($node) = @_;
 	$self->_set_repos_id($node);
 	foreach (@{$node->{list_expr}}) {
 		if (ref $_->{type}) {
@@ -163,7 +170,7 @@ sub visitNameStructType {
 
 sub visitNameUnionType {
 	my $self = shift;
-	my($node) = @_;
+	my ($node) = @_;
 	$self->_set_repos_id($node);
 	foreach (@{$node->{list_expr}}) {
 		if (ref $_->{element}->{type}) {
@@ -180,7 +187,7 @@ sub visitNameUnionType {
 
 sub visitNameEnumType {
 	my $self = shift;
-	my($node) = @_;
+	my ($node) = @_;
 	$self->_set_repos_id($node);
 }
 
@@ -210,7 +217,7 @@ sub visitNameFixedPtType {
 
 sub visitNameException {
 	my $self = shift;
-	my($node) = @_;
+	my ($node) = @_;
 	$self->_set_repos_id($node);
 	if (exists $node->{list_expr}) {
 		warn __PACKAGE__,"::visitNameException $node->{idf} : empty list_expr.\n"

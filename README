@@ -19,12 +19,12 @@ Description:
 
 Prerequisites:
 --------------
-    This module needs Math::BigInt and Math::BigFloat modules.
     This module needs a C preprocessor executable, like cpp.
 
 See also:
 ---------
     CORBA::C - Implements CORBA C language mapping
+    CORBA::JAVA - Implements CORBA Java language mapping
     CORBA::HTML - Implements HTML documentation 
 
 References:

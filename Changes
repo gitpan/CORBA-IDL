@@ -1,5 +1,11 @@
 Revision history for Perl extension CORBA::IDL.
 
+2.05  Wed Dec 17 12:30:00 2003
+	- improvement for EnumType
+        - improvement for value and boxed value 
+	- add extra rules in grammar (export for value)
+	- bug in _StringLexer
+
 2.04  Mon Sep 22 12:30:00 2003
 	- support cpp GCC 3.2.3
 	- bug : value inheritance
