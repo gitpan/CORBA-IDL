@@ -852,6 +852,7 @@ sub Insert {
 
 sub InsertUsed {
 	my $self = shift;
+	return if ($self->{parser}->YYData->{collision_allowed});
 	my($name) = @_;
 ##	print "InsertUsed '$name'\n";
 	my $key = lc $name;

@@ -8,7 +8,7 @@ use UNIVERSAL;
 package CORBA::IDL::node;
 
 use vars qw($VERSION);
-$VERSION = '2.21';
+$VERSION = '2.22';
 
 sub _Build {
 	my $proto = shift;

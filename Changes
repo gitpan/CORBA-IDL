@@ -1,5 +1,10 @@
 Revision history for Perl extension CORBA::IDL.
 
+2.22  Wed Mar 31 12:30:00 2004
+	- prerequest Math::BigInt 1.66 (incompatible with 0.01)
+	- symbtab.pm : add a flag 'collision_allowed'
+	- lexer.pm : delete grammar after parsing
+
 2.21  Mon Feb 23 08:30:00 2004
 	- pb prerequisite vs VERSION
 	- node.pm : bug with Math::BigInt 1.66 (Perl 5.8)

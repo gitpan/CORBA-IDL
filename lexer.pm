@@ -707,6 +707,9 @@ sub Run {
 #    0x10         Error Recovery tracing
 
 	close $parser->YYData->{fh};
+	delete $parser->{RULES};
+	delete $parser->{STATES};
+	delete $parser->{STACK};
 }
 
 1;

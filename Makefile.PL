@@ -5,7 +5,9 @@ WriteMakefile(
     'NAME'          => 'CORBA::IDL',
     'VERSION_FROM'  => 'node.pm',
     'ABSTRACT'      => 'CORBA-IDL 3.0 parser',
-    'PREREQ_PM'     => {},
+    'PREREQ_PM'     => {
+                        'Math::BigInt'  => 1.66
+    },
     'PM'            => {
                         'ascii.pm'      => '$(INST_LIBDIR)/IDL/ascii.pm',
                         'lexer.pm'      => '$(INST_LIBDIR)/IDL/lexer.pm',
