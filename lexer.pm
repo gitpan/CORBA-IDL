@@ -220,7 +220,7 @@ sub _EscIdentifier {
 
 	if ($Parser::IDL_version ge '2.3') {
 		my $key = uc $ident;
-		if (! exists $parser->YYData->{keyword}{$key}) {
+		unless (exists $parser->YYData->{keyword}{$key}) {
 			Info("Unnecessary escaped identifier '$ident'.\n");
 		}
 	} else {
@@ -346,48 +346,47 @@ sub _Lexer {
 		or  $parser->YYData->{INPUT} = <YYIN>
 		or  return('',undef);
 
-		if (! exists $parser->YYData->{srcname}) {
-			if ($parser->YYData->{INPUT} =~ /^# ([\d]+) ["<]([^\s">]+)[">]\n/ ) { # cccp
-				$parser->YYData->{srcname} = $2;
-			} elsif ($parser->YYData->{INPUT} =~ /^#line ([\d]+) ["<]([^\s">]+)[">]\n/ ) { # CL.EXE
+		unless (exists $parser->YYData->{srcname}) {
+			if ($parser->YYData->{INPUT} =~ /^#\s*(line\s+)?\d+\s+["<]([^\s">]+)[">]\s*\n/ ) {
 				$parser->YYData->{srcname} = $2;
 			} else {
 				print "INTERNAL_ERROR:_Lexer\n";
 			}
-			my @st = stat($parser->YYData->{srcname});
-			$parser->YYData->{srcname_size} = $st[7];
-			$parser->YYData->{srcname_mtime} = $st[9];
-
+			if (defined $parser->YYData->{srcname}) {
+				my @st = stat($parser->YYData->{srcname});
+				$parser->YYData->{srcname_size} = $st[7];
+				$parser->YYData->{srcname_mtime} = $st[9];
+			}
 		}
 
 		for ($parser->YYData->{INPUT}) {
-			s/^# ([\d]+) ["<]([^\s">]+)[">] ([\d]+)\n//		# cccp
+			s/^#\s+([\d]+)\s+["<]([^\s">]+)[">]\s+([\d]+)\s*\n//		# cccp
 					and $parser->YYData->{lineno} = $1,
 					    $parser->YYData->{filename} = $2,
 					    $parser->YYData->{doc} = '',
 					    $parser->YYData->{curr_node} = undef,
 					    last;
 
-			s/^# ([\d]+) ["<]([^\s">]+)[">]\n//				# cccp
+			s/^#\s+([\d]+)\s+["<]([^\s">]+)[">]\s*\n//				# cccp
 					and $parser->YYData->{lineno} = $1,
 					    $parser->YYData->{filename} = $2,
 					    $parser->YYData->{doc} = '',
 					    $parser->YYData->{curr_node} = undef,
 					    last;
-			s/^#line ([\d]+) ["<]([^\s">]+)[">]\n//			# CL.EXE Microsoft VC
+			s/^#\s*line\s+([\d]+)\s+["<]([^\s">]+)[">]\s*\n//			# CL.EXE Microsoft VC
 					and $parser->YYData->{lineno} = $1,
 					    $parser->YYData->{filename} = $2,
 					    $parser->YYData->{doc} = '',
 					    $parser->YYData->{curr_node} = undef,
 					    last;
 
-			s/^[ \r\t\f\013]+//;							# whitespaces
+			s/^[\s\r\f\013]+//;							# whitespaces
 			s/^\n//
 					and $parser->YYData->{lineno} ++,
 					    $parser->YYData->{curr_node} = undef,
 					    last;
 
-			s/^#pragma[ \t]+(.*)\n//
+			s/^#pragma\s+(.*)\n//
 					and $parser->_PragmaLexer($1),
 					    $parser->YYData->{lineno} ++,
 					    $parser->YYData->{curr_node} = undef,

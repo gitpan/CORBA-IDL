@@ -7,7 +7,7 @@ use UNIVERSAL;
 
 package node;
 use vars qw($VERSION);
-$VERSION = '2.00';
+$VERSION = '2.01';
 
 sub _Build {
 	my $proto = shift;
