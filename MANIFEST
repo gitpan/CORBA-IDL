@@ -35,3 +35,4 @@ corba_idl/CORBA_Pollable.idl
 corba_idl/CORBA_StandardExceptions.idl
 corba_idl/CORBA_Stream.idl
 corba_idl/CORBA_TypeCode.idl
+META.yml                                 Module meta-data (added by MakeMaker)

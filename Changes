@@ -1,5 +1,8 @@
 Revision history for Perl extension CORBA::IDL.
 
+2.43  Tue Jan  4 18:30:00 2005
+	- bug [cpan #9366] AST for Enum-discriminated Unions always indicates 'need_default'
+
 2.42  Tue Jul 27 12:30:00 2004
 	- node.pm : 'float' 0 is out of range (ticket 7114 on rt.cpan.org)
 	- bug : [props] for 'typedef'

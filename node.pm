@@ -8,7 +8,7 @@ use UNIVERSAL;
 package CORBA::IDL::node;
 
 use vars qw($VERSION);
-$VERSION = '2.42';
+$VERSION = '2.43';
 
 sub _Build {
 	my $proto = shift;
@@ -1770,7 +1770,11 @@ sub Configure {
 						type				=>	$dis,
 						list_expr			=>	$_
 				);
-				$key = $cst->{value};
+				if ($defn->isa('EnumType')) {
+					$key = $cst->{value}->{full};
+				} else {
+					$key = $cst->{value};
+				}
 				push @list, $cst;
 				push @list_all, $cst;
 			}
