@@ -1,0 +1,8 @@
+Revision history for Perl extension CORBA::IDL.
+
+1.0   Fri Dec 14 15:30:00 2001
+	- first release
+
+0.01  Mon Nov 19 11:34:14 2001
+	- original version; created by h2xs 1.19
+
