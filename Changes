@@ -1,5 +1,9 @@
 Revision history for Perl extension CORBA::IDL.
 
+2.04  Mon Sep 22 12:30:00 2003
+	- support cpp GCC 3.2.3
+	- bug : value inheritance
+
 2.03  Mon Aug 11 12:30:00 2003
 	- add extra rules in grammar 
 

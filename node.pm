@@ -7,7 +7,7 @@ use UNIVERSAL;
 
 package node;
 use vars qw($VERSION);
-$VERSION = '2.03';
+$VERSION = '2.04';
 
 sub _Build {
 	my $proto = shift;
@@ -516,6 +516,21 @@ sub _CheckInheritance {
 	}
 }
 
+#sub Configure {
+#	my $self = shift;
+#	my $parser = shift;
+#	$self->SUPER::Configure($parser,@_);
+#	my @list;
+#	foreach my $value_element (@{$self->{list_decl}}) {
+#		next unless (ref $value_element eq 'StateMembers');
+#		foreach (@{$value_element->{list_decl}}) {
+#			push @list, $_;
+#		}
+#	}
+#	$self->configure(list_value	=>	\@list);	# list of 'StateMember'
+#	return $self;
+#}
+
 sub _CheckLocal {
 	# A local type may be used as a parameter, attribute, return type, or exception
 	# declaration of a local interface or of a valuetype.
@@ -577,7 +592,7 @@ sub _Init {
 	my ($parser) = @_;
 	$parser->YYData->{symbtab}->Insert($self);
 	if (defined $parser->YYData->{curr_itf}) {
-		$parser->YYData->{curr_itf}->{hash_attribute_operation}{$self->{idf}} = $self;
+		$parser->YYData->{curr_itf}->{hash_attribute_operation}{$self->{idf}} = $self->{full}
 	} else {
 		$parser->Error(__PACKAGE__ . "::new ERROR_INTERNAL.\n");
 	}
@@ -603,7 +618,7 @@ sub _Init {
 	$parser->YYData->{unnamed_symbtab} = new UnnamedSymbtab($parser);
 	if (defined $parser->YYData->{curr_itf}) {
 		$self->{itf} = $parser->YYData->{curr_itf}->{full};
-		$parser->YYData->{curr_itf}->{hash_attribute_operation}{$self->{idf}} = $self;
+		$parser->YYData->{curr_itf}->{hash_attribute_operation}{$self->{idf}} = $self->{full}
 	} else {
 		$parser->Error(__PACKAGE__ . "::new ERROR_INTERNAL.\n");
 	}
@@ -1218,7 +1233,7 @@ sub visit {
 	if($visitor->can($func)) {
 		$visitor->$func($self,@_);
 	} else {
-		$visitor->visitLiteral($self);
+		$visitor->visitLiteral($self,@_);
 	}
 }
 
@@ -1428,7 +1443,7 @@ sub visit {
 	if($visitor->can($func)) {
 		$visitor->$func($self,@_);
 	} else {
-		$visitor->visitBasicType($self);
+		$visitor->visitBasicType($self,@_);
 	}
 }
 
@@ -2280,7 +2295,7 @@ sub _Init {
 	$parser->YYData->{unnamed_symbtab} = new UnnamedSymbtab($parser);
 	if (defined $parser->YYData->{curr_itf}) {
 		$self->{itf} = $parser->YYData->{curr_itf}->{full};
-		$parser->YYData->{curr_itf}->{hash_attribute_operation}{$self->{idf}} = $self;
+		$parser->YYData->{curr_itf}->{hash_attribute_operation}{$self->{idf}} = $self->{full}
 	} else {
 		$parser->Error(__PACKAGE__ . "::new ERROR_INTERNAL.\n");
 	}
@@ -2318,7 +2333,7 @@ sub _Init {
 	$parser->YYData->{unnamed_symbtab} = new UnnamedSymbtab($parser);
 	if (defined $parser->YYData->{curr_itf}) {
 		$self->{itf} = $parser->YYData->{curr_itf}->{full};
-		$parser->YYData->{curr_itf}->{hash_attribute_operation}{$self->{idf}} = $self;
+		$parser->YYData->{curr_itf}->{hash_attribute_operation}{$self->{idf}} = $self->{full}
 	} else {
 		$parser->Error(__PACKAGE__,"::new ERROR_INTERNAL.\n");
 	}

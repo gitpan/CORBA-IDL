@@ -1,5 +1,5 @@
 #
-#	Interface Definition Language (OMG IDL CORBA v2.4)
+#	Interface Definition Language (OMG IDL CORBA v3.0)
 #
 # 	Lexer module
 #
@@ -364,20 +364,23 @@ sub _Lexer {
 		}
 
 		for ($parser->YYData->{INPUT}) {
-			s/^#\s+([\d]+)\s+["<]([^\s">]+)[">]\s+([\d]+)\s*\n//		# cccp
+			s/^#\s+[\d]+\s+"<[^>]+>"\s*\n//							# cpp 3.2.3 ("<build-in>", "<command line>")
+					and last;
+
+			s/^#\s+([\d]+)\s+["<]([^\s">]+)[">]\s+([\d]+)\s*\n//	# cpp
 					and $parser->YYData->{lineno} = $1,
 					    $parser->YYData->{filename} = $2,
 					    $parser->YYData->{doc} = '',
 					    $parser->YYData->{curr_node} = undef,
 					    last;
 
-			s/^#\s+([\d]+)\s+["<]([^\s">]+)[">]\s*\n//				# cccp
+			s/^#\s+([\d]+)\s+["<]([^\s">]+)[">]\s*\n//				# cpp
 					and $parser->YYData->{lineno} = $1,
 					    $parser->YYData->{filename} = $2,
 					    $parser->YYData->{doc} = '',
 					    $parser->YYData->{curr_node} = undef,
 					    last;
-			s/^#\s*line\s+([\d]+)\s+["<]([^\s">]+)[">]\s*\n//			# CL.EXE Microsoft VC
+			s/^#\s*line\s+([\d]+)\s+["<]([^\s">]+)[">]\s*\n//		# CL.EXE Microsoft VC
 					and $parser->YYData->{lineno} = $1,
 					    $parser->YYData->{filename} = $2,
 					    $parser->YYData->{doc} = '',
