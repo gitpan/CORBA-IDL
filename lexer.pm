@@ -321,6 +321,49 @@ sub _DocLexer {
 	}
 }
 
+sub _DocAfterLexer {
+	my $parser = shift;
+
+	unless (defined $parser->YYData->{curr_node}) {
+		$parser->_DocLexer();
+		return;
+	}
+
+	unless (exists $parser->YYData->{curr_node}->{doc}) {
+		$parser->YYData->{curr_node}->{doc} = '';
+	}
+	my $flag = 1;
+	while (1) {
+		    $parser->YYData->{line}
+		or  $parser->YYData->{line} = readline $parser->YYData->{fh}
+		or  return;
+
+		for ($parser->YYData->{line}) {
+			s/^(\n)//
+					and $parser->YYData->{lineno} ++,
+						$parser->YYData->{curr_node}->{doc} .= $1,
+						$flag = 0,
+						last;
+			s/^\r//
+					and last;
+			s/^\*\///
+					and return;
+			unless ($flag) {
+				s/^\*//
+						and $flag = 1,
+						last;
+			}
+			s/^([ \t\f\013]+)//
+					and $parser->YYData->{curr_node}->{doc} .= $1,
+					last;
+			s/^(.)//
+					and $parser->YYData->{curr_node}->{doc} .= $1,
+					$flag = 1,
+					last;
+		}
+	}
+}
+
 sub _CodeLexer {
 	my $parser = shift;
 	my $frag = "";
@@ -434,6 +477,9 @@ sub _Lexer {
 					    $parser->YYData->{curr_node} = undef,
 					    last;
 
+			s/^\/\*\*<//									# documentation after
+					and $parser->_DocAfterLexer(),
+					    last;
 			s/^\/\*\*//										# documentation
 					and $parser->_DocLexer(),
 					    last;

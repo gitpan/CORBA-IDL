@@ -5784,7 +5784,7 @@ sub
 #line 998 "parser24.yp"
 {
 			new BooleanLiteral($_[0],
-					'value'				=>	1
+					'value'				=>	$_[1]
 			);
 		}
 	],
@@ -5794,7 +5794,7 @@ sub
 #line 1004 "parser24.yp"
 {
 			new BooleanLiteral($_[0],
-					'value'				=>	0
+					'value'				=>	$_[1]
 			);
 		}
 	],

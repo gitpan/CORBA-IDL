@@ -6453,7 +6453,7 @@ sub
 #line 1077 "parserxp.yp"
 {
 			new BooleanLiteral($_[0],
-					'value'				=>	1
+					'value'				=>	$_[1]
 			);
 		}
 	],
@@ -6463,7 +6463,7 @@ sub
 #line 1083 "parserxp.yp"
 {
 			new BooleanLiteral($_[0],
-					'value'				=>	0
+					'value'				=>	$_[1]
 			);
 		}
 	],

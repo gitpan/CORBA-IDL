@@ -4377,7 +4377,7 @@ sub
 #line 580 "parser22.yp"
 {
 			new BooleanLiteral($_[0],
-					'value'				=>	1
+					'value'				=>	$_[1]
 			);
 		}
 	],
@@ -4387,7 +4387,7 @@ sub
 #line 586 "parser22.yp"
 {
 			new BooleanLiteral($_[0],
-					'value'				=>	0
+					'value'				=>	$_[1]
 			);
 		}
 	],

@@ -997,13 +997,13 @@ boolean_literal
 :	TRUE
 		{
 			new BooleanLiteral($_[0],
-					'value'				=>	1
+					'value'				=>	$_[1]
 			);
 		}
 |	FALSE
 		{
 			new BooleanLiteral($_[0],
-					'value'				=>	0
+					'value'				=>	$_[1]
 			);
 		}
 ;

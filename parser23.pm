@@ -5719,7 +5719,7 @@ sub
 #line 986 "parser23.yp"
 {
 			new BooleanLiteral($_[0],
-					'value'				=>	1
+					'value'				=>	$_[1]
 			);
 		}
 	],
@@ -5729,7 +5729,7 @@ sub
 #line 992 "parser23.yp"
 {
 			new BooleanLiteral($_[0],
-					'value'				=>	0
+					'value'				=>	$_[1]
 			);
 		}
 	],

@@ -118,11 +118,15 @@ sub visitBaseInterface {
 #
 
 sub visitStateMember {
-	# empty
+	my $self = shift;
+	my ($node) = @_;
+	$self->_set_repos_id($node);
 }
 
 sub visitInitializer {
-	# empty
+	my $self = shift;
+	my ($node) = @_;
+	$self->_set_repos_id($node);
 }
 
 sub visitBoxedValue {
@@ -137,7 +141,9 @@ sub visitBoxedValue {
 #
 
 sub visitConstant {
-	# empty
+	my $self = shift;
+	my ($node) = @_;
+	$self->_set_repos_id($node);
 }
 
 #
@@ -257,7 +263,9 @@ sub visitException {
 #
 
 sub visitOperation {
-	# empty
+	my $self = shift;
+	my ($node) = @_;
+	$self->_set_repos_id($node);
 }
 
 #
@@ -265,7 +273,9 @@ sub visitOperation {
 #
 
 sub visitAttribute {
-	# empty
+	my $self = shift;
+	my ($node) = @_;
+	$self->_set_repos_id($node);
 }
 
 #
@@ -313,11 +323,15 @@ sub visitConsumes {
 #
 
 sub visitFactory {
-	# empty
+	my $self = shift;
+	my ($node) = @_;
+	$self->_set_repos_id($node);
 }
 
 sub visitFinder {
-	# empty
+	my $self = shift;
+	my ($node) = @_;
+	$self->_set_repos_id($node);
 }
 
 1;

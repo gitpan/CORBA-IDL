@@ -273,6 +273,7 @@ sub Insert {
 	my $self = shift;
 	my($node) = @_;
 	if ($node->isa('Specification')) {
+		$node->{full} = '';
 		$self->{scopes}->{''}->_Insert('', $node);
 		return;
 	}
@@ -630,7 +631,7 @@ sub CheckID {
 	} elsif ($id =~ /^RMI:/) {
 		#	10.7.2		RMI Hashed Format
 		$self->{parser}->Error("Bad RMI format for Repository ID '$id'.\n")
-				unless ($id =~ /^RMI:[0-9A-Fa-f\-]+:[0-9A-F]{16}(:[0-9A-F]{16})?/);
+				unless ($id =~ /^RMI:[0-9A-Za-z_\[\-\.\/\$\\]+:[0-9A-Fa-f]{16}(:[0-9A-Fa-f]{16})?/);
 	} elsif ($id =~ /^DCE:/) {
 		#	10.7.3		DCE UUID Format
 		$self->{parser}->Error("Bad DCE format for Repository ID '$id'.\n")

@@ -4360,7 +4360,7 @@ sub
 #line 579 "parser21.yp"
 {
 			new BooleanLiteral($_[0],
-					'value'				=>	1
+					'value'				=>	$_[1]
 			);
 		}
 	],
@@ -4370,7 +4370,7 @@ sub
 #line 585 "parser21.yp"
 {
 			new BooleanLiteral($_[0],
-					'value'				=>	0
+					'value'				=>	$_[1]
 			);
 		}
 	],

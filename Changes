@@ -1,5 +1,11 @@
 Revision history for Perl extension CORBA::IDL.
 
+2.44  Sun Apr  3 20:30;00 2005
+	- lexer.pm : /**< doxygen comment */
+	- parser* : BooleanLiteral->{value}
+	- repos_id.pm : generalization
+	- Specification->{full} = ''
+
 2.43  Tue Jan  4 18:30:00 2005
 	- bug [cpan #9366] AST for Enum-discriminated Unions always indicates 'need_default'
 
