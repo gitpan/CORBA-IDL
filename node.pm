@@ -7,7 +7,7 @@ use UNIVERSAL;
 
 package node;
 use vars qw($VERSION);
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 sub new {
 	my $proto = shift;
@@ -239,10 +239,13 @@ package RegularValue;
 sub _CheckInheritance {
 	my $self = shift;
 	my($parser) = @_;
-	if (exists $self->{inheritance}
-			and exists $self->{inheritance}->{modifier}		# truncatable
+	if (exists $self->{inheritance}) {
+		if (    exists $self->{inheritance}->{modifier}		# truncatable
 			and exists $self->{modifier} ) {				# custom
-		$parser->Error("'truncatable' is used in a custom value.\n");
+			$parser->Error("'truncatable' is used in a custom value.\n");
+		}
+		$self->configure(hash_inheritance => $self->{inheritance}->{hash_inheritance});
+		$self->configure(hash_attribute_operation => $self->{inheritance}->{hash_attribute_operation});
 	}
 }
 
@@ -297,9 +300,10 @@ sub _CheckInheritance {
 	my $self = shift;
 	my($parser) = @_;
 	# 3.8.5	Valuetype Inheritance
-	if (exists $self->{list_name}) {
-		my %hash;
-		foreach (@{$self->{list_name}}) {
+	$self->{hash_attribute_operation} = {};
+	my %hash;
+	if (exists $self->{list_value}) {
+		foreach (@{$self->{list_value}}) {
 			my $name = $_->{idf};
 			if (exists $hash{$name}) {
 				$parser->Warning("'$name' redeclares inheritance.\n");
@@ -309,13 +313,45 @@ sub _CheckInheritance {
 		}
 	}
 	if (exists $self->{list_interface}) {
-		my %hash;
 		foreach (@{$self->{list_interface}}) {
 			my $name = $_->{idf};
 			if (exists $hash{$name}) {
 				$parser->Warning("'$name' redeclares inheritance.\n");
 			} else {
 				$hash{$name} = $_;
+			}
+		}
+	}
+	$self->configure(hash_inheritance => \%hash);
+	if (exists $self->{list_value}) {
+		foreach (@{$self->{list_value}}) {
+			my $base = $_;
+			foreach (keys %{$base->{hash_attribute_operation}}) {
+				if (exists $self->{hash_attribute_operation}{$_}) {
+					if ($self->{hash_attribute_operation}{$_} != $base->{hash_attribute_operation}{$_}) {
+						$parser->Error("multi inheritance of '$_'.\n");
+					}
+				} else {
+					my $node = $base->{hash_attribute_operation}{$_};
+					$self->{hash_attribute_operation}{$_} = $node;
+					$parser->YYData->{symbtab}->Insert($_,$node);
+				}
+			}
+		}
+	}
+	if (exists $self->{list_interface}) {
+		foreach (@{$self->{list_interface}}) {
+			my $base = $_;
+			foreach (keys %{$base->{hash_attribute_operation}}) {
+				if (exists $self->{hash_attribute_operation}{$_}) {
+					if ($self->{hash_attribute_operation}{$_} != $base->{hash_attribute_operation}{$_}) {
+						$parser->Error("multi inheritance of '$_'.\n");
+					}
+				} else {
+					my $node = $base->{hash_attribute_operation}{$_};
+					$self->{hash_attribute_operation}{$_} = $node;
+					$parser->YYData->{symbtab}->Insert($_,$node);
+				}
 			}
 		}
 	}
@@ -353,7 +389,6 @@ sub new {
 		my @array_size = @{$_};
 		my $idf = shift @array_size;
 		if (@array_size) {
-#			$member = new Array($parser,
 			$member = new StateMember($parser,
 					modifier		=>	$self->{modifier},
 					type			=>	$self->{type},
@@ -364,7 +399,6 @@ sub new {
 				$parser->Deprecated("Anonymous type (array).\n");
 			}
 		} else {
-#			$member = new Single($parser,
 			$member = new StateMember($parser,
 					modifier		=>	$self->{modifier},
 					type			=>	$self->{type},
@@ -391,6 +425,11 @@ sub new {
 	bless($self, $class);
 	# specific
 	$parser->YYData->{symbtab}->Insert($self->{idf},$self);
+	if (defined $parser->YYData->{curr_itf}) {
+		$parser->YYData->{curr_itf}->{hash_attribute_operation}{$self->{idf}} = $self;
+	} else {
+		$parser->Error(__PACKAGE__,"::new ERROR_INTERNAL.\n");
+	}
 	if ($parser->YYData->{doc} ne '') {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
@@ -415,6 +454,12 @@ sub new {
 	# specific
 	$parser->YYData->{symbtab}->Insert($self->{idf},$self);
 	$parser->YYData->{unnamed_symbtab} = new UnnamedSymbtab($parser);
+	if (defined $parser->YYData->{curr_itf}) {
+		$self->{itf} = $parser->YYData->{curr_itf}->{coll};
+		$parser->YYData->{curr_itf}->{hash_attribute_operation}{$self->{idf}} = $self;
+	} else {
+		$parser->Error(__PACKAGE__,"::new ERROR_INTERNAL.\n");
+	}
 	if ($parser->YYData->{doc} ne '') {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
@@ -427,20 +472,14 @@ sub Configure {
 	my $parser = shift;
 	$self->configure(@_);
 	my @list_in = ();
-	my @list_inout = ();
-	my @list_out = ();
 	foreach ( @{$self->{list_param}} ) {
 		if      ($_->{attr} eq 'in') {
 			unshift @list_in, $_;
-		} elsif ($_->{attr} eq 'inout') {
-			unshift @list_inout, $_;
-		} elsif ($_->{attr} eq 'out') {
-			unshift @list_out, $_;
 		}
 	}
 	$self->{list_in} = \@list_in;
-	$self->{list_inout} = \@list_inout;
-	$self->{list_out} = \@list_out;
+	$self->{list_inout} = [];
+	$self->{list_out} = [];
 	return $self;
 }
 
@@ -476,6 +515,15 @@ package AbstractValue;
 
 @AbstractValue::ISA = qw(node);
 
+sub _CheckInheritance {
+	my $self = shift;
+	my($parser) = @_;
+	if (exists $self->{inheritance}) {
+		$self->configure(hash_inheritance => $self->{inheritance}->{hash_inheritance});
+		$self->configure(hash_attribute_operation => $self->{inheritance}->{hash_attribute_operation});
+	}
+}
+
 sub new {
 	my $proto = shift;
 	my $class = ref($proto) || $proto;
@@ -489,6 +537,7 @@ sub new {
 	$parser->YYData->{symbtab}->Insert($self->{idf},new Dummy($self));
 	$parser->YYData->{curr_itf} = $self;
 	$self->line_stamp($parser);
+	$self->_CheckInheritance($parser);
 	if ($parser->YYData->{doc} ne '') {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
@@ -616,41 +665,41 @@ sub _EvalBinop {
 		my $left = _Eval($parser,$type,$list_expr);
 		return undef unless (defined $left);
 		if (	  $elt->{op} eq '|' ) {
-			my $value = $left->bior($right);
-			return _CheckRange($parser,$type,new Math::BigInt($value));
+			my $value = new Math::BigInt($left->bior($right));
+			return _CheckRange($parser,$type,$value);
 		} elsif ( $elt->{op} eq '^' ) {
-			my $value = $left->bxor($right);
-			return _CheckRange($parser,$type,new Math::BigInt($value));
+			my $value = new Math::BigInt($left->bxor($right));
+			return _CheckRange($parser,$type,$value);
 		} elsif ( $elt->{op} eq '&' ) {
-			my $value = $left->band($right);
-			return _CheckRange($parser,$type,new Math::BigInt($value));
+			my $value = new Math::BigInt($left->band($right));
+			return _CheckRange($parser,$type,$value);
 		} elsif ( $elt->{op} eq '+' ) {
-			my $value = $left->badd($right);
-			return _CheckRange($parser,$type,new Math::BigInt($value));
+			my $value = new Math::BigInt($left->badd($right));
+			return _CheckRange($parser,$type,$value);
 		} elsif ( $elt->{op} eq '-' ) {
-			my $value = $left->bsub($right);
-			return _CheckRange($parser,$type,new Math::BigInt($value));
+			my $value = new Math::BigInt($left->bsub($right));
+			return _CheckRange($parser,$type,$value);
 		} elsif ( $elt->{op} eq '*' ) {
-			my $value = $left->bmul($right);
-			return _CheckRange($parser,$type,new Math::BigInt($value));
+			my $value = new Math::BigInt($left->bmul($right));
+			return _CheckRange($parser,$type,$value);
 		} elsif ( $elt->{op} eq '/' ) {
-			my ($value) = $left->bdiv($right);
-			return _CheckRange($parser,$type,new Math::BigInt($value));
+			my $value = new Math::BigInt($left->bdiv($right));
+			return _CheckRange($parser,$type,$value);
 		} elsif ( $elt->{op} eq '%' ) {
-			my $value = $left->bmod($right);
-			return _CheckRange($parser,$type,new Math::BigInt($value));
+			my $value = new Math::BigInt($left->bmod($right));
+			return _CheckRange($parser,$type,$value);
 		} elsif ( $elt->{op} eq '>>' ) {
 			if (0 <= $right and $right < 64) {
-				my $value = $left->brsft($right);
-				return _CheckRange($parser,$type,new Math::BigInt($value));
+				my $value = new Math::BigInt($left->brsft($right));
+				return _CheckRange($parser,$type,$value);
 			} else {
 				$parser->Error("shift operation out of range.\n");
 				return undef;
 			}
 		} elsif ( $elt->{op} eq '<<' ) {
 			if (0 <= $right and $right < 64) {
-				my $value = $left->blsft($right);
-				return _CheckRange($parser,$type,new Math::BigInt($value));
+				my $value = new Math::BigInt($left->blsft($right));
+				return _CheckRange($parser,$type,$value);
 			} else {
 				$parser->Error("shift operation out of range.\n");
 				return undef;
@@ -665,17 +714,17 @@ sub _EvalBinop {
 		my $left = _Eval($parser,$type,$list_expr);
 		return undef unless (defined $left);
 		if (      $elt->{op} eq '+' ) {
-			my $value = $left->fadd($right);
-			return _CheckRange($parser,$type,new Math::BigFloat($value));
+			my $value = new Math::BigFloat($left->fadd($right));
+			return _CheckRange($parser,$type,$value);
 		} elsif ( $elt->{op} eq '-' ) {
-			my $value = $left->fsub($right);
-			return _CheckRange($parser,$type,new Math::BigFloat($value));
+			my $value = new Math::BigFloat($left->fsub($right));
+			return _CheckRange($parser,$type,$value);
 		} elsif ( $elt->{op} eq '*' ) {
-			my $value = $left->fmul($right);
-			return _CheckRange($parser,$type,new Math::BigFloat($value));
+			my $value = new Math::BigFloat($left->fmul($right));
+			return _CheckRange($parser,$type,$value);
 		} elsif ( $elt->{op} eq '/' ) {
-			my $value = $left->fdiv($right);
-			return _CheckRange($parser,$type,new Math::BigFloat($value));
+			my $value = new Math::BigFloat($left->fdiv($right));
+			return _CheckRange($parser,$type,$value);
 		} elsif (  $elt->{op} eq '|'
 				or $elt->{op} eq '^'
 				or $elt->{op} eq '&'
@@ -693,17 +742,17 @@ sub _EvalBinop {
 		my $left = _Eval($parser,$type,$list_expr);
 		return undef unless (defined $left);
 		if (      $elt->{op} eq '+' ) {
-			my $value = $left->fadd($right);
-			return _CheckRange($parser,$type,new Math::BigFloat($value));
+			my $value = new Math::BigFloat($left->fadd($right));
+			return _CheckRange($parser,$type,$value);
 		} elsif ( $elt->{op} eq '-' ) {
-			my $value = $left->fsub($right);
-			return _CheckRange($parser,$type,new Math::BigFloat($value));
+			my $value = new Math::BigFloat($left->fsub($right));
+			return _CheckRange($parser,$type,$value);
 		} elsif ( $elt->{op} eq '*' ) {
-			my $value = $left->fmul($right);
-			return _CheckRange($parser,$type,new Math::BigFloat($value));
+			my $value = new Math::BigFloat($left->fmul($right));
+			return _CheckRange($parser,$type,$value);
 		} elsif ( $elt->{op} eq '/' ) {
-			my $value = $left->fdiv($right);
-			return _CheckRange($parser,$type,new Math::BigFloat($value));
+			my $value = new Math::BigFloat($left->fdiv($right));
+			return _CheckRange($parser,$type,$value);
 		} elsif (  $elt->{op} eq '|'
 				or $elt->{op} eq '^'
 				or $elt->{op} eq '&'
@@ -731,22 +780,11 @@ sub _EvalUnop {
 		if (	  $elt->{op} eq '+' ) {
 			return _CheckRange($parser,$type,$right);
 		} elsif ( $elt->{op} eq '-' ) {
-			my $value = $right->bneg();
-			return _CheckRange($parser,$type,new Math::BigInt($value));
+			my $value = new Math::BigInt($right->bneg());
+			return _CheckRange($parser,$type,$value);
 		} elsif ( $elt->{op} eq '~' ) {
-			my $value;
-			if      ($type->{value} eq 'unsigned short') {
-				$value = USHORT_MAX->bsub($right);
-			} elsif ($type->{value} eq 'unsigned long') {
-				$value = ULONG_MAX->bsub($right);
-			} elsif ($type->{value} eq 'unsigned long long') {
-				$value = ULLONG_MAX->bsub($right);
-			} elsif ($type->{value} eq 'octet') {
-				$value = UCHAR_MAX->bsub($right);
-			} else {	# signed
-				$value = $right->badd(1)->bneg();
-			}
-			return _CheckRange($parser,$type,new Math::BigInt($value));
+			my $value = new Math::BigInt($right->bnot());
+			return _CheckRange($parser,$type,$value);
 		} else {
 			$parser->Error("_EvalUnop (int) : INTERNAL ERROR.\n");
 			return undef;
@@ -757,8 +795,8 @@ sub _EvalUnop {
 		if (	  $elt->{op} eq '+' ) {
 			return _CheckRange($parser,$type,$right);
 		} elsif ( $elt->{op} eq '-' ) {
-			my $value = $right->fneg();
-			return _CheckRange($parser,$type,new Math::BigFloat($value));
+			my $value = new Math::BigFloat($right->fneg());
+			return _CheckRange($parser,$type,$value);
 		} elsif (  $elt->{op} eq '~' ) {
 			$parser->Error("'$elt->{op}' is not valid for '$type'.\n");
 			return undef;
@@ -772,8 +810,8 @@ sub _EvalUnop {
 		if (	  $elt->{op} eq '+' ) {
 			return _CheckRange($parser,$type,$right);
 		} elsif ( $elt->{op} eq '-' ) {
-			my $value = $right->fneg();
-			return _CheckRange($parser,$type,new Math::BigFloat($value));
+			my $value = new Math::BigFloat($right->fneg());
+			return _CheckRange($parser,$type,$value);
 		} elsif (  $elt->{op} eq '~' ) {
 			$parser->Error("'$elt->{op}' is not valid for '$type'.\n");
 			return undef;
@@ -1595,7 +1633,10 @@ sub Configure {
 	$self->configure(@_);
 	my $type = $self->{type};
 	if ($type->isa('TypeDeclarator')) {
-		$type = $type->{type};
+		while (	    $type->isa('TypeDeclarator')
+				and ! exists $type->{array_size} ) {
+			$type = $type->{type};
+		}
 		if (		! $type->isa('IntegerType')
 				and ! $type->isa('CharType')
 				and ! $type->isa('BooleanType')
@@ -1605,14 +1646,16 @@ sub Configure {
 		}
 	}
 	my %hash;
-	foreach (@{$self->{list_expr}}) {
-		my $elt = $_->{element};
+	my @list_all;
+	foreach my $case (@{$self->{list_expr}}) {
+		my $elt = $case->{element};
 		my @list;
-		foreach (@{$_->{list_label}}) {
+		foreach (@{$case->{list_label}}) {
 			my $key;
 			if (ref $_ eq 'Default') {
 				$key = 'Default';
 				push @list, $_;
+				$self->configure(default	=>	$case);
 			} else {
 				# now, type is known
 				my $cst = new Expression($parser,
@@ -1621,6 +1664,7 @@ sub Configure {
 				);
 				$key = $cst->{value};
 				push @list, $cst;
+				push @list_all, $cst;
 			}
 			if (defined $key) {
 				if (exists $hash{$key}) {
@@ -1630,9 +1674,26 @@ sub Configure {
 				}
 			}
 		}
-		$_->{list_label} = \@list;
+		$case->{list_label} = \@list;
 	}
+	$self->configure(list_value	=>	\@list_all);
 	$self->configure(hash_value	=>	\%hash);
+	if ($type->isa('EnumType')) {
+		my $all = 1;
+		foreach (@{$type->{list_value}}) {
+			$all = 0 unless (exists $hash{$_});
+		}
+		if ($all) {
+			$parser->Error("illegal label 'default'.\n")
+					if (exists $self->{default});
+		} else {
+			$self->configure(need_default	=>	1)
+					unless (exists $self->{default});
+		}
+	} else {
+		$self->configure(need_default	=>	1)
+				unless (exists $self->{default});
+	}
 	return $self;
 }
 
@@ -1937,7 +1998,8 @@ sub new {
 	my $self = new node(@_);
 	bless($self, $class);
 	# specific
-	$parser->YYData->{symbtab}->Insert($self->{idf},$self);
+	$parser->YYData->{symbtab}->Insert($self->{idf},$self)
+			unless($self->{idf} =~ /^_/);		# _get_ or _set_
 	$parser->YYData->{unnamed_symbtab} = new UnnamedSymbtab($parser);
 	$self->line_stamp($parser);
 	my $type = $self->{type};
@@ -1945,7 +2007,8 @@ sub new {
 	TypeDeclarator->CheckForward($parser,$type);
 	if (defined $parser->YYData->{curr_itf}) {
 		$self->{itf} = $parser->YYData->{curr_itf}->{coll};
-		$parser->YYData->{curr_itf}->{hash_attribute_operation}{$self->{idf}} = $self;
+		$parser->YYData->{curr_itf}->{hash_attribute_operation}{$self->{idf}} = $self
+				unless($self->{idf} =~ /^_/);		# _get_ or _set_
 	} else {
 		$parser->Error(__PACKAGE__,"::new ERROR_INTERNAL.\n");
 	}
@@ -2056,7 +2119,6 @@ sub new {
 	bless($self, $class);
 	# specific
 	my @list;
-	my @list_op;
 	foreach (@{$self->{list_expr}}) {
 		my $attr = new Attribute($parser,
 				modifier			=>	$self->{modifier},
@@ -2064,37 +2126,9 @@ sub new {
 				idf					=>	$_
 		);
 		push @list, $attr;
-		my $op = new Operation($parser,
-				type				=>	$self->{type},
-				idf					=>	'_get_' . $_
-		);
-		$op->Configure($parser,
-				list_param		=>	[]
-		);
-		push @list_op, $op;
-		unless (exists $self->{modifier}) {		# readonly
-			$op = new Operation($parser,
-					type			=>	new VoidType($parser,
-												value		=>	'void'
-										),
-					idf				=>	'_set_' . $_
-			);
-			# unnamed_symbtab created
-			$op->Configure($parser,
-					list_param		=>	[
-											new Parameter($parser,
-													attr	=>	'in',
-													type	=>	$self->{type},
-													idf		=>	$_
-											)
-										]
-			);
-			push @list_op, $op;
-		}
 	}
 	$self->configure(
-			list_value	=>	\@list,		# attribute
-			list_op		=>	\@list_op	# operation
+			list_value	=>	\@list		# attribute
 	);
 	$self->line_stamp($parser);
 	return $self;
@@ -2113,13 +2147,45 @@ sub new {
 	# specific
 	$parser->YYData->{symbtab}->Insert($self->{idf},$self);
 	if (defined $parser->YYData->{curr_itf}) {
-	    $parser->YYData->{curr_itf}->{hash_attribute_operation}{$self->{idf}} = $self;
+		$self->{itf} = $parser->YYData->{curr_itf}->{coll};
+		$parser->YYData->{curr_itf}->{hash_attribute_operation}{$self->{idf}} = $self;
 	} else {
 		$parser->Error(__PACKAGE__,"::new ERROR_INTERNAL.\n");
 	}
 	if ($parser->YYData->{doc} ne '') {
 		$self->{doc} = $parser->YYData->{doc};
 		$parser->YYData->{doc} = '';
+	}
+	my $op = new Operation($parser,
+			type				=>	$self->{type},
+			idf					=>	'_get_' . $self->{idf}
+	);
+	$op->Configure($parser,
+			list_param		=>	[]
+	);
+	$self->configure(
+			_get		=>	$op
+	);
+	unless (exists $self->{modifier}) {		# readonly
+		$op = new Operation($parser,
+				type			=>	new VoidType($parser,
+											value		=>	'void'
+									),
+				idf				=>	'_set_' . $self->{idf}
+		);
+		# unnamed_symbtab created
+		$op->Configure($parser,
+				list_param		=>	[
+										new Parameter($parser,
+												attr	=>	'in',
+												type	=>	$self->{type},
+												idf		=>	$self->{idf}
+										)
+									]
+		);
+		$self->configure(
+				_set		=>	$op
+		);
 	}
 	return $self;
 }

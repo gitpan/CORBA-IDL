@@ -65,12 +65,20 @@
 
 /* 1 */		/* 3.5	OMG IDL Specification */
 specification
-:	definitions							{ $_[0]->YYData->{list_root} = $_[1]; }
+:	definitions
+		{
+			$_[0]->YYData->{root} = new Specification($_[0],
+					'list_decl'			=>	$_[1],
+			);
+		}
 |	/* empty */
 		{
 			$_[0]->Error("Empty specification\n");
 		}
-|	error								#default action
+|	error
+		{
+			$_[0]->Error("definition declaration excepted.\n");
+		}
 ;
 
 definitions

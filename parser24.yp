@@ -74,9 +74,12 @@ specification
 		}
 |	/* empty */
 		{
-			$_[0]->Error("Empty specification\n");
+			$_[0]->Error("Empty specification.\n");
 		}
-|	error								#default action
+|	error
+		{
+			$_[0]->Error("definition declaration excepted.\n");
+		}
 ;
 
 definitions

@@ -646,9 +646,6 @@ sub visitAttributes {
 	foreach (@{$node->{list_value}}) {
 		$_->visit($self);				# attribute
 	}
-#	foreach (@{$node->{list_op}}) {
-#		$_->visit($self);				# operation
-#	}
 	$self->dec_tab();
 }
 

@@ -4432,22 +4432,27 @@ sub
 sub
 #line 76 "parser24.yp"
 {
-			$_[0]->Error("Empty specification\n");
+			$_[0]->Error("Empty specification.\n");
 		}
 	],
 	[#Rule 3
-		 'specification', 1, undef
+		 'specification', 1,
+sub
+#line 80 "parser24.yp"
+{
+			$_[0]->Error("definition declaration excepted.\n");
+		}
 	],
 	[#Rule 4
 		 'definitions', 1,
 sub
-#line 83 "parser24.yp"
+#line 86 "parser24.yp"
 { [$_[1]]; }
 	],
 	[#Rule 5
 		 'definitions', 2,
 sub
-#line 84 "parser24.yp"
+#line 87 "parser24.yp"
 { unshift(@{$_[2]},$_[1]); $_[2]; }
 	],
 	[#Rule 6
@@ -4471,7 +4476,7 @@ sub
 	[#Rule 12
 		 'definition', 2,
 sub
-#line 96 "parser24.yp"
+#line 99 "parser24.yp"
 {
 			$_[0]->Warning("';' excepted.\n");
 			$_[0]->YYErrok();
@@ -4481,7 +4486,7 @@ sub
 	[#Rule 13
 		 'definition', 2,
 sub
-#line 102 "parser24.yp"
+#line 105 "parser24.yp"
 {
 			$_[0]->Warning("';' excepted.\n");
 			$_[0]->YYErrok();
@@ -4491,7 +4496,7 @@ sub
 	[#Rule 14
 		 'definition', 2,
 sub
-#line 108 "parser24.yp"
+#line 111 "parser24.yp"
 {
 			$_[0]->Warning("';' excepted.\n");
 			$_[0]->YYErrok();
@@ -4501,7 +4506,7 @@ sub
 	[#Rule 15
 		 'definition', 2,
 sub
-#line 114 "parser24.yp"
+#line 117 "parser24.yp"
 {
 			$_[0]->Warning("';' excepted.\n");
 			$_[0]->YYErrok();
@@ -4511,7 +4516,7 @@ sub
 	[#Rule 16
 		 'definition', 2,
 sub
-#line 120 "parser24.yp"
+#line 123 "parser24.yp"
 {
 			$_[0]->Warning("';' excepted.\n");
 			$_[0]->YYErrok();
@@ -4521,7 +4526,7 @@ sub
 	[#Rule 17
 		 'definition', 2,
 sub
-#line 126 "parser24.yp"
+#line 129 "parser24.yp"
 {
 			$_[0]->Warning("';' excepted.\n");
 			$_[0]->YYErrok();
@@ -4531,7 +4536,7 @@ sub
 	[#Rule 18
 		 'module', 4,
 sub
-#line 136 "parser24.yp"
+#line 139 "parser24.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
 			$_[1]->configure('list_decl' => $_[3])
@@ -4541,7 +4546,7 @@ sub
 	[#Rule 19
 		 'module', 4,
 sub
-#line 142 "parser24.yp"
+#line 145 "parser24.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
 			$_[0]->Error("definition declaration excepted.\n");
@@ -4551,7 +4556,7 @@ sub
 	[#Rule 20
 		 'module', 2,
 sub
-#line 148 "parser24.yp"
+#line 151 "parser24.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
 			$_[0]->Error("'\x7b' excepted.\n");
@@ -4561,7 +4566,7 @@ sub
 	[#Rule 21
 		 'module_header', 2,
 sub
-#line 157 "parser24.yp"
+#line 160 "parser24.yp"
 {
 			new Module($_[0],
 					'idf'				=>	$_[2],
@@ -4571,7 +4576,7 @@ sub
 	[#Rule 22
 		 'module_header', 2,
 sub
-#line 163 "parser24.yp"
+#line 166 "parser24.yp"
 {
 			$_[0]->Error("Identifier excepted.\n");
 			$_[0]->YYErrok();
@@ -4586,7 +4591,7 @@ sub
 	[#Rule 25
 		 'interface_dcl', 3,
 sub
-#line 178 "parser24.yp"
+#line 181 "parser24.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->YYData->{curr_itf} = undef;
@@ -4596,7 +4601,7 @@ sub
 	[#Rule 26
 		 'interface_dcl', 4,
 sub
-#line 184 "parser24.yp"
+#line 187 "parser24.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->YYData->{curr_itf} = undef;
@@ -4606,7 +4611,7 @@ sub
 	[#Rule 27
 		 'interface_dcl', 4,
 sub
-#line 190 "parser24.yp"
+#line 193 "parser24.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->YYData->{curr_itf} = undef;
@@ -4617,7 +4622,7 @@ sub
 	[#Rule 28
 		 'forward_dcl', 3,
 sub
-#line 201 "parser24.yp"
+#line 204 "parser24.yp"
 {
 			new ForwardInterface($_[0],
 					'modifier'				=>	$_[1],
@@ -4628,7 +4633,7 @@ sub
 	[#Rule 29
 		 'forward_dcl', 3,
 sub
-#line 208 "parser24.yp"
+#line 211 "parser24.yp"
 {
 			$_[0]->Error("Identifier excepted.\n");
 			$_[0]->YYErrok();
@@ -4646,7 +4651,7 @@ sub
 	[#Rule 33
 		 'interface_header', 3,
 sub
-#line 223 "parser24.yp"
+#line 226 "parser24.yp"
 {
 			new Interface($_[0],
 					'modifier'				=>	$_[1],
@@ -4657,7 +4662,7 @@ sub
 	[#Rule 34
 		 'interface_header', 4,
 sub
-#line 230 "parser24.yp"
+#line 233 "parser24.yp"
 {
 			new Interface($_[0],
 					'modifier'				=>	$_[1],
@@ -4672,13 +4677,13 @@ sub
 	[#Rule 36
 		 'exports', 1,
 sub
-#line 245 "parser24.yp"
+#line 248 "parser24.yp"
 { [$_[1]]; }
 	],
 	[#Rule 37
 		 'exports', 2,
 sub
-#line 246 "parser24.yp"
+#line 249 "parser24.yp"
 { unshift(@{$_[2]},$_[1]); $_[2]; }
 	],
 	[#Rule 38
@@ -4699,7 +4704,7 @@ sub
 	[#Rule 43
 		 'export', 2,
 sub
-#line 257 "parser24.yp"
+#line 260 "parser24.yp"
 {
 			$_[0]->Warning("';' excepted.\n");
 			$_[0]->YYErrok();
@@ -4709,7 +4714,7 @@ sub
 	[#Rule 44
 		 'export', 2,
 sub
-#line 263 "parser24.yp"
+#line 266 "parser24.yp"
 {
 			$_[0]->Warning("';' excepted.\n");
 			$_[0]->YYErrok();
@@ -4719,7 +4724,7 @@ sub
 	[#Rule 45
 		 'export', 2,
 sub
-#line 269 "parser24.yp"
+#line 272 "parser24.yp"
 {
 			$_[0]->Warning("';' excepted.\n");
 			$_[0]->YYErrok();
@@ -4729,7 +4734,7 @@ sub
 	[#Rule 46
 		 'export', 2,
 sub
-#line 275 "parser24.yp"
+#line 278 "parser24.yp"
 {
 			$_[0]->Warning("';' excepted.\n");
 			$_[0]->YYErrok();
@@ -4739,7 +4744,7 @@ sub
 	[#Rule 47
 		 'export', 2,
 sub
-#line 281 "parser24.yp"
+#line 284 "parser24.yp"
 {
 			$_[0]->Warning("';' excepted.\n");
 			$_[0]->YYErrok();
@@ -4749,13 +4754,13 @@ sub
 	[#Rule 48
 		 'interface_inheritance_spec', 2,
 sub
-#line 290 "parser24.yp"
+#line 293 "parser24.yp"
 { $_[2]; }
 	],
 	[#Rule 49
 		 'interface_inheritance_spec', 2,
 sub
-#line 292 "parser24.yp"
+#line 295 "parser24.yp"
 {
 			$_[0]->Error("Interface name excepted.\n");
 			$_[0]->YYErrok();
@@ -4764,19 +4769,19 @@ sub
 	[#Rule 50
 		 'interface_names', 1,
 sub
-#line 299 "parser24.yp"
+#line 302 "parser24.yp"
 { [$_[1]]; }
 	],
 	[#Rule 51
 		 'interface_names', 3,
 sub
-#line 300 "parser24.yp"
+#line 303 "parser24.yp"
 { unshift(@{$_[3]},$_[1]); $_[3]; }
 	],
 	[#Rule 52
 		 'interface_name', 1,
 sub
-#line 306 "parser24.yp"
+#line 309 "parser24.yp"
 {
 				Interface->Lookup($_[0],$_[1])
 		}
@@ -4787,7 +4792,7 @@ sub
 	[#Rule 54
 		 'scoped_name', 2,
 sub
-#line 315 "parser24.yp"
+#line 318 "parser24.yp"
 {
 			$_[1] . $_[2];
 		}
@@ -4795,7 +4800,7 @@ sub
 	[#Rule 55
 		 'scoped_name', 2,
 sub
-#line 319 "parser24.yp"
+#line 322 "parser24.yp"
 {
 			$_[0]->Error("Identifier excepted.\n");
 			$_[0]->YYErrok();
@@ -4805,7 +4810,7 @@ sub
 	[#Rule 56
 		 'scoped_name', 3,
 sub
-#line 325 "parser24.yp"
+#line 328 "parser24.yp"
 {
 			$_[1] . $_[2] . $_[3];
 		}
@@ -4813,7 +4818,7 @@ sub
 	[#Rule 57
 		 'scoped_name', 3,
 sub
-#line 329 "parser24.yp"
+#line 332 "parser24.yp"
 {
 			$_[0]->Error("Identifier excepted.\n");
 			$_[0]->YYErrok();
@@ -4835,7 +4840,7 @@ sub
 	[#Rule 62
 		 'value_forward_dcl', 2,
 sub
-#line 347 "parser24.yp"
+#line 350 "parser24.yp"
 {
 			new ForwardRegularValue($_[0],
 					'idf'				=>	$_[2]
@@ -4845,7 +4850,7 @@ sub
 	[#Rule 63
 		 'value_forward_dcl', 3,
 sub
-#line 353 "parser24.yp"
+#line 356 "parser24.yp"
 {
 			new ForwardAbstractValue($_[0],
 					'idf'				=>	$_[3]
@@ -4855,7 +4860,7 @@ sub
 	[#Rule 64
 		 'value_box_dcl', 3,
 sub
-#line 363 "parser24.yp"
+#line 366 "parser24.yp"
 {
 			new BoxedValue($_[0],
 					'idf'				=>	$_[2],
@@ -4866,7 +4871,7 @@ sub
 	[#Rule 65
 		 'value_abs_dcl', 3,
 sub
-#line 374 "parser24.yp"
+#line 377 "parser24.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->YYData->{curr_itf} = undef;
@@ -4877,7 +4882,7 @@ sub
 	[#Rule 66
 		 'value_abs_dcl', 4,
 sub
-#line 381 "parser24.yp"
+#line 384 "parser24.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->YYData->{curr_itf} = undef;
@@ -4888,7 +4893,7 @@ sub
 	[#Rule 67
 		 'value_abs_dcl', 4,
 sub
-#line 388 "parser24.yp"
+#line 391 "parser24.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->YYData->{curr_itf} = undef;
@@ -4899,7 +4904,7 @@ sub
 	[#Rule 68
 		 'value_abs_header', 3,
 sub
-#line 398 "parser24.yp"
+#line 401 "parser24.yp"
 {
 			new AbstractValue($_[0],
 					'idf'				=>	$_[3]
@@ -4909,7 +4914,7 @@ sub
 	[#Rule 69
 		 'value_abs_header', 4,
 sub
-#line 404 "parser24.yp"
+#line 407 "parser24.yp"
 {
 			new AbstractValue($_[0],
 					'idf'				=>	$_[3],
@@ -4920,7 +4925,7 @@ sub
 	[#Rule 70
 		 'value_abs_header', 3,
 sub
-#line 411 "parser24.yp"
+#line 414 "parser24.yp"
 {
 			$_[0]->Error("Identifier excepted.\n");
 			$_[0]->YYErrok();
@@ -4929,7 +4934,7 @@ sub
 	[#Rule 71
 		 'value_abs_header', 2,
 sub
-#line 416 "parser24.yp"
+#line 419 "parser24.yp"
 {
 			$_[0]->Error("'valuetype' excepted.\n");
 			$_[0]->YYErrok();
@@ -4938,7 +4943,7 @@ sub
 	[#Rule 72
 		 'value_dcl', 3,
 sub
-#line 425 "parser24.yp"
+#line 428 "parser24.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->YYData->{curr_itf} = undef;
@@ -4949,7 +4954,7 @@ sub
 	[#Rule 73
 		 'value_dcl', 4,
 sub
-#line 432 "parser24.yp"
+#line 435 "parser24.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->YYData->{curr_itf} = undef;
@@ -4960,7 +4965,7 @@ sub
 	[#Rule 74
 		 'value_dcl', 4,
 sub
-#line 439 "parser24.yp"
+#line 442 "parser24.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->YYData->{curr_itf} = undef;
@@ -4971,19 +4976,19 @@ sub
 	[#Rule 75
 		 'value_elements', 1,
 sub
-#line 448 "parser24.yp"
+#line 451 "parser24.yp"
 { [$_[1]]; }
 	],
 	[#Rule 76
 		 'value_elements', 2,
 sub
-#line 449 "parser24.yp"
+#line 452 "parser24.yp"
 { unshift(@{$_[2]},$_[1]); $_[2]; }
 	],
 	[#Rule 77
 		 'value_header', 2,
 sub
-#line 455 "parser24.yp"
+#line 458 "parser24.yp"
 {
 			new RegularValue($_[0],
 					'idf'				=>	$_[2]
@@ -4993,7 +4998,7 @@ sub
 	[#Rule 78
 		 'value_header', 3,
 sub
-#line 461 "parser24.yp"
+#line 464 "parser24.yp"
 {
 			new RegularValue($_[0],
 					'modifier'			=>	$_[1],
@@ -5004,7 +5009,7 @@ sub
 	[#Rule 79
 		 'value_header', 3,
 sub
-#line 468 "parser24.yp"
+#line 471 "parser24.yp"
 {
 			new RegularValue($_[0],
 					'idf'				=>	$_[2],
@@ -5015,7 +5020,7 @@ sub
 	[#Rule 80
 		 'value_header', 4,
 sub
-#line 475 "parser24.yp"
+#line 478 "parser24.yp"
 {
 			new RegularValue($_[0],
 					'modifier'			=>	$_[1],
@@ -5027,7 +5032,7 @@ sub
 	[#Rule 81
 		 'value_header', 2,
 sub
-#line 483 "parser24.yp"
+#line 486 "parser24.yp"
 {
 			$_[0]->Error("Identifier excepted.\n");
 			$_[0]->YYErrok();
@@ -5036,7 +5041,7 @@ sub
 	[#Rule 82
 		 'value_header', 3,
 sub
-#line 488 "parser24.yp"
+#line 491 "parser24.yp"
 {
 			$_[0]->Error("Identifier excepted.\n");
 			$_[0]->YYErrok();
@@ -5045,7 +5050,7 @@ sub
 	[#Rule 83
 		 'value_header', 2,
 sub
-#line 493 "parser24.yp"
+#line 496 "parser24.yp"
 {
 			$_[0]->Error("valuetype excepted.\n");
 			$_[0]->YYErrok();
@@ -5054,7 +5059,7 @@ sub
 	[#Rule 84
 		 'value_inheritance_spec', 2,
 sub
-#line 502 "parser24.yp"
+#line 505 "parser24.yp"
 {
 			new InheritanceSpec($_[0],
 					'list_value'			=>	$_[2]
@@ -5064,7 +5069,7 @@ sub
 	[#Rule 85
 		 'value_inheritance_spec', 3,
 sub
-#line 508 "parser24.yp"
+#line 511 "parser24.yp"
 {
 			new InheritanceSpec($_[0],
 					'modifier'			=>	$_[2],
@@ -5075,7 +5080,7 @@ sub
 	[#Rule 86
 		 'value_inheritance_spec', 4,
 sub
-#line 515 "parser24.yp"
+#line 518 "parser24.yp"
 {
 			new InheritanceSpec($_[0],
 					'list_value'		=>	$_[2],
@@ -5086,7 +5091,7 @@ sub
 	[#Rule 87
 		 'value_inheritance_spec', 5,
 sub
-#line 522 "parser24.yp"
+#line 525 "parser24.yp"
 {
 			new InheritanceSpec($_[0],
 					'modifier'			=>	$_[2],
@@ -5098,7 +5103,7 @@ sub
 	[#Rule 88
 		 'value_inheritance_spec', 4,
 sub
-#line 530 "parser24.yp"
+#line 533 "parser24.yp"
 {
 			$_[0]->Error("interface_name excepted.\n");
 			$_[0]->YYErrok();
@@ -5107,7 +5112,7 @@ sub
 	[#Rule 89
 		 'value_inheritance_spec', 5,
 sub
-#line 535 "parser24.yp"
+#line 538 "parser24.yp"
 {
 			$_[0]->Error("interface_name excepted.\n");
 			$_[0]->YYErrok();
@@ -5116,7 +5121,7 @@ sub
 	[#Rule 90
 		 'value_inheritance_spec', 3,
 sub
-#line 540 "parser24.yp"
+#line 543 "parser24.yp"
 {
 			$_[0]->Error("value_name excepted.\n");
 			$_[0]->YYErrok();
@@ -5125,7 +5130,7 @@ sub
 	[#Rule 91
 		 'value_inheritance_spec', 2,
 sub
-#line 545 "parser24.yp"
+#line 548 "parser24.yp"
 {
 			$_[0]->Error("'truncatable' excepted.\n");
 			$_[0]->YYErrok();
@@ -5134,7 +5139,7 @@ sub
 	[#Rule 92
 		 'value_inheritance_spec', 2,
 sub
-#line 550 "parser24.yp"
+#line 553 "parser24.yp"
 {
 			new InheritanceSpec($_[0],
 					'list_interface'	=>	$_[2]
@@ -5144,7 +5149,7 @@ sub
 	[#Rule 93
 		 'value_inheritance_spec', 2,
 sub
-#line 556 "parser24.yp"
+#line 559 "parser24.yp"
 {
 			$_[0]->Error("interface_name excepted.\n");
 			$_[0]->YYErrok();
@@ -5153,19 +5158,19 @@ sub
 	[#Rule 94
 		 'value_names', 1,
 sub
-#line 563 "parser24.yp"
+#line 566 "parser24.yp"
 { [$_[1]]; }
 	],
 	[#Rule 95
 		 'value_names', 3,
 sub
-#line 564 "parser24.yp"
+#line 567 "parser24.yp"
 { unshift(@{$_[3]},$_[1]); $_[3]; }
 	],
 	[#Rule 96
 		 'value_name', 1,
 sub
-#line 570 "parser24.yp"
+#line 573 "parser24.yp"
 {
 			RegularValue->Lookup($_[0],$_[1]);
 		}
@@ -5182,7 +5187,7 @@ sub
 	[#Rule 100
 		 'state_member', 4,
 sub
-#line 585 "parser24.yp"
+#line 588 "parser24.yp"
 {
 			new StateMembers($_[0],
 					'modifier'			=>	$_[1],
@@ -5194,7 +5199,7 @@ sub
 	[#Rule 101
 		 'state_member', 4,
 sub
-#line 593 "parser24.yp"
+#line 596 "parser24.yp"
 {
 			$_[0]->Error("declarator excepted.\n");
 			$_[0]->YYErrok();
@@ -5203,7 +5208,7 @@ sub
 	[#Rule 102
 		 'state_member', 3,
 sub
-#line 598 "parser24.yp"
+#line 601 "parser24.yp"
 {
 			$_[0]->Error("type_spec excepted.\n");
 			$_[0]->YYErrok();
@@ -5221,7 +5226,7 @@ sub
 	[#Rule 106
 		 'init_dcl', 5,
 sub
-#line 613 "parser24.yp"
+#line 616 "parser24.yp"
 {
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
@@ -5233,7 +5238,7 @@ sub
 	[#Rule 107
 		 'init_dcl', 5,
 sub
-#line 621 "parser24.yp"
+#line 624 "parser24.yp"
 {
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
@@ -5247,7 +5252,7 @@ sub
 	[#Rule 108
 		 'init_dcl', 5,
 sub
-#line 631 "parser24.yp"
+#line 634 "parser24.yp"
 {
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
@@ -5258,7 +5263,7 @@ sub
 	[#Rule 109
 		 'init_dcl', 5,
 sub
-#line 638 "parser24.yp"
+#line 641 "parser24.yp"
 {
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
@@ -5269,7 +5274,7 @@ sub
 	[#Rule 110
 		 'init_dcl', 2,
 sub
-#line 645 "parser24.yp"
+#line 648 "parser24.yp"
 {
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
@@ -5280,7 +5285,7 @@ sub
 	[#Rule 111
 		 'init_header', 2,
 sub
-#line 655 "parser24.yp"
+#line 658 "parser24.yp"
 {
 			new Factory($_[0],							# like Operation
 					'idf'				=>	$_[2]
@@ -5290,7 +5295,7 @@ sub
 	[#Rule 112
 		 'init_header', 2,
 sub
-#line 661 "parser24.yp"
+#line 664 "parser24.yp"
 {
 			$_[0]->Error("Identifier excepted.\n");
 			$_[0]->YYErrok();
@@ -5299,19 +5304,19 @@ sub
 	[#Rule 113
 		 'init_param_decls', 1,
 sub
-#line 669 "parser24.yp"
+#line 672 "parser24.yp"
 { [$_[1]]; }
 	],
 	[#Rule 114
 		 'init_param_decls', 3,
 sub
-#line 671 "parser24.yp"
+#line 674 "parser24.yp"
 { unshift(@{$_[3]},$_[1]); $_[3]; }
 	],
 	[#Rule 115
 		 'init_param_decl', 3,
 sub
-#line 677 "parser24.yp"
+#line 680 "parser24.yp"
 {
 			new Parameter($_[0],
 					'attr'				=>	$_[1],
@@ -5326,7 +5331,7 @@ sub
 	[#Rule 117
 		 'const_dcl', 5,
 sub
-#line 694 "parser24.yp"
+#line 697 "parser24.yp"
 {
 			new Constant($_[0],
 					'type'				=>	$_[2],
@@ -5338,7 +5343,7 @@ sub
 	[#Rule 118
 		 'const_dcl', 5,
 sub
-#line 702 "parser24.yp"
+#line 705 "parser24.yp"
 {
 			$_[0]->Error("Expression excepted.\n");
 			$_[0]->YYErrok();
@@ -5347,7 +5352,7 @@ sub
 	[#Rule 119
 		 'const_dcl', 4,
 sub
-#line 707 "parser24.yp"
+#line 710 "parser24.yp"
 {
 			$_[0]->Error("'=' excepted.\n");
 			$_[0]->YYErrok();
@@ -5356,7 +5361,7 @@ sub
 	[#Rule 120
 		 'const_dcl', 3,
 sub
-#line 712 "parser24.yp"
+#line 715 "parser24.yp"
 {
 			$_[0]->Error("Identifier excepted.\n");
 			$_[0]->YYErrok();
@@ -5365,7 +5370,7 @@ sub
 	[#Rule 121
 		 'const_dcl', 2,
 sub
-#line 717 "parser24.yp"
+#line 720 "parser24.yp"
 {
 			$_[0]->Error("const_type excepted.\n");
 			$_[0]->YYErrok();
@@ -5398,7 +5403,7 @@ sub
 	[#Rule 130
 		 'const_type', 1,
 sub
-#line 734 "parser24.yp"
+#line 737 "parser24.yp"
 {
 			TypeDeclarator->Lookup($_[0],$_[1]);
 		}
@@ -5415,7 +5420,7 @@ sub
 	[#Rule 134
 		 'or_expr', 3,
 sub
-#line 749 "parser24.yp"
+#line 752 "parser24.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
@@ -5426,7 +5431,7 @@ sub
 	[#Rule 136
 		 'xor_expr', 3,
 sub
-#line 758 "parser24.yp"
+#line 761 "parser24.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
@@ -5437,7 +5442,7 @@ sub
 	[#Rule 138
 		 'and_expr', 3,
 sub
-#line 767 "parser24.yp"
+#line 770 "parser24.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
@@ -5448,7 +5453,7 @@ sub
 	[#Rule 140
 		 'shift_expr', 3,
 sub
-#line 776 "parser24.yp"
+#line 779 "parser24.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
@@ -5456,7 +5461,7 @@ sub
 	[#Rule 141
 		 'shift_expr', 3,
 sub
-#line 780 "parser24.yp"
+#line 783 "parser24.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
@@ -5467,7 +5472,7 @@ sub
 	[#Rule 143
 		 'add_expr', 3,
 sub
-#line 789 "parser24.yp"
+#line 792 "parser24.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
@@ -5475,7 +5480,7 @@ sub
 	[#Rule 144
 		 'add_expr', 3,
 sub
-#line 793 "parser24.yp"
+#line 796 "parser24.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
@@ -5486,7 +5491,7 @@ sub
 	[#Rule 146
 		 'mult_expr', 3,
 sub
-#line 802 "parser24.yp"
+#line 805 "parser24.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
@@ -5494,7 +5499,7 @@ sub
 	[#Rule 147
 		 'mult_expr', 3,
 sub
-#line 806 "parser24.yp"
+#line 809 "parser24.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
@@ -5502,7 +5507,7 @@ sub
 	[#Rule 148
 		 'mult_expr', 3,
 sub
-#line 810 "parser24.yp"
+#line 813 "parser24.yp"
 {
 			BuildBinop($_[1],$_[2],$_[3]);
 		}
@@ -5510,7 +5515,7 @@ sub
 	[#Rule 149
 		 'unary_expr', 2,
 sub
-#line 818 "parser24.yp"
+#line 821 "parser24.yp"
 {
 			BuildUnop($_[1],$_[2]);
 		}
@@ -5530,7 +5535,7 @@ sub
 	[#Rule 154
 		 'primary_expr', 1,
 sub
-#line 834 "parser24.yp"
+#line 837 "parser24.yp"
 {
 			[
 				Constant->Lookup($_[0],$_[1])
@@ -5540,7 +5545,7 @@ sub
 	[#Rule 155
 		 'primary_expr', 1,
 sub
-#line 840 "parser24.yp"
+#line 843 "parser24.yp"
 {
 			[ $_[1] ];
 		}
@@ -5548,7 +5553,7 @@ sub
 	[#Rule 156
 		 'primary_expr', 3,
 sub
-#line 844 "parser24.yp"
+#line 847 "parser24.yp"
 {
 			$_[2];
 		}
@@ -5556,7 +5561,7 @@ sub
 	[#Rule 157
 		 'primary_expr', 3,
 sub
-#line 848 "parser24.yp"
+#line 851 "parser24.yp"
 {
 			$_[0]->Error("Expression excepted.\n");
 			$_[0]->YYErrok();
@@ -5565,7 +5570,7 @@ sub
 	[#Rule 158
 		 'literal', 1,
 sub
-#line 857 "parser24.yp"
+#line 860 "parser24.yp"
 {
 			new IntegerLiteral($_[0],
 					'value'				=>	$_[1],
@@ -5576,7 +5581,7 @@ sub
 	[#Rule 159
 		 'literal', 1,
 sub
-#line 864 "parser24.yp"
+#line 867 "parser24.yp"
 {
 			new StringLiteral($_[0],
 					'value'				=>	$_[1]
@@ -5586,7 +5591,7 @@ sub
 	[#Rule 160
 		 'literal', 1,
 sub
-#line 870 "parser24.yp"
+#line 873 "parser24.yp"
 {
 			new WideStringLiteral($_[0],
 					'value'				=>	$_[1]
@@ -5596,7 +5601,7 @@ sub
 	[#Rule 161
 		 'literal', 1,
 sub
-#line 876 "parser24.yp"
+#line 879 "parser24.yp"
 {
 			new CharacterLiteral($_[0],
 					'value'				=>	$_[1]
@@ -5606,7 +5611,7 @@ sub
 	[#Rule 162
 		 'literal', 1,
 sub
-#line 882 "parser24.yp"
+#line 885 "parser24.yp"
 {
 			new WideCharacterLiteral($_[0],
 					'value'				=>	$_[1]
@@ -5616,7 +5621,7 @@ sub
 	[#Rule 163
 		 'literal', 1,
 sub
-#line 888 "parser24.yp"
+#line 891 "parser24.yp"
 {
 			new FixedPtLiteral($_[0],
 					'value'				=>	$_[1],
@@ -5627,7 +5632,7 @@ sub
 	[#Rule 164
 		 'literal', 1,
 sub
-#line 895 "parser24.yp"
+#line 898 "parser24.yp"
 {
 			new FloatingPtLiteral($_[0],
 					'value'				=>	$_[1],
@@ -5644,7 +5649,7 @@ sub
 	[#Rule 167
 		 'string_literal', 2,
 sub
-#line 906 "parser24.yp"
+#line 909 "parser24.yp"
 { $_[1] . $_[2]; }
 	],
 	[#Rule 168
@@ -5653,13 +5658,13 @@ sub
 	[#Rule 169
 		 'wide_string_literal', 2,
 sub
-#line 912 "parser24.yp"
+#line 915 "parser24.yp"
 { $_[1] . $_[2]; }
 	],
 	[#Rule 170
 		 'boolean_literal', 1,
 sub
-#line 918 "parser24.yp"
+#line 921 "parser24.yp"
 {
 			new BooleanLiteral($_[0],
 					'value'				=>	1
@@ -5669,7 +5674,7 @@ sub
 	[#Rule 171
 		 'boolean_literal', 1,
 sub
-#line 924 "parser24.yp"
+#line 927 "parser24.yp"
 {
 			new BooleanLiteral($_[0],
 					'value'				=>	0
@@ -5679,7 +5684,7 @@ sub
 	[#Rule 172
 		 'positive_int_const', 1,
 sub
-#line 934 "parser24.yp"
+#line 937 "parser24.yp"
 {
 			new Expression($_[0],
 					'list_expr'			=>	$_[1]
@@ -5689,7 +5694,7 @@ sub
 	[#Rule 173
 		 'type_dcl', 2,
 sub
-#line 945 "parser24.yp"
+#line 948 "parser24.yp"
 {
 			$_[2];
 		}
@@ -5706,7 +5711,7 @@ sub
 	[#Rule 177
 		 'type_dcl', 2,
 sub
-#line 952 "parser24.yp"
+#line 955 "parser24.yp"
 {
 			new TypeDeclarator($_[0],
 					'modifier'			=>	$_[1],
@@ -5720,7 +5725,7 @@ sub
 	[#Rule 179
 		 'type_dcl', 2,
 sub
-#line 960 "parser24.yp"
+#line 963 "parser24.yp"
 {
 			$_[0]->Error("type_declarator excepted.\n");
 			$_[0]->YYErrok();
@@ -5729,7 +5734,7 @@ sub
 	[#Rule 180
 		 'type_dcl', 2,
 sub
-#line 965 "parser24.yp"
+#line 968 "parser24.yp"
 {
 			$_[0]->Error("Identifier excepted.\n");
 			$_[0]->YYErrok();
@@ -5738,7 +5743,7 @@ sub
 	[#Rule 181
 		 'type_declarator', 2,
 sub
-#line 974 "parser24.yp"
+#line 977 "parser24.yp"
 {
 			new TypeDeclarators($_[0],
 					'type'				=>	$_[1],
@@ -5749,7 +5754,7 @@ sub
 	[#Rule 182
 		 'type_declarator', 2,
 sub
-#line 981 "parser24.yp"
+#line 984 "parser24.yp"
 {
 			$_[0]->Error("declarator excepted.\n");
 			$_[0]->YYErrok();
@@ -5770,7 +5775,7 @@ sub
 	[#Rule 187
 		 'simple_type_spec', 1,
 sub
-#line 998 "parser24.yp"
+#line 1001 "parser24.yp"
 {
 			TypeDeclarator->Lookup($_[0],$_[1]);
 		}
@@ -5826,19 +5831,19 @@ sub
 	[#Rule 204
 		 'declarators', 1,
 sub
-#line 1033 "parser24.yp"
+#line 1036 "parser24.yp"
 { [$_[1]]; }
 	],
 	[#Rule 205
 		 'declarators', 3,
 sub
-#line 1034 "parser24.yp"
+#line 1037 "parser24.yp"
 { unshift(@{$_[3]},$_[1]); $_[3]; }
 	],
 	[#Rule 206
 		 'declarator', 1,
 sub
-#line 1039 "parser24.yp"
+#line 1042 "parser24.yp"
 { [$_[1]]; }
 	],
 	[#Rule 207
@@ -5853,7 +5858,7 @@ sub
 	[#Rule 210
 		 'floating_pt_type', 1,
 sub
-#line 1056 "parser24.yp"
+#line 1059 "parser24.yp"
 {
 			new FloatingPtType($_[0],
 					'value'				=>	$_[1]
@@ -5863,7 +5868,7 @@ sub
 	[#Rule 211
 		 'floating_pt_type', 1,
 sub
-#line 1062 "parser24.yp"
+#line 1065 "parser24.yp"
 {
 			new FloatingPtType($_[0],
 					'value'				=>	$_[1]
@@ -5873,7 +5878,7 @@ sub
 	[#Rule 212
 		 'floating_pt_type', 2,
 sub
-#line 1068 "parser24.yp"
+#line 1071 "parser24.yp"
 {
 			new FloatingPtType($_[0],
 					'value'				=>	$_[1] . ' ' . $_[2]
@@ -5898,7 +5903,7 @@ sub
 	[#Rule 218
 		 'signed_short_int', 1,
 sub
-#line 1091 "parser24.yp"
+#line 1094 "parser24.yp"
 {
 			new IntegerType($_[0],
 					'value'				=>	$_[1]
@@ -5908,7 +5913,7 @@ sub
 	[#Rule 219
 		 'signed_long_int', 1,
 sub
-#line 1101 "parser24.yp"
+#line 1104 "parser24.yp"
 {
 			new IntegerType($_[0],
 					'value'				=>	$_[1]
@@ -5918,7 +5923,7 @@ sub
 	[#Rule 220
 		 'signed_longlong_int', 2,
 sub
-#line 1111 "parser24.yp"
+#line 1114 "parser24.yp"
 {
 			new IntegerType($_[0],
 					'value'				=>	$_[1] . ' ' . $_[2]
@@ -5937,7 +5942,7 @@ sub
 	[#Rule 224
 		 'unsigned_short_int', 2,
 sub
-#line 1128 "parser24.yp"
+#line 1131 "parser24.yp"
 {
 			new IntegerType($_[0],
 					'value'				=>	$_[1] . ' ' . $_[2]
@@ -5947,7 +5952,7 @@ sub
 	[#Rule 225
 		 'unsigned_long_int', 2,
 sub
-#line 1138 "parser24.yp"
+#line 1141 "parser24.yp"
 {
 			new IntegerType($_[0],
 					'value'				=>	$_[1] . ' ' . $_[2]
@@ -5957,7 +5962,7 @@ sub
 	[#Rule 226
 		 'unsigned_longlong_int', 3,
 sub
-#line 1148 "parser24.yp"
+#line 1151 "parser24.yp"
 {
 			new IntegerType($_[0],
 					'value'				=>	$_[1] . ' ' . $_[2] . ' ' . $_[3]
@@ -5967,7 +5972,7 @@ sub
 	[#Rule 227
 		 'char_type', 1,
 sub
-#line 1158 "parser24.yp"
+#line 1161 "parser24.yp"
 {
 			new CharType($_[0],
 					'value'				=>	$_[1]
@@ -5977,7 +5982,7 @@ sub
 	[#Rule 228
 		 'wide_char_type', 1,
 sub
-#line 1168 "parser24.yp"
+#line 1171 "parser24.yp"
 {
 			new WideCharType($_[0],
 					'value'				=>	$_[1]
@@ -5987,7 +5992,7 @@ sub
 	[#Rule 229
 		 'boolean_type', 1,
 sub
-#line 1178 "parser24.yp"
+#line 1181 "parser24.yp"
 {
 			new BooleanType($_[0],
 					'value'				=>	$_[1]
@@ -5997,7 +6002,7 @@ sub
 	[#Rule 230
 		 'octet_type', 1,
 sub
-#line 1188 "parser24.yp"
+#line 1191 "parser24.yp"
 {
 			new OctetType($_[0],
 					'value'				=>	$_[1]
@@ -6007,7 +6012,7 @@ sub
 	[#Rule 231
 		 'any_type', 1,
 sub
-#line 1198 "parser24.yp"
+#line 1201 "parser24.yp"
 {
 			new AnyType($_[0],
 					'value'				=>	$_[1]
@@ -6017,7 +6022,7 @@ sub
 	[#Rule 232
 		 'object_type', 1,
 sub
-#line 1208 "parser24.yp"
+#line 1211 "parser24.yp"
 {
 			new ObjectType($_[0],
 					'value'				=>	$_[1]
@@ -6027,7 +6032,7 @@ sub
 	[#Rule 233
 		 'struct_type', 4,
 sub
-#line 1218 "parser24.yp"
+#line 1221 "parser24.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[1]->Configure($_[0],
@@ -6038,7 +6043,7 @@ sub
 	[#Rule 234
 		 'struct_type', 4,
 sub
-#line 1225 "parser24.yp"
+#line 1228 "parser24.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->Error("member excepted.\n");
@@ -6048,7 +6053,7 @@ sub
 	[#Rule 235
 		 'struct_header', 2,
 sub
-#line 1234 "parser24.yp"
+#line 1237 "parser24.yp"
 {
 			new StructType($_[0],
 					'idf'				=>	$_[2]
@@ -6058,19 +6063,19 @@ sub
 	[#Rule 236
 		 'member_list', 1,
 sub
-#line 1243 "parser24.yp"
+#line 1246 "parser24.yp"
 { [$_[1]]; }
 	],
 	[#Rule 237
 		 'member_list', 2,
 sub
-#line 1244 "parser24.yp"
+#line 1247 "parser24.yp"
 { unshift(@{$_[2]},$_[1]); $_[2]; }
 	],
 	[#Rule 238
 		 'member', 3,
 sub
-#line 1250 "parser24.yp"
+#line 1253 "parser24.yp"
 {
 			new Members($_[0],
 					'type'				=>	$_[1],
@@ -6081,7 +6086,7 @@ sub
 	[#Rule 239
 		 'member', 3,
 sub
-#line 1257 "parser24.yp"
+#line 1260 "parser24.yp"
 {
 			$_[0]->Error("';' excepted.\n");
 			$_[0]->YYErrok();
@@ -6094,7 +6099,7 @@ sub
 	[#Rule 240
 		 'union_type', 8,
 sub
-#line 1270 "parser24.yp"
+#line 1273 "parser24.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[1]->Configure($_[0],
@@ -6106,7 +6111,7 @@ sub
 	[#Rule 241
 		 'union_type', 8,
 sub
-#line 1278 "parser24.yp"
+#line 1281 "parser24.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->Error("switch_body excepted.\n");
@@ -6116,7 +6121,7 @@ sub
 	[#Rule 242
 		 'union_type', 6,
 sub
-#line 1284 "parser24.yp"
+#line 1287 "parser24.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->Error("'\x7b' excepted.\n");
@@ -6126,7 +6131,7 @@ sub
 	[#Rule 243
 		 'union_type', 5,
 sub
-#line 1290 "parser24.yp"
+#line 1293 "parser24.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->Error("switch_type_spec excepted.\n");
@@ -6136,7 +6141,7 @@ sub
 	[#Rule 244
 		 'union_type', 3,
 sub
-#line 1296 "parser24.yp"
+#line 1299 "parser24.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->Error("'(' excepted.\n");
@@ -6146,7 +6151,7 @@ sub
 	[#Rule 245
 		 'union_header', 2,
 sub
-#line 1305 "parser24.yp"
+#line 1308 "parser24.yp"
 {
 			new UnionType($_[0],
 					'idf'				=>	$_[2],
@@ -6168,7 +6173,7 @@ sub
 	[#Rule 250
 		 'switch_type_spec', 1,
 sub
-#line 1319 "parser24.yp"
+#line 1322 "parser24.yp"
 {
 			TypeDeclarator->Lookup($_[0],$_[1]);
 		}
@@ -6176,19 +6181,19 @@ sub
 	[#Rule 251
 		 'switch_body', 1,
 sub
-#line 1326 "parser24.yp"
+#line 1329 "parser24.yp"
 { [$_[1]]; }
 	],
 	[#Rule 252
 		 'switch_body', 2,
 sub
-#line 1327 "parser24.yp"
+#line 1330 "parser24.yp"
 { unshift(@{$_[2]},$_[1]); $_[2]; }
 	],
 	[#Rule 253
 		 'case', 3,
 sub
-#line 1333 "parser24.yp"
+#line 1336 "parser24.yp"
 {
 			new Case($_[0],
 					'list_label'		=>	$_[1],
@@ -6199,7 +6204,7 @@ sub
 	[#Rule 254
 		 'case', 3,
 sub
-#line 1340 "parser24.yp"
+#line 1343 "parser24.yp"
 {
 			$_[0]->Error("';' excepted.\n");
 			$_[0]->YYErrok();
@@ -6212,19 +6217,19 @@ sub
 	[#Rule 255
 		 'case_labels', 1,
 sub
-#line 1351 "parser24.yp"
+#line 1354 "parser24.yp"
 { [$_[1]]; }
 	],
 	[#Rule 256
 		 'case_labels', 2,
 sub
-#line 1352 "parser24.yp"
+#line 1355 "parser24.yp"
 { unshift(@{$_[2]},$_[1]); $_[2]; }
 	],
 	[#Rule 257
 		 'case_label', 3,
 sub
-#line 1358 "parser24.yp"
+#line 1361 "parser24.yp"
 {
 			$_[2];						# here only a expression, type is not known
 		}
@@ -6232,7 +6237,7 @@ sub
 	[#Rule 258
 		 'case_label', 3,
 sub
-#line 1362 "parser24.yp"
+#line 1365 "parser24.yp"
 {
 			$_[0]->Error("':' excepted.\n");
 			$_[0]->YYErrok();
@@ -6242,7 +6247,7 @@ sub
 	[#Rule 259
 		 'case_label', 2,
 sub
-#line 1368 "parser24.yp"
+#line 1371 "parser24.yp"
 {
 			$_[0]->Error("Expression excepted.\n");
 			$_[0]->YYErrok();
@@ -6251,7 +6256,7 @@ sub
 	[#Rule 260
 		 'case_label', 2,
 sub
-#line 1373 "parser24.yp"
+#line 1376 "parser24.yp"
 {
 			new Default($_[0]);
 		}
@@ -6259,7 +6264,7 @@ sub
 	[#Rule 261
 		 'case_label', 2,
 sub
-#line 1377 "parser24.yp"
+#line 1380 "parser24.yp"
 {
 			$_[0]->Error("':' excepted.\n");
 			$_[0]->YYErrok();
@@ -6269,7 +6274,7 @@ sub
 	[#Rule 262
 		 'element_spec', 2,
 sub
-#line 1387 "parser24.yp"
+#line 1390 "parser24.yp"
 {
 			new Element($_[0],
 					'type'			=>	$_[1],
@@ -6280,7 +6285,7 @@ sub
 	[#Rule 263
 		 'enum_type', 4,
 sub
-#line 1398 "parser24.yp"
+#line 1401 "parser24.yp"
 {
 			$_[1]->Configure($_[0],
 					'list_expr'		=>	$_[3]
@@ -6291,7 +6296,7 @@ sub
 	[#Rule 264
 		 'enum_type', 4,
 sub
-#line 1405 "parser24.yp"
+#line 1408 "parser24.yp"
 {
 			$_[0]->Error("enumerator excepted.\n");
 			$_[0]->YYErrok();
@@ -6300,7 +6305,7 @@ sub
 	[#Rule 265
 		 'enum_type', 2,
 sub
-#line 1410 "parser24.yp"
+#line 1413 "parser24.yp"
 {
 			$_[0]->Error("'\x7b' excepted.\n");
 			$_[0]->YYErrok();
@@ -6309,7 +6314,7 @@ sub
 	[#Rule 266
 		 'enum_header', 2,
 sub
-#line 1418 "parser24.yp"
+#line 1421 "parser24.yp"
 {
 			new EnumType($_[0],
 					'idf'				=>	$_[2],
@@ -6319,7 +6324,7 @@ sub
 	[#Rule 267
 		 'enum_header', 2,
 sub
-#line 1424 "parser24.yp"
+#line 1427 "parser24.yp"
 {
 			$_[0]->Error("Identifier excepted.\n");
 			$_[0]->YYErrok();
@@ -6328,19 +6333,19 @@ sub
 	[#Rule 268
 		 'enumerators', 1,
 sub
-#line 1431 "parser24.yp"
+#line 1434 "parser24.yp"
 { [$_[1]]; }
 	],
 	[#Rule 269
 		 'enumerators', 3,
 sub
-#line 1432 "parser24.yp"
+#line 1435 "parser24.yp"
 { unshift(@{$_[3]},$_[1]); $_[3]; }
 	],
 	[#Rule 270
 		 'enumerators', 2,
 sub
-#line 1434 "parser24.yp"
+#line 1437 "parser24.yp"
 {
 			$_[0]->Warning("',' unexcepted.\n");
 			[$_[1]];
@@ -6349,7 +6354,7 @@ sub
 	[#Rule 271
 		 'enumerators', 2,
 sub
-#line 1439 "parser24.yp"
+#line 1442 "parser24.yp"
 {
 			$_[0]->Error("';' unexcepted.\n");
 			[$_[1]];
@@ -6358,7 +6363,7 @@ sub
 	[#Rule 272
 		 'enumerator', 1,
 sub
-#line 1448 "parser24.yp"
+#line 1451 "parser24.yp"
 {
 			new Enum($_[0],
 					'idf'				=>	$_[1]
@@ -6368,7 +6373,7 @@ sub
 	[#Rule 273
 		 'sequence_type', 6,
 sub
-#line 1458 "parser24.yp"
+#line 1461 "parser24.yp"
 {
 			new SequenceType($_[0],
 					'value'				=>	$_[1],
@@ -6380,7 +6385,7 @@ sub
 	[#Rule 274
 		 'sequence_type', 6,
 sub
-#line 1466 "parser24.yp"
+#line 1469 "parser24.yp"
 {
 			$_[0]->Error("Expression excepted.\n");
 			$_[0]->YYErrok();
@@ -6389,7 +6394,7 @@ sub
 	[#Rule 275
 		 'sequence_type', 4,
 sub
-#line 1471 "parser24.yp"
+#line 1474 "parser24.yp"
 {
 			new SequenceType($_[0],
 					'value'				=>	$_[1],
@@ -6400,7 +6405,7 @@ sub
 	[#Rule 276
 		 'sequence_type', 4,
 sub
-#line 1478 "parser24.yp"
+#line 1481 "parser24.yp"
 {
 			$_[0]->Error("simple_type_spec excepted.\n");
 			$_[0]->YYErrok();
@@ -6409,7 +6414,7 @@ sub
 	[#Rule 277
 		 'sequence_type', 2,
 sub
-#line 1483 "parser24.yp"
+#line 1486 "parser24.yp"
 {
 			$_[0]->Error("'<' excepted.\n");
 			$_[0]->YYErrok();
@@ -6418,7 +6423,7 @@ sub
 	[#Rule 278
 		 'string_type', 4,
 sub
-#line 1492 "parser24.yp"
+#line 1495 "parser24.yp"
 {
 			new StringType($_[0],
 					'value'				=>	$_[1],
@@ -6429,7 +6434,7 @@ sub
 	[#Rule 279
 		 'string_type', 1,
 sub
-#line 1499 "parser24.yp"
+#line 1502 "parser24.yp"
 {
 			new StringType($_[0],
 					'value'				=>	$_[1]
@@ -6439,7 +6444,7 @@ sub
 	[#Rule 280
 		 'string_type', 4,
 sub
-#line 1505 "parser24.yp"
+#line 1508 "parser24.yp"
 {
 			$_[0]->Error("Expression excepted.\n");
 			$_[0]->YYErrok();
@@ -6448,7 +6453,7 @@ sub
 	[#Rule 281
 		 'wide_string_type', 4,
 sub
-#line 1514 "parser24.yp"
+#line 1517 "parser24.yp"
 {
 			new WideStringType($_[0],
 					'value'				=>	$_[1],
@@ -6459,7 +6464,7 @@ sub
 	[#Rule 282
 		 'wide_string_type', 1,
 sub
-#line 1521 "parser24.yp"
+#line 1524 "parser24.yp"
 {
 			new WideStringType($_[0],
 					'value'				=>	$_[1]
@@ -6469,7 +6474,7 @@ sub
 	[#Rule 283
 		 'wide_string_type', 4,
 sub
-#line 1527 "parser24.yp"
+#line 1530 "parser24.yp"
 {
 			$_[0]->Error("Expression excepted.\n");
 			$_[0]->YYErrok();
@@ -6478,31 +6483,31 @@ sub
 	[#Rule 284
 		 'array_declarator', 2,
 sub
-#line 1535 "parser24.yp"
+#line 1538 "parser24.yp"
 { unshift(@{$_[2]},$_[1]); $_[2]; }
 	],
 	[#Rule 285
 		 'fixed_array_sizes', 1,
 sub
-#line 1539 "parser24.yp"
+#line 1542 "parser24.yp"
 { [$_[1]]; }
 	],
 	[#Rule 286
 		 'fixed_array_sizes', 2,
 sub
-#line 1541 "parser24.yp"
+#line 1544 "parser24.yp"
 { unshift(@{$_[2]},$_[1]); $_[2]; }
 	],
 	[#Rule 287
 		 'fixed_array_size', 3,
 sub
-#line 1546 "parser24.yp"
+#line 1549 "parser24.yp"
 { $_[2]; }
 	],
 	[#Rule 288
 		 'fixed_array_size', 3,
 sub
-#line 1548 "parser24.yp"
+#line 1551 "parser24.yp"
 {
 			$_[0]->Error("Expression excepted.\n");
 			$_[0]->YYErrok();
@@ -6511,7 +6516,7 @@ sub
 	[#Rule 289
 		 'attr_dcl', 4,
 sub
-#line 1557 "parser24.yp"
+#line 1560 "parser24.yp"
 {
 			new Attributes($_[0],
 					'modifier'			=>	$_[1],
@@ -6523,7 +6528,7 @@ sub
 	[#Rule 290
 		 'attr_dcl', 4,
 sub
-#line 1565 "parser24.yp"
+#line 1568 "parser24.yp"
 {
 			$_[0]->Error("declarator excepted.\n");
 			$_[0]->YYErrok();
@@ -6532,7 +6537,7 @@ sub
 	[#Rule 291
 		 'attr_dcl', 3,
 sub
-#line 1570 "parser24.yp"
+#line 1573 "parser24.yp"
 {
 			$_[0]->Error("type excepted.\n");
 			$_[0]->YYErrok();
@@ -6547,19 +6552,19 @@ sub
 	[#Rule 294
 		 'simple_declarators', 1,
 sub
-#line 1582 "parser24.yp"
+#line 1585 "parser24.yp"
 { [$_[1]]; }
 	],
 	[#Rule 295
 		 'simple_declarators', 3,
 sub
-#line 1584 "parser24.yp"
+#line 1587 "parser24.yp"
 { unshift(@{$_[3]},$_[1]); $_[3]; }
 	],
 	[#Rule 296
 		 'except_dcl', 3,
 sub
-#line 1590 "parser24.yp"
+#line 1593 "parser24.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[1];
@@ -6568,7 +6573,7 @@ sub
 	[#Rule 297
 		 'except_dcl', 4,
 sub
-#line 1595 "parser24.yp"
+#line 1598 "parser24.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[1]->Configure($_[0],
@@ -6580,7 +6585,7 @@ sub
 	[#Rule 298
 		 'except_dcl', 4,
 sub
-#line 1603 "parser24.yp"
+#line 1606 "parser24.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->Error("'members excepted.\n");
@@ -6594,7 +6599,7 @@ sub
 	[#Rule 299
 		 'except_dcl', 2,
 sub
-#line 1613 "parser24.yp"
+#line 1616 "parser24.yp"
 {
 			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
 			$_[0]->Error("'\x7b' excepted.\n");
@@ -6604,7 +6609,7 @@ sub
 	[#Rule 300
 		 'exception_header', 2,
 sub
-#line 1622 "parser24.yp"
+#line 1625 "parser24.yp"
 {
 			new Exception($_[0],
 					'idf'				=>	$_[2],
@@ -6614,7 +6619,7 @@ sub
 	[#Rule 301
 		 'exception_header', 2,
 sub
-#line 1628 "parser24.yp"
+#line 1631 "parser24.yp"
 {
 			$_[0]->Error("Identifier excepted.\n");
 			$_[0]->YYErrok();
@@ -6623,7 +6628,7 @@ sub
 	[#Rule 302
 		 'op_dcl', 2,
 sub
-#line 1637 "parser24.yp"
+#line 1640 "parser24.yp"
 {
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
@@ -6636,7 +6641,7 @@ sub
 	[#Rule 303
 		 'op_dcl', 3,
 sub
-#line 1646 "parser24.yp"
+#line 1649 "parser24.yp"
 {
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
@@ -6650,7 +6655,7 @@ sub
 	[#Rule 304
 		 'op_dcl', 4,
 sub
-#line 1656 "parser24.yp"
+#line 1659 "parser24.yp"
 {
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
@@ -6665,7 +6670,7 @@ sub
 	[#Rule 305
 		 'op_dcl', 3,
 sub
-#line 1667 "parser24.yp"
+#line 1670 "parser24.yp"
 {
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
@@ -6679,7 +6684,7 @@ sub
 	[#Rule 306
 		 'op_dcl', 2,
 sub
-#line 1677 "parser24.yp"
+#line 1680 "parser24.yp"
 {
 			delete $_[0]->YYData->{unnamed_symbtab}
 					if (exists $_[0]->YYData->{unnamed_symbtab});
@@ -6690,7 +6695,7 @@ sub
 	[#Rule 307
 		 'op_header', 3,
 sub
-#line 1687 "parser24.yp"
+#line 1690 "parser24.yp"
 {
 			new Operation($_[0],
 					'modifier'			=>	$_[1],
@@ -6702,7 +6707,7 @@ sub
 	[#Rule 308
 		 'op_header', 3,
 sub
-#line 1695 "parser24.yp"
+#line 1698 "parser24.yp"
 {
 			$_[0]->Error("Identifier excepted.\n");
 			$_[0]->YYErrok();
@@ -6723,7 +6728,7 @@ sub
 	[#Rule 313
 		 'op_type_spec', 1,
 sub
-#line 1715 "parser24.yp"
+#line 1718 "parser24.yp"
 {
 			new VoidType($_[0],
 					'value'				=>	$_[1]
@@ -6733,7 +6738,7 @@ sub
 	[#Rule 314
 		 'parameter_dcls', 3,
 sub
-#line 1725 "parser24.yp"
+#line 1728 "parser24.yp"
 {
 			$_[2];
 		}
@@ -6741,7 +6746,7 @@ sub
 	[#Rule 315
 		 'parameter_dcls', 2,
 sub
-#line 1729 "parser24.yp"
+#line 1732 "parser24.yp"
 {
 			undef;
 		}
@@ -6749,7 +6754,7 @@ sub
 	[#Rule 316
 		 'parameter_dcls', 3,
 sub
-#line 1733 "parser24.yp"
+#line 1736 "parser24.yp"
 {
 			$_[0]->Error("parameters declaration excepted.\n");
 			$_[0]->YYErrok();
@@ -6758,19 +6763,19 @@ sub
 	[#Rule 317
 		 'param_dcls', 1,
 sub
-#line 1740 "parser24.yp"
+#line 1743 "parser24.yp"
 { [$_[1]]; }
 	],
 	[#Rule 318
 		 'param_dcls', 3,
 sub
-#line 1741 "parser24.yp"
+#line 1744 "parser24.yp"
 { unshift(@{$_[3]},$_[1]); $_[3]; }
 	],
 	[#Rule 319
 		 'param_dcls', 2,
 sub
-#line 1743 "parser24.yp"
+#line 1746 "parser24.yp"
 {
 			$_[0]->Warning("',' unexcepted.\n");
 			[$_[1]];
@@ -6779,7 +6784,7 @@ sub
 	[#Rule 320
 		 'param_dcls', 2,
 sub
-#line 1748 "parser24.yp"
+#line 1751 "parser24.yp"
 {
 			$_[0]->Error("';' unexcepted.\n");
 			[$_[1]];
@@ -6788,7 +6793,7 @@ sub
 	[#Rule 321
 		 'param_dcl', 3,
 sub
-#line 1757 "parser24.yp"
+#line 1760 "parser24.yp"
 {
 			new Parameter($_[0],
 					'attr'				=>	$_[1],
@@ -6809,7 +6814,7 @@ sub
 	[#Rule 325
 		 'raises_expr', 4,
 sub
-#line 1776 "parser24.yp"
+#line 1779 "parser24.yp"
 {
 			$_[3];
 		}
@@ -6817,7 +6822,7 @@ sub
 	[#Rule 326
 		 'raises_expr', 4,
 sub
-#line 1780 "parser24.yp"
+#line 1783 "parser24.yp"
 {
 			$_[0]->Error("name excepted.\n");
 			$_[0]->YYErrok();
@@ -6826,7 +6831,7 @@ sub
 	[#Rule 327
 		 'raises_expr', 2,
 sub
-#line 1785 "parser24.yp"
+#line 1788 "parser24.yp"
 {
 			$_[0]->Error("'(' excepted.\n");
 			$_[0]->YYErrok();
@@ -6835,19 +6840,19 @@ sub
 	[#Rule 328
 		 'exception_names', 1,
 sub
-#line 1792 "parser24.yp"
+#line 1795 "parser24.yp"
 { [$_[1]]; }
 	],
 	[#Rule 329
 		 'exception_names', 3,
 sub
-#line 1793 "parser24.yp"
+#line 1796 "parser24.yp"
 { unshift(@{$_[3]},$_[1]); $_[3]; }
 	],
 	[#Rule 330
 		 'exception_name', 1,
 sub
-#line 1798 "parser24.yp"
+#line 1801 "parser24.yp"
 {
 			Exception->Lookup($_[0],$_[1]);
 		}
@@ -6855,7 +6860,7 @@ sub
 	[#Rule 331
 		 'context_expr', 4,
 sub
-#line 1806 "parser24.yp"
+#line 1809 "parser24.yp"
 {
 			$_[3];
 		}
@@ -6863,7 +6868,7 @@ sub
 	[#Rule 332
 		 'context_expr', 4,
 sub
-#line 1810 "parser24.yp"
+#line 1813 "parser24.yp"
 {
 			$_[0]->Error("string excepted.\n");
 			$_[0]->YYErrok();
@@ -6872,7 +6877,7 @@ sub
 	[#Rule 333
 		 'context_expr', 2,
 sub
-#line 1815 "parser24.yp"
+#line 1818 "parser24.yp"
 {
 			$_[0]->Error("'(' excepted.\n");
 			$_[0]->YYErrok();
@@ -6881,13 +6886,13 @@ sub
 	[#Rule 334
 		 'string_literals', 1,
 sub
-#line 1822 "parser24.yp"
+#line 1825 "parser24.yp"
 { [$_[1]]; }
 	],
 	[#Rule 335
 		 'string_literals', 3,
 sub
-#line 1823 "parser24.yp"
+#line 1826 "parser24.yp"
 { unshift(@{$_[3]},$_[1]); $_[3]; }
 	],
 	[#Rule 336
@@ -6902,7 +6907,7 @@ sub
 	[#Rule 339
 		 'param_type_spec', 1,
 sub
-#line 1832 "parser24.yp"
+#line 1835 "parser24.yp"
 {
 			TypeDeclarator->Lookup($_[0],$_[1]);
 		}
@@ -6910,7 +6915,7 @@ sub
 	[#Rule 340
 		 'fixed_pt_type', 6,
 sub
-#line 1840 "parser24.yp"
+#line 1843 "parser24.yp"
 {
 			new FixedPtType($_[0],
 					'value'				=>	$_[1],
@@ -6922,7 +6927,7 @@ sub
 	[#Rule 341
 		 'fixed_pt_type', 6,
 sub
-#line 1848 "parser24.yp"
+#line 1851 "parser24.yp"
 {
 			$_[0]->Error("Expression excepted.\n");
 			$_[0]->YYErrok();
@@ -6931,7 +6936,7 @@ sub
 	[#Rule 342
 		 'fixed_pt_type', 4,
 sub
-#line 1853 "parser24.yp"
+#line 1856 "parser24.yp"
 {
 			$_[0]->Error("Expression excepted.\n");
 			$_[0]->YYErrok();
@@ -6940,7 +6945,7 @@ sub
 	[#Rule 343
 		 'fixed_pt_type', 2,
 sub
-#line 1858 "parser24.yp"
+#line 1861 "parser24.yp"
 {
 			$_[0]->Error("'<' excepted.\n");
 			$_[0]->YYErrok();
@@ -6949,7 +6954,7 @@ sub
 	[#Rule 344
 		 'fixed_pt_const_type', 1,
 sub
-#line 1867 "parser24.yp"
+#line 1870 "parser24.yp"
 {
 			new FixedPtType($_[0],
 					'value'				=>	$_[1]
@@ -6959,7 +6964,7 @@ sub
 	[#Rule 345
 		 'value_base_type', 1,
 sub
-#line 1877 "parser24.yp"
+#line 1880 "parser24.yp"
 {
 			new ValueBaseType($_[0],
 					'value'				=>	$_[1]
@@ -6969,7 +6974,7 @@ sub
 	[#Rule 346
 		 'constr_forward_decl', 2,
 sub
-#line 1887 "parser24.yp"
+#line 1890 "parser24.yp"
 {
 			new ForwardStructType($_[0],
 					'idf'				=>	$_[2]
@@ -6979,7 +6984,7 @@ sub
 	[#Rule 347
 		 'constr_forward_decl', 2,
 sub
-#line 1893 "parser24.yp"
+#line 1896 "parser24.yp"
 {
 			$_[0]->Error("Identifier excepted.\n");
 			$_[0]->YYErrok();
@@ -6988,7 +6993,7 @@ sub
 	[#Rule 348
 		 'constr_forward_decl', 2,
 sub
-#line 1898 "parser24.yp"
+#line 1901 "parser24.yp"
 {
 			new ForwardUnionType($_[0],
 					'idf'				=>	$_[2]
@@ -6998,7 +7003,7 @@ sub
 	[#Rule 349
 		 'constr_forward_decl', 2,
 sub
-#line 1904 "parser24.yp"
+#line 1907 "parser24.yp"
 {
 			$_[0]->Error("Identifier excepted.\n");
 			$_[0]->YYErrok();
@@ -7009,7 +7014,7 @@ sub
     bless($self,$class);
 }
 
-#line 1910 "parser24.yp"
+#line 1913 "parser24.yp"
 
 
 use strict;
