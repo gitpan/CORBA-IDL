@@ -1,5 +1,9 @@
 Revision history for Perl extension CORBA::IDL.
 
+2.45  Tue Jul 19 18:30:00 2005
+	- node.pm : native exception
+	- repos_id.pm : add uidVisitor
+
 2.44  Sun Apr  3 20:30;00 2005
 	- lexer.pm : /**< doxygen comment */
 	- parser* : BooleanLiteral->{value}

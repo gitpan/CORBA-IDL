@@ -8,7 +8,7 @@ use UNIVERSAL;
 package CORBA::IDL::node;
 
 use vars qw($VERSION);
-$VERSION = '2.44';
+$VERSION = '2.45';
 
 sub _Build {
 	my $proto = shift;
@@ -300,7 +300,13 @@ sub Configure {
 	}
 	$self->{list_export} = \@list;
 	$self->_CheckLocal($parser);			# specialized
+	$self->_CheckNative($parser);			# specialized
 	return $self;
+}
+
+sub _CheckNative {
+	# If a native type is used as an exception for an operation, the
+	# operation must appear in either a local interface or a valuetype.
 }
 
 sub Lookup {
@@ -417,6 +423,25 @@ sub _CheckLocal {
 	}
 }
 
+sub _CheckNative {
+	my $self = shift;
+	my ($parser) = @_;
+
+	# If a native type is used as an exception for an operation, the
+	# operation must appear in either a local interface or a valuetype.
+	foreach (@{$self->{list_export}}) {
+		my $defn = $parser->YYData->{symbtab}->Lookup($_);
+		if (exists $defn->{list_raise}) {
+			foreach (@{$defn->{list_raise}}) {
+				my $except = $parser->YYData->{symbtab}->Lookup($_);
+				if ($except->isa('NativeType')) {
+					$parser->Error("'$except->{idf}' used in a not local interface.\n");
+				}
+			}
+		}
+	}
+}
+
 #
 #	3.8.4	Forward Declaration
 #
@@ -493,6 +518,25 @@ sub _CheckLocal {
 			foreach (@{$defn->{list_param}}) {
 				if (TypeDeclarator->IsaLocal($parser, $_->{type})) {
 					$parser->Error("'$self->{idf}' is not local.\n");
+				}
+			}
+		}
+	}
+}
+
+sub _CheckNative {
+	my $self = shift;
+	my ($parser) = @_;
+
+	# If a native type is used as an exception for an operation, the
+	# operation must appear in either a local interface or a valuetype.
+	foreach (@{$self->{list_export}}) {
+		my $defn = $parser->YYData->{symbtab}->Lookup($_);
+		if (exists $defn->{list_raise}) {
+			foreach (@{$defn->{list_raise}}) {
+				my $except = $parser->YYData->{symbtab}->Lookup($_);
+				if ($except->isa('NativeType')) {
+					$parser->Error("'$except->{idf}' used in a not local interface.\n");
 				}
 			}
 		}
@@ -2027,8 +2071,8 @@ sub Lookup {
 	my ($parser, $name) = @_;
 	my $defn = $parser->YYData->{symbtab}->Lookup($name);
 	if (defined $defn) {
-		unless ($defn->isa($class)) {
-			$parser->Error("'$name' is not a $class.\n");
+		unless ($defn->isa($class) || $defn->isa('NativeType')) {
+			$parser->Error("'$name' is not a $class or a native type.\n");
 		}
 		return $defn->{full};
 	} else {
