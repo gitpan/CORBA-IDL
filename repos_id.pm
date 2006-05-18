@@ -566,7 +566,7 @@ sub visitUnionType {
 		my $defn = $self->_get_defn($elt->{value}); 
 		my $type = $self->_get_defn($defn->{type}); 
 		$uid_str .= $defn->{idf};
-		$uid_str .= $type->{serial_uid} || $type->{value};
+		$uid_str .= ($type->{serial_uid} || $type->{value} || "");
 		if (exists $defn->{array_size}) {
 			foreach (@{$defn->{array_size}}) {
 				$uid_str .= "[" . $_->{value} . "]";

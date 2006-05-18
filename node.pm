@@ -8,7 +8,7 @@ use UNIVERSAL;
 package CORBA::IDL::node;
 
 use vars qw($VERSION);
-$VERSION = '2.45';
+$VERSION = '2.46';
 
 sub _Build {
 	my $proto = shift;
@@ -1135,7 +1135,11 @@ sub _Eval {
 		if ($type eq $parser->YYData->{symbtab}->Lookup($elt->{type})) {
 			return $elt;
 		} else {
-			$parser->Error("'$elt->{idf}' is not a '$type->{idf}'.\n");
+			if ($type->isa('EnumType')) {
+				$parser->Error("'$elt->{idf}' is not a '$type->{idf}'.\n");
+			} else {
+				$parser->Error("'$elt->{idf}' is not a '$type->{value}'.\n");
+			}
 			return undef;
 		}
 	} elsif ($elt->isa('IntegerLiteral')) {
@@ -1335,7 +1339,6 @@ sub _Init {
 				and ! $defn->isa('OctetType')
 				and ! $defn->isa('EnumType') ) {
 			my $idf = $defn->{idf} if (exists $defn->{idf});
-			$idf ||= $type->{idf} if (exists $type->{idf});
 			$idf ||= $type;
 			$parser->Error("'$idf' refers a bad type for constant.\n");
 			return $self;
@@ -1789,7 +1792,6 @@ sub Configure {
 				and ! $defn->isa('BooleanType')
 				and ! $defn->isa('EnumType') ) {
 			my $idf = $defn->{idf} if (exists $defn->{idf});
-			$idf ||= $dis->{idf} if (exists $dis->{idf});
 			$idf ||= $dis;
 			$parser->Error("'$idf' refers a bad type for union discriminator.\n");
 			return $self;

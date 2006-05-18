@@ -1,10 +1,11 @@
 # http://module-build.sourceforge.net/META-spec.html
 #XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#
 name:         CORBA-IDL
-version:      2.45
+version:      2.46
 version_from: node.pm
 installdirs:  site
 requires:
+    Digest::SHA1:                  0
     Math::BigInt:                  1.66
 
 distribution_type: module

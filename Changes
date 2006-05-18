@@ -1,5 +1,8 @@
 Revision history for Perl extension CORBA::IDL.
 
+2.46  Thu May 18 12:30:00 2006
+	- node.pm & repos_id.pm : minor fix
+
 2.45  Tue Jul 19 18:30:00 2005
 	- node.pm : native exception
 	- repos_id.pm : add uidVisitor
