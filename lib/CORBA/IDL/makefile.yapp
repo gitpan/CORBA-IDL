@@ -1,10 +1,12 @@
 
+PERL=perl
 YAPP=yapp -s -v -m
-CP=copy
-RM=-del
+CP=$(PERL) -MExtUtils::Command -e cp
+RM_F=$(PERL) -MExtUtils::Command -e rm_f
+
 
 all: parser30.pm parser24.pm parser23.pm parser22.pm parser21.pm parser20.pm parserxp.pm
-	$(RM) Parser.pm
+	$(RM_F) Parser.pm
 
 parser20.pm: parser20.yp
 	$(YAPP) Parser parser20.yp
@@ -35,5 +37,6 @@ parserxp.pm: parserxp.yp
 	$(CP) Parser.pm parserxp.pm
 
 clean:
-	$(RM) parser*.pm
-	$(RM) parser*.output
+	$(RM_F) parser*.pm
+	$(RM_F) parser*.output
+

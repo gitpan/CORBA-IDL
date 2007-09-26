@@ -1,5 +1,8 @@
 Revision history for Perl extension CORBA::IDL.
 
+2.47  Wed Sep 26 12:30:00 2007
+	- reorg: more compliant with CPAN requirements
+
 2.46  Thu May 18 12:30:00 2006
 	- node.pm & repos_id.pm : minor fix
 
@@ -22,7 +25,7 @@ Revision history for Perl extension CORBA::IDL.
 	- parserxp.yp : add [props] for member
 
 2.41  Mon Jun  7 08:30:00 2004
-	- better support of 'import' 
+	- better support of 'import'
 
 2.40  Tue May 18 18:30:00 2004
 	- modification of the AST (not compatible with 2.2x version) : add NativeType node
@@ -45,7 +48,7 @@ Revision history for Perl extension CORBA::IDL.
 
 2.05  Wed Dec 17 12:30:00 2003
 	- improvement for EnumType
-        - improvement for value and boxed value 
+        - improvement for value and boxed value
 	- add extra rules in grammar (export for value)
 	- bug in _StringLexer
 
@@ -54,7 +57,7 @@ Revision history for Perl extension CORBA::IDL.
 	- bug : value inheritance
 
 2.03  Mon Aug 11 12:30:00 2003
-	- add extra rules in grammar 
+	- add extra rules in grammar
 
 2.02  Fri Aug 01 18:30:00 2003
 	- lexer.pm : better handling C-preprocessor

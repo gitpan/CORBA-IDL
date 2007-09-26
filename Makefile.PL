@@ -3,30 +3,18 @@ use ExtUtils::MakeMaker;
 # the contents of the Makefile that is written.
 WriteMakefile(
     'NAME'          => 'CORBA::IDL',
-    'VERSION_FROM'  => 'node.pm',
+    'VERSION_FROM'  => 'lib/CORBA/IDL.pm',
     'ABSTRACT'      => 'CORBA-IDL 3.0 parser',
     'PREREQ_PM'     => {
                         'Digest::SHA1'  => 0,
                         'Math::BigInt'  => 1.66,
     },
-    'PM'            => {
-                        'ascii.pm'      => '$(INST_LIBDIR)/IDL/ascii.pm',
-                        'lexer.pm'      => '$(INST_LIBDIR)/IDL/lexer.pm',
-                        'node.pm'       => '$(INST_LIBDIR)/IDL/node.pm',
-                        'parser20.pm'   => '$(INST_LIBDIR)/IDL/parser20.pm',
-                        'parser21.pm'   => '$(INST_LIBDIR)/IDL/parser21.pm',
-                        'parser22.pm'   => '$(INST_LIBDIR)/IDL/parser22.pm',
-                        'parser23.pm'   => '$(INST_LIBDIR)/IDL/parser23.pm',
-                        'parser24.pm'   => '$(INST_LIBDIR)/IDL/parser24.pm',
-                        'parser30.pm'   => '$(INST_LIBDIR)/IDL/parser30.pm',
-                        'parserxp.pm'   => '$(INST_LIBDIR)/IDL/parserxp.pm',
-                        'repos_id.pm'   => '$(INST_LIBDIR)/IDL/repos_id.pm',
-                        'symbtab.pm'    => '$(INST_LIBDIR)/IDL/symbtab.pm',
-    },
-    'EXE_FILES'     => ['idl.pl'],
+    'INSTALLDIRS'   => 'site',
+    'EXE_FILES'     => [ 'bin/idl' ],
     'AUTHOR'        => "Francois PERRAD (francois.perrad\@gadz.org)",
     'dist'          => {
                         'COMPRESS'      => 'gzip',
                         'SUFFIX'        => '.gz',
     },
 );
+
