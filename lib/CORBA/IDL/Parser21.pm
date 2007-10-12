@@ -7,7 +7,7 @@
 #             ANY CHANGE MADE HERE WILL BE LOST !
 #
 ####################################################################
-package Parser;
+package CORBA::IDL::Parser;
 use vars qw ( @ISA );
 use strict;
 
@@ -3675,45 +3675,45 @@ sub new {
 	[#Rule 1
 		 'specification', 1,
 sub
-#line 59 "parser21.yp"
+#line 59 "Parser21.yp"
 {
-			$_[0]->YYData->{root} = new Specification($_[0],
-					'list_decl'			=>	$_[1],
-			);
-		}
+            $_[0]->YYData->{root} = new Specification($_[0],
+                    'list_decl'         =>  $_[1],
+            );
+        }
 	],
 	[#Rule 2
 		 'specification', 0,
 sub
-#line 65 "parser21.yp"
+#line 65 "Parser21.yp"
 {
-			$_[0]->Error("Empty specification.\n");
-		}
+            $_[0]->Error("Empty specification.\n");
+        }
 	],
 	[#Rule 3
 		 'specification', 1,
 sub
-#line 69 "parser21.yp"
+#line 69 "Parser21.yp"
 {
-			$_[0]->Error("definition declaration expected.\n");
-		}
+            $_[0]->Error("definition declaration expected.\n");
+        }
 	],
 	[#Rule 4
 		 'definitions', 1,
 sub
-#line 76 "parser21.yp"
+#line 76 "Parser21.yp"
 {
-			[$_[1]->getRef()];
-		}
+            [$_[1]->getRef()];
+        }
 	],
 	[#Rule 5
 		 'definitions', 2,
 sub
-#line 80 "parser21.yp"
+#line 80 "Parser21.yp"
 {
-			unshift(@{$_[2]},$_[1]->getRef());
-			$_[2];
-		}
+            unshift @{$_[2]}, $_[1]->getRef();
+            $_[2];
+        }
 	],
 	[#Rule 6
 		 'definition', 2, undef
@@ -3733,15 +3733,15 @@ sub
 	[#Rule 11
 		 'definition', 3,
 sub
-#line 99 "parser21.yp"
+#line 99 "Parser21.yp"
 {
-			# when IDENTIFIER is a future keyword
-			$_[0]->Error("'$_[1]' unexpected.\n");
-			$_[0]->YYErrok();
-			new CORBA::IDL::node($_[0],
-					'idf'					=>	$_[1]
-			);
-		}
+            # when IDENTIFIER is a future keyword
+            $_[0]->Error("'$_[1]' unexpected.\n");
+            $_[0]->YYErrok();
+            new CORBA::IDL::Node($_[0],
+                    'idf'                   =>  $_[1]
+            );
+        }
 	],
 	[#Rule 12
 		 'check_semicolon', 1, undef
@@ -3749,74 +3749,74 @@ sub
 	[#Rule 13
 		 'check_semicolon', 1,
 sub
-#line 113 "parser21.yp"
+#line 113 "Parser21.yp"
 {
-			$_[0]->Warning("';' expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Warning("';' expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 14
 		 'module', 4,
 sub
-#line 122 "parser21.yp"
+#line 122 "Parser21.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
-			$_[1]->Configure($_[0],
-					'list_decl'			=>	$_[3]
-			) if (defined $_[1]);
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
+            $_[1]->Configure($_[0],
+                    'list_decl'         =>  $_[3]
+            ) if (defined $_[1]);
+        }
 	],
 	[#Rule 15
 		 'module', 4,
 sub
-#line 129 "parser21.yp"
+#line 129 "Parser21.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
-			$_[0]->Error("definition declaration expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
+            $_[0]->Error("definition declaration expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 16
 		 'module', 3,
 sub
-#line 136 "parser21.yp"
+#line 136 "Parser21.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
-			$_[0]->Error("Empty module.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
+            $_[0]->Error("Empty module.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 17
 		 'module', 3,
 sub
-#line 143 "parser21.yp"
+#line 143 "Parser21.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
-			$_[0]->Error("'\x7b' expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
+            $_[0]->Error("'\x7b' expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 18
 		 'module_header', 2,
 sub
-#line 153 "parser21.yp"
+#line 153 "Parser21.yp"
 {
-			new Module($_[0],
-					'idf'				=>	$_[2],
-			);
-		}
+            new Module($_[0],
+                    'idf'               =>  $_[2],
+            );
+        }
 	],
 	[#Rule 19
 		 'module_header', 2,
 sub
-#line 159 "parser21.yp"
+#line 159 "Parser21.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 20
 		 'interface', 1, undef
@@ -3827,77 +3827,77 @@ sub
 	[#Rule 22
 		 'interface_dcl', 3,
 sub
-#line 176 "parser21.yp"
+#line 176 "Parser21.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->YYData->{curr_itf} = undef;
-			$_[1]->Configure($_[0],
-					'list_decl'		=>	[]
-			) if (defined $_[1]);
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[0]->YYData->{curr_itf} = undef;
+            $_[1]->Configure($_[0],
+                    'list_decl'     =>  []
+            ) if (defined $_[1]);
+        }
 	],
 	[#Rule 23
 		 'interface_dcl', 4,
 sub
-#line 184 "parser21.yp"
+#line 184 "Parser21.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->YYData->{curr_itf} = undef;
-			$_[1]->Configure($_[0],
-					'list_decl'		=>	$_[3]
-			) if (defined $_[1]);
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[0]->YYData->{curr_itf} = undef;
+            $_[1]->Configure($_[0],
+                    'list_decl'     =>  $_[3]
+            ) if (defined $_[1]);
+        }
 	],
 	[#Rule 24
 		 'interface_dcl', 4,
 sub
-#line 192 "parser21.yp"
+#line 192 "Parser21.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->YYData->{curr_itf} = undef;
-			$_[0]->Error("export declaration expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[0]->YYData->{curr_itf} = undef;
+            $_[0]->Error("export declaration expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 25
 		 'forward_dcl', 2,
 sub
-#line 204 "parser21.yp"
+#line 204 "Parser21.yp"
 {
-			new ForwardRegularInterface($_[0],
-					'idf'					=>	$_[2]
-			);
-		}
+            new ForwardRegularInterface($_[0],
+                    'idf'                   =>  $_[2]
+            );
+        }
 	],
 	[#Rule 26
 		 'forward_dcl', 2,
 sub
-#line 210 "parser21.yp"
+#line 210 "Parser21.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 27
 		 'interface_header', 3,
 sub
-#line 219 "parser21.yp"
+#line 219 "Parser21.yp"
 {
-			new RegularInterface($_[0],
-					'idf'					=>	$_[2],
-					'inheritance'			=>	$_[3]
-			);
-		}
+            new RegularInterface($_[0],
+                    'idf'                   =>  $_[2],
+                    'inheritance'           =>  $_[3]
+            );
+        }
 	],
 	[#Rule 28
 		 'interface_header', 2,
 sub
-#line 226 "parser21.yp"
+#line 226 "Parser21.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 29
 		 'interface_body', 1, undef
@@ -3905,19 +3905,19 @@ sub
 	[#Rule 30
 		 'exports', 1,
 sub
-#line 240 "parser21.yp"
+#line 240 "Parser21.yp"
 {
-			[$_[1]->getRef()];
-		}
+            [$_[1]->getRef()];
+        }
 	],
 	[#Rule 31
 		 'exports', 2,
 sub
-#line 244 "parser21.yp"
+#line 244 "Parser21.yp"
 {
-			unshift(@{$_[2]},$_[1]->getRef());
-			$_[2];
-		}
+            unshift @{$_[2]}, $_[1]->getRef();
+            $_[2];
+        }
 	],
 	[#Rule 32
 		 'export', 2, undef
@@ -3937,21 +3937,21 @@ sub
 	[#Rule 37
 		 'interface_inheritance_spec', 2,
 sub
-#line 267 "parser21.yp"
+#line 267 "Parser21.yp"
 {
-			new InheritanceSpec($_[0],
-					'list_interface'		=>	$_[2]
-			);
-		}
+            new InheritanceSpec($_[0],
+                    'list_interface'        =>  $_[2]
+            );
+        }
 	],
 	[#Rule 38
 		 'interface_inheritance_spec', 2,
 sub
-#line 273 "parser21.yp"
+#line 273 "Parser21.yp"
 {
-			$_[0]->Error("Interface name expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Interface name expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 39
 		 'interface_inheritance_spec', 0, undef
@@ -3959,27 +3959,27 @@ sub
 	[#Rule 40
 		 'interface_names', 1,
 sub
-#line 283 "parser21.yp"
+#line 283 "Parser21.yp"
 {
-			[$_[1]];
-		}
+            [$_[1]];
+        }
 	],
 	[#Rule 41
 		 'interface_names', 3,
 sub
-#line 287 "parser21.yp"
+#line 287 "Parser21.yp"
 {
-			unshift(@{$_[3]},$_[1]);
-			$_[3];
-		}
+            unshift @{$_[3]}, $_[1];
+            $_[3];
+        }
 	],
 	[#Rule 42
 		 'interface_name', 1,
 sub
-#line 295 "parser21.yp"
+#line 295 "Parser21.yp"
 {
-				Interface->Lookup($_[0],$_[1]);
-		}
+                Interface->Lookup($_[0], $_[1]);
+        }
 	],
 	[#Rule 43
 		 'scoped_name', 1, undef
@@ -3987,86 +3987,86 @@ sub
 	[#Rule 44
 		 'scoped_name', 2,
 sub
-#line 305 "parser21.yp"
+#line 305 "Parser21.yp"
 {
-			$_[1] . $_[2];
-		}
+            $_[1] . $_[2];
+        }
 	],
 	[#Rule 45
 		 'scoped_name', 2,
 sub
-#line 309 "parser21.yp"
+#line 309 "Parser21.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-			'';
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+            '';
+        }
 	],
 	[#Rule 46
 		 'scoped_name', 3,
 sub
-#line 315 "parser21.yp"
+#line 315 "Parser21.yp"
 {
-			$_[1] . $_[2] . $_[3];
-		}
+            $_[1] . $_[2] . $_[3];
+        }
 	],
 	[#Rule 47
 		 'scoped_name', 3,
 sub
-#line 319 "parser21.yp"
+#line 319 "Parser21.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 48
 		 'const_dcl', 5,
 sub
-#line 329 "parser21.yp"
+#line 329 "Parser21.yp"
 {
-			new Constant($_[0],
-					'type'				=>	$_[2],
-					'idf'				=>	$_[3],
-					'list_expr'			=>	$_[5]
-			);
-		}
+            new Constant($_[0],
+                    'type'              =>  $_[2],
+                    'idf'               =>  $_[3],
+                    'list_expr'         =>  $_[5]
+            );
+        }
 	],
 	[#Rule 49
 		 'const_dcl', 5,
 sub
-#line 337 "parser21.yp"
+#line 337 "Parser21.yp"
 {
-			$_[0]->Error("Expression expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Expression expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 50
 		 'const_dcl', 4,
 sub
-#line 342 "parser21.yp"
+#line 342 "Parser21.yp"
 {
-			$_[0]->Error("'=' expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("'=' expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 51
 		 'const_dcl', 3,
 sub
-#line 347 "parser21.yp"
+#line 347 "Parser21.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 52
 		 'const_dcl', 2,
 sub
-#line 352 "parser21.yp"
+#line 352 "Parser21.yp"
 {
-			$_[0]->Error("const_type expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("const_type expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 53
 		 'const_type', 1, undef
@@ -4095,10 +4095,10 @@ sub
 	[#Rule 61
 		 'const_type', 1,
 sub
-#line 377 "parser21.yp"
+#line 377 "Parser21.yp"
 {
-			TypeDeclarator->Lookup($_[0],$_[1]);
-		}
+            TypeDeclarator->Lookup($_[0], $_[1]);
+        }
 	],
 	[#Rule 62
 		 'const_exp', 1, undef
@@ -4109,10 +4109,10 @@ sub
 	[#Rule 64
 		 'or_expr', 3,
 sub
-#line 393 "parser21.yp"
+#line 393 "Parser21.yp"
 {
-			BuildBinop($_[1],$_[2],$_[3]);
-		}
+            BuildBinop($_[1], $_[2], $_[3]);
+        }
 	],
 	[#Rule 65
 		 'xor_expr', 1, undef
@@ -4120,10 +4120,10 @@ sub
 	[#Rule 66
 		 'xor_expr', 3,
 sub
-#line 403 "parser21.yp"
+#line 403 "Parser21.yp"
 {
-			BuildBinop($_[1],$_[2],$_[3]);
-		}
+            BuildBinop($_[1], $_[2], $_[3]);
+        }
 	],
 	[#Rule 67
 		 'and_expr', 1, undef
@@ -4131,10 +4131,10 @@ sub
 	[#Rule 68
 		 'and_expr', 3,
 sub
-#line 413 "parser21.yp"
+#line 413 "Parser21.yp"
 {
-			BuildBinop($_[1],$_[2],$_[3]);
-		}
+            BuildBinop($_[1], $_[2], $_[3]);
+        }
 	],
 	[#Rule 69
 		 'shift_expr', 1, undef
@@ -4142,18 +4142,18 @@ sub
 	[#Rule 70
 		 'shift_expr', 3,
 sub
-#line 423 "parser21.yp"
+#line 423 "Parser21.yp"
 {
-			BuildBinop($_[1],$_[2],$_[3]);
-		}
+            BuildBinop($_[1], $_[2], $_[3]);
+        }
 	],
 	[#Rule 71
 		 'shift_expr', 3,
 sub
-#line 427 "parser21.yp"
+#line 427 "Parser21.yp"
 {
-			BuildBinop($_[1],$_[2],$_[3]);
-		}
+            BuildBinop($_[1], $_[2], $_[3]);
+        }
 	],
 	[#Rule 72
 		 'add_expr', 1, undef
@@ -4161,18 +4161,18 @@ sub
 	[#Rule 73
 		 'add_expr', 3,
 sub
-#line 437 "parser21.yp"
+#line 437 "Parser21.yp"
 {
-			BuildBinop($_[1],$_[2],$_[3]);
-		}
+            BuildBinop($_[1], $_[2], $_[3]);
+        }
 	],
 	[#Rule 74
 		 'add_expr', 3,
 sub
-#line 441 "parser21.yp"
+#line 441 "Parser21.yp"
 {
-			BuildBinop($_[1],$_[2],$_[3]);
-		}
+            BuildBinop($_[1], $_[2], $_[3]);
+        }
 	],
 	[#Rule 75
 		 'mult_expr', 1, undef
@@ -4180,34 +4180,34 @@ sub
 	[#Rule 76
 		 'mult_expr', 3,
 sub
-#line 451 "parser21.yp"
+#line 451 "Parser21.yp"
 {
-			BuildBinop($_[1],$_[2],$_[3]);
-		}
+            BuildBinop($_[1], $_[2], $_[3]);
+        }
 	],
 	[#Rule 77
 		 'mult_expr', 3,
 sub
-#line 455 "parser21.yp"
+#line 455 "Parser21.yp"
 {
-			BuildBinop($_[1],$_[2],$_[3]);
-		}
+            BuildBinop($_[1], $_[2], $_[3]);
+        }
 	],
 	[#Rule 78
 		 'mult_expr', 3,
 sub
-#line 459 "parser21.yp"
+#line 459 "Parser21.yp"
 {
-			BuildBinop($_[1],$_[2],$_[3]);
-		}
+            BuildBinop($_[1], $_[2], $_[3]);
+        }
 	],
 	[#Rule 79
 		 'unary_expr', 2,
 sub
-#line 467 "parser21.yp"
+#line 467 "Parser21.yp"
 {
-			BuildUnop($_[1],$_[2]);
-		}
+            BuildUnop($_[1], $_[2]);
+        }
 	],
 	[#Rule 80
 		 'unary_expr', 1, undef
@@ -4224,110 +4224,110 @@ sub
 	[#Rule 84
 		 'primary_expr', 1,
 sub
-#line 487 "parser21.yp"
+#line 487 "Parser21.yp"
 {
-			[
-				Constant->Lookup($_[0],$_[1])
-			];
-		}
+            [
+                Constant->Lookup($_[0], $_[1])
+            ];
+        }
 	],
 	[#Rule 85
 		 'primary_expr', 1,
 sub
-#line 493 "parser21.yp"
+#line 493 "Parser21.yp"
 {
-			[ $_[1] ];
-		}
+            [ $_[1] ];
+        }
 	],
 	[#Rule 86
 		 'primary_expr', 3,
 sub
-#line 497 "parser21.yp"
+#line 497 "Parser21.yp"
 {
-			$_[2];
-		}
+            $_[2];
+        }
 	],
 	[#Rule 87
 		 'primary_expr', 3,
 sub
-#line 501 "parser21.yp"
+#line 501 "Parser21.yp"
 {
-			$_[0]->Error("Expression expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Expression expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 88
 		 'literal', 1,
 sub
-#line 510 "parser21.yp"
+#line 510 "Parser21.yp"
 {
-			new IntegerLiteral($_[0],
-					'value'				=>	$_[1],
-					'lexeme'			=>	$_[0]->YYData->{lexeme}
-			);
-		}
+            new IntegerLiteral($_[0],
+                    'value'             =>  $_[1],
+                    'lexeme'            =>  $_[0]->YYData->{lexeme}
+            );
+        }
 	],
 	[#Rule 89
 		 'literal', 1,
 sub
-#line 517 "parser21.yp"
+#line 517 "Parser21.yp"
 {
-			new StringLiteral($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new StringLiteral($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 90
 		 'literal', 1,
 sub
-#line 523 "parser21.yp"
+#line 523 "Parser21.yp"
 {
-			new WideStringLiteral($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new WideStringLiteral($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 91
 		 'literal', 1,
 sub
-#line 529 "parser21.yp"
+#line 529 "Parser21.yp"
 {
-			new CharacterLiteral($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new CharacterLiteral($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 92
 		 'literal', 1,
 sub
-#line 535 "parser21.yp"
+#line 535 "Parser21.yp"
 {
-			new WideCharacterLiteral($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new WideCharacterLiteral($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 93
 		 'literal', 1,
 sub
-#line 541 "parser21.yp"
+#line 541 "Parser21.yp"
 {
-			new FixedPtLiteral($_[0],
-					'value'				=>	$_[1],
-					'lexeme'			=>	$_[0]->YYData->{lexeme}
-			);
-		}
+            new FixedPtLiteral($_[0],
+                    'value'             =>  $_[1],
+                    'lexeme'            =>  $_[0]->YYData->{lexeme}
+            );
+        }
 	],
 	[#Rule 94
 		 'literal', 1,
 sub
-#line 548 "parser21.yp"
+#line 548 "Parser21.yp"
 {
-			new FloatingPtLiteral($_[0],
-					'value'				=>	$_[1],
-					'lexeme'			=>	$_[0]->YYData->{lexeme}
-			);
-		}
+            new FloatingPtLiteral($_[0],
+                    'value'             =>  $_[1],
+                    'lexeme'            =>  $_[0]->YYData->{lexeme}
+            );
+        }
 	],
 	[#Rule 95
 		 'literal', 1, undef
@@ -4338,10 +4338,10 @@ sub
 	[#Rule 97
 		 'string_literal', 2,
 sub
-#line 562 "parser21.yp"
+#line 562 "Parser21.yp"
 {
-			$_[1] . $_[2];
-		}
+            $_[1] . $_[2];
+        }
 	],
 	[#Rule 98
 		 'wide_string_literal', 1, undef
@@ -4349,48 +4349,48 @@ sub
 	[#Rule 99
 		 'wide_string_literal', 2,
 sub
-#line 571 "parser21.yp"
+#line 571 "Parser21.yp"
 {
-			$_[1] . $_[2];
-		}
+            $_[1] . $_[2];
+        }
 	],
 	[#Rule 100
 		 'boolean_literal', 1,
 sub
-#line 579 "parser21.yp"
+#line 579 "Parser21.yp"
 {
-			new BooleanLiteral($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new BooleanLiteral($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 101
 		 'boolean_literal', 1,
 sub
-#line 585 "parser21.yp"
+#line 585 "Parser21.yp"
 {
-			new BooleanLiteral($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new BooleanLiteral($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 102
 		 'positive_int_const', 1,
 sub
-#line 595 "parser21.yp"
+#line 595 "Parser21.yp"
 {
-			new Expression($_[0],
-					'list_expr'			=>	$_[1]
-			);
-		}
+            new Expression($_[0],
+                    'list_expr'         =>  $_[1]
+            );
+        }
 	],
 	[#Rule 103
 		 'type_dcl', 2,
 sub
-#line 605 "parser21.yp"
+#line 605 "Parser21.yp"
 {
-			$_[2];
-		}
+            $_[2];
+        }
 	],
 	[#Rule 104
 		 'type_dcl', 1, undef
@@ -4404,22 +4404,22 @@ sub
 	[#Rule 107
 		 'type_dcl', 2,
 sub
-#line 615 "parser21.yp"
+#line 615 "Parser21.yp"
 {
-			$_[0]->Error("type_declarator expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("type_declarator expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 108
 		 'type_declarator', 2,
 sub
-#line 624 "parser21.yp"
+#line 624 "Parser21.yp"
 {
-			new TypeDeclarators($_[0],
-					'type'				=>	$_[1],
-					'list_expr'			=>	$_[2]
-			);
-		}
+            new TypeDeclarators($_[0],
+                    'type'              =>  $_[1],
+                    'list_expr'         =>  $_[2]
+            );
+        }
 	],
 	[#Rule 109
 		 'type_spec', 1, undef
@@ -4436,21 +4436,21 @@ sub
 	[#Rule 113
 		 'simple_type_spec', 1,
 sub
-#line 647 "parser21.yp"
+#line 647 "Parser21.yp"
 {
-			TypeDeclarator->Lookup($_[0],$_[1]);
-		}
+            TypeDeclarator->Lookup($_[0], $_[1]);
+        }
 	],
 	[#Rule 114
 		 'simple_type_spec', 1,
 sub
-#line 651 "parser21.yp"
+#line 651 "Parser21.yp"
 {
-			$_[0]->Error("simple_type_spec expected.\n");
-			new VoidType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            $_[0]->Error("simple_type_spec expected.\n");
+            new VoidType($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 115
 		 'base_type_spec', 1, undef
@@ -4500,27 +4500,27 @@ sub
 	[#Rule 130
 		 'declarators', 1,
 sub
-#line 704 "parser21.yp"
+#line 704 "Parser21.yp"
 {
-			[$_[1]];
-		}
+            [$_[1]];
+        }
 	],
 	[#Rule 131
 		 'declarators', 3,
 sub
-#line 708 "parser21.yp"
+#line 708 "Parser21.yp"
 {
-			unshift(@{$_[3]},$_[1]);
-			$_[3];
-		}
+            unshift @{$_[3]}, $_[1];
+            $_[3];
+        }
 	],
 	[#Rule 132
 		 'declarator', 1,
 sub
-#line 717 "parser21.yp"
+#line 717 "Parser21.yp"
 {
-			[$_[1]];
-		}
+            [$_[1]];
+        }
 	],
 	[#Rule 133
 		 'declarator', 1, undef
@@ -4531,20 +4531,20 @@ sub
 	[#Rule 135
 		 'simple_declarator', 2,
 sub
-#line 729 "parser21.yp"
+#line 729 "Parser21.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 136
 		 'simple_declarator', 2,
 sub
-#line 734 "parser21.yp"
+#line 734 "Parser21.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 137
 		 'complex_declarator', 1, undef
@@ -4552,32 +4552,32 @@ sub
 	[#Rule 138
 		 'floating_pt_type', 1,
 sub
-#line 749 "parser21.yp"
+#line 749 "Parser21.yp"
 {
-			new FloatingPtType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new FloatingPtType($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 139
 		 'floating_pt_type', 1,
 sub
-#line 755 "parser21.yp"
+#line 755 "Parser21.yp"
 {
-			new FloatingPtType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new FloatingPtType($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 140
 		 'floating_pt_type', 2,
 sub
-#line 761 "parser21.yp"
+#line 761 "Parser21.yp"
 {
-			new FloatingPtType($_[0],
-					'value'				=>	$_[1] . ' ' . $_[2]
-			);
-		}
+            new FloatingPtType($_[0],
+                    'value'             =>  $_[1] . q{ } . $_[2]
+            );
+        }
 	],
 	[#Rule 141
 		 'integer_type', 1, undef
@@ -4597,32 +4597,32 @@ sub
 	[#Rule 146
 		 'signed_short_int', 1,
 sub
-#line 789 "parser21.yp"
+#line 789 "Parser21.yp"
 {
-			new IntegerType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new IntegerType($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 147
 		 'signed_long_int', 1,
 sub
-#line 799 "parser21.yp"
+#line 799 "Parser21.yp"
 {
-			new IntegerType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new IntegerType($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 148
 		 'signed_longlong_int', 2,
 sub
-#line 809 "parser21.yp"
+#line 809 "Parser21.yp"
 {
-			new IntegerType($_[0],
-					'value'				=>	$_[1] . ' ' . $_[2]
-			);
-		}
+            new IntegerType($_[0],
+                    'value'             =>  $_[1] . q{ } . $_[2]
+            );
+        }
 	],
 	[#Rule 149
 		 'unsigned_int', 1, undef
@@ -4636,236 +4636,236 @@ sub
 	[#Rule 152
 		 'unsigned_short_int', 2,
 sub
-#line 829 "parser21.yp"
+#line 829 "Parser21.yp"
 {
-			new IntegerType($_[0],
-					'value'				=>	$_[1] . ' ' . $_[2]
-			);
-		}
+            new IntegerType($_[0],
+                    'value'             =>  $_[1] . q{ } . $_[2]
+            );
+        }
 	],
 	[#Rule 153
 		 'unsigned_long_int', 2,
 sub
-#line 839 "parser21.yp"
+#line 839 "Parser21.yp"
 {
-			new IntegerType($_[0],
-					'value'				=>	$_[1] . ' ' . $_[2]
-			);
-		}
+            new IntegerType($_[0],
+                    'value'             =>  $_[1] . q{ } . $_[2]
+            );
+        }
 	],
 	[#Rule 154
 		 'unsigned_longlong_int', 3,
 sub
-#line 849 "parser21.yp"
+#line 849 "Parser21.yp"
 {
-			new IntegerType($_[0],
-					'value'				=>	$_[1] . ' ' . $_[2] . ' ' . $_[3]
-			);
-		}
+            new IntegerType($_[0],
+                    'value'             =>  $_[1] . q{ } . $_[2] . q{ } . $_[3]
+            );
+        }
 	],
 	[#Rule 155
 		 'char_type', 1,
 sub
-#line 859 "parser21.yp"
+#line 859 "Parser21.yp"
 {
-			new CharType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new CharType($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 156
 		 'wide_char_type', 1,
 sub
-#line 869 "parser21.yp"
+#line 869 "Parser21.yp"
 {
-			new WideCharType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new WideCharType($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 157
 		 'boolean_type', 1,
 sub
-#line 879 "parser21.yp"
+#line 879 "Parser21.yp"
 {
-			new BooleanType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new BooleanType($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 158
 		 'octet_type', 1,
 sub
-#line 889 "parser21.yp"
+#line 889 "Parser21.yp"
 {
-			new OctetType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new OctetType($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 159
 		 'any_type', 1,
 sub
-#line 899 "parser21.yp"
+#line 899 "Parser21.yp"
 {
-			new AnyType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new AnyType($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 160
 		 'object_type', 1,
 sub
-#line 909 "parser21.yp"
+#line 909 "Parser21.yp"
 {
-			new ObjectType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new ObjectType($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 161
 		 'struct_type', 4,
 sub
-#line 919 "parser21.yp"
+#line 919 "Parser21.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[1]->Configure($_[0],
-					'list_expr'			=>	$_[3]
-			) if (defined $_[1]);
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[1]->Configure($_[0],
+                    'list_expr'         =>  $_[3]
+            ) if (defined $_[1]);
+        }
 	],
 	[#Rule 162
 		 'struct_type', 4,
 sub
-#line 926 "parser21.yp"
+#line 926 "Parser21.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("member expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[0]->Error("member expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 163
 		 'struct_header', 2,
 sub
-#line 936 "parser21.yp"
+#line 936 "Parser21.yp"
 {
-			new StructType($_[0],
-					'idf'				=>	$_[2]
-			);
-		}
+            new StructType($_[0],
+                    'idf'               =>  $_[2]
+            );
+        }
 	],
 	[#Rule 164
 		 'struct_header', 2,
 sub
-#line 942 "parser21.yp"
+#line 942 "Parser21.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 165
 		 'member_list', 1,
 sub
-#line 951 "parser21.yp"
+#line 951 "Parser21.yp"
 {
-			[$_[1]];
-		}
+            [$_[1]];
+        }
 	],
 	[#Rule 166
 		 'member_list', 2,
 sub
-#line 955 "parser21.yp"
+#line 955 "Parser21.yp"
 {
-			unshift(@{$_[2]},$_[1]);
-			$_[2];
-		}
+            unshift @{$_[2]}, $_[1];
+            $_[2];
+        }
 	],
 	[#Rule 167
 		 'member', 3,
 sub
-#line 964 "parser21.yp"
+#line 964 "Parser21.yp"
 {
-			new Members($_[0],
-					'type'				=>	$_[1],
-					'list_expr'			=>	$_[2]
-			);
-		}
+            new Members($_[0],
+                    'type'              =>  $_[1],
+                    'list_expr'         =>  $_[2]
+            );
+        }
 	],
 	[#Rule 168
 		 'union_type', 8,
 sub
-#line 975 "parser21.yp"
+#line 975 "Parser21.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[1]->Configure($_[0],
-					'type'				=>	$_[4],
-					'list_expr'			=>	$_[7]
-			) if (defined $_[1]);
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[1]->Configure($_[0],
+                    'type'              =>  $_[4],
+                    'list_expr'         =>  $_[7]
+            ) if (defined $_[1]);
+        }
 	],
 	[#Rule 169
 		 'union_type', 8,
 sub
-#line 983 "parser21.yp"
+#line 983 "Parser21.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("switch_body expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[0]->Error("switch_body expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 170
 		 'union_type', 6,
 sub
-#line 990 "parser21.yp"
+#line 990 "Parser21.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("'\x7b' expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[0]->Error("'\x7b' expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 171
 		 'union_type', 5,
 sub
-#line 997 "parser21.yp"
+#line 997 "Parser21.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("switch_type_spec expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[0]->Error("switch_type_spec expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 172
 		 'union_type', 3,
 sub
-#line 1004 "parser21.yp"
+#line 1004 "Parser21.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("'(' expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[0]->Error("'(' expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 173
 		 'union_header', 2,
 sub
-#line 1014 "parser21.yp"
+#line 1014 "Parser21.yp"
 {
-			new UnionType($_[0],
-					'idf'				=>	$_[2],
-			);
-		}
+            new UnionType($_[0],
+                    'idf'               =>  $_[2],
+            );
+        }
 	],
 	[#Rule 174
 		 'union_header', 2,
 sub
-#line 1020 "parser21.yp"
+#line 1020 "Parser21.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 175
 		 'switch_type_spec', 1, undef
@@ -4882,379 +4882,379 @@ sub
 	[#Rule 179
 		 'switch_type_spec', 1,
 sub
-#line 1037 "parser21.yp"
+#line 1037 "Parser21.yp"
 {
-			TypeDeclarator->Lookup($_[0],$_[1]);
-		}
+            TypeDeclarator->Lookup($_[0], $_[1]);
+        }
 	],
 	[#Rule 180
 		 'switch_body', 1,
 sub
-#line 1045 "parser21.yp"
+#line 1045 "Parser21.yp"
 {
-			[$_[1]];
-		}
+            [$_[1]];
+        }
 	],
 	[#Rule 181
 		 'switch_body', 2,
 sub
-#line 1049 "parser21.yp"
+#line 1049 "Parser21.yp"
 {
-			unshift(@{$_[2]},$_[1]);
-			$_[2];
-		}
+            unshift @{$_[2]}, $_[1];
+            $_[2];
+        }
 	],
 	[#Rule 182
 		 'case', 3,
 sub
-#line 1058 "parser21.yp"
+#line 1058 "Parser21.yp"
 {
-			new Case($_[0],
-					'list_label'		=>	$_[1],
-					'element'			=>	$_[2]
-			);
-		}
+            new Case($_[0],
+                    'list_label'        =>  $_[1],
+                    'element'           =>  $_[2]
+            );
+        }
 	],
 	[#Rule 183
 		 'case_labels', 1,
 sub
-#line 1068 "parser21.yp"
+#line 1068 "Parser21.yp"
 {
-			[$_[1]];
-		}
+            [$_[1]];
+        }
 	],
 	[#Rule 184
 		 'case_labels', 2,
 sub
-#line 1072 "parser21.yp"
+#line 1072 "Parser21.yp"
 {
-			unshift(@{$_[2]},$_[1]);
-			$_[2];
-		}
+            unshift @{$_[2]}, $_[1];
+            $_[2];
+        }
 	],
 	[#Rule 185
 		 'case_label', 3,
 sub
-#line 1081 "parser21.yp"
+#line 1081 "Parser21.yp"
 {
-			$_[2];						# here only a expression, type is not known
-		}
+            $_[2];                      # here only a expression, type is not known
+        }
 	],
 	[#Rule 186
 		 'case_label', 3,
 sub
-#line 1085 "parser21.yp"
+#line 1085 "Parser21.yp"
 {
-			$_[0]->Error("':' expected.\n");
-			$_[0]->YYErrok();
-			$_[2];
-		}
+            $_[0]->Error("':' expected.\n");
+            $_[0]->YYErrok();
+            $_[2];
+        }
 	],
 	[#Rule 187
 		 'case_label', 2,
 sub
-#line 1091 "parser21.yp"
+#line 1091 "Parser21.yp"
 {
-			$_[0]->Error("Expression expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Expression expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 188
 		 'case_label', 2,
 sub
-#line 1096 "parser21.yp"
+#line 1096 "Parser21.yp"
 {
-			new Default($_[0]);
-		}
+            new Default($_[0]);
+        }
 	],
 	[#Rule 189
 		 'case_label', 2,
 sub
-#line 1100 "parser21.yp"
+#line 1100 "Parser21.yp"
 {
-			$_[0]->Error("':' expected.\n");
-			$_[0]->YYErrok();
-			new Default($_[0]);
-		}
+            $_[0]->Error("':' expected.\n");
+            $_[0]->YYErrok();
+            new Default($_[0]);
+        }
 	],
 	[#Rule 190
 		 'element_spec', 2,
 sub
-#line 1110 "parser21.yp"
+#line 1110 "Parser21.yp"
 {
-			new Element($_[0],
-					'type'			=>	$_[1],
-					'list_expr'		=>	$_[2]
-			);
-		}
+            new Element($_[0],
+                    'type'          =>  $_[1],
+                    'list_expr'     =>  $_[2]
+            );
+        }
 	],
 	[#Rule 191
 		 'enum_type', 4,
 sub
-#line 1121 "parser21.yp"
+#line 1121 "Parser21.yp"
 {
-			$_[1]->Configure($_[0],
-					'list_expr'		=>	$_[3]
-			) if (defined $_[1]);
-		}
+            $_[1]->Configure($_[0],
+                    'list_expr'     =>  $_[3]
+            ) if (defined $_[1]);
+        }
 	],
 	[#Rule 192
 		 'enum_type', 4,
 sub
-#line 1127 "parser21.yp"
+#line 1127 "Parser21.yp"
 {
-			$_[0]->Error("enumerator expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            $_[0]->Error("enumerator expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 193
 		 'enum_type', 2,
 sub
-#line 1133 "parser21.yp"
+#line 1133 "Parser21.yp"
 {
-			$_[0]->Error("'\x7b' expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            $_[0]->Error("'\x7b' expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 194
 		 'enum_header', 2,
 sub
-#line 1142 "parser21.yp"
+#line 1142 "Parser21.yp"
 {
-			new EnumType($_[0],
-					'idf'				=>	$_[2],
-			);
-		}
+            new EnumType($_[0],
+                    'idf'               =>  $_[2],
+            );
+        }
 	],
 	[#Rule 195
 		 'enum_header', 2,
 sub
-#line 1148 "parser21.yp"
+#line 1148 "Parser21.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 196
 		 'enumerators', 1,
 sub
-#line 1156 "parser21.yp"
+#line 1156 "Parser21.yp"
 {
-			[$_[1]];
-		}
+            [$_[1]];
+        }
 	],
 	[#Rule 197
 		 'enumerators', 3,
 sub
-#line 1160 "parser21.yp"
+#line 1160 "Parser21.yp"
 {
-			unshift(@{$_[3]},$_[1]);
-			$_[3];
-		}
+            unshift @{$_[3]}, $_[1];
+            $_[3];
+        }
 	],
 	[#Rule 198
 		 'enumerators', 2,
 sub
-#line 1165 "parser21.yp"
+#line 1165 "Parser21.yp"
 {
-			$_[0]->Warning("',' unexpected.\n");
-			[$_[1]];
-		}
+            $_[0]->Warning("',' unexpected.\n");
+            [$_[1]];
+        }
 	],
 	[#Rule 199
 		 'enumerators', 2,
 sub
-#line 1170 "parser21.yp"
+#line 1170 "Parser21.yp"
 {
-			$_[0]->Error("';' unexpected.\n");
-			[$_[1]];
-		}
+            $_[0]->Error("';' unexpected.\n");
+            [$_[1]];
+        }
 	],
 	[#Rule 200
 		 'enumerator', 1,
 sub
-#line 1179 "parser21.yp"
+#line 1179 "Parser21.yp"
 {
-			new Enum($_[0],
-					'idf'				=>	$_[1]
-			);
-		}
+            new Enum($_[0],
+                    'idf'               =>  $_[1]
+            );
+        }
 	],
 	[#Rule 201
 		 'sequence_type', 6,
 sub
-#line 1189 "parser21.yp"
+#line 1189 "Parser21.yp"
 {
-			new SequenceType($_[0],
-					'value'				=>	$_[1],
-					'type'				=>	$_[3],
-					'max'				=>	$_[5]
-			);
-		}
+            new SequenceType($_[0],
+                    'value'             =>  $_[1],
+                    'type'              =>  $_[3],
+                    'max'               =>  $_[5]
+            );
+        }
 	],
 	[#Rule 202
 		 'sequence_type', 6,
 sub
-#line 1197 "parser21.yp"
+#line 1197 "Parser21.yp"
 {
-			$_[0]->Error("Expression expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Expression expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 203
 		 'sequence_type', 4,
 sub
-#line 1202 "parser21.yp"
+#line 1202 "Parser21.yp"
 {
-			new SequenceType($_[0],
-					'value'				=>	$_[1],
-					'type'				=>	$_[3]
-			);
-		}
+            new SequenceType($_[0],
+                    'value'             =>  $_[1],
+                    'type'              =>  $_[3]
+            );
+        }
 	],
 	[#Rule 204
 		 'sequence_type', 4,
 sub
-#line 1209 "parser21.yp"
+#line 1209 "Parser21.yp"
 {
-			$_[0]->Error("simple_type_spec expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("simple_type_spec expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 205
 		 'sequence_type', 2,
 sub
-#line 1214 "parser21.yp"
+#line 1214 "Parser21.yp"
 {
-			$_[0]->Error("'<' expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("'<' expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 206
 		 'string_type', 4,
 sub
-#line 1223 "parser21.yp"
+#line 1223 "Parser21.yp"
 {
-			new StringType($_[0],
-					'value'				=>	$_[1],
-					'max'				=>	$_[3]
-			);
-		}
+            new StringType($_[0],
+                    'value'             =>  $_[1],
+                    'max'               =>  $_[3]
+            );
+        }
 	],
 	[#Rule 207
 		 'string_type', 1,
 sub
-#line 1230 "parser21.yp"
+#line 1230 "Parser21.yp"
 {
-			new StringType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new StringType($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 208
 		 'string_type', 4,
 sub
-#line 1236 "parser21.yp"
+#line 1236 "Parser21.yp"
 {
-			$_[0]->Error("Expression expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Expression expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 209
 		 'wide_string_type', 4,
 sub
-#line 1245 "parser21.yp"
+#line 1245 "Parser21.yp"
 {
-			new WideStringType($_[0],
-					'value'				=>	$_[1],
-					'max'				=>	$_[3]
-			);
-		}
+            new WideStringType($_[0],
+                    'value'             =>  $_[1],
+                    'max'               =>  $_[3]
+            );
+        }
 	],
 	[#Rule 210
 		 'wide_string_type', 1,
 sub
-#line 1252 "parser21.yp"
+#line 1252 "Parser21.yp"
 {
-			new WideStringType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new WideStringType($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 211
 		 'wide_string_type', 4,
 sub
-#line 1258 "parser21.yp"
+#line 1258 "Parser21.yp"
 {
-			$_[0]->Error("Expression expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Expression expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 212
 		 'array_declarator', 2,
 sub
-#line 1267 "parser21.yp"
+#line 1267 "Parser21.yp"
 {
-			unshift(@{$_[2]},$_[1]);
-			$_[2];
-		}
+            unshift @{$_[2]}, $_[1];
+            $_[2];
+        }
 	],
 	[#Rule 213
 		 'fixed_array_sizes', 1,
 sub
-#line 1275 "parser21.yp"
+#line 1275 "Parser21.yp"
 {
-			[$_[1]];
-		}
+            [$_[1]];
+        }
 	],
 	[#Rule 214
 		 'fixed_array_sizes', 2,
 sub
-#line 1279 "parser21.yp"
+#line 1279 "Parser21.yp"
 {
-			unshift(@{$_[2]},$_[1]);
-			$_[2];
-		}
+            unshift @{$_[2]}, $_[1];
+            $_[2];
+        }
 	],
 	[#Rule 215
 		 'fixed_array_size', 3,
 sub
-#line 1288 "parser21.yp"
+#line 1288 "Parser21.yp"
 {
-			$_[2];
-		}
+            $_[2];
+        }
 	],
 	[#Rule 216
 		 'fixed_array_size', 3,
 sub
-#line 1292 "parser21.yp"
+#line 1292 "Parser21.yp"
 {
-			$_[0]->Error("Expression expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Expression expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 217
 		 'attr_dcl', 4,
 sub
-#line 1301 "parser21.yp"
+#line 1301 "Parser21.yp"
 {
-			new Attributes($_[0],
-					'modifier'			=>	$_[1],
-					'type'				=>	$_[3],
-					'list_expr'			=>	$_[4]
-			);
-		}
+            new Attributes($_[0],
+                    'modifier'          =>  $_[1],
+                    'type'              =>  $_[3],
+                    'list_expr'         =>  $_[4]
+            );
+        }
 	],
 	[#Rule 218
 		 'attr_dcl', 3,
 sub
-#line 1309 "parser21.yp"
+#line 1309 "Parser21.yp"
 {
-			$_[0]->Error("type expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("type expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 219
 		 'attr_mod', 1, undef
@@ -5265,127 +5265,127 @@ sub
 	[#Rule 221
 		 'simple_declarators', 1,
 sub
-#line 1324 "parser21.yp"
+#line 1324 "Parser21.yp"
 {
-			[$_[1]];
-		}
+            [$_[1]];
+        }
 	],
 	[#Rule 222
 		 'simple_declarators', 3,
 sub
-#line 1328 "parser21.yp"
+#line 1328 "Parser21.yp"
 {
-			unshift(@{$_[3]},$_[1]);
-			$_[3];
-		}
+            unshift @{$_[3]}, $_[1];
+            $_[3];
+        }
 	],
 	[#Rule 223
 		 'except_dcl', 3,
 sub
-#line 1337 "parser21.yp"
+#line 1337 "Parser21.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[1];
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[1];
+        }
 	],
 	[#Rule 224
 		 'except_dcl', 4,
 sub
-#line 1342 "parser21.yp"
+#line 1342 "Parser21.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[1]->Configure($_[0],
-					'list_expr'			=>	$_[3]
-			) if (defined $_[1]);
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[1]->Configure($_[0],
+                    'list_expr'         =>  $_[3]
+            ) if (defined $_[1]);
+        }
 	],
 	[#Rule 225
 		 'except_dcl', 4,
 sub
-#line 1349 "parser21.yp"
+#line 1349 "Parser21.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("'members expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[0]->Error("'members expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 226
 		 'except_dcl', 2,
 sub
-#line 1356 "parser21.yp"
+#line 1356 "Parser21.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("'\x7b' expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[0]->Error("'\x7b' expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 227
 		 'exception_header', 2,
 sub
-#line 1366 "parser21.yp"
+#line 1366 "Parser21.yp"
 {
-			new Exception($_[0],
-					'idf'				=>	$_[2],
-			);
-		}
+            new Exception($_[0],
+                    'idf'               =>  $_[2],
+            );
+        }
 	],
 	[#Rule 228
 		 'exception_header', 2,
 sub
-#line 1372 "parser21.yp"
+#line 1372 "Parser21.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 229
 		 'op_dcl', 4,
 sub
-#line 1381 "parser21.yp"
+#line 1381 "Parser21.yp"
 {
-			delete $_[0]->YYData->{unnamed_symbtab}
-					if (exists $_[0]->YYData->{unnamed_symbtab});
-			$_[1]->Configure($_[0],
-					'list_param'	=>	$_[2],
-					'list_raise'	=>	$_[3],
-					'list_context'	=>	$_[4]
-			) if (defined $_[1]);
-		}
+            delete $_[0]->YYData->{unnamed_symbtab}
+                    if (exists $_[0]->YYData->{unnamed_symbtab});
+            $_[1]->Configure($_[0],
+                    'list_param'    =>  $_[2],
+                    'list_raise'    =>  $_[3],
+                    'list_context'  =>  $_[4]
+            ) if (defined $_[1]);
+        }
 	],
 	[#Rule 230
 		 'op_dcl', 2,
 sub
-#line 1391 "parser21.yp"
+#line 1391 "Parser21.yp"
 {
-			delete $_[0]->YYData->{unnamed_symbtab}
-					if (exists $_[0]->YYData->{unnamed_symbtab});
-			$_[0]->Error("parameters declaration expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            delete $_[0]->YYData->{unnamed_symbtab}
+                    if (exists $_[0]->YYData->{unnamed_symbtab});
+            $_[0]->Error("parameters declaration expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 231
 		 'op_header', 3,
 sub
-#line 1402 "parser21.yp"
+#line 1402 "Parser21.yp"
 {
-			new Operation($_[0],
-					'modifier'			=>	$_[1],
-					'type'				=>	$_[2],
-					'idf'				=>	$_[3]
-			);
-		}
+            new Operation($_[0],
+                    'modifier'          =>  $_[1],
+                    'type'              =>  $_[2],
+                    'idf'               =>  $_[3]
+            );
+        }
 	],
 	[#Rule 232
 		 'op_header', 3,
 sub
-#line 1410 "parser21.yp"
+#line 1410 "Parser21.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 233
 		 'op_mod', 1, undef
@@ -5402,111 +5402,111 @@ sub
 	[#Rule 237
 		 'op_type_spec', 1,
 sub
-#line 1434 "parser21.yp"
+#line 1434 "Parser21.yp"
 {
-			new VoidType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new VoidType($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 238
 		 'op_type_spec', 1,
 sub
-#line 1440 "parser21.yp"
+#line 1440 "Parser21.yp"
 {
-			$_[0]->Error("op_type_spec expected.\n");
-			$_[1];						#default action
-		}
+            $_[0]->Error("op_type_spec expected.\n");
+            $_[1];                      #default action
+        }
 	],
 	[#Rule 239
 		 'parameter_dcls', 3,
 sub
-#line 1449 "parser21.yp"
+#line 1449 "Parser21.yp"
 {
-			$_[2];
-		}
+            $_[2];
+        }
 	],
 	[#Rule 240
 		 'parameter_dcls', 5,
 sub
-#line 1453 "parser21.yp"
+#line 1453 "Parser21.yp"
 {
-			$_[0]->Error("'...' unexpected.\n");
-			$_[2];
-		}
+            $_[0]->Error("'...' unexpected.\n");
+            $_[2];
+        }
 	],
 	[#Rule 241
 		 'parameter_dcls', 4,
 sub
-#line 1458 "parser21.yp"
+#line 1458 "Parser21.yp"
 {
-			$_[0]->Warning("',' unexpected.\n");
-			$_[2];
-		}
+            $_[0]->Warning("',' unexpected.\n");
+            $_[2];
+        }
 	],
 	[#Rule 242
 		 'parameter_dcls', 2,
 sub
-#line 1463 "parser21.yp"
+#line 1463 "Parser21.yp"
 {
-			undef;
-		}
+            undef;
+        }
 	],
 	[#Rule 243
 		 'parameter_dcls', 3,
 sub
-#line 1467 "parser21.yp"
+#line 1467 "Parser21.yp"
 {
-			$_[0]->Error("'...' unexpected.\n");
-			undef;
-		}
+            $_[0]->Error("'...' unexpected.\n");
+            undef;
+        }
 	],
 	[#Rule 244
 		 'parameter_dcls', 3,
 sub
-#line 1472 "parser21.yp"
+#line 1472 "Parser21.yp"
 {
-			$_[0]->Error("parameters declaration expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("parameters declaration expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 245
 		 'param_dcls', 1,
 sub
-#line 1480 "parser21.yp"
+#line 1480 "Parser21.yp"
 {
-			[$_[1]];
-		}
+            [$_[1]];
+        }
 	],
 	[#Rule 246
 		 'param_dcls', 3,
 sub
-#line 1484 "parser21.yp"
+#line 1484 "Parser21.yp"
 {
-			push(@{$_[1]},$_[3]);
-			$_[1];
-		}
+            push @{$_[1]}, $_[3];
+            $_[1];
+        }
 	],
 	[#Rule 247
 		 'param_dcls', 2,
 sub
-#line 1489 "parser21.yp"
+#line 1489 "Parser21.yp"
 {
-			$_[0]->Error("';' unexpected.\n");
-			[$_[1]];
-		}
+            $_[0]->Error("';' unexpected.\n");
+            [$_[1]];
+        }
 	],
 	[#Rule 248
 		 'param_dcl', 3,
 sub
-#line 1498 "parser21.yp"
+#line 1498 "Parser21.yp"
 {
-			new Parameter($_[0],
-					'attr'				=>	$_[1],
-					'type'				=>	$_[2],
-					'idf'				=>	$_[3]
-			);
-		}
+            new Parameter($_[0],
+                    'attr'              =>  $_[1],
+                    'type'              =>  $_[2],
+                    'idf'               =>  $_[3]
+            );
+        }
 	],
 	[#Rule 249
 		 'param_attribute', 1, undef
@@ -5520,37 +5520,37 @@ sub
 	[#Rule 252
 		 'param_attribute', 0,
 sub
-#line 1516 "parser21.yp"
+#line 1516 "Parser21.yp"
 {
-			$_[0]->Error("(in|out|inout) expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("(in|out|inout) expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 253
 		 'raises_expr', 4,
 sub
-#line 1525 "parser21.yp"
+#line 1525 "Parser21.yp"
 {
-			$_[3];
-		}
+            $_[3];
+        }
 	],
 	[#Rule 254
 		 'raises_expr', 4,
 sub
-#line 1529 "parser21.yp"
+#line 1529 "Parser21.yp"
 {
-			$_[0]->Error("name expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("name expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 255
 		 'raises_expr', 2,
 sub
-#line 1534 "parser21.yp"
+#line 1534 "Parser21.yp"
 {
-			$_[0]->Error("'(' expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("'(' expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 256
 		 'raises_expr', 0, undef
@@ -5558,53 +5558,53 @@ sub
 	[#Rule 257
 		 'exception_names', 1,
 sub
-#line 1544 "parser21.yp"
+#line 1544 "Parser21.yp"
 {
-			[$_[1]];
-		}
+            [$_[1]];
+        }
 	],
 	[#Rule 258
 		 'exception_names', 3,
 sub
-#line 1548 "parser21.yp"
+#line 1548 "Parser21.yp"
 {
-			unshift(@{$_[3]},$_[1]);
-			$_[3];
-		}
+            unshift @{$_[3]}, $_[1];
+            $_[3];
+        }
 	],
 	[#Rule 259
 		 'exception_name', 1,
 sub
-#line 1556 "parser21.yp"
+#line 1556 "Parser21.yp"
 {
-			Exception->Lookup($_[0],$_[1]);
-		}
+            Exception->Lookup($_[0], $_[1]);
+        }
 	],
 	[#Rule 260
 		 'context_expr', 4,
 sub
-#line 1564 "parser21.yp"
+#line 1564 "Parser21.yp"
 {
-			$_[3];
-		}
+            $_[3];
+        }
 	],
 	[#Rule 261
 		 'context_expr', 4,
 sub
-#line 1568 "parser21.yp"
+#line 1568 "Parser21.yp"
 {
-			$_[0]->Error("string expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("string expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 262
 		 'context_expr', 2,
 sub
-#line 1573 "parser21.yp"
+#line 1573 "Parser21.yp"
 {
-			$_[0]->Error("'(' expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("'(' expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 263
 		 'context_expr', 0, undef
@@ -5612,19 +5612,19 @@ sub
 	[#Rule 264
 		 'string_literals', 1,
 sub
-#line 1583 "parser21.yp"
+#line 1583 "Parser21.yp"
 {
-			[$_[1]];
-		}
+            [$_[1]];
+        }
 	],
 	[#Rule 265
 		 'string_literals', 3,
 sub
-#line 1587 "parser21.yp"
+#line 1587 "Parser21.yp"
 {
-			unshift(@{$_[3]},$_[1]);
-			$_[3];
-		}
+            unshift @{$_[3]}, $_[1];
+            $_[3];
+        }
 	],
 	[#Rule 266
 		 'param_type_spec', 1, undef
@@ -5632,29 +5632,29 @@ sub
 	[#Rule 267
 		 'param_type_spec', 1,
 sub
-#line 1598 "parser21.yp"
+#line 1598 "Parser21.yp"
 {
-			$_[0]->Error("param_type_spec expected.\n");
-			$_[1];						#default action
-		}
+            $_[0]->Error("param_type_spec expected.\n");
+            $_[1];                      #default action
+        }
 	],
 	[#Rule 268
 		 'param_type_spec', 1,
 sub
-#line 1603 "parser21.yp"
+#line 1603 "Parser21.yp"
 {
-			$_[0]->Error("param_type_spec expected.\n");
-			$_[1];						#default action
-		}
+            $_[0]->Error("param_type_spec expected.\n");
+            $_[1];                      #default action
+        }
 	],
 	[#Rule 269
 		 'param_type_spec', 1,
 sub
-#line 1608 "parser21.yp"
+#line 1608 "Parser21.yp"
 {
-			$_[0]->Error("param_type_spec expected.\n");
-			$_[1];						#default action
-		}
+            $_[0]->Error("param_type_spec expected.\n");
+            $_[1];                      #default action
+        }
 	],
 	[#Rule 270
 		 'op_param_type_spec', 1, undef
@@ -5671,96 +5671,94 @@ sub
 	[#Rule 274
 		 'op_param_type_spec', 1,
 sub
-#line 1624 "parser21.yp"
+#line 1624 "Parser21.yp"
 {
-			TypeDeclarator->Lookup($_[0],$_[1]);
-		}
+            TypeDeclarator->Lookup($_[0], $_[1]);
+        }
 	],
 	[#Rule 275
 		 'fixed_pt_type', 6,
 sub
-#line 1632 "parser21.yp"
+#line 1632 "Parser21.yp"
 {
-			new FixedPtType($_[0],
-					'value'				=>	$_[1],
-					'd'					=>	$_[3],
-					's'					=>	$_[5]
-			);
-		}
+            new FixedPtType($_[0],
+                    'value'             =>  $_[1],
+                    'd'                 =>  $_[3],
+                    's'                 =>  $_[5]
+            );
+        }
 	],
 	[#Rule 276
 		 'fixed_pt_type', 6,
 sub
-#line 1640 "parser21.yp"
+#line 1640 "Parser21.yp"
 {
-			$_[0]->Error("Expression expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Expression expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 277
 		 'fixed_pt_type', 4,
 sub
-#line 1645 "parser21.yp"
+#line 1645 "Parser21.yp"
 {
-			$_[0]->Error("Expression expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Expression expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 278
 		 'fixed_pt_type', 2,
 sub
-#line 1650 "parser21.yp"
+#line 1650 "Parser21.yp"
 {
-			$_[0]->Error("'<' expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("'<' expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 279
 		 'fixed_pt_const_type', 1,
 sub
-#line 1659 "parser21.yp"
+#line 1659 "Parser21.yp"
 {
-			new FixedPtConstType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new FixedPtConstType($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	]
 ],
                                   @_);
     bless($self,$class);
 }
 
-#line 1666 "parser21.yp"
+#line 1666 "Parser21.yp"
 
 
-package Parser;
+use warnings;
 
-use strict;
-use vars qw($IDL_version);
-$IDL_version = '2.1';
-
-use CORBA::IDL::symbtab;
-use CORBA::IDL::node;
-
-require CORBA::IDL::lexer;
+our $VERSION = '2.60';
+our $IDL_VERSION = '2.1';
 
 sub BuildUnop
 {
-	my($op,$expr) = @_;
+    my ($op, $expr) = @_;
 
-	my $node = new UnaryOp($_[0],	'op'	=>	$op);
-	push(@$expr,$node);
-	return $expr;
+    my $node = new UnaryOp($_[0],
+            'op'    =>  $op
+    );
+    push @$expr, $node;
+    return $expr;
 }
 
 sub BuildBinop
 {
-	my($left,$op,$right) = @_;
+    my ($left, $op, $right) = @_;
 
-	my $node = new BinaryOp($_[0],	'op'	=>	$op);
-	push(@$left,@$right);
-	push(@$left,$node);
-	return $left;
+    my $node = new BinaryOp($_[0],
+            'op'    =>  $op
+    );
+    push @$left, @$right;
+    push @$left, $node;
+    return $left;
 }
 
 

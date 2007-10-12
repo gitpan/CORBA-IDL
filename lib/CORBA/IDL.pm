@@ -1,9 +1,11 @@
 use strict;
+use warnings;
 
 package CORBA::IDL;
 
-use vars qw($VERSION);
-$VERSION = '2.47';
+our $VERSION = '2.60';
+
+use CORBA::IDL::ParserFactory;
 
 1;
 

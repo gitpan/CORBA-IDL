@@ -7,7 +7,7 @@
 #             ANY CHANGE MADE HERE WILL BE LOST !
 #
 ####################################################################
-package Parser;
+package CORBA::IDL::Parser;
 use vars qw ( @ISA );
 use strict;
 
@@ -5179,83 +5179,83 @@ sub new {
 	[#Rule 1
 		 'specification', 1,
 sub
-#line 79 "parserxp.yp"
+#line 79 "ParserXp.yp"
 {
-			$_[0]->YYData->{root} = new Specification($_[0],
-					'list_decl'			=>	$_[1],
-			);
-		}
+            $_[0]->YYData->{root} = new Specification($_[0],
+                    'list_decl'         =>  $_[1],
+            );
+        }
 	],
 	[#Rule 2
 		 'specification', 2,
 sub
-#line 85 "parserxp.yp"
+#line 85 "ParserXp.yp"
 {
-			$_[0]->YYData->{root} = new Specification($_[0],
-					'list_import'		=>	$_[1],
-					'list_decl'			=>	$_[2],
-			);
-		}
+            $_[0]->YYData->{root} = new Specification($_[0],
+                    'list_import'       =>  $_[1],
+                    'list_decl'         =>  $_[2],
+            );
+        }
 	],
 	[#Rule 3
 		 'specification', 0,
 sub
-#line 92 "parserxp.yp"
+#line 92 "ParserXp.yp"
 {
-			$_[0]->Error("Empty specification.\n");
-		}
+            $_[0]->Error("Empty specification.\n");
+        }
 	],
 	[#Rule 4
 		 'specification', 1,
 sub
-#line 96 "parserxp.yp"
+#line 96 "ParserXp.yp"
 {
-			$_[0]->Error("definition declaration expected.\n");
-		}
+            $_[0]->Error("definition declaration expected.\n");
+        }
 	],
 	[#Rule 5
 		 'imports', 1,
 sub
-#line 103 "parserxp.yp"
+#line 103 "ParserXp.yp"
 {
-			[$_[1]];
-		}
+            [$_[1]];
+        }
 	],
 	[#Rule 6
 		 'imports', 2,
 sub
-#line 107 "parserxp.yp"
+#line 107 "ParserXp.yp"
 {
-			unshift(@{$_[2]},$_[1]);
-			$_[2];
-		}
+            unshift @{$_[2]}, $_[1];
+            $_[2];
+        }
 	],
 	[#Rule 7
 		 'definitions', 1,
 sub
-#line 115 "parserxp.yp"
+#line 115 "ParserXp.yp"
 {
-			[$_[1]->getRef()];
-		}
+            [$_[1]->getRef()];
+        }
 	],
 	[#Rule 8
 		 'definitions', 2,
 sub
-#line 119 "parserxp.yp"
+#line 119 "ParserXp.yp"
 {
-			unshift(@{$_[2]},$_[1]->getRef());
-			$_[2];
-		}
+            unshift @{$_[2]}, $_[1]->getRef();
+            $_[2];
+        }
 	],
 	[#Rule 9
 		 'definitions', 3,
 sub
-#line 124 "parserxp.yp"
+#line 124 "ParserXp.yp"
 {
-			$_[0]->Error("import after definition.\n");
-			unshift(@{$_[3]},$_[1]->getRef());
-			$_[3];
-		}
+            $_[0]->Error("import after definition.\n");
+            unshift @{$_[3]}, $_[1]->getRef();
+            $_[3];
+        }
 	],
 	[#Rule 10
 		 'definition', 2, undef
@@ -5287,15 +5287,15 @@ sub
 	[#Rule 19
 		 'definition', 3,
 sub
-#line 152 "parserxp.yp"
+#line 152 "ParserXp.yp"
 {
-			# when IDENTIFIER is a future keyword
-			$_[0]->Error("'$_[1]' unexpected.\n");
-			$_[0]->YYErrok();
-			new CORBA::IDL::node($_[0],
-					'idf'					=>	$_[1]
-			);
-		}
+            # when IDENTIFIER is a future keyword
+            $_[0]->Error("'$_[1]' unexpected.\n");
+            $_[0]->YYErrok();
+            new CORBA::IDL::Node($_[0],
+                    'idf'                   =>  $_[1]
+            );
+        }
 	],
 	[#Rule 20
 		 'check_semicolon', 1, undef
@@ -5303,75 +5303,75 @@ sub
 	[#Rule 21
 		 'check_semicolon', 1,
 sub
-#line 166 "parserxp.yp"
+#line 166 "ParserXp.yp"
 {
-			$_[0]->Warning("';' expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Warning("';' expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 22
 		 'module', 4,
 sub
-#line 175 "parserxp.yp"
+#line 175 "ParserXp.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
-			$_[1]->Configure($_[0],
-					'list_decl'			=>	$_[3]
-			) if (defined $_[1]);
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
+            $_[1]->Configure($_[0],
+                    'list_decl'         =>  $_[3]
+            ) if (defined $_[1]);
+        }
 	],
 	[#Rule 23
 		 'module', 4,
 sub
-#line 182 "parserxp.yp"
+#line 182 "ParserXp.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
-			$_[0]->Error("definition declaration expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
+            $_[0]->Error("definition declaration expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 24
 		 'module', 3,
 sub
-#line 189 "parserxp.yp"
+#line 189 "ParserXp.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
-			$_[0]->Error("Empty module.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
+            $_[0]->Error("Empty module.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 25
 		 'module', 3,
 sub
-#line 196 "parserxp.yp"
+#line 196 "ParserXp.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
-			$_[0]->Error("'\x7b' expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentRoot($_[1]);
+            $_[0]->Error("'\x7b' expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 26
 		 'module_header', 3,
 sub
-#line 206 "parserxp.yp"
+#line 206 "ParserXp.yp"
 {
-			new Module($_[0],
-					'declspec'			=>	$_[1],
-					'idf'				=>	$_[3],
-			);
-		}
+            new Module($_[0],
+                    'declspec'          =>  $_[1],
+                    'idf'               =>  $_[3],
+            );
+        }
 	],
 	[#Rule 27
 		 'module_header', 3,
 sub
-#line 213 "parserxp.yp"
+#line 213 "ParserXp.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 28
 		 'interface', 1, undef
@@ -5382,72 +5382,74 @@ sub
 	[#Rule 30
 		 'interface_dcl', 3,
 sub
-#line 230 "parserxp.yp"
+#line 230 "ParserXp.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->YYData->{curr_itf} = undef;
-			$_[1]->Configure($_[0],
-					'list_decl'		=>	[]
-			) if (defined $_[1]);
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[0]->YYData->{curr_itf} = undef;
+            $_[1]->Configure($_[0],
+                    'list_decl'     =>  []
+            ) if (defined $_[1]);
+        }
 	],
 	[#Rule 31
 		 'interface_dcl', 4,
 sub
-#line 238 "parserxp.yp"
+#line 238 "ParserXp.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->YYData->{curr_itf} = undef;
-			$_[1]->Configure($_[0],
-					'list_decl'		=>	$_[3]
-			) if (defined $_[1]);
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[0]->YYData->{curr_itf} = undef;
+            $_[1]->Configure($_[0],
+                    'list_decl'     =>  $_[3]
+            ) if (defined $_[1]);
+        }
 	],
 	[#Rule 32
 		 'interface_dcl', 4,
 sub
-#line 246 "parserxp.yp"
+#line 246 "ParserXp.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->YYData->{curr_itf} = undef;
-			$_[0]->Error("export declaration expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[0]->YYData->{curr_itf} = undef;
+            $_[0]->Error("export declaration expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 33
 		 'forward_dcl', 5,
 sub
-#line 258 "parserxp.yp"
+#line 258 "ParserXp.yp"
 {
-			$_[0]->Warning("Ignoring properties for forward declaration.\n")
-					if (defined $_[2]);
-			if (defined $_[3] and $_[3] eq 'abstract') {
-				new ForwardAbstractInterface($_[0],
-						'declspec'				=>	$_[1],
-						'idf'					=>	$_[5]
-				);
-			} elsif (defined $_[3] and $_[3] eq 'local') {
-				new ForwardLocalInterface($_[0],
-						'declspec'				=>	$_[1],
-						'idf'					=>	$_[5]
-				);
-			} else {
-				new ForwardRegularInterface($_[0],
-						'declspec'				=>	$_[1],
-						'idf'					=>	$_[5]
-				);
-			}
-		}
+            $_[0]->Warning("Ignoring properties for forward declaration.\n")
+                    if (defined $_[2]);
+            if (defined $_[3] and $_[3] eq 'abstract') {
+                new ForwardAbstractInterface($_[0],
+                        'declspec'              =>  $_[1],
+                        'idf'                   =>  $_[5]
+                );
+            }
+            elsif (defined $_[3] and $_[3] eq 'local') {
+                new ForwardLocalInterface($_[0],
+                        'declspec'              =>  $_[1],
+                        'idf'                   =>  $_[5]
+                );
+            }
+            else {
+                new ForwardRegularInterface($_[0],
+                        'declspec'              =>  $_[1],
+                        'idf'                   =>  $_[5]
+                );
+            }
+        }
 	],
 	[#Rule 34
 		 'forward_dcl', 5,
 sub
-#line 279 "parserxp.yp"
+#line 281 "ParserXp.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 35
 		 'interface_mod', 1, undef
@@ -5461,40 +5463,42 @@ sub
 	[#Rule 38
 		 'interface_header', 6,
 sub
-#line 297 "parserxp.yp"
+#line 299 "ParserXp.yp"
 {
-			if (defined $_[3] and $_[3] eq 'abstract') {
-				new AbstractInterface($_[0],
-						'declspec'				=>	$_[1],
-						'props'					=>	$_[2],
-						'idf'					=>	$_[5],
-						'inheritance'			=>	$_[6]
-				);
-			} elsif (defined $_[3] and $_[3] eq 'local') {
-				new LocalInterface($_[0],
-						'declspec'				=>	$_[1],
-						'props'					=>	$_[2],
-						'idf'					=>	$_[5],
-						'inheritance'			=>	$_[6]
-				);
-			} else {
-				new RegularInterface($_[0],
-						'declspec'				=>	$_[1],
-						'props'					=>	$_[2],
-						'idf'					=>	$_[5],
-						'inheritance'			=>	$_[6]
-				);
-			}
-		}
+            if (defined $_[3] and $_[3] eq 'abstract') {
+                new AbstractInterface($_[0],
+                        'declspec'              =>  $_[1],
+                        'props'                 =>  $_[2],
+                        'idf'                   =>  $_[5],
+                        'inheritance'           =>  $_[6]
+                );
+            }
+            elsif (defined $_[3] and $_[3] eq 'local') {
+                new LocalInterface($_[0],
+                        'declspec'              =>  $_[1],
+                        'props'                 =>  $_[2],
+                        'idf'                   =>  $_[5],
+                        'inheritance'           =>  $_[6]
+                );
+            }
+            else {
+                new RegularInterface($_[0],
+                        'declspec'              =>  $_[1],
+                        'props'                 =>  $_[2],
+                        'idf'                   =>  $_[5],
+                        'inheritance'           =>  $_[6]
+                );
+            }
+        }
 	],
 	[#Rule 39
 		 'interface_header', 5,
 sub
-#line 322 "parserxp.yp"
+#line 326 "ParserXp.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 40
 		 'interface_body', 1, undef
@@ -5502,19 +5506,19 @@ sub
 	[#Rule 41
 		 'exports', 1,
 sub
-#line 336 "parserxp.yp"
+#line 340 "ParserXp.yp"
 {
-			[$_[1]->getRef()];
-		}
+            [$_[1]->getRef()];
+        }
 	],
 	[#Rule 42
 		 'exports', 2,
 sub
-#line 340 "parserxp.yp"
+#line 344 "ParserXp.yp"
 {
-			unshift(@{$_[2]},$_[1]->getRef());
-			$_[2];
-		}
+            unshift @{$_[2]}, $_[1]->getRef();
+            $_[2];
+        }
 	],
 	[#Rule 43
 		 '_export', 1, undef
@@ -5522,20 +5526,20 @@ sub
 	[#Rule 44
 		 '_export', 1,
 sub
-#line 351 "parserxp.yp"
+#line 355 "ParserXp.yp"
 {
-			$_[0]->Error("state member unexpected.\n");
-			$_[1];						#default action
-		}
+            $_[0]->Error("state member unexpected.\n");
+            $_[1];                      #default action
+        }
 	],
 	[#Rule 45
 		 '_export', 1,
 sub
-#line 356 "parserxp.yp"
+#line 360 "ParserXp.yp"
 {
-			$_[0]->Error("initializer unexpected.\n");
-			$_[1];						#default action
-		}
+            $_[0]->Error("initializer unexpected.\n");
+            $_[1];                      #default action
+        }
 	],
 	[#Rule 46
 		 'export', 2, undef
@@ -5564,21 +5568,21 @@ sub
 	[#Rule 54
 		 'interface_inheritance_spec', 2,
 sub
-#line 384 "parserxp.yp"
+#line 388 "ParserXp.yp"
 {
-			new InheritanceSpec($_[0],
-					'list_interface'		=>	$_[2]
-			);
-		}
+            new InheritanceSpec($_[0],
+                    'list_interface'        =>  $_[2]
+            );
+        }
 	],
 	[#Rule 55
 		 'interface_inheritance_spec', 2,
 sub
-#line 390 "parserxp.yp"
+#line 394 "ParserXp.yp"
 {
-			$_[0]->Error("Interface name expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Interface name expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 56
 		 'interface_inheritance_spec', 0, undef
@@ -5586,27 +5590,27 @@ sub
 	[#Rule 57
 		 'interface_names', 1,
 sub
-#line 400 "parserxp.yp"
+#line 404 "ParserXp.yp"
 {
-			[$_[1]];
-		}
+            [$_[1]];
+        }
 	],
 	[#Rule 58
 		 'interface_names', 3,
 sub
-#line 404 "parserxp.yp"
+#line 408 "ParserXp.yp"
 {
-			unshift(@{$_[3]},$_[1]);
-			$_[3];
-		}
+            unshift @{$_[3]}, $_[1];
+            $_[3];
+        }
 	],
 	[#Rule 59
 		 'interface_name', 1,
 sub
-#line 413 "parserxp.yp"
+#line 417 "ParserXp.yp"
 {
-				Interface->Lookup($_[0],$_[1]);
-		}
+                Interface->Lookup($_[0], $_[1]);
+        }
 	],
 	[#Rule 60
 		 'scoped_name', 1, undef
@@ -5614,38 +5618,38 @@ sub
 	[#Rule 61
 		 'scoped_name', 2,
 sub
-#line 423 "parserxp.yp"
+#line 427 "ParserXp.yp"
 {
-			$_[1] . $_[2];
-		}
+            $_[1] . $_[2];
+        }
 	],
 	[#Rule 62
 		 'scoped_name', 2,
 sub
-#line 427 "parserxp.yp"
+#line 431 "ParserXp.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-			'';
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+            '';
+        }
 	],
 	[#Rule 63
 		 'scoped_name', 3,
 sub
-#line 433 "parserxp.yp"
+#line 437 "ParserXp.yp"
 {
-			$_[1] . $_[2] . $_[3];
-		}
+            $_[1] . $_[2] . $_[3];
+        }
 	],
 	[#Rule 64
 		 'scoped_name', 3,
 sub
-#line 437 "parserxp.yp"
+#line 441 "ParserXp.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 65
 		 'value', 1, undef
@@ -5662,199 +5666,199 @@ sub
 	[#Rule 69
 		 'value_forward_dcl', 5,
 sub
-#line 459 "parserxp.yp"
+#line 463 "ParserXp.yp"
 {
-			$_[0]->Warning("Ignoring properties for forward declaration.\n")
-					if (defined $_[2]);
-			$_[0]->Warning("CUSTOM unexpected.\n")
-					if (defined $_[3]);
-			new ForwardRegularValue($_[0],
-					'declspec'			=>	$_[1],
-					'idf'				=>	$_[4]
-			);
-		}
+            $_[0]->Warning("Ignoring properties for forward declaration.\n")
+                    if (defined $_[2]);
+            $_[0]->Warning("CUSTOM unexpected.\n")
+                    if (defined $_[3]);
+            new ForwardRegularValue($_[0],
+                    'declspec'          =>  $_[1],
+                    'idf'               =>  $_[4]
+            );
+        }
 	],
 	[#Rule 70
 		 'value_forward_dcl', 5,
 sub
-#line 470 "parserxp.yp"
+#line 474 "ParserXp.yp"
 {
-			$_[0]->Warning("Ignoring properties for forward declaration.\n")
-					if (defined $_[2]);
-			new ForwardAbstractValue($_[0],
-					'declspec'			=>	$_[1],
-					'idf'				=>	$_[5]
-			);
-		}
+            $_[0]->Warning("Ignoring properties for forward declaration.\n")
+                    if (defined $_[2]);
+            new ForwardAbstractValue($_[0],
+                    'declspec'          =>  $_[1],
+                    'idf'               =>  $_[5]
+            );
+        }
 	],
 	[#Rule 71
 		 'value_box_dcl', 2,
 sub
-#line 483 "parserxp.yp"
+#line 487 "ParserXp.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->YYData->{curr_itf} = undef;
-			$_[1]->Configure($_[0],
-					'type'				=>	$_[2]
-			) if (defined $_[1]);
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[0]->YYData->{curr_itf} = undef;
+            $_[1]->Configure($_[0],
+                    'type'              =>  $_[2]
+            ) if (defined $_[1]);
+        }
 	],
 	[#Rule 72
 		 'value_box_header', 5,
 sub
-#line 494 "parserxp.yp"
+#line 498 "ParserXp.yp"
 {
-			$_[0]->Warning("CUSTOM unexpected.\n")
-					if (defined $_[3]);
-			new BoxedValue($_[0],
-					'declspec'			=>	$_[1],
-					'props'				=>	$_[2],
-					'idf'				=>	$_[4],
-			);
-		}
+            $_[0]->Warning("CUSTOM unexpected.\n")
+                    if (defined $_[3]);
+            new BoxedValue($_[0],
+                    'declspec'          =>  $_[1],
+                    'props'             =>  $_[2],
+                    'idf'               =>  $_[4],
+            );
+        }
 	],
 	[#Rule 73
 		 'value_abs_dcl', 3,
 sub
-#line 508 "parserxp.yp"
+#line 512 "ParserXp.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->YYData->{curr_itf} = undef;
-			$_[1]->Configure($_[0],
-					'list_decl'		=>	[]
-			) if (defined $_[1]);
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[0]->YYData->{curr_itf} = undef;
+            $_[1]->Configure($_[0],
+                    'list_decl'     =>  []
+            ) if (defined $_[1]);
+        }
 	],
 	[#Rule 74
 		 'value_abs_dcl', 4,
 sub
-#line 516 "parserxp.yp"
+#line 520 "ParserXp.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->YYData->{curr_itf} = undef;
-			$_[1]->Configure($_[0],
-					'list_decl'		=>	$_[3]
-			) if (defined $_[1]);
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[0]->YYData->{curr_itf} = undef;
+            $_[1]->Configure($_[0],
+                    'list_decl'     =>  $_[3]
+            ) if (defined $_[1]);
+        }
 	],
 	[#Rule 75
 		 'value_abs_dcl', 4,
 sub
-#line 524 "parserxp.yp"
+#line 528 "ParserXp.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->YYData->{curr_itf} = undef;
-			$_[0]->Error("export declaration expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[0]->YYData->{curr_itf} = undef;
+            $_[0]->Error("export declaration expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 76
 		 'value_abs_header', 6,
 sub
-#line 535 "parserxp.yp"
+#line 539 "ParserXp.yp"
 {
-			new AbstractValue($_[0],
-					'declspec'			=>	$_[1],
-					'props'				=>	$_[2],
-					'idf'				=>	$_[5],
-					'inheritance'		=>	$_[6]
-			);
-		}
+            new AbstractValue($_[0],
+                    'declspec'          =>  $_[1],
+                    'props'             =>  $_[2],
+                    'idf'               =>  $_[5],
+                    'inheritance'       =>  $_[6]
+            );
+        }
 	],
 	[#Rule 77
 		 'value_abs_header', 5,
 sub
-#line 544 "parserxp.yp"
+#line 548 "ParserXp.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 78
 		 'value_abs_header', 4,
 sub
-#line 549 "parserxp.yp"
+#line 553 "ParserXp.yp"
 {
-			$_[0]->Error("'valuetype' expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("'valuetype' expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 79
 		 'value_dcl', 3,
 sub
-#line 558 "parserxp.yp"
+#line 562 "ParserXp.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->YYData->{curr_itf} = undef;
-			$_[1]->Configure($_[0],
-					'list_decl'		=>	[]
-			) if (defined $_[1]);
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[0]->YYData->{curr_itf} = undef;
+            $_[1]->Configure($_[0],
+                    'list_decl'     =>  []
+            ) if (defined $_[1]);
+        }
 	],
 	[#Rule 80
 		 'value_dcl', 4,
 sub
-#line 566 "parserxp.yp"
+#line 570 "ParserXp.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->YYData->{curr_itf} = undef;
-			$_[1]->Configure($_[0],
-					'list_decl'		=>	$_[3]
-			) if (defined $_[1]);
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[0]->YYData->{curr_itf} = undef;
+            $_[1]->Configure($_[0],
+                    'list_decl'     =>  $_[3]
+            ) if (defined $_[1]);
+        }
 	],
 	[#Rule 81
 		 'value_dcl', 4,
 sub
-#line 574 "parserxp.yp"
+#line 578 "ParserXp.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->YYData->{curr_itf} = undef;
-			$_[0]->Error("value_element expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[0]->YYData->{curr_itf} = undef;
+            $_[0]->Error("value_element expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 82
 		 'value_elements', 1,
 sub
-#line 585 "parserxp.yp"
+#line 589 "ParserXp.yp"
 {
-			[$_[1]->getRef()];
-		}
+            [$_[1]->getRef()];
+        }
 	],
 	[#Rule 83
 		 'value_elements', 2,
 sub
-#line 589 "parserxp.yp"
+#line 593 "ParserXp.yp"
 {
-			unshift(@{$_[2]},$_[1]->getRef());
-			$_[2];
-		}
+            unshift @{$_[2]}, $_[1]->getRef();
+            $_[2];
+        }
 	],
 	[#Rule 84
 		 'value_header', 6,
 sub
-#line 598 "parserxp.yp"
+#line 602 "ParserXp.yp"
 {
-			new RegularValue($_[0],
-					'declspec'			=>	$_[1],
-					'props'				=>	$_[2],
-					'modifier'			=>	$_[3],
-					'idf'				=>	$_[5],
-					'inheritance'		=>	$_[6]
-			);
-		}
+            new RegularValue($_[0],
+                    'declspec'          =>  $_[1],
+                    'props'             =>  $_[2],
+                    'modifier'          =>  $_[3],
+                    'idf'               =>  $_[5],
+                    'inheritance'       =>  $_[6]
+            );
+        }
 	],
 	[#Rule 85
 		 'value_header', 5,
 sub
-#line 608 "parserxp.yp"
+#line 612 "ParserXp.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 86
 		 'value_mod', 1, undef
@@ -5865,33 +5869,33 @@ sub
 	[#Rule 88
 		 'value_inheritance_spec', 4,
 sub
-#line 624 "parserxp.yp"
+#line 628 "ParserXp.yp"
 {
-			new InheritanceSpec($_[0],
-					'modifier'			=>	$_[2],
-					'list_value'		=>	$_[3],
-					'list_interface'	=>	$_[4]
-			);
-		}
+            new InheritanceSpec($_[0],
+                    'modifier'          =>  $_[2],
+                    'list_value'        =>  $_[3],
+                    'list_interface'    =>  $_[4]
+            );
+        }
 	],
 	[#Rule 89
 		 'value_inheritance_spec', 3,
 sub
-#line 632 "parserxp.yp"
+#line 636 "ParserXp.yp"
 {
-			$_[0]->Error("value_name expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("value_name expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 90
 		 'value_inheritance_spec', 1,
 sub
-#line 637 "parserxp.yp"
+#line 641 "ParserXp.yp"
 {
-			new InheritanceSpec($_[0],
-					'list_interface'	=>	$_[1]
-			);
-		}
+            new InheritanceSpec($_[0],
+                    'list_interface'    =>  $_[1]
+            );
+        }
 	],
 	[#Rule 91
 		 'inheritance_mod', 1, undef
@@ -5902,36 +5906,36 @@ sub
 	[#Rule 93
 		 'value_names', 1,
 sub
-#line 653 "parserxp.yp"
+#line 657 "ParserXp.yp"
 {
-			[$_[1]];
-		}
+            [$_[1]];
+        }
 	],
 	[#Rule 94
 		 'value_names', 3,
 sub
-#line 657 "parserxp.yp"
+#line 661 "ParserXp.yp"
 {
-			unshift(@{$_[3]},$_[1]);
-			$_[3];
-		}
+            unshift @{$_[3]}, $_[1];
+            $_[3];
+        }
 	],
 	[#Rule 95
 		 'supported_interface_spec', 2,
 sub
-#line 665 "parserxp.yp"
+#line 669 "ParserXp.yp"
 {
-			$_[2];
-		}
+            $_[2];
+        }
 	],
 	[#Rule 96
 		 'supported_interface_spec', 2,
 sub
-#line 669 "parserxp.yp"
+#line 673 "ParserXp.yp"
 {
-			$_[0]->Error("Interface name expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Interface name expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 97
 		 'supported_interface_spec', 0, undef
@@ -5939,10 +5943,10 @@ sub
 	[#Rule 98
 		 'value_name', 1,
 sub
-#line 680 "parserxp.yp"
+#line 684 "ParserXp.yp"
 {
-			Value->Lookup($_[0],$_[1]);
-		}
+            Value->Lookup($_[0], $_[1]);
+        }
 	],
 	[#Rule 99
 		 'value_element', 1, undef
@@ -5956,34 +5960,34 @@ sub
 	[#Rule 102
 		 'state_member', 6,
 sub
-#line 698 "parserxp.yp"
+#line 702 "ParserXp.yp"
 {
-			new StateMembers($_[0],
-					'declspec'			=>	$_[1],
-					'props'				=>	$_[2],
-					'modifier'			=>	$_[3],
-					'type'				=>	$_[4],
-					'list_expr'			=>	$_[5]
-			);
-		}
+            new StateMembers($_[0],
+                    'declspec'          =>  $_[1],
+                    'props'             =>  $_[2],
+                    'modifier'          =>  $_[3],
+                    'type'              =>  $_[4],
+                    'list_expr'         =>  $_[5]
+            );
+        }
 	],
 	[#Rule 103
 		 'state_member', 6,
 sub
-#line 708 "parserxp.yp"
+#line 712 "ParserXp.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 104
 		 'state_member', 5,
 sub
-#line 713 "parserxp.yp"
+#line 717 "ParserXp.yp"
 {
-			$_[0]->Error("type_spec expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("type_spec expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 105
 		 'state_mod', 1, undef
@@ -5994,117 +5998,117 @@ sub
 	[#Rule 107
 		 'init_dcl', 3,
 sub
-#line 729 "parserxp.yp"
+#line 733 "ParserXp.yp"
 {
-			$_[1]->Configure($_[0],
-					'list_raise'	=>	$_[2]
-			) if (defined $_[1]);
-		}
+            $_[1]->Configure($_[0],
+                    'list_raise'    =>  $_[2]
+            ) if (defined $_[1]);
+        }
 	],
 	[#Rule 108
 		 'init_header_param', 3,
 sub
-#line 738 "parserxp.yp"
+#line 742 "ParserXp.yp"
 {
-			delete $_[0]->YYData->{unnamed_symbtab}
-					if (exists $_[0]->YYData->{unnamed_symbtab});
-			$_[1];						#default action
-		}
+            delete $_[0]->YYData->{unnamed_symbtab}
+                    if (exists $_[0]->YYData->{unnamed_symbtab});
+            $_[1];                      #default action
+        }
 	],
 	[#Rule 109
 		 'init_header_param', 4,
 sub
-#line 744 "parserxp.yp"
+#line 748 "ParserXp.yp"
 {
-			delete $_[0]->YYData->{unnamed_symbtab}
-					if (exists $_[0]->YYData->{unnamed_symbtab});
-			$_[1]->Configure($_[0],
-					'list_param'	=>	$_[3]
-			) if (defined $_[1]);
-		}
+            delete $_[0]->YYData->{unnamed_symbtab}
+                    if (exists $_[0]->YYData->{unnamed_symbtab});
+            $_[1]->Configure($_[0],
+                    'list_param'    =>  $_[3]
+            ) if (defined $_[1]);
+        }
 	],
 	[#Rule 110
 		 'init_header_param', 4,
 sub
-#line 752 "parserxp.yp"
+#line 756 "ParserXp.yp"
 {
-			delete $_[0]->YYData->{unnamed_symbtab}
-					if (exists $_[0]->YYData->{unnamed_symbtab});
-			$_[0]->Error("init_param_decls expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            delete $_[0]->YYData->{unnamed_symbtab}
+                    if (exists $_[0]->YYData->{unnamed_symbtab});
+            $_[0]->Error("init_param_decls expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 111
 		 'init_header_param', 2,
 sub
-#line 760 "parserxp.yp"
+#line 764 "ParserXp.yp"
 {
-			delete $_[0]->YYData->{unnamed_symbtab}
-					if (exists $_[0]->YYData->{unnamed_symbtab});
-			$_[0]->Error("'(' expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            delete $_[0]->YYData->{unnamed_symbtab}
+                    if (exists $_[0]->YYData->{unnamed_symbtab});
+            $_[0]->Error("'(' expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 112
 		 'init_header', 4,
 sub
-#line 771 "parserxp.yp"
+#line 775 "ParserXp.yp"
 {
-			new Initializer($_[0],						# like Operation
-					'declspec'			=>	$_[1],
-					'props'				=>	$_[2],
-					'idf'				=>	$_[4]
-			);
-		}
+            new Initializer($_[0],                      # like Operation
+                    'declspec'          =>  $_[1],
+                    'props'             =>  $_[2],
+                    'idf'               =>  $_[4]
+            );
+        }
 	],
 	[#Rule 113
 		 'init_header', 4,
 sub
-#line 779 "parserxp.yp"
+#line 783 "ParserXp.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 114
 		 'init_param_decls', 1,
 sub
-#line 788 "parserxp.yp"
+#line 792 "ParserXp.yp"
 {
-			[$_[1]];
-		}
+            [$_[1]];
+        }
 	],
 	[#Rule 115
 		 'init_param_decls', 3,
 sub
-#line 792 "parserxp.yp"
+#line 796 "ParserXp.yp"
 {
-			unshift(@{$_[3]},$_[1]);
-			$_[3];
-		}
+            unshift @{$_[3]}, $_[1];
+            $_[3];
+        }
 	],
 	[#Rule 116
 		 'init_param_decl', 3,
 sub
-#line 801 "parserxp.yp"
+#line 805 "ParserXp.yp"
 {
-			new Parameter($_[0],
-					'attr'				=>	$_[1],
-					'type'				=>	$_[2],
-					'idf'				=>	$_[3]
-			);
-		}
+            new Parameter($_[0],
+                    'attr'              =>  $_[1],
+                    'type'              =>  $_[2],
+                    'idf'               =>  $_[3]
+            );
+        }
 	],
 	[#Rule 117
 		 'init_param_decl', 2,
 sub
-#line 809 "parserxp.yp"
+#line 813 "ParserXp.yp"
 {
-			$_[0]->Error("Type expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Type expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 118
 		 'init_param_attribute', 1, undef
@@ -6112,51 +6116,51 @@ sub
 	[#Rule 119
 		 'const_dcl', 6,
 sub
-#line 824 "parserxp.yp"
+#line 828 "ParserXp.yp"
 {
-			new Constant($_[0],
-					'declspec'			=>	$_[1],
-					'type'				=>	$_[3],
-					'idf'				=>	$_[4],
-					'list_expr'			=>	$_[6]
-			);
-		}
+            new Constant($_[0],
+                    'declspec'          =>  $_[1],
+                    'type'              =>  $_[3],
+                    'idf'               =>  $_[4],
+                    'list_expr'         =>  $_[6]
+            );
+        }
 	],
 	[#Rule 120
 		 'const_dcl', 6,
 sub
-#line 833 "parserxp.yp"
+#line 837 "ParserXp.yp"
 {
-			$_[0]->Error("Expression expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Expression expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 121
 		 'const_dcl', 5,
 sub
-#line 838 "parserxp.yp"
+#line 842 "ParserXp.yp"
 {
-			$_[0]->Error("'=' expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("'=' expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 122
 		 'const_dcl', 4,
 sub
-#line 843 "parserxp.yp"
+#line 847 "ParserXp.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 123
 		 'const_dcl', 3,
 sub
-#line 848 "parserxp.yp"
+#line 852 "ParserXp.yp"
 {
-			$_[0]->Error("const_type expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("const_type expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 124
 		 'const_type', 1, undef
@@ -6185,10 +6189,10 @@ sub
 	[#Rule 132
 		 'const_type', 1,
 sub
-#line 873 "parserxp.yp"
+#line 877 "ParserXp.yp"
 {
-			TypeDeclarator->Lookup($_[0],$_[1]);
-		}
+            TypeDeclarator->Lookup($_[0], $_[1]);
+        }
 	],
 	[#Rule 133
 		 'const_type', 1, undef
@@ -6202,10 +6206,10 @@ sub
 	[#Rule 136
 		 'or_expr', 3,
 sub
-#line 891 "parserxp.yp"
+#line 895 "ParserXp.yp"
 {
-			BuildBinop($_[1],$_[2],$_[3]);
-		}
+            BuildBinop($_[1], $_[2], $_[3]);
+        }
 	],
 	[#Rule 137
 		 'xor_expr', 1, undef
@@ -6213,10 +6217,10 @@ sub
 	[#Rule 138
 		 'xor_expr', 3,
 sub
-#line 901 "parserxp.yp"
+#line 905 "ParserXp.yp"
 {
-			BuildBinop($_[1],$_[2],$_[3]);
-		}
+            BuildBinop($_[1], $_[2], $_[3]);
+        }
 	],
 	[#Rule 139
 		 'and_expr', 1, undef
@@ -6224,10 +6228,10 @@ sub
 	[#Rule 140
 		 'and_expr', 3,
 sub
-#line 911 "parserxp.yp"
+#line 915 "ParserXp.yp"
 {
-			BuildBinop($_[1],$_[2],$_[3]);
-		}
+            BuildBinop($_[1], $_[2], $_[3]);
+        }
 	],
 	[#Rule 141
 		 'shift_expr', 1, undef
@@ -6235,18 +6239,18 @@ sub
 	[#Rule 142
 		 'shift_expr', 3,
 sub
-#line 921 "parserxp.yp"
+#line 925 "ParserXp.yp"
 {
-			BuildBinop($_[1],$_[2],$_[3]);
-		}
+            BuildBinop($_[1], $_[2], $_[3]);
+        }
 	],
 	[#Rule 143
 		 'shift_expr', 3,
 sub
-#line 925 "parserxp.yp"
+#line 929 "ParserXp.yp"
 {
-			BuildBinop($_[1],$_[2],$_[3]);
-		}
+            BuildBinop($_[1], $_[2], $_[3]);
+        }
 	],
 	[#Rule 144
 		 'add_expr', 1, undef
@@ -6254,18 +6258,18 @@ sub
 	[#Rule 145
 		 'add_expr', 3,
 sub
-#line 935 "parserxp.yp"
+#line 939 "ParserXp.yp"
 {
-			BuildBinop($_[1],$_[2],$_[3]);
-		}
+            BuildBinop($_[1], $_[2], $_[3]);
+        }
 	],
 	[#Rule 146
 		 'add_expr', 3,
 sub
-#line 939 "parserxp.yp"
+#line 943 "ParserXp.yp"
 {
-			BuildBinop($_[1],$_[2],$_[3]);
-		}
+            BuildBinop($_[1], $_[2], $_[3]);
+        }
 	],
 	[#Rule 147
 		 'mult_expr', 1, undef
@@ -6273,34 +6277,34 @@ sub
 	[#Rule 148
 		 'mult_expr', 3,
 sub
-#line 949 "parserxp.yp"
+#line 953 "ParserXp.yp"
 {
-			BuildBinop($_[1],$_[2],$_[3]);
-		}
+            BuildBinop($_[1], $_[2], $_[3]);
+        }
 	],
 	[#Rule 149
 		 'mult_expr', 3,
 sub
-#line 953 "parserxp.yp"
+#line 957 "ParserXp.yp"
 {
-			BuildBinop($_[1],$_[2],$_[3]);
-		}
+            BuildBinop($_[1], $_[2], $_[3]);
+        }
 	],
 	[#Rule 150
 		 'mult_expr', 3,
 sub
-#line 957 "parserxp.yp"
+#line 961 "ParserXp.yp"
 {
-			BuildBinop($_[1],$_[2],$_[3]);
-		}
+            BuildBinop($_[1], $_[2], $_[3]);
+        }
 	],
 	[#Rule 151
 		 'unary_expr', 2,
 sub
-#line 965 "parserxp.yp"
+#line 969 "ParserXp.yp"
 {
-			BuildUnop($_[1],$_[2]);
-		}
+            BuildUnop($_[1], $_[2]);
+        }
 	],
 	[#Rule 152
 		 'unary_expr', 1, undef
@@ -6317,110 +6321,110 @@ sub
 	[#Rule 156
 		 'primary_expr', 1,
 sub
-#line 985 "parserxp.yp"
+#line 989 "ParserXp.yp"
 {
-			[
-				Constant->Lookup($_[0],$_[1])
-			];
-		}
+            [
+                Constant->Lookup($_[0], $_[1])
+            ];
+        }
 	],
 	[#Rule 157
 		 'primary_expr', 1,
 sub
-#line 991 "parserxp.yp"
+#line 995 "ParserXp.yp"
 {
-			[ $_[1] ];
-		}
+            [ $_[1] ];
+        }
 	],
 	[#Rule 158
 		 'primary_expr', 3,
 sub
-#line 995 "parserxp.yp"
+#line 999 "ParserXp.yp"
 {
-			$_[2];
-		}
+            $_[2];
+        }
 	],
 	[#Rule 159
 		 'primary_expr', 3,
 sub
-#line 999 "parserxp.yp"
+#line 1003 "ParserXp.yp"
 {
-			$_[0]->Error("Expression expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Expression expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 160
 		 'literal', 1,
 sub
-#line 1008 "parserxp.yp"
+#line 1012 "ParserXp.yp"
 {
-			new IntegerLiteral($_[0],
-					'value'				=>	$_[1],
-					'lexeme'			=>	$_[0]->YYData->{lexeme}
-			);
-		}
+            new IntegerLiteral($_[0],
+                    'value'             =>  $_[1],
+                    'lexeme'            =>  $_[0]->YYData->{lexeme}
+            );
+        }
 	],
 	[#Rule 161
 		 'literal', 1,
 sub
-#line 1015 "parserxp.yp"
+#line 1019 "ParserXp.yp"
 {
-			new StringLiteral($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new StringLiteral($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 162
 		 'literal', 1,
 sub
-#line 1021 "parserxp.yp"
+#line 1025 "ParserXp.yp"
 {
-			new WideStringLiteral($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new WideStringLiteral($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 163
 		 'literal', 1,
 sub
-#line 1027 "parserxp.yp"
+#line 1031 "ParserXp.yp"
 {
-			new CharacterLiteral($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new CharacterLiteral($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 164
 		 'literal', 1,
 sub
-#line 1033 "parserxp.yp"
+#line 1037 "ParserXp.yp"
 {
-			new WideCharacterLiteral($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new WideCharacterLiteral($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 165
 		 'literal', 1,
 sub
-#line 1039 "parserxp.yp"
+#line 1043 "ParserXp.yp"
 {
-			new FixedPtLiteral($_[0],
-					'value'				=>	$_[1],
-					'lexeme'			=>	$_[0]->YYData->{lexeme}
-			);
-		}
+            new FixedPtLiteral($_[0],
+                    'value'             =>  $_[1],
+                    'lexeme'            =>  $_[0]->YYData->{lexeme}
+            );
+        }
 	],
 	[#Rule 166
 		 'literal', 1,
 sub
-#line 1046 "parserxp.yp"
+#line 1050 "ParserXp.yp"
 {
-			new FloatingPtLiteral($_[0],
-					'value'				=>	$_[1],
-					'lexeme'			=>	$_[0]->YYData->{lexeme}
-			);
-		}
+            new FloatingPtLiteral($_[0],
+                    'value'             =>  $_[1],
+                    'lexeme'            =>  $_[0]->YYData->{lexeme}
+            );
+        }
 	],
 	[#Rule 167
 		 'literal', 1, undef
@@ -6431,10 +6435,10 @@ sub
 	[#Rule 169
 		 'string_literal', 2,
 sub
-#line 1060 "parserxp.yp"
+#line 1064 "ParserXp.yp"
 {
-			$_[1] . $_[2];
-		}
+            $_[1] . $_[2];
+        }
 	],
 	[#Rule 170
 		 'wide_string_literal', 1, undef
@@ -6442,60 +6446,60 @@ sub
 	[#Rule 171
 		 'wide_string_literal', 2,
 sub
-#line 1069 "parserxp.yp"
+#line 1073 "ParserXp.yp"
 {
-			$_[1] . $_[2];
-		}
+            $_[1] . $_[2];
+        }
 	],
 	[#Rule 172
 		 'boolean_literal', 1,
 sub
-#line 1077 "parserxp.yp"
+#line 1081 "ParserXp.yp"
 {
-			new BooleanLiteral($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new BooleanLiteral($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 173
 		 'boolean_literal', 1,
 sub
-#line 1083 "parserxp.yp"
+#line 1087 "ParserXp.yp"
 {
-			new BooleanLiteral($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new BooleanLiteral($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 174
 		 'positive_int_const', 1,
 sub
-#line 1093 "parserxp.yp"
+#line 1097 "ParserXp.yp"
 {
-			new Expression($_[0],
-					'list_expr'			=>	$_[1]
-			);
-		}
+            new Expression($_[0],
+                    'list_expr'         =>  $_[1]
+            );
+        }
 	],
 	[#Rule 175
 		 'type_dcl', 2,
 sub
-#line 1103 "parserxp.yp"
+#line 1107 "ParserXp.yp"
 {
-			$_[2]->Configure($_[0],
-					'declspec'			=>	$_[1]
-			) if ($_[2]);
-		}
+            $_[2]->Configure($_[0],
+                    'declspec'          =>  $_[1]
+            ) if ($_[2]);
+        }
 	],
 	[#Rule 176
 		 'type_dcl_def', 3,
 sub
-#line 1112 "parserxp.yp"
+#line 1116 "ParserXp.yp"
 {
-			$_[3]->Configure($_[0],
-					'props'				=>	$_[1]
-			);
-		}
+            $_[3]->Configure($_[0],
+                    'props'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 177
 		 'type_dcl_def', 1, undef
@@ -6509,34 +6513,34 @@ sub
 	[#Rule 180
 		 'type_dcl_def', 3,
 sub
-#line 1124 "parserxp.yp"
+#line 1128 "ParserXp.yp"
 {
-			new NativeType($_[0],
-					'props'				=>	$_[1],
-					'idf'				=>	$_[3],
-			);
-		}
+            new NativeType($_[0],
+                    'props'             =>  $_[1],
+                    'idf'               =>  $_[3],
+            );
+        }
 	],
 	[#Rule 181
 		 '@1-4', 0,
 sub
-#line 1131 "parserxp.yp"
+#line 1135 "ParserXp.yp"
 {
-			$_[0]->YYData->{native} = 1;
-		}
+            $_[0]->YYData->{native} = 1;
+        }
 	],
 	[#Rule 182
 		 'type_dcl_def', 6,
 sub
-#line 1135 "parserxp.yp"
+#line 1139 "ParserXp.yp"
 {
-			$_[0]->YYData->{native} = 0;
-			new NativeType($_[0],
-					'props'				=>	$_[1],
-					'idf'				=>	$_[3],
-					'native'			=>	$_[6],
-			);
-		}
+            $_[0]->YYData->{native} = 0;
+            new NativeType($_[0],
+                    'props'             =>  $_[1],
+                    'idf'               =>  $_[3],
+                    'native'            =>  $_[6],
+            );
+        }
 	],
 	[#Rule 183
 		 'type_dcl_def', 1, undef
@@ -6544,22 +6548,22 @@ sub
 	[#Rule 184
 		 'type_dcl_def', 3,
 sub
-#line 1146 "parserxp.yp"
+#line 1150 "ParserXp.yp"
 {
-			$_[0]->Error("type_declarator expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("type_declarator expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 185
 		 'type_declarator', 2,
 sub
-#line 1155 "parserxp.yp"
+#line 1159 "ParserXp.yp"
 {
-			new TypeDeclarators($_[0],
-					'type'				=>	$_[1],
-					'list_expr'			=>	$_[2]
-			);
-		}
+            new TypeDeclarators($_[0],
+                    'type'              =>  $_[1],
+                    'list_expr'         =>  $_[2]
+            );
+        }
 	],
 	[#Rule 186
 		 'type_spec', 1, undef
@@ -6576,21 +6580,21 @@ sub
 	[#Rule 190
 		 'simple_type_spec', 1,
 sub
-#line 1178 "parserxp.yp"
+#line 1182 "ParserXp.yp"
 {
-			TypeDeclarator->Lookup($_[0],$_[1]);
-		}
+            TypeDeclarator->Lookup($_[0], $_[1]);
+        }
 	],
 	[#Rule 191
 		 'simple_type_spec', 1,
 sub
-#line 1182 "parserxp.yp"
+#line 1186 "ParserXp.yp"
 {
-			$_[0]->Error("simple_type_spec expected.\n");
-			new VoidType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            $_[0]->Error("simple_type_spec expected.\n");
+            new VoidType($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 192
 		 'base_type_spec', 1, undef
@@ -6643,27 +6647,27 @@ sub
 	[#Rule 208
 		 'declarators', 1,
 sub
-#line 1237 "parserxp.yp"
+#line 1241 "ParserXp.yp"
 {
-			[$_[1]];
-		}
+            [$_[1]];
+        }
 	],
 	[#Rule 209
 		 'declarators', 3,
 sub
-#line 1241 "parserxp.yp"
+#line 1245 "ParserXp.yp"
 {
-			unshift(@{$_[3]},$_[1]);
-			$_[3];
-		}
+            unshift @{$_[3]}, $_[1];
+            $_[3];
+        }
 	],
 	[#Rule 210
 		 'declarator', 1,
 sub
-#line 1250 "parserxp.yp"
+#line 1254 "ParserXp.yp"
 {
-			[$_[1]];
-		}
+            [$_[1]];
+        }
 	],
 	[#Rule 211
 		 'declarator', 1, undef
@@ -6674,20 +6678,20 @@ sub
 	[#Rule 213
 		 'simple_declarator', 2,
 sub
-#line 1262 "parserxp.yp"
+#line 1266 "ParserXp.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 214
 		 'simple_declarator', 2,
 sub
-#line 1267 "parserxp.yp"
+#line 1271 "ParserXp.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 215
 		 'complex_declarator', 1, undef
@@ -6695,32 +6699,32 @@ sub
 	[#Rule 216
 		 'floating_pt_type', 1,
 sub
-#line 1282 "parserxp.yp"
+#line 1286 "ParserXp.yp"
 {
-			new FloatingPtType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new FloatingPtType($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 217
 		 'floating_pt_type', 1,
 sub
-#line 1288 "parserxp.yp"
+#line 1292 "ParserXp.yp"
 {
-			new FloatingPtType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new FloatingPtType($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 218
 		 'floating_pt_type', 2,
 sub
-#line 1294 "parserxp.yp"
+#line 1298 "ParserXp.yp"
 {
-			new FloatingPtType($_[0],
-					'value'				=>	$_[1] . ' ' . $_[2]
-			);
-		}
+            new FloatingPtType($_[0],
+                    'value'             =>  $_[1] . q{ } . $_[2]
+            );
+        }
 	],
 	[#Rule 219
 		 'integer_type', 1, undef
@@ -6740,32 +6744,32 @@ sub
 	[#Rule 224
 		 'signed_short_int', 1,
 sub
-#line 1322 "parserxp.yp"
+#line 1326 "ParserXp.yp"
 {
-			new IntegerType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new IntegerType($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 225
 		 'signed_long_int', 1,
 sub
-#line 1332 "parserxp.yp"
+#line 1336 "ParserXp.yp"
 {
-			new IntegerType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new IntegerType($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 226
 		 'signed_longlong_int', 2,
 sub
-#line 1342 "parserxp.yp"
+#line 1346 "ParserXp.yp"
 {
-			new IntegerType($_[0],
-					'value'				=>	$_[1] . ' ' . $_[2]
-			);
-		}
+            new IntegerType($_[0],
+                    'value'             =>  $_[1] . q{ } . $_[2]
+            );
+        }
 	],
 	[#Rule 227
 		 'unsigned_int', 1, undef
@@ -6779,250 +6783,250 @@ sub
 	[#Rule 230
 		 'unsigned_short_int', 2,
 sub
-#line 1362 "parserxp.yp"
+#line 1366 "ParserXp.yp"
 {
-			new IntegerType($_[0],
-					'value'				=>	$_[1] . ' ' . $_[2]
-			);
-		}
+            new IntegerType($_[0],
+                    'value'             =>  $_[1] . q{ } . $_[2]
+            );
+        }
 	],
 	[#Rule 231
 		 'unsigned_long_int', 2,
 sub
-#line 1372 "parserxp.yp"
+#line 1376 "ParserXp.yp"
 {
-			new IntegerType($_[0],
-					'value'				=>	$_[1] . ' ' . $_[2]
-			);
-		}
+            new IntegerType($_[0],
+                    'value'             =>  $_[1] . q{ } . $_[2]
+            );
+        }
 	],
 	[#Rule 232
 		 'unsigned_longlong_int', 3,
 sub
-#line 1382 "parserxp.yp"
+#line 1386 "ParserXp.yp"
 {
-			new IntegerType($_[0],
-					'value'				=>	$_[1] . ' ' . $_[2] . ' ' . $_[3]
-			);
-		}
+            new IntegerType($_[0],
+                    'value'             =>  $_[1] . q{ } . $_[2] . q{ } . $_[3]
+            );
+        }
 	],
 	[#Rule 233
 		 'char_type', 1,
 sub
-#line 1392 "parserxp.yp"
+#line 1396 "ParserXp.yp"
 {
-			new CharType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new CharType($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 234
 		 'wide_char_type', 1,
 sub
-#line 1402 "parserxp.yp"
+#line 1406 "ParserXp.yp"
 {
-			new WideCharType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new WideCharType($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 235
 		 'boolean_type', 1,
 sub
-#line 1412 "parserxp.yp"
+#line 1416 "ParserXp.yp"
 {
-			new BooleanType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new BooleanType($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 236
 		 'octet_type', 1,
 sub
-#line 1422 "parserxp.yp"
+#line 1426 "ParserXp.yp"
 {
-			new OctetType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new OctetType($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 237
 		 'any_type', 1,
 sub
-#line 1432 "parserxp.yp"
+#line 1436 "ParserXp.yp"
 {
-			new AnyType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new AnyType($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 238
 		 'object_type', 1,
 sub
-#line 1442 "parserxp.yp"
+#line 1446 "ParserXp.yp"
 {
-			new ObjectType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new ObjectType($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 239
 		 'struct_type', 4,
 sub
-#line 1452 "parserxp.yp"
+#line 1456 "ParserXp.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[1]->Configure($_[0],
-					'list_expr'			=>	$_[3]
-			) if (defined $_[1]);
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[1]->Configure($_[0],
+                    'list_expr'         =>  $_[3]
+            ) if (defined $_[1]);
+        }
 	],
 	[#Rule 240
 		 'struct_type', 4,
 sub
-#line 1459 "parserxp.yp"
+#line 1463 "ParserXp.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("member expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[0]->Error("member expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 241
 		 'struct_header', 3,
 sub
-#line 1469 "parserxp.yp"
+#line 1473 "ParserXp.yp"
 {
-			new StructType($_[0],
-					'props'				=>	$_[1],
-					'idf'				=>	$_[3]
-			);
-		}
+            new StructType($_[0],
+                    'props'             =>  $_[1],
+                    'idf'               =>  $_[3]
+            );
+        }
 	],
 	[#Rule 242
 		 'struct_header', 3,
 sub
-#line 1476 "parserxp.yp"
+#line 1480 "ParserXp.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 243
 		 'member_list', 1,
 sub
-#line 1485 "parserxp.yp"
+#line 1489 "ParserXp.yp"
 {
-			[$_[1]];
-		}
+            [$_[1]];
+        }
 	],
 	[#Rule 244
 		 'member_list', 2,
 sub
-#line 1489 "parserxp.yp"
+#line 1493 "ParserXp.yp"
 {
-			unshift(@{$_[2]},$_[1]);
-			$_[2];
-		}
+            unshift @{$_[2]}, $_[1];
+            $_[2];
+        }
 	],
 	[#Rule 245
 		 'member', 4,
 sub
-#line 1498 "parserxp.yp"
+#line 1502 "ParserXp.yp"
 {
-			new Members($_[0],
-					'props'				=>	$_[1],
-					'type'				=>	$_[2],
-					'list_expr'			=>	$_[3]
-			);
-		}
+            new Members($_[0],
+                    'props'             =>  $_[1],
+                    'type'              =>  $_[2],
+                    'list_expr'         =>  $_[3]
+            );
+        }
 	],
 	[#Rule 246
 		 'member', 3,
 sub
-#line 1506 "parserxp.yp"
+#line 1510 "ParserXp.yp"
 {
-			new Members($_[0],
-					'type'				=>	$_[1],
-					'list_expr'			=>	$_[2]
-			);
-		}
+            new Members($_[0],
+                    'type'              =>  $_[1],
+                    'list_expr'         =>  $_[2]
+            );
+        }
 	],
 	[#Rule 247
 		 'union_type', 8,
 sub
-#line 1517 "parserxp.yp"
+#line 1521 "ParserXp.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[1]->Configure($_[0],
-					'type'				=>	$_[4],
-					'list_expr'			=>	$_[7]
-			) if (defined $_[1]);
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[1]->Configure($_[0],
+                    'type'              =>  $_[4],
+                    'list_expr'         =>  $_[7]
+            ) if (defined $_[1]);
+        }
 	],
 	[#Rule 248
 		 'union_type', 8,
 sub
-#line 1525 "parserxp.yp"
+#line 1529 "ParserXp.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("switch_body expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[0]->Error("switch_body expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 249
 		 'union_type', 6,
 sub
-#line 1532 "parserxp.yp"
+#line 1536 "ParserXp.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("'\x7b' expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[0]->Error("'\x7b' expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 250
 		 'union_type', 5,
 sub
-#line 1539 "parserxp.yp"
+#line 1543 "ParserXp.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("switch_type_spec expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[0]->Error("switch_type_spec expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 251
 		 'union_type', 3,
 sub
-#line 1546 "parserxp.yp"
+#line 1550 "ParserXp.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("'(' expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[0]->Error("'(' expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 252
 		 'union_header', 3,
 sub
-#line 1556 "parserxp.yp"
+#line 1560 "ParserXp.yp"
 {
-			new UnionType($_[0],
-					'props'				=>	$_[1],
-					'idf'				=>	$_[3],
-			);
-		}
+            new UnionType($_[0],
+                    'props'             =>  $_[1],
+                    'idf'               =>  $_[3],
+            );
+        }
 	],
 	[#Rule 253
 		 'union_header', 3,
 sub
-#line 1563 "parserxp.yp"
+#line 1567 "ParserXp.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 254
 		 'switch_type_spec', 1, undef
@@ -7039,371 +7043,371 @@ sub
 	[#Rule 258
 		 'switch_type_spec', 1,
 sub
-#line 1580 "parserxp.yp"
+#line 1584 "ParserXp.yp"
 {
-			TypeDeclarator->Lookup($_[0],$_[1]);
-		}
+            TypeDeclarator->Lookup($_[0], $_[1]);
+        }
 	],
 	[#Rule 259
 		 'switch_body', 1,
 sub
-#line 1588 "parserxp.yp"
+#line 1592 "ParserXp.yp"
 {
-			[$_[1]];
-		}
+            [$_[1]];
+        }
 	],
 	[#Rule 260
 		 'switch_body', 2,
 sub
-#line 1592 "parserxp.yp"
+#line 1596 "ParserXp.yp"
 {
-			unshift(@{$_[2]},$_[1]);
-			$_[2];
-		}
+            unshift @{$_[2]}, $_[1];
+            $_[2];
+        }
 	],
 	[#Rule 261
 		 'case', 3,
 sub
-#line 1601 "parserxp.yp"
+#line 1605 "ParserXp.yp"
 {
-			new Case($_[0],
-					'list_label'		=>	$_[1],
-					'element'			=>	$_[2]
-			);
-		}
+            new Case($_[0],
+                    'list_label'        =>  $_[1],
+                    'element'           =>  $_[2]
+            );
+        }
 	],
 	[#Rule 262
 		 'case_labels', 1,
 sub
-#line 1611 "parserxp.yp"
+#line 1615 "ParserXp.yp"
 {
-			[$_[1]];
-		}
+            [$_[1]];
+        }
 	],
 	[#Rule 263
 		 'case_labels', 2,
 sub
-#line 1615 "parserxp.yp"
+#line 1619 "ParserXp.yp"
 {
-			unshift(@{$_[2]},$_[1]);
-			$_[2];
-		}
+            unshift @{$_[2]}, $_[1];
+            $_[2];
+        }
 	],
 	[#Rule 264
 		 'case_label', 3,
 sub
-#line 1624 "parserxp.yp"
+#line 1628 "ParserXp.yp"
 {
-			$_[2];						# here only a expression, type is not known
-		}
+            $_[2];                      # here only a expression, type is not known
+        }
 	],
 	[#Rule 265
 		 'case_label', 3,
 sub
-#line 1628 "parserxp.yp"
+#line 1632 "ParserXp.yp"
 {
-			$_[0]->Error("':' expected.\n");
-			$_[0]->YYErrok();
-			$_[2];
-		}
+            $_[0]->Error("':' expected.\n");
+            $_[0]->YYErrok();
+            $_[2];
+        }
 	],
 	[#Rule 266
 		 'case_label', 2,
 sub
-#line 1634 "parserxp.yp"
+#line 1638 "ParserXp.yp"
 {
-			$_[0]->Error("Expression expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Expression expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 267
 		 'case_label', 2,
 sub
-#line 1639 "parserxp.yp"
+#line 1643 "ParserXp.yp"
 {
-			new Default($_[0]);
-		}
+            new Default($_[0]);
+        }
 	],
 	[#Rule 268
 		 'case_label', 2,
 sub
-#line 1643 "parserxp.yp"
+#line 1647 "ParserXp.yp"
 {
-			$_[0]->Error("':' expected.\n");
-			$_[0]->YYErrok();
-			new Default($_[0]);
-		}
+            $_[0]->Error("':' expected.\n");
+            $_[0]->YYErrok();
+            new Default($_[0]);
+        }
 	],
 	[#Rule 269
 		 'element_spec', 3,
 sub
-#line 1653 "parserxp.yp"
+#line 1657 "ParserXp.yp"
 {
-			new Element($_[0],
-					'props'			=>	$_[1],
-					'type'			=>	$_[2],
-					'list_expr'		=>	$_[3]
-			);
-		}
+            new Element($_[0],
+                    'props'         =>  $_[1],
+                    'type'          =>  $_[2],
+                    'list_expr'     =>  $_[3]
+            );
+        }
 	],
 	[#Rule 270
 		 'element_spec', 2,
 sub
-#line 1661 "parserxp.yp"
+#line 1665 "ParserXp.yp"
 {
-			new Element($_[0],
-					'type'			=>	$_[1],
-					'list_expr'		=>	$_[2]
-			);
-		}
+            new Element($_[0],
+                    'type'          =>  $_[1],
+                    'list_expr'     =>  $_[2]
+            );
+        }
 	],
 	[#Rule 271
 		 'enum_type', 4,
 sub
-#line 1672 "parserxp.yp"
+#line 1676 "ParserXp.yp"
 {
-			$_[1]->Configure($_[0],
-					'list_expr'		=>	$_[3]
-			) if (defined $_[1]);
-		}
+            $_[1]->Configure($_[0],
+                    'list_expr'     =>  $_[3]
+            ) if (defined $_[1]);
+        }
 	],
 	[#Rule 272
 		 'enum_type', 4,
 sub
-#line 1678 "parserxp.yp"
+#line 1682 "ParserXp.yp"
 {
-			$_[0]->Error("enumerator expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            $_[0]->Error("enumerator expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 273
 		 'enum_type', 2,
 sub
-#line 1684 "parserxp.yp"
+#line 1688 "ParserXp.yp"
 {
-			$_[0]->Error("'\x7b' expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            $_[0]->Error("'\x7b' expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 274
 		 'enum_header', 3,
 sub
-#line 1693 "parserxp.yp"
+#line 1697 "ParserXp.yp"
 {
-			new EnumType($_[0],
-					'props'				=>	$_[1],
-					'idf'				=>	$_[3],
-			);
-		}
+            new EnumType($_[0],
+                    'props'             =>  $_[1],
+                    'idf'               =>  $_[3],
+            );
+        }
 	],
 	[#Rule 275
 		 'enum_header', 3,
 sub
-#line 1700 "parserxp.yp"
+#line 1704 "ParserXp.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 276
 		 'enumerators', 1,
 sub
-#line 1708 "parserxp.yp"
+#line 1712 "ParserXp.yp"
 {
-			[$_[1]];
-		}
+            [$_[1]];
+        }
 	],
 	[#Rule 277
 		 'enumerators', 3,
 sub
-#line 1712 "parserxp.yp"
+#line 1716 "ParserXp.yp"
 {
-			unshift(@{$_[3]},$_[1]);
-			$_[3];
-		}
+            unshift @{$_[3]}, $_[1];
+            $_[3];
+        }
 	],
 	[#Rule 278
 		 'enumerators', 2,
 sub
-#line 1717 "parserxp.yp"
+#line 1721 "ParserXp.yp"
 {
-			$_[0]->Warning("',' unexpected.\n");
-			[$_[1]];
-		}
+            $_[0]->Warning("',' unexpected.\n");
+            [$_[1]];
+        }
 	],
 	[#Rule 279
 		 'enumerators', 2,
 sub
-#line 1722 "parserxp.yp"
+#line 1726 "ParserXp.yp"
 {
-			$_[0]->Error("';' unexpected.\n");
-			[$_[1]];
-		}
+            $_[0]->Error("';' unexpected.\n");
+            [$_[1]];
+        }
 	],
 	[#Rule 280
 		 'enumerator', 1,
 sub
-#line 1731 "parserxp.yp"
+#line 1735 "ParserXp.yp"
 {
-			new Enum($_[0],
-					'idf'				=>	$_[1]
-			);
-		}
+            new Enum($_[0],
+                    'idf'               =>  $_[1]
+            );
+        }
 	],
 	[#Rule 281
 		 'sequence_type', 6,
 sub
-#line 1741 "parserxp.yp"
+#line 1745 "ParserXp.yp"
 {
-			new SequenceType($_[0],
-					'value'				=>	$_[1],
-					'type'				=>	$_[3],
-					'max'				=>	$_[5]
-			);
-		}
+            new SequenceType($_[0],
+                    'value'             =>  $_[1],
+                    'type'              =>  $_[3],
+                    'max'               =>  $_[5]
+            );
+        }
 	],
 	[#Rule 282
 		 'sequence_type', 6,
 sub
-#line 1749 "parserxp.yp"
+#line 1753 "ParserXp.yp"
 {
-			$_[0]->Error("Expression expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Expression expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 283
 		 'sequence_type', 4,
 sub
-#line 1754 "parserxp.yp"
+#line 1758 "ParserXp.yp"
 {
-			new SequenceType($_[0],
-					'value'				=>	$_[1],
-					'type'				=>	$_[3]
-			);
-		}
+            new SequenceType($_[0],
+                    'value'             =>  $_[1],
+                    'type'              =>  $_[3]
+            );
+        }
 	],
 	[#Rule 284
 		 'sequence_type', 4,
 sub
-#line 1761 "parserxp.yp"
+#line 1765 "ParserXp.yp"
 {
-			$_[0]->Error("simple_type_spec expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("simple_type_spec expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 285
 		 'sequence_type', 2,
 sub
-#line 1766 "parserxp.yp"
+#line 1770 "ParserXp.yp"
 {
-			$_[0]->Error("'<' expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("'<' expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 286
 		 'string_type', 4,
 sub
-#line 1775 "parserxp.yp"
+#line 1779 "ParserXp.yp"
 {
-			new StringType($_[0],
-					'value'				=>	$_[1],
-					'max'				=>	$_[3]
-			);
-		}
+            new StringType($_[0],
+                    'value'             =>  $_[1],
+                    'max'               =>  $_[3]
+            );
+        }
 	],
 	[#Rule 287
 		 'string_type', 1,
 sub
-#line 1782 "parserxp.yp"
+#line 1786 "ParserXp.yp"
 {
-			new StringType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new StringType($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 288
 		 'string_type', 4,
 sub
-#line 1788 "parserxp.yp"
+#line 1792 "ParserXp.yp"
 {
-			$_[0]->Error("Expression expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Expression expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 289
 		 'wide_string_type', 4,
 sub
-#line 1797 "parserxp.yp"
+#line 1801 "ParserXp.yp"
 {
-			new WideStringType($_[0],
-					'value'				=>	$_[1],
-					'max'				=>	$_[3]
-			);
-		}
+            new WideStringType($_[0],
+                    'value'             =>  $_[1],
+                    'max'               =>  $_[3]
+            );
+        }
 	],
 	[#Rule 290
 		 'wide_string_type', 1,
 sub
-#line 1804 "parserxp.yp"
+#line 1808 "ParserXp.yp"
 {
-			new WideStringType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new WideStringType($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 291
 		 'wide_string_type', 4,
 sub
-#line 1810 "parserxp.yp"
+#line 1814 "ParserXp.yp"
 {
-			$_[0]->Error("Expression expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Expression expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 292
 		 'array_declarator', 2,
 sub
-#line 1819 "parserxp.yp"
+#line 1823 "ParserXp.yp"
 {
-			unshift(@{$_[2]},$_[1]);
-			$_[2];
-		}
+            unshift @{$_[2]}, $_[1];
+            $_[2];
+        }
 	],
 	[#Rule 293
 		 'fixed_array_sizes', 1,
 sub
-#line 1827 "parserxp.yp"
+#line 1831 "ParserXp.yp"
 {
-			[$_[1]];
-		}
+            [$_[1]];
+        }
 	],
 	[#Rule 294
 		 'fixed_array_sizes', 2,
 sub
-#line 1831 "parserxp.yp"
+#line 1835 "ParserXp.yp"
 {
-			unshift(@{$_[2]},$_[1]);
-			$_[2];
-		}
+            unshift @{$_[2]}, $_[1];
+            $_[2];
+        }
 	],
 	[#Rule 295
 		 'fixed_array_size', 3,
 sub
-#line 1840 "parserxp.yp"
+#line 1844 "ParserXp.yp"
 {
-			$_[2];
-		}
+            $_[2];
+        }
 	],
 	[#Rule 296
 		 'fixed_array_size', 3,
 sub
-#line 1844 "parserxp.yp"
+#line 1848 "ParserXp.yp"
 {
-			$_[0]->Error("Expression expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Expression expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 297
 		 'attr_dcl', 1, undef
@@ -7414,113 +7418,113 @@ sub
 	[#Rule 299
 		 'except_dcl', 3,
 sub
-#line 1861 "parserxp.yp"
+#line 1865 "ParserXp.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[1];
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[1];
+        }
 	],
 	[#Rule 300
 		 'except_dcl', 4,
 sub
-#line 1866 "parserxp.yp"
+#line 1870 "ParserXp.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[1]->Configure($_[0],
-					'list_expr'			=>	$_[3]
-			) if (defined $_[1]);
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[1]->Configure($_[0],
+                    'list_expr'         =>  $_[3]
+            ) if (defined $_[1]);
+        }
 	],
 	[#Rule 301
 		 'except_dcl', 4,
 sub
-#line 1873 "parserxp.yp"
+#line 1877 "ParserXp.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("'members expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[0]->Error("'members expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 302
 		 'except_dcl', 2,
 sub
-#line 1880 "parserxp.yp"
+#line 1884 "ParserXp.yp"
 {
-			$_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
-			$_[0]->Error("'\x7b' expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            $_[0]->YYData->{symbtab}->PopCurrentScope($_[1]);
+            $_[0]->Error("'\x7b' expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 303
 		 'exception_header', 3,
 sub
-#line 1890 "parserxp.yp"
+#line 1894 "ParserXp.yp"
 {
-			new Exception($_[0],
-					'declspec'			=>	$_[1],
-					'idf'				=>	$_[3],
-			);
-		}
+            new Exception($_[0],
+                    'declspec'          =>  $_[1],
+                    'idf'               =>  $_[3],
+            );
+        }
 	],
 	[#Rule 304
 		 'exception_header', 3,
 sub
-#line 1897 "parserxp.yp"
+#line 1901 "ParserXp.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 305
 		 'op_dcl', 4,
 sub
-#line 1906 "parserxp.yp"
+#line 1910 "ParserXp.yp"
 {
-			delete $_[0]->YYData->{unnamed_symbtab}
-					if (exists $_[0]->YYData->{unnamed_symbtab});
-			$_[1]->Configure($_[0],
-					'list_param'	=>	$_[2],
-					'list_raise'	=>	$_[3],
-					'list_context'	=>	$_[4]
-			) if (defined $_[1]);
-		}
+            delete $_[0]->YYData->{unnamed_symbtab}
+                    if (exists $_[0]->YYData->{unnamed_symbtab});
+            $_[1]->Configure($_[0],
+                    'list_param'    =>  $_[2],
+                    'list_raise'    =>  $_[3],
+                    'list_context'  =>  $_[4]
+            ) if (defined $_[1]);
+        }
 	],
 	[#Rule 306
 		 'op_dcl', 2,
 sub
-#line 1916 "parserxp.yp"
+#line 1920 "ParserXp.yp"
 {
-			delete $_[0]->YYData->{unnamed_symbtab}
-					if (exists $_[0]->YYData->{unnamed_symbtab});
-			$_[0]->Error("parameters declaration expected.\n");
-			$_[0]->YYErrok();
-			$_[1];
-		}
+            delete $_[0]->YYData->{unnamed_symbtab}
+                    if (exists $_[0]->YYData->{unnamed_symbtab});
+            $_[0]->Error("parameters declaration expected.\n");
+            $_[0]->YYErrok();
+            $_[1];
+        }
 	],
 	[#Rule 307
 		 'op_header', 5,
 sub
-#line 1927 "parserxp.yp"
+#line 1931 "ParserXp.yp"
 {
-			new Operation($_[0],
-					'declspec'			=>	$_[1],
-					'props'				=>	$_[2],
-					'modifier'			=>	$_[3],
-					'type'				=>	$_[4],
-					'idf'				=>	$_[5]
-			);
-		}
+            new Operation($_[0],
+                    'declspec'          =>  $_[1],
+                    'props'             =>  $_[2],
+                    'modifier'          =>  $_[3],
+                    'type'              =>  $_[4],
+                    'idf'               =>  $_[5]
+            );
+        }
 	],
 	[#Rule 308
 		 'op_header', 5,
 sub
-#line 1937 "parserxp.yp"
+#line 1941 "ParserXp.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 309
 		 'op_mod', 1, undef
@@ -7537,120 +7541,120 @@ sub
 	[#Rule 313
 		 'op_type_spec', 1,
 sub
-#line 1961 "parserxp.yp"
+#line 1965 "ParserXp.yp"
 {
-			new VoidType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new VoidType($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 314
 		 'op_type_spec', 1,
 sub
-#line 1967 "parserxp.yp"
+#line 1971 "ParserXp.yp"
 {
-			$_[0]->Error("op_type_spec expected.\n");
-			$_[1];						#default action
-		}
+            $_[0]->Error("op_type_spec expected.\n");
+            $_[1];                      #default action
+        }
 	],
 	[#Rule 315
 		 'op_type_spec', 1,
 sub
-#line 1972 "parserxp.yp"
+#line 1976 "ParserXp.yp"
 {
-			$_[0]->Error("op_type_spec expected.\n");
-			$_[1];						#default action
-		}
+            $_[0]->Error("op_type_spec expected.\n");
+            $_[1];                      #default action
+        }
 	],
 	[#Rule 316
 		 'parameter_dcls', 3,
 sub
-#line 1981 "parserxp.yp"
+#line 1985 "ParserXp.yp"
 {
-			$_[2];
-		}
+            $_[2];
+        }
 	],
 	[#Rule 317
 		 'parameter_dcls', 5,
 sub
-#line 1985 "parserxp.yp"
+#line 1989 "ParserXp.yp"
 {
-			push(@{$_[2]},new Ellipsis($_[0]));
-			$_[2];
-		}
+            push @{$_[2]}, new Ellipsis($_[0]);
+            $_[2];
+        }
 	],
 	[#Rule 318
 		 'parameter_dcls', 4,
 sub
-#line 1990 "parserxp.yp"
+#line 1994 "ParserXp.yp"
 {
-			$_[0]->Warning("',' unexpected.\n");
-			$_[2];
-		}
+            $_[0]->Warning("',' unexpected.\n");
+            $_[2];
+        }
 	],
 	[#Rule 319
 		 'parameter_dcls', 2,
 sub
-#line 1995 "parserxp.yp"
+#line 1999 "ParserXp.yp"
 {
-			undef;
-		}
+            undef;
+        }
 	],
 	[#Rule 320
 		 'parameter_dcls', 3,
 sub
-#line 1999 "parserxp.yp"
+#line 2003 "ParserXp.yp"
 {
-			$_[0]->Error("'...' unexpected.\n");
-			undef;
-		}
+            $_[0]->Error("'...' unexpected.\n");
+            undef;
+        }
 	],
 	[#Rule 321
 		 'parameter_dcls', 3,
 sub
-#line 2004 "parserxp.yp"
+#line 2008 "ParserXp.yp"
 {
-			new Ellipsis($_[0]);
-		}
+            new Ellipsis($_[0]);
+        }
 	],
 	[#Rule 322
 		 'param_dcls', 1,
 sub
-#line 2011 "parserxp.yp"
+#line 2015 "ParserXp.yp"
 {
-			[$_[1]];
-		}
+            [$_[1]];
+        }
 	],
 	[#Rule 323
 		 'param_dcls', 3,
 sub
-#line 2015 "parserxp.yp"
+#line 2019 "ParserXp.yp"
 {
-			push(@{$_[1]},$_[3]);
-			$_[1];
-		}
+            push @{$_[1]}, $_[3];
+            $_[1];
+        }
 	],
 	[#Rule 324
 		 'param_dcls', 2,
 sub
-#line 2020 "parserxp.yp"
+#line 2024 "ParserXp.yp"
 {
-			$_[0]->Error("';' unexpected.\n");
-			[$_[1]];
-		}
+            $_[0]->Error("';' unexpected.\n");
+            [$_[1]];
+        }
 	],
 	[#Rule 325
 		 'param_dcl', 4,
 sub
-#line 2029 "parserxp.yp"
+#line 2033 "ParserXp.yp"
 {
-			new Parameter($_[0],
-					'props'				=>	$_[1],
-					'attr'				=>	$_[2],
-					'type'				=>	$_[3],
-					'idf'				=>	$_[4]
-			);
-		}
+            new Parameter($_[0],
+                    'props'             =>  $_[1],
+                    'attr'              =>  $_[2],
+                    'type'              =>  $_[3],
+                    'idf'               =>  $_[4]
+            );
+        }
 	],
 	[#Rule 326
 		 'param_attribute', 1, undef
@@ -7664,37 +7668,37 @@ sub
 	[#Rule 329
 		 'param_attribute', 0,
 sub
-#line 2048 "parserxp.yp"
+#line 2052 "ParserXp.yp"
 {
-			$_[0]->Error("(in|out|inout) expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("(in|out|inout) expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 330
 		 'raises_expr', 4,
 sub
-#line 2057 "parserxp.yp"
+#line 2061 "ParserXp.yp"
 {
-			$_[3];
-		}
+            $_[3];
+        }
 	],
 	[#Rule 331
 		 'raises_expr', 4,
 sub
-#line 2061 "parserxp.yp"
+#line 2065 "ParserXp.yp"
 {
-			$_[0]->Error("name expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("name expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 332
 		 'raises_expr', 2,
 sub
-#line 2066 "parserxp.yp"
+#line 2070 "ParserXp.yp"
 {
-			$_[0]->Error("'(' expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("'(' expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 333
 		 'raises_expr', 0, undef
@@ -7702,53 +7706,53 @@ sub
 	[#Rule 334
 		 'exception_names', 1,
 sub
-#line 2076 "parserxp.yp"
+#line 2080 "ParserXp.yp"
 {
-			[$_[1]];
-		}
+            [$_[1]];
+        }
 	],
 	[#Rule 335
 		 'exception_names', 3,
 sub
-#line 2080 "parserxp.yp"
+#line 2084 "ParserXp.yp"
 {
-			unshift(@{$_[3]},$_[1]);
-			$_[3];
-		}
+            unshift @{$_[3]}, $_[1];
+            $_[3];
+        }
 	],
 	[#Rule 336
 		 'exception_name', 1,
 sub
-#line 2088 "parserxp.yp"
+#line 2092 "ParserXp.yp"
 {
-			Interface->Lookup($_[0],$_[1],1);
-		}
+            Interface->Lookup($_[0], $_[1], 1);
+        }
 	],
 	[#Rule 337
 		 'context_expr', 4,
 sub
-#line 2096 "parserxp.yp"
+#line 2100 "ParserXp.yp"
 {
-			$_[3];
-		}
+            $_[3];
+        }
 	],
 	[#Rule 338
 		 'context_expr', 4,
 sub
-#line 2100 "parserxp.yp"
+#line 2104 "ParserXp.yp"
 {
-			$_[0]->Error("string expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("string expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 339
 		 'context_expr', 2,
 sub
-#line 2105 "parserxp.yp"
+#line 2109 "ParserXp.yp"
 {
-			$_[0]->Error("'(' expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("'(' expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 340
 		 'context_expr', 0, undef
@@ -7756,19 +7760,19 @@ sub
 	[#Rule 341
 		 'string_literals', 1,
 sub
-#line 2115 "parserxp.yp"
+#line 2119 "ParserXp.yp"
 {
-			[$_[1]];
-		}
+            [$_[1]];
+        }
 	],
 	[#Rule 342
 		 'string_literals', 3,
 sub
-#line 2119 "parserxp.yp"
+#line 2123 "ParserXp.yp"
 {
-			unshift(@{$_[3]},$_[1]);
-			$_[3];
-		}
+            unshift @{$_[3]}, $_[1];
+            $_[3];
+        }
 	],
 	[#Rule 343
 		 'param_type_spec', 1, undef
@@ -7776,29 +7780,29 @@ sub
 	[#Rule 344
 		 'param_type_spec', 1,
 sub
-#line 2130 "parserxp.yp"
+#line 2134 "ParserXp.yp"
 {
-			$_[0]->Error("param_type_spec expected.\n");
-			$_[1];						#default action
-		}
+            $_[0]->Error("param_type_spec expected.\n");
+            $_[1];                      #default action
+        }
 	],
 	[#Rule 345
 		 'param_type_spec', 1,
 sub
-#line 2135 "parserxp.yp"
+#line 2139 "ParserXp.yp"
 {
-			$_[0]->Error("param_type_spec expected.\n");
-			$_[1];						#default action
-		}
+            $_[0]->Error("param_type_spec expected.\n");
+            $_[1];                      #default action
+        }
 	],
 	[#Rule 346
 		 'param_type_spec', 1,
 sub
-#line 2140 "parserxp.yp"
+#line 2144 "ParserXp.yp"
 {
-			$_[0]->Error("param_type_spec expected.\n");
-			$_[1];						#default action
-		}
+            $_[0]->Error("param_type_spec expected.\n");
+            $_[1];                      #default action
+        }
 	],
 	[#Rule 347
 		 'op_param_type_spec', 1, undef
@@ -7812,130 +7816,130 @@ sub
 	[#Rule 350
 		 'op_param_type_spec', 1,
 sub
-#line 2154 "parserxp.yp"
+#line 2158 "ParserXp.yp"
 {
-			TypeDeclarator->Lookup($_[0],$_[1]);
-		}
+            TypeDeclarator->Lookup($_[0], $_[1]);
+        }
 	],
 	[#Rule 351
 		 'fixed_pt_type', 6,
 sub
-#line 2162 "parserxp.yp"
+#line 2166 "ParserXp.yp"
 {
-			new FixedPtType($_[0],
-					'value'				=>	$_[1],
-					'd'					=>	$_[3],
-					's'					=>	$_[5]
-			);
-		}
+            new FixedPtType($_[0],
+                    'value'             =>  $_[1],
+                    'd'                 =>  $_[3],
+                    's'                 =>  $_[5]
+            );
+        }
 	],
 	[#Rule 352
 		 'fixed_pt_type', 6,
 sub
-#line 2170 "parserxp.yp"
+#line 2174 "ParserXp.yp"
 {
-			$_[0]->Error("Expression expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Expression expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 353
 		 'fixed_pt_type', 4,
 sub
-#line 2175 "parserxp.yp"
+#line 2179 "ParserXp.yp"
 {
-			$_[0]->Error("Expression expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Expression expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 354
 		 'fixed_pt_type', 2,
 sub
-#line 2180 "parserxp.yp"
+#line 2184 "ParserXp.yp"
 {
-			$_[0]->Error("'<' expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("'<' expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 355
 		 'fixed_pt_const_type', 1,
 sub
-#line 2189 "parserxp.yp"
+#line 2193 "ParserXp.yp"
 {
-			new FixedPtConstType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new FixedPtConstType($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 356
 		 'value_base_type', 1,
 sub
-#line 2199 "parserxp.yp"
+#line 2203 "ParserXp.yp"
 {
-			new ValueBaseType($_[0],
-					'value'				=>	$_[1]
-			);
-		}
+            new ValueBaseType($_[0],
+                    'value'             =>  $_[1]
+            );
+        }
 	],
 	[#Rule 357
 		 'constr_forward_decl', 3,
 sub
-#line 2209 "parserxp.yp"
+#line 2213 "ParserXp.yp"
 {
-			$_[0]->Warning("Ignoring properties for forward declaration.\n")
-					if (defined $_[1]);
-			new ForwardStructType($_[0],
-					'idf'				=>	$_[3]
-			);
-		}
+            $_[0]->Warning("Ignoring properties for forward declaration.\n")
+                    if (defined $_[1]);
+            new ForwardStructType($_[0],
+                    'idf'               =>  $_[3]
+            );
+        }
 	],
 	[#Rule 358
 		 'constr_forward_decl', 3,
 sub
-#line 2217 "parserxp.yp"
+#line 2221 "ParserXp.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 359
 		 'constr_forward_decl', 3,
 sub
-#line 2222 "parserxp.yp"
+#line 2226 "ParserXp.yp"
 {
-			$_[0]->Warning("Ignoring properties for forward declaration.\n")
-					if (defined $_[1]);
-			new ForwardUnionType($_[0],
-					'idf'				=>	$_[3]
-			);
-		}
+            $_[0]->Warning("Ignoring properties for forward declaration.\n")
+                    if (defined $_[1]);
+            new ForwardUnionType($_[0],
+                    'idf'               =>  $_[3]
+            );
+        }
 	],
 	[#Rule 360
 		 'constr_forward_decl', 3,
 sub
-#line 2230 "parserxp.yp"
+#line 2234 "ParserXp.yp"
 {
-			$_[0]->Error("Identifier expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Identifier expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 361
 		 'import', 3,
 sub
-#line 2239 "parserxp.yp"
+#line 2243 "ParserXp.yp"
 {
-			new Import($_[0],
-					'value'				=>	$_[2]
-			);
-		}
+            new Import($_[0],
+                    'value'             =>  $_[2]
+            );
+        }
 	],
 	[#Rule 362
 		 'import', 2,
 sub
-#line 2245 "parserxp.yp"
+#line 2249 "ParserXp.yp"
 {
-			$_[0]->Error("Scoped name expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Scoped name expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 363
 		 'imported_scope', 1, undef
@@ -7946,221 +7950,221 @@ sub
 	[#Rule 365
 		 'type_id_dcl', 3,
 sub
-#line 2262 "parserxp.yp"
+#line 2266 "ParserXp.yp"
 {
-			new TypeId($_[0],
-					'idf'				=>	$_[2],
-					'value'				=>	$_[3]
-			);
-		}
+            new TypeId($_[0],
+                    'idf'               =>  $_[2],
+                    'value'             =>  $_[3]
+            );
+        }
 	],
 	[#Rule 366
 		 'type_id_dcl', 3,
 sub
-#line 2269 "parserxp.yp"
+#line 2273 "ParserXp.yp"
 {
-			$_[0]->Error("String literal expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("String literal expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 367
 		 'type_id_dcl', 2,
 sub
-#line 2274 "parserxp.yp"
+#line 2278 "ParserXp.yp"
 {
-			$_[0]->Error("Scoped name expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Scoped name expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 368
 		 'type_prefix_dcl', 3,
 sub
-#line 2283 "parserxp.yp"
+#line 2287 "ParserXp.yp"
 {
-			new TypePrefix($_[0],
-					'idf'				=>	$_[2],
-					'value'				=>	$_[3]
-			);
-		}
+            new TypePrefix($_[0],
+                    'idf'               =>  $_[2],
+                    'value'             =>  $_[3]
+            );
+        }
 	],
 	[#Rule 369
 		 'type_prefix_dcl', 3,
 sub
-#line 2290 "parserxp.yp"
+#line 2294 "ParserXp.yp"
 {
-			$_[0]->Error("String literal expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("String literal expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 370
 		 'type_prefix_dcl', 3,
 sub
-#line 2295 "parserxp.yp"
+#line 2299 "ParserXp.yp"
 {
-			new TypePrefix($_[0],
-					'idf'				=>	'',
-					'value'				=>	$_[3]
-			);
-		}
+            new TypePrefix($_[0],
+                    'idf'               =>  '',
+                    'value'             =>  $_[3]
+            );
+        }
 	],
 	[#Rule 371
 		 'type_prefix_dcl', 2,
 sub
-#line 2302 "parserxp.yp"
+#line 2306 "ParserXp.yp"
 {
-			$_[0]->Error("Scoped name expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("Scoped name expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 372
 		 'readonly_attr_spec', 6,
 sub
-#line 2311 "parserxp.yp"
+#line 2315 "ParserXp.yp"
 {
-			new Attributes($_[0],
-					'declspec'			=>	$_[1],
-					'props'				=>	$_[2],
-					'modifier'			=>	$_[3],
-					'type'				=>	$_[5],
-					'list_expr'			=>	$_[6]->{list_expr},
-					'list_getraise'		=>	$_[6]->{list_getraise},
-			);
-		}
+            new Attributes($_[0],
+                    'declspec'          =>  $_[1],
+                    'props'             =>  $_[2],
+                    'modifier'          =>  $_[3],
+                    'type'              =>  $_[5],
+                    'list_expr'         =>  $_[6]->{list_expr},
+                    'list_getraise'     =>  $_[6]->{list_getraise},
+            );
+        }
 	],
 	[#Rule 373
 		 'readonly_attr_spec', 5,
 sub
-#line 2322 "parserxp.yp"
+#line 2326 "ParserXp.yp"
 {
-			$_[0]->Error("type expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("type expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 374
 		 'readonly_attr_spec', 4,
 sub
-#line 2327 "parserxp.yp"
+#line 2331 "ParserXp.yp"
 {
-			$_[0]->Error("'attribute' expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("'attribute' expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 375
 		 'readonly_attr_declarator', 2,
 sub
-#line 2336 "parserxp.yp"
+#line 2340 "ParserXp.yp"
 {
-			{
-				'list_expr'			=> [$_[1]],
-				'list_getraise'		=> $_[2]
-			};
-		}
+            {
+                'list_expr'         => [$_[1]],
+                'list_getraise'     => $_[2]
+            };
+        }
 	],
 	[#Rule 376
 		 'readonly_attr_declarator', 3,
 sub
-#line 2343 "parserxp.yp"
+#line 2347 "ParserXp.yp"
 {
-			unshift(@{$_[3]},$_[1]);
-			{
-				'list_expr'			=> $_[3]
-			};
-		}
+            unshift @{$_[3]}, $_[1];
+            {
+                'list_expr'         => $_[3]
+            };
+        }
 	],
 	[#Rule 377
 		 'simple_declarators', 1,
 sub
-#line 2353 "parserxp.yp"
+#line 2357 "ParserXp.yp"
 {
-			[$_[1]];
-		}
+            [$_[1]];
+        }
 	],
 	[#Rule 378
 		 'simple_declarators', 3,
 sub
-#line 2357 "parserxp.yp"
+#line 2361 "ParserXp.yp"
 {
-			unshift(@{$_[3]},$_[1]);
-			$_[3];
-		}
+            unshift @{$_[3]}, $_[1];
+            $_[3];
+        }
 	],
 	[#Rule 379
 		 'attr_spec', 5,
 sub
-#line 2366 "parserxp.yp"
+#line 2370 "ParserXp.yp"
 {
-			new Attributes($_[0],
-					'declspec'			=>	$_[1],
-					'props'				=>	$_[2],
-					'type'				=>	$_[4],
-					'list_expr'			=>	$_[5]->{list_expr},
-					'list_getraise'		=>	$_[5]->{list_getraise},
-					'list_setraise'		=>	$_[5]->{list_setraise},
-			);
-		}
+            new Attributes($_[0],
+                    'declspec'          =>  $_[1],
+                    'props'             =>  $_[2],
+                    'type'              =>  $_[4],
+                    'list_expr'         =>  $_[5]->{list_expr},
+                    'list_getraise'     =>  $_[5]->{list_getraise},
+                    'list_setraise'     =>  $_[5]->{list_setraise},
+            );
+        }
 	],
 	[#Rule 380
 		 'attr_spec', 4,
 sub
-#line 2377 "parserxp.yp"
+#line 2381 "ParserXp.yp"
 {
-			$_[0]->Error("type expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("type expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 381
 		 'attr_declarator', 2,
 sub
-#line 2386 "parserxp.yp"
+#line 2390 "ParserXp.yp"
 {
-			{
-				'list_expr'			=> [$_[1]],
-				'list_getraise'		=> $_[2]->{list_getraise},
-				'list_setraise'		=> $_[2]->{list_setraise}
-			};
-		}
+            {
+                'list_expr'         => [$_[1]],
+                'list_getraise'     => $_[2]->{list_getraise},
+                'list_setraise'     => $_[2]->{list_setraise}
+            };
+        }
 	],
 	[#Rule 382
 		 'attr_declarator', 3,
 sub
-#line 2394 "parserxp.yp"
+#line 2398 "ParserXp.yp"
 {
-			unshift(@{$_[3]},$_[1]);
-			{
-				'list_expr'			=> $_[3]
-			};
-		}
+            unshift @{$_[3]}, $_[1];
+            {
+                'list_expr'         => $_[3]
+            };
+        }
 	],
 	[#Rule 383
 		 'attr_raises_expr', 2,
 sub
-#line 2405 "parserxp.yp"
+#line 2409 "ParserXp.yp"
 {
-			{
-				'list_getraise'		=> $_[1],
-				'list_setraise'		=> $_[2]
-			};
-		}
+            {
+                'list_getraise'     => $_[1],
+                'list_setraise'     => $_[2]
+            };
+        }
 	],
 	[#Rule 384
 		 'attr_raises_expr', 1,
 sub
-#line 2412 "parserxp.yp"
+#line 2416 "ParserXp.yp"
 {
-			{
-				'list_getraise'		=> $_[1],
-			};
-		}
+            {
+                'list_getraise'     => $_[1],
+            };
+        }
 	],
 	[#Rule 385
 		 'attr_raises_expr', 1,
 sub
-#line 2418 "parserxp.yp"
+#line 2422 "ParserXp.yp"
 {
-			{
-				'list_setraise'		=> $_[1]
-			};
-		}
+            {
+                'list_setraise'     => $_[1]
+            };
+        }
 	],
 	[#Rule 386
 		 'attr_raises_expr', 0, undef
@@ -8168,64 +8172,64 @@ sub
 	[#Rule 387
 		 'get_except_expr', 2,
 sub
-#line 2430 "parserxp.yp"
+#line 2434 "ParserXp.yp"
 {
-			$_[2];
-		}
+            $_[2];
+        }
 	],
 	[#Rule 388
 		 'get_except_expr', 2,
 sub
-#line 2434 "parserxp.yp"
+#line 2438 "ParserXp.yp"
 {
-			$_[0]->Error("'(' expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("'(' expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 389
 		 'set_except_expr', 2,
 sub
-#line 2443 "parserxp.yp"
+#line 2447 "ParserXp.yp"
 {
-			$_[2];
-		}
+            $_[2];
+        }
 	],
 	[#Rule 390
 		 'set_except_expr', 2,
 sub
-#line 2447 "parserxp.yp"
+#line 2451 "ParserXp.yp"
 {
-			$_[0]->Error("'(' expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("'(' expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 391
 		 'exception_list', 3,
 sub
-#line 2456 "parserxp.yp"
+#line 2460 "ParserXp.yp"
 {
-			$_[2];
-		}
+            $_[2];
+        }
 	],
 	[#Rule 392
 		 'exception_list', 3,
 sub
-#line 2460 "parserxp.yp"
+#line 2464 "ParserXp.yp"
 {
-			$_[0]->Error("name expected.\n");
-			$_[0]->YYErrok();
-		}
+            $_[0]->Error("name expected.\n");
+            $_[0]->YYErrok();
+        }
 	],
 	[#Rule 393
 		 'code_frag', 2,
 sub
-#line 2470 "parserxp.yp"
+#line 2474 "ParserXp.yp"
 {
-			new CodeFragment($_[0],
-					'declspec'			=>	$_[1],
-					'value'				=>	$_[2],
-			);
-		}
+            new CodeFragment($_[0],
+                    'declspec'          =>  $_[1],
+                    'value'             =>  $_[2],
+            );
+        }
 	],
 	[#Rule 394
 		 'declspec', 0, undef
@@ -8239,94 +8243,92 @@ sub
 	[#Rule 397
 		 '@2-1', 0,
 sub
-#line 2489 "parserxp.yp"
+#line 2493 "ParserXp.yp"
 {
-			$_[0]->YYData->{prop} = 1;
-		}
+            $_[0]->YYData->{prop} = 1;
+        }
 	],
 	[#Rule 398
 		 'props', 4,
 sub
-#line 2493 "parserxp.yp"
+#line 2497 "ParserXp.yp"
 {
-			$_[0]->YYData->{prop} = 0;
-			$_[3];
-		}
+            $_[0]->YYData->{prop} = 0;
+            $_[3];
+        }
 	],
 	[#Rule 399
 		 'prop_list', 2,
 sub
-#line 2501 "parserxp.yp"
+#line 2505 "ParserXp.yp"
 {
-			my $hash = {};
-			$hash->{$_[1]} = $_[2];
-			$hash;
-		}
+            my $hash = {};
+            $hash->{$_[1]} = $_[2];
+            $hash;
+        }
 	],
 	[#Rule 400
 		 'prop_list', 4,
 sub
-#line 2507 "parserxp.yp"
+#line 2511 "ParserXp.yp"
 {
-			$_[1]->{$_[3]} = $_[4];
-			$_[1];
-		}
+            $_[1]->{$_[3]} = $_[4];
+            $_[1];
+        }
 	],
 	[#Rule 401
 		 'prop_list', 1,
 sub
-#line 2512 "parserxp.yp"
+#line 2516 "ParserXp.yp"
 {
-			my $hash = {};
-			$hash->{$_[1]} = undef;
-			$hash;
-		}
+            my $hash = {};
+            $hash->{$_[1]} = undef;
+            $hash;
+        }
 	],
 	[#Rule 402
 		 'prop_list', 3,
 sub
-#line 2518 "parserxp.yp"
+#line 2522 "ParserXp.yp"
 {
-			$_[1]->{$_[3]} = undef;
-			$_[1];
-		}
+            $_[1]->{$_[3]} = undef;
+            $_[1];
+        }
 	]
 ],
                                   @_);
     bless($self,$class);
 }
 
-#line 2524 "parserxp.yp"
+#line 2528 "ParserXp.yp"
 
 
-package Parser;
+use warnings;
 
-use strict;
-use vars qw($IDL_version);
-$IDL_version = '3.0';
-
-use CORBA::IDL::symbtab;
-use CORBA::IDL::node;
-
-require CORBA::IDL::lexer;
+our $VERSION = '2.60';
+our $IDL_VERSION = '3.0';
 
 sub BuildUnop
 {
-	my($op,$expr) = @_;
+    my ($op, $expr) = @_;
 
-	my $node = new UnaryOp($_[0],	'op'	=>	$op);
-	push(@$expr,$node);
-	return $expr;
+    my $node = new UnaryOp($_[0],
+            'op'    =>  $op
+    );
+    push @$expr, $node;
+    return $expr;
 }
 
 sub BuildBinop
 {
-	my($left,$op,$right) = @_;
+    my ($left, $op, $right) = @_;
 
-	my $node = new BinaryOp($_[0],	'op'	=>	$op);
-	push(@$left,@$right);
-	push(@$left,$node);
-	return $left;
+    my $node = new BinaryOp($_[0],
+            'op'    =>  $op
+    );
+    push @$left, @$right;
+    push @$left, $node;
+    return $left;
 }
 
 
