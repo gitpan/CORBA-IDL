@@ -12,482 +12,7 @@ use vars qw ( @ISA );
 use strict;
 
 @ISA= qw ( Parse::Yapp::Driver );
-#Included Parse/Yapp/Driver.pm file----------------------------------------
-{
-#
-# Module Parse::Yapp::Driver
-#
-# This module is part of the Parse::Yapp package available on your
-# nearest CPAN
-#
-# Any use of this module in a standalone parser make the included
-# text under the same copyright as the Parse::Yapp module itself.
-#
-# This notice should remain unchanged.
-#
-# (c) Copyright 1998-2001 Francois Desarmenien, all rights reserved.
-# (see the pod text in Parse::Yapp module for use and distribution rights)
-#
-
-package Parse::Yapp::Driver;
-
-require 5.004;
-
-use strict;
-
-use vars qw ( $VERSION $COMPATIBLE $FILENAME );
-
-$VERSION = '1.05';
-$COMPATIBLE = '0.07';
-$FILENAME=__FILE__;
-
-use Carp;
-
-#Known parameters, all starting with YY (leading YY will be discarded)
-my(%params)=(YYLEX => 'CODE', 'YYERROR' => 'CODE', YYVERSION => '',
-			 YYRULES => 'ARRAY', YYSTATES => 'ARRAY', YYDEBUG => '');
-#Mandatory parameters
-my(@params)=('LEX','RULES','STATES');
-
-sub new {
-    my($class)=shift;
-	my($errst,$nberr,$token,$value,$check,$dotpos);
-    my($self)={ ERROR => \&_Error,
-				ERRST => \$errst,
-                NBERR => \$nberr,
-				TOKEN => \$token,
-				VALUE => \$value,
-				DOTPOS => \$dotpos,
-				STACK => [],
-				DEBUG => 0,
-				CHECK => \$check };
-
-	_CheckParams( [], \%params, \@_, $self );
-
-		exists($$self{VERSION})
-	and	$$self{VERSION} < $COMPATIBLE
-	and	croak "Yapp driver version $VERSION ".
-			  "incompatible with version $$self{VERSION}:\n".
-			  "Please recompile parser module.";
-
-        ref($class)
-    and $class=ref($class);
-
-    bless($self,$class);
-}
-
-sub YYParse {
-    my($self)=shift;
-    my($retval);
-
-	_CheckParams( \@params, \%params, \@_, $self );
-
-	if($$self{DEBUG}) {
-		_DBLoad();
-		$retval = eval '$self->_DBParse()';#Do not create stab entry on compile
-        $@ and die $@;
-	}
-	else {
-		$retval = $self->_Parse();
-	}
-    $retval
-}
-
-sub YYData {
-	my($self)=shift;
-
-		exists($$self{USER})
-	or	$$self{USER}={};
-
-	$$self{USER};
-	
-}
-
-sub YYErrok {
-	my($self)=shift;
-
-	${$$self{ERRST}}=0;
-    undef;
-}
-
-sub YYNberr {
-	my($self)=shift;
-
-	${$$self{NBERR}};
-}
-
-sub YYRecovering {
-	my($self)=shift;
-
-	${$$self{ERRST}} != 0;
-}
-
-sub YYAbort {
-	my($self)=shift;
-
-	${$$self{CHECK}}='ABORT';
-    undef;
-}
-
-sub YYAccept {
-	my($self)=shift;
-
-	${$$self{CHECK}}='ACCEPT';
-    undef;
-}
-
-sub YYError {
-	my($self)=shift;
-
-	${$$self{CHECK}}='ERROR';
-    undef;
-}
-
-sub YYSemval {
-	my($self)=shift;
-	my($index)= $_[0] - ${$$self{DOTPOS}} - 1;
-
-		$index < 0
-	and	-$index <= @{$$self{STACK}}
-	and	return $$self{STACK}[$index][1];
-
-	undef;	#Invalid index
-}
-
-sub YYCurtok {
-	my($self)=shift;
-
-        @_
-    and ${$$self{TOKEN}}=$_[0];
-    ${$$self{TOKEN}};
-}
-
-sub YYCurval {
-	my($self)=shift;
-
-        @_
-    and ${$$self{VALUE}}=$_[0];
-    ${$$self{VALUE}};
-}
-
-sub YYExpect {
-    my($self)=shift;
-
-    keys %{$self->{STATES}[$self->{STACK}[-1][0]]{ACTIONS}}
-}
-
-sub YYLexer {
-    my($self)=shift;
-
-	$$self{LEX};
-}
-
-
-#################
-# Private stuff #
-#################
-
-
-sub _CheckParams {
-	my($mandatory,$checklist,$inarray,$outhash)=@_;
-	my($prm,$value);
-	my($prmlst)={};
-
-	while(($prm,$value)=splice(@$inarray,0,2)) {
-        $prm=uc($prm);
-			exists($$checklist{$prm})
-		or	croak("Unknow parameter '$prm'");
-			ref($value) eq $$checklist{$prm}
-		or	croak("Invalid value for parameter '$prm'");
-        $prm=unpack('@2A*',$prm);
-		$$outhash{$prm}=$value;
-	}
-	for (@$mandatory) {
-			exists($$outhash{$_})
-		or	croak("Missing mandatory parameter '".lc($_)."'");
-	}
-}
-
-sub _Error {
-	print "Parse error.\n";
-}
-
-sub _DBLoad {
-	{
-		no strict 'refs';
-
-			exists(${__PACKAGE__.'::'}{_DBParse})#Already loaded ?
-		and	return;
-	}
-	my($fname)=__FILE__;
-	my(@drv);
-	open(DRV,"<$fname") or die "Report this as a BUG: Cannot open $fname";
-	while(<DRV>) {
-                	/^\s*sub\s+_Parse\s*{\s*$/ .. /^\s*}\s*#\s*_Parse\s*$/
-        	and     do {
-                	s/^#DBG>//;
-                	push(@drv,$_);
-        	}
-	}
-	close(DRV);
-
-	$drv[0]=~s/_P/_DBP/;
-	eval join('',@drv);
-}
-
-#Note that for loading debugging version of the driver,
-#this file will be parsed from 'sub _Parse' up to '}#_Parse' inclusive.
-#So, DO NOT remove comment at end of sub !!!
-sub _Parse {
-    my($self)=shift;
-
-	my($rules,$states,$lex,$error)
-     = @$self{ 'RULES', 'STATES', 'LEX', 'ERROR' };
-	my($errstatus,$nberror,$token,$value,$stack,$check,$dotpos)
-     = @$self{ 'ERRST', 'NBERR', 'TOKEN', 'VALUE', 'STACK', 'CHECK', 'DOTPOS' };
-
-#DBG>	my($debug)=$$self{DEBUG};
-#DBG>	my($dbgerror)=0;
-
-#DBG>	my($ShowCurToken) = sub {
-#DBG>		my($tok)='>';
-#DBG>		for (split('',$$token)) {
-#DBG>			$tok.=		(ord($_) < 32 or ord($_) > 126)
-#DBG>					?	sprintf('<%02X>',ord($_))
-#DBG>					:	$_;
-#DBG>		}
-#DBG>		$tok.='<';
-#DBG>	};
-
-	$$errstatus=0;
-	$$nberror=0;
-	($$token,$$value)=(undef,undef);
-	@$stack=( [ 0, undef ] );
-	$$check='';
-
-    while(1) {
-        my($actions,$act,$stateno);
-
-        $stateno=$$stack[-1][0];
-        $actions=$$states[$stateno];
-
-#DBG>	print STDERR ('-' x 40),"\n";
-#DBG>		$debug & 0x2
-#DBG>	and	print STDERR "In state $stateno:\n";
-#DBG>		$debug & 0x08
-#DBG>	and	print STDERR "Stack:[".
-#DBG>					 join(',',map { $$_[0] } @$stack).
-#DBG>					 "]\n";
-
-
-        if  (exists($$actions{ACTIONS})) {
-
-				defined($$token)
-            or	do {
-				($$token,$$value)=&$lex($self);
-#DBG>				$debug & 0x01
-#DBG>			and	print STDERR "Need token. Got ".&$ShowCurToken."\n";
-			};
-
-            $act=   exists($$actions{ACTIONS}{$$token})
-                    ?   $$actions{ACTIONS}{$$token}
-                    :   exists($$actions{DEFAULT})
-                        ?   $$actions{DEFAULT}
-                        :   undef;
-        }
-        else {
-            $act=$$actions{DEFAULT};
-#DBG>			$debug & 0x01
-#DBG>		and	print STDERR "Don't need token.\n";
-        }
-
-            defined($act)
-        and do {
-
-                $act > 0
-            and do {        #shift
-
-#DBG>				$debug & 0x04
-#DBG>			and	print STDERR "Shift and go to state $act.\n";
-
-					$$errstatus
-				and	do {
-					--$$errstatus;
-
-#DBG>					$debug & 0x10
-#DBG>				and	$dbgerror
-#DBG>				and	$$errstatus == 0
-#DBG>				and	do {
-#DBG>					print STDERR "**End of Error recovery.\n";
-#DBG>					$dbgerror=0;
-#DBG>				};
-				};
-
-
-                push(@$stack,[ $act, $$value ]);
-
-					$$token ne ''	#Don't eat the eof
-				and	$$token=$$value=undef;
-                next;
-            };
-
-            #reduce
-            my($lhs,$len,$code,@sempar,$semval);
-            ($lhs,$len,$code)=@{$$rules[-$act]};
-
-#DBG>			$debug & 0x04
-#DBG>		and	$act
-#DBG>		and	print STDERR "Reduce using rule ".-$act." ($lhs,$len): ";
-
-                $act
-            or  $self->YYAccept();
-
-            $$dotpos=$len;
-
-                unpack('A1',$lhs) eq '@'    #In line rule
-            and do {
-                    $lhs =~ /^\@[0-9]+\-([0-9]+)$/
-                or  die "In line rule name '$lhs' ill formed: ".
-                        "report it as a BUG.\n";
-                $$dotpos = $1;
-            };
-
-            @sempar =       $$dotpos
-                        ?   map { $$_[1] } @$stack[ -$$dotpos .. -1 ]
-                        :   ();
-
-            $semval = $code ? &$code( $self, @sempar )
-                            : @sempar ? $sempar[0] : undef;
-
-            splice(@$stack,-$len,$len);
-
-                $$check eq 'ACCEPT'
-            and do {
-
-#DBG>			$debug & 0x04
-#DBG>		and	print STDERR "Accept.\n";
-
-				return($semval);
-			};
-
-                $$check eq 'ABORT'
-            and	do {
-
-#DBG>			$debug & 0x04
-#DBG>		and	print STDERR "Abort.\n";
-
-				return(undef);
-
-			};
-
-#DBG>			$debug & 0x04
-#DBG>		and	print STDERR "Back to state $$stack[-1][0], then ";
-
-                $$check eq 'ERROR'
-            or  do {
-#DBG>				$debug & 0x04
-#DBG>			and	print STDERR 
-#DBG>				    "go to state $$states[$$stack[-1][0]]{GOTOS}{$lhs}.\n";
-
-#DBG>				$debug & 0x10
-#DBG>			and	$dbgerror
-#DBG>			and	$$errstatus == 0
-#DBG>			and	do {
-#DBG>				print STDERR "**End of Error recovery.\n";
-#DBG>				$dbgerror=0;
-#DBG>			};
-
-			    push(@$stack,
-                     [ $$states[$$stack[-1][0]]{GOTOS}{$lhs}, $semval ]);
-                $$check='';
-                next;
-            };
-
-#DBG>			$debug & 0x04
-#DBG>		and	print STDERR "Forced Error recovery.\n";
-
-            $$check='';
-
-        };
-
-        #Error
-            $$errstatus
-        or   do {
-
-            $$errstatus = 1;
-            &$error($self);
-                $$errstatus # if 0, then YYErrok has been called
-            or  next;       # so continue parsing
-
-#DBG>			$debug & 0x10
-#DBG>		and	do {
-#DBG>			print STDERR "**Entering Error recovery.\n";
-#DBG>			++$dbgerror;
-#DBG>		};
-
-            ++$$nberror;
-
-        };
-
-			$$errstatus == 3	#The next token is not valid: discard it
-		and	do {
-				$$token eq ''	# End of input: no hope
-			and	do {
-#DBG>				$debug & 0x10
-#DBG>			and	print STDERR "**At eof: aborting.\n";
-				return(undef);
-			};
-
-#DBG>			$debug & 0x10
-#DBG>		and	print STDERR "**Dicard invalid token ".&$ShowCurToken.".\n";
-
-			$$token=$$value=undef;
-		};
-
-        $$errstatus=3;
-
-		while(	  @$stack
-			  and (		not exists($$states[$$stack[-1][0]]{ACTIONS})
-			        or  not exists($$states[$$stack[-1][0]]{ACTIONS}{error})
-					or	$$states[$$stack[-1][0]]{ACTIONS}{error} <= 0)) {
-
-#DBG>			$debug & 0x10
-#DBG>		and	print STDERR "**Pop state $$stack[-1][0].\n";
-
-			pop(@$stack);
-		}
-
-			@$stack
-		or	do {
-
-#DBG>			$debug & 0x10
-#DBG>		and	print STDERR "**No state left on stack: aborting.\n";
-
-			return(undef);
-		};
-
-		#shift the error token
-
-#DBG>			$debug & 0x10
-#DBG>		and	print STDERR "**Shift \$error token and go to state ".
-#DBG>						 $$states[$$stack[-1][0]]{ACTIONS}{error}.
-#DBG>						 ".\n";
-
-		push(@$stack, [ $$states[$$stack[-1][0]]{ACTIONS}{error}, undef ]);
-
-    }
-
-    #never reached
-	croak("Error in driver logic. Please, report it as a BUG");
-
-}#_Parse
-#DO NOT remove comment
-
-1;
-
-}
-#End of include--------------------------------------------------
-
+use Parse::Yapp::Driver;
 
 
 
@@ -6283,7 +5808,7 @@ sub new {
 sub
 #line 86 "Parser30.yp"
 {
-            $_[0]->YYData->{root} = new Specification($_[0],
+            $_[0]->YYData->{root} = new CORBA::IDL::Specification($_[0],
                     'list_decl'         =>  $_[1],
             );
         }
@@ -6293,7 +5818,7 @@ sub
 sub
 #line 92 "Parser30.yp"
 {
-            $_[0]->YYData->{root} = new Specification($_[0],
+            $_[0]->YYData->{root} = new CORBA::IDL::Specification($_[0],
                     'list_import'       =>  $_[1],
                     'list_decl'         =>  $_[2],
             );
@@ -6466,7 +5991,7 @@ sub
 sub
 #line 217 "Parser30.yp"
 {
-            new Module($_[0],
+            new CORBA::IDL::Module($_[0],
                     'idf'               =>  $_[2],
             );
         }
@@ -6528,17 +6053,17 @@ sub
 #line 268 "Parser30.yp"
 {
             if (defined $_[1] and $_[1] eq 'abstract') {
-                new ForwardAbstractInterface($_[0],
+                new CORBA::IDL::ForwardAbstractInterface($_[0],
                         'idf'                   =>  $_[3]
                 );
             }
             elsif (defined $_[1] and $_[1] eq 'local') {
-                new ForwardLocalInterface($_[0],
+                new CORBA::IDL::ForwardLocalInterface($_[0],
                         'idf'                   =>  $_[3]
                 );
             }
             else {
-                new ForwardRegularInterface($_[0],
+                new CORBA::IDL::ForwardRegularInterface($_[0],
                         'idf'                   =>  $_[3]
                 );
             }
@@ -6568,19 +6093,19 @@ sub
 #line 304 "Parser30.yp"
 {
             if (defined $_[1] and $_[1] eq 'abstract') {
-                new AbstractInterface($_[0],
+                new CORBA::IDL::AbstractInterface($_[0],
                         'idf'                   =>  $_[3],
                         'inheritance'           =>  $_[4]
                 );
             }
             elsif (defined $_[1] and $_[1] eq 'local') {
-                new LocalInterface($_[0],
+                new CORBA::IDL::LocalInterface($_[0],
                         'idf'                   =>  $_[3],
                         'inheritance'           =>  $_[4]
                 );
             }
             else {
-                new RegularInterface($_[0],
+                new CORBA::IDL::RegularInterface($_[0],
                         'idf'                   =>  $_[3],
                         'inheritance'           =>  $_[4]
                 );
@@ -6663,7 +6188,7 @@ sub
 sub
 #line 385 "Parser30.yp"
 {
-            new InheritanceSpec($_[0],
+            new CORBA::IDL::InheritanceSpec($_[0],
                     'list_interface'        =>  $_[2]
             );
         }
@@ -6702,7 +6227,7 @@ sub
 sub
 #line 414 "Parser30.yp"
 {
-                Interface->Lookup($_[0], $_[1]);
+                CORBA::IDL::Interface->Lookup($_[0], $_[1]);
         }
 	],
 	[#Rule 61
@@ -6763,7 +6288,7 @@ sub
 {
             $_[0]->Warning("CUSTOM unexpected.\n")
                     if (defined $_[1]);
-            new ForwardRegularValue($_[0],
+            new CORBA::IDL::ForwardRegularValue($_[0],
                     'idf'               =>  $_[3]
             );
         }
@@ -6773,7 +6298,7 @@ sub
 sub
 #line 468 "Parser30.yp"
 {
-            new ForwardAbstractValue($_[0],
+            new CORBA::IDL::ForwardAbstractValue($_[0],
                     'idf'               =>  $_[3]
             );
         }
@@ -6797,7 +6322,7 @@ sub
 {
             $_[0]->Warning("CUSTOM unexpected.\n")
                     if (defined $_[1]);
-            new BoxedValue($_[0],
+            new CORBA::IDL::BoxedValue($_[0],
                     'idf'               =>  $_[3],
             );
         }
@@ -6843,7 +6368,7 @@ sub
 sub
 #line 528 "Parser30.yp"
 {
-            new AbstractValue($_[0],
+            new CORBA::IDL::AbstractValue($_[0],
                     'idf'               =>  $_[3],
                     'inheritance'       =>  $_[4]
             );
@@ -6925,7 +6450,7 @@ sub
 sub
 #line 589 "Parser30.yp"
 {
-            new RegularValue($_[0],
+            new CORBA::IDL::RegularValue($_[0],
                     'modifier'          =>  $_[1],
                     'idf'               =>  $_[3],
                     'inheritance'       =>  $_[4]
@@ -6952,7 +6477,7 @@ sub
 sub
 #line 613 "Parser30.yp"
 {
-            new InheritanceSpec($_[0],
+            new CORBA::IDL::InheritanceSpec($_[0],
                     'modifier'          =>  $_[2],
                     'list_value'        =>  $_[3],
                     'list_interface'    =>  $_[4]
@@ -6973,7 +6498,7 @@ sub
 sub
 #line 626 "Parser30.yp"
 {
-            new InheritanceSpec($_[0],
+            new CORBA::IDL::InheritanceSpec($_[0],
                     'list_interface'    =>  $_[1]
             );
         }
@@ -7006,7 +6531,7 @@ sub
 sub
 #line 655 "Parser30.yp"
 {
-            Value->Lookup($_[0], $_[1]);
+            CORBA::IDL::Value->Lookup($_[0], $_[1]);
         }
 	],
 	[#Rule 97
@@ -7023,7 +6548,7 @@ sub
 sub
 #line 673 "Parser30.yp"
 {
-            new StateMembers($_[0],
+            new CORBA::IDL::StateMembers($_[0],
                     'modifier'          =>  $_[1],
                     'type'              =>  $_[2],
                     'list_expr'         =>  $_[3]
@@ -7115,7 +6640,7 @@ sub
 sub
 #line 744 "Parser30.yp"
 {
-            new Initializer($_[0],                      # like Operation
+            new CORBA::IDL::Initializer($_[0],                      # like Operation
                     'idf'               =>  $_[2]
             );
         }
@@ -7151,7 +6676,7 @@ sub
 sub
 #line 772 "Parser30.yp"
 {
-            new Parameter($_[0],
+            new CORBA::IDL::Parameter($_[0],
                     'attr'              =>  $_[1],
                     'type'              =>  $_[2],
                     'idf'               =>  $_[3]
@@ -7175,7 +6700,7 @@ sub
 sub
 #line 795 "Parser30.yp"
 {
-            new Constant($_[0],
+            new CORBA::IDL::Constant($_[0],
                     'type'              =>  $_[2],
                     'idf'               =>  $_[3],
                     'list_expr'         =>  $_[5]
@@ -7247,7 +6772,7 @@ sub
 sub
 #line 843 "Parser30.yp"
 {
-            TypeDeclarator->Lookup($_[0], $_[1]);
+            CORBA::IDL::TypeDeclarator->Lookup($_[0], $_[1]);
         }
 	],
 	[#Rule 131
@@ -7380,7 +6905,7 @@ sub
 #line 955 "Parser30.yp"
 {
             [
-                Constant->Lookup($_[0], $_[1])
+                CORBA::IDL::Constant->Lookup($_[0], $_[1])
             ];
         }
 	],
@@ -7414,7 +6939,7 @@ sub
 sub
 #line 978 "Parser30.yp"
 {
-            new IntegerLiteral($_[0],
+            new CORBA::IDL::IntegerLiteral($_[0],
                     'value'             =>  $_[1],
                     'lexeme'            =>  $_[0]->YYData->{lexeme}
             );
@@ -7425,7 +6950,7 @@ sub
 sub
 #line 985 "Parser30.yp"
 {
-            new StringLiteral($_[0],
+            new CORBA::IDL::StringLiteral($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -7435,7 +6960,7 @@ sub
 sub
 #line 991 "Parser30.yp"
 {
-            new WideStringLiteral($_[0],
+            new CORBA::IDL::WideStringLiteral($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -7445,7 +6970,7 @@ sub
 sub
 #line 997 "Parser30.yp"
 {
-            new CharacterLiteral($_[0],
+            new CORBA::IDL::CharacterLiteral($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -7455,7 +6980,7 @@ sub
 sub
 #line 1003 "Parser30.yp"
 {
-            new WideCharacterLiteral($_[0],
+            new CORBA::IDL::WideCharacterLiteral($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -7465,7 +6990,7 @@ sub
 sub
 #line 1009 "Parser30.yp"
 {
-            new FixedPtLiteral($_[0],
+            new CORBA::IDL::FixedPtLiteral($_[0],
                     'value'             =>  $_[1],
                     'lexeme'            =>  $_[0]->YYData->{lexeme}
             );
@@ -7476,7 +7001,7 @@ sub
 sub
 #line 1016 "Parser30.yp"
 {
-            new FloatingPtLiteral($_[0],
+            new CORBA::IDL::FloatingPtLiteral($_[0],
                     'value'             =>  $_[1],
                     'lexeme'            =>  $_[0]->YYData->{lexeme}
             );
@@ -7512,7 +7037,7 @@ sub
 sub
 #line 1047 "Parser30.yp"
 {
-            new BooleanLiteral($_[0],
+            new CORBA::IDL::BooleanLiteral($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -7522,7 +7047,7 @@ sub
 sub
 #line 1053 "Parser30.yp"
 {
-            new BooleanLiteral($_[0],
+            new CORBA::IDL::BooleanLiteral($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -7532,7 +7057,7 @@ sub
 sub
 #line 1063 "Parser30.yp"
 {
-            new Expression($_[0],
+            new CORBA::IDL::Expression($_[0],
                     'list_expr'         =>  $_[1]
             );
         }
@@ -7559,7 +7084,7 @@ sub
 sub
 #line 1083 "Parser30.yp"
 {
-            new NativeType($_[0],
+            new CORBA::IDL::NativeType($_[0],
                     'idf'               =>  $_[2]
             );
         }
@@ -7581,7 +7106,7 @@ sub
 sub
 #line 1100 "Parser30.yp"
 {
-            new TypeDeclarators($_[0],
+            new CORBA::IDL::TypeDeclarators($_[0],
                     'type'              =>  $_[1],
                     'list_expr'         =>  $_[2]
             );
@@ -7604,7 +7129,7 @@ sub
 sub
 #line 1123 "Parser30.yp"
 {
-            TypeDeclarator->Lookup($_[0], $_[1]);
+            CORBA::IDL::TypeDeclarator->Lookup($_[0], $_[1]);
         }
 	],
 	[#Rule 186
@@ -7613,7 +7138,7 @@ sub
 #line 1127 "Parser30.yp"
 {
             $_[0]->Error("simple_type_spec expected.\n");
-            new VoidType($_[0],
+            new CORBA::IDL::VoidType($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -7723,7 +7248,7 @@ sub
 sub
 #line 1227 "Parser30.yp"
 {
-            new FloatingPtType($_[0],
+            new CORBA::IDL::FloatingPtType($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -7733,7 +7258,7 @@ sub
 sub
 #line 1233 "Parser30.yp"
 {
-            new FloatingPtType($_[0],
+            new CORBA::IDL::FloatingPtType($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -7743,7 +7268,7 @@ sub
 sub
 #line 1239 "Parser30.yp"
 {
-            new FloatingPtType($_[0],
+            new CORBA::IDL::FloatingPtType($_[0],
                     'value'             =>  $_[1] . q{ } . $_[2]
             );
         }
@@ -7768,7 +7293,7 @@ sub
 sub
 #line 1267 "Parser30.yp"
 {
-            new IntegerType($_[0],
+            new CORBA::IDL::IntegerType($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -7778,7 +7303,7 @@ sub
 sub
 #line 1277 "Parser30.yp"
 {
-            new IntegerType($_[0],
+            new CORBA::IDL::IntegerType($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -7788,7 +7313,7 @@ sub
 sub
 #line 1287 "Parser30.yp"
 {
-            new IntegerType($_[0],
+            new CORBA::IDL::IntegerType($_[0],
                     'value'             =>  $_[1] . q{ } . $_[2]
             );
         }
@@ -7807,7 +7332,7 @@ sub
 sub
 #line 1307 "Parser30.yp"
 {
-            new IntegerType($_[0],
+            new CORBA::IDL::IntegerType($_[0],
                     'value'             =>  $_[1] . q{ } . $_[2]
             );
         }
@@ -7817,7 +7342,7 @@ sub
 sub
 #line 1317 "Parser30.yp"
 {
-            new IntegerType($_[0],
+            new CORBA::IDL::IntegerType($_[0],
                     'value'             =>  $_[1] . q{ } . $_[2]
             );
         }
@@ -7827,7 +7352,7 @@ sub
 sub
 #line 1327 "Parser30.yp"
 {
-            new IntegerType($_[0],
+            new CORBA::IDL::IntegerType($_[0],
                     'value'             =>  $_[1] . q{ } . $_[2] . q{ } . $_[3]
             );
         }
@@ -7837,7 +7362,7 @@ sub
 sub
 #line 1337 "Parser30.yp"
 {
-            new CharType($_[0],
+            new CORBA::IDL::CharType($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -7847,7 +7372,7 @@ sub
 sub
 #line 1347 "Parser30.yp"
 {
-            new WideCharType($_[0],
+            new CORBA::IDL::WideCharType($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -7857,7 +7382,7 @@ sub
 sub
 #line 1357 "Parser30.yp"
 {
-            new BooleanType($_[0],
+            new CORBA::IDL::BooleanType($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -7867,7 +7392,7 @@ sub
 sub
 #line 1367 "Parser30.yp"
 {
-            new OctetType($_[0],
+            new CORBA::IDL::OctetType($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -7877,7 +7402,7 @@ sub
 sub
 #line 1377 "Parser30.yp"
 {
-            new AnyType($_[0],
+            new CORBA::IDL::AnyType($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -7887,7 +7412,7 @@ sub
 sub
 #line 1387 "Parser30.yp"
 {
-            new ObjectType($_[0],
+            new CORBA::IDL::ObjectType($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -7919,7 +7444,7 @@ sub
 sub
 #line 1414 "Parser30.yp"
 {
-            new StructType($_[0],
+            new CORBA::IDL::StructType($_[0],
                     'idf'               =>  $_[2]
             );
         }
@@ -7955,7 +7480,7 @@ sub
 sub
 #line 1442 "Parser30.yp"
 {
-            new Members($_[0],
+            new CORBA::IDL::Members($_[0],
                     'type'              =>  $_[1],
                     'list_expr'         =>  $_[2]
             );
@@ -8022,7 +7547,7 @@ sub
 sub
 #line 1492 "Parser30.yp"
 {
-            new UnionType($_[0],
+            new CORBA::IDL::UnionType($_[0],
                     'idf'               =>  $_[2],
             );
         }
@@ -8053,7 +7578,7 @@ sub
 sub
 #line 1515 "Parser30.yp"
 {
-            TypeDeclarator->Lookup($_[0], $_[1]);
+            CORBA::IDL::TypeDeclarator->Lookup($_[0], $_[1]);
         }
 	],
 	[#Rule 253
@@ -8078,7 +7603,7 @@ sub
 sub
 #line 1536 "Parser30.yp"
 {
-            new Case($_[0],
+            new CORBA::IDL::Case($_[0],
                     'list_label'        =>  $_[1],
                     'element'           =>  $_[2]
             );
@@ -8133,7 +7658,7 @@ sub
 sub
 #line 1574 "Parser30.yp"
 {
-            new Default($_[0]);
+            new CORBA::IDL::Default($_[0]);
         }
 	],
 	[#Rule 262
@@ -8143,7 +7668,7 @@ sub
 {
             $_[0]->Error("':' expected.\n");
             $_[0]->YYErrok();
-            new Default($_[0]);
+            new CORBA::IDL::Default($_[0]);
         }
 	],
 	[#Rule 263
@@ -8151,7 +7676,7 @@ sub
 sub
 #line 1588 "Parser30.yp"
 {
-            new Element($_[0],
+            new CORBA::IDL::Element($_[0],
                     'type'          =>  $_[1],
                     'list_expr'     =>  $_[2]
             );
@@ -8192,7 +7717,7 @@ sub
 sub
 #line 1620 "Parser30.yp"
 {
-            new EnumType($_[0],
+            new CORBA::IDL::EnumType($_[0],
                     'idf'               =>  $_[2],
             );
         }
@@ -8246,7 +7771,7 @@ sub
 sub
 #line 1657 "Parser30.yp"
 {
-            new Enum($_[0],
+            new CORBA::IDL::Enum($_[0],
                     'idf'               =>  $_[1]
             );
         }
@@ -8256,7 +7781,7 @@ sub
 sub
 #line 1667 "Parser30.yp"
 {
-            new SequenceType($_[0],
+            new CORBA::IDL::SequenceType($_[0],
                     'value'             =>  $_[1],
                     'type'              =>  $_[3],
                     'max'               =>  $_[5]
@@ -8277,7 +7802,7 @@ sub
 sub
 #line 1680 "Parser30.yp"
 {
-            new SequenceType($_[0],
+            new CORBA::IDL::SequenceType($_[0],
                     'value'             =>  $_[1],
                     'type'              =>  $_[3]
             );
@@ -8306,7 +7831,7 @@ sub
 sub
 #line 1701 "Parser30.yp"
 {
-            new StringType($_[0],
+            new CORBA::IDL::StringType($_[0],
                     'value'             =>  $_[1],
                     'max'               =>  $_[3]
             );
@@ -8317,7 +7842,7 @@ sub
 sub
 #line 1708 "Parser30.yp"
 {
-            new StringType($_[0],
+            new CORBA::IDL::StringType($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -8336,7 +7861,7 @@ sub
 sub
 #line 1723 "Parser30.yp"
 {
-            new WideStringType($_[0],
+            new CORBA::IDL::WideStringType($_[0],
                     'value'             =>  $_[1],
                     'max'               =>  $_[3]
             );
@@ -8347,7 +7872,7 @@ sub
 sub
 #line 1730 "Parser30.yp"
 {
-            new WideStringType($_[0],
+            new CORBA::IDL::WideStringType($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -8457,7 +7982,7 @@ sub
 sub
 #line 1816 "Parser30.yp"
 {
-            new Exception($_[0],
+            new CORBA::IDL::Exception($_[0],
                     'idf'               =>  $_[2],
             );
         }
@@ -8502,7 +8027,7 @@ sub
 sub
 #line 1852 "Parser30.yp"
 {
-            new Operation($_[0],
+            new CORBA::IDL::Operation($_[0],
                     'modifier'          =>  $_[1],
                     'type'              =>  $_[2],
                     'idf'               =>  $_[3]
@@ -8535,7 +8060,7 @@ sub
 sub
 #line 1884 "Parser30.yp"
 {
-            new VoidType($_[0],
+            new CORBA::IDL::VoidType($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -8641,7 +8166,7 @@ sub
 sub
 #line 1953 "Parser30.yp"
 {
-            new Parameter($_[0],
+            new CORBA::IDL::Parameter($_[0],
                     'attr'              =>  $_[1],
                     'type'              =>  $_[2],
                     'idf'               =>  $_[3]
@@ -8717,7 +8242,7 @@ sub
 sub
 #line 2011 "Parser30.yp"
 {
-            Exception->Lookup($_[0], $_[1]);
+            CORBA::IDL::Exception->Lookup($_[0], $_[1]);
         }
 	],
 	[#Rule 330
@@ -8819,7 +8344,7 @@ sub
 sub
 #line 2082 "Parser30.yp"
 {
-            TypeDeclarator->Lookup($_[0], $_[1]);
+            CORBA::IDL::TypeDeclarator->Lookup($_[0], $_[1]);
         }
 	],
 	[#Rule 345
@@ -8827,7 +8352,7 @@ sub
 sub
 #line 2090 "Parser30.yp"
 {
-            new FixedPtType($_[0],
+            new CORBA::IDL::FixedPtType($_[0],
                     'value'             =>  $_[1],
                     'd'                 =>  $_[3],
                     's'                 =>  $_[5]
@@ -8866,7 +8391,7 @@ sub
 sub
 #line 2117 "Parser30.yp"
 {
-            new FixedPtConstType($_[0],
+            new CORBA::IDL::FixedPtConstType($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -8876,7 +8401,7 @@ sub
 sub
 #line 2127 "Parser30.yp"
 {
-            new ValueBaseType($_[0],
+            new CORBA::IDL::ValueBaseType($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -8886,7 +8411,7 @@ sub
 sub
 #line 2137 "Parser30.yp"
 {
-            new ForwardStructType($_[0],
+            new CORBA::IDL::ForwardStructType($_[0],
                     'idf'               =>  $_[2]
             );
         }
@@ -8905,7 +8430,7 @@ sub
 sub
 #line 2148 "Parser30.yp"
 {
-            new ForwardUnionType($_[0],
+            new CORBA::IDL::ForwardUnionType($_[0],
                     'idf'               =>  $_[2]
             );
         }
@@ -8924,7 +8449,7 @@ sub
 sub
 #line 2163 "Parser30.yp"
 {
-            new Import($_[0],
+            new CORBA::IDL::Import($_[0],
                     'value'             =>  $_[2]
             );
         }
@@ -8949,7 +8474,7 @@ sub
 sub
 #line 2186 "Parser30.yp"
 {
-            new TypeId($_[0],
+            new CORBA::IDL::TypeId($_[0],
                     'idf'               =>  $_[2],
                     'value'             =>  $_[3]
             );
@@ -8978,7 +8503,7 @@ sub
 sub
 #line 2207 "Parser30.yp"
 {
-            new TypePrefix($_[0],
+            new CORBA::IDL::TypePrefix($_[0],
                     'idf'               =>  $_[2],
                     'value'             =>  $_[3]
             );
@@ -8998,7 +8523,7 @@ sub
 sub
 #line 2219 "Parser30.yp"
 {
-            new TypePrefix($_[0],
+            new CORBA::IDL::TypePrefix($_[0],
                     'idf'               =>  '',
                     'value'             =>  $_[3]
             );
@@ -9018,7 +8543,7 @@ sub
 sub
 #line 2235 "Parser30.yp"
 {
-            new Attributes($_[0],
+            new CORBA::IDL::Attributes($_[0],
                     'modifier'          =>  $_[1],
                     'type'              =>  $_[3],
                     'list_expr'         =>  $_[4]->{list_expr},
@@ -9088,7 +8613,7 @@ sub
 sub
 #line 2288 "Parser30.yp"
 {
-            new Attributes($_[0],
+            new CORBA::IDL::Attributes($_[0],
                     'type'              =>  $_[2],
                     'list_expr'         =>  $_[3]->{list_expr},
                     'list_getraise'     =>  $_[3]->{list_getraise},
@@ -9224,7 +8749,7 @@ sub
 sub
 #line 2397 "Parser30.yp"
 {
-            new ForwardComponent($_[0],
+            new CORBA::IDL::ForwardComponent($_[0],
                     'idf'               =>  $_[2]
             );
         }
@@ -9279,7 +8804,7 @@ sub
 sub
 #line 2440 "Parser30.yp"
 {
-            new Component($_[0],
+            new CORBA::IDL::Component($_[0],
                     'idf'                   =>  $_[2],
                     'inheritance'           =>  $_[3],
                     'list_support'          =>  $_[4],
@@ -9320,7 +8845,7 @@ sub
 sub
 #line 2472 "Parser30.yp"
 {
-            Component->Lookup($_[0], $_[2]);
+            CORBA::IDL::Component->Lookup($_[0], $_[2]);
         }
 	],
 	[#Rule 400
@@ -9378,7 +8903,7 @@ sub
 sub
 #line 2521 "Parser30.yp"
 {
-            new Provides($_[0],
+            new CORBA::IDL::Provides($_[0],
                     'idf'                   =>  $_[3],
                     'type'                  =>  $_[2],
             );
@@ -9407,7 +8932,7 @@ sub
 sub
 #line 2542 "Parser30.yp"
 {
-            BaseInterface->Lookup($_[0], $_[1]);
+            CORBA::IDL::BaseInterface->Lookup($_[0], $_[1]);
         }
 	],
 	[#Rule 415
@@ -9418,7 +8943,7 @@ sub
 sub
 #line 2552 "Parser30.yp"
 {
-            new Uses($_[0],
+            new CORBA::IDL::Uses($_[0],
                     'modifier'              =>  $_[2],
                     'idf'                   =>  $_[4],
                     'type'                  =>  $_[3],
@@ -9454,9 +8979,9 @@ sub
 sub
 #line 2581 "Parser30.yp"
 {
-            new Emits($_[0],
+            new CORBA::IDL::Emits($_[0],
                     'idf'                   =>  $_[3],
-                    'type'                  =>  Event->Lookup($_[0], $_[2]),
+                    'type'                  =>  CORBA::IDL::Event->Lookup($_[0], $_[2]),
             );
         }
 	],
@@ -9483,9 +9008,9 @@ sub
 sub
 #line 2602 "Parser30.yp"
 {
-            new Publishes($_[0],
+            new CORBA::IDL::Publishes($_[0],
                     'idf'                   =>  $_[3],
-                    'type'                  =>  Event->Lookup($_[0], $_[2]),
+                    'type'                  =>  CORBA::IDL::Event->Lookup($_[0], $_[2]),
             );
         }
 	],
@@ -9512,9 +9037,9 @@ sub
 sub
 #line 2623 "Parser30.yp"
 {
-            new Consumes($_[0],
+            new CORBA::IDL::Consumes($_[0],
                     'idf'                   =>  $_[3],
-                    'type'                  =>  Event->Lookup($_[0], $_[2]),
+                    'type'                  =>  CORBA::IDL::Event->Lookup($_[0], $_[2]),
             );
         }
 	],
@@ -9554,7 +9079,7 @@ sub
 #line 2656 "Parser30.yp"
 {
             $_[1]->Configure($_[0],
-                    'manage'            =>  Component->Lookup($_[0], $_[3]),
+                    'manage'            =>  CORBA::IDL::Component->Lookup($_[0], $_[3]),
                     'primarykey'        =>  $_[4],
             ) if (defined $_[1]);
         }
@@ -9574,7 +9099,7 @@ sub
 sub
 #line 2672 "Parser30.yp"
 {
-            new Home($_[0],
+            new CORBA::IDL::Home($_[0],
                     'idf'               =>  $_[2],
                     'inheritance'       =>  $_[3],
                     'list_support'      =>  $_[4],
@@ -9595,7 +9120,7 @@ sub
 sub
 #line 2689 "Parser30.yp"
 {
-            Home->Lookup($_[0], $_[2]);
+            CORBA::IDL::Home->Lookup($_[0], $_[2]);
         }
 	],
 	[#Rule 436
@@ -9615,7 +9140,7 @@ sub
 sub
 #line 2704 "Parser30.yp"
 {
-            Value->Lookup($_[0], $_[2]);
+            CORBA::IDL::Value->Lookup($_[0], $_[2]);
         }
 	],
 	[#Rule 439
@@ -9742,7 +9267,7 @@ sub
 sub
 #line 2800 "Parser30.yp"
 {
-            new Factory($_[0],                          # like Operation
+            new CORBA::IDL::Factory($_[0],                          # like Operation
                     'idf'               =>  $_[2],
             );
         }
@@ -9817,7 +9342,7 @@ sub
 sub
 #line 2857 "Parser30.yp"
 {
-            new Finder($_[0],                           # like Operation
+            new CORBA::IDL::Finder($_[0],                           # like Operation
                     'idf'               =>  $_[2],
             );
         }
@@ -9847,7 +9372,7 @@ sub
 {
             $_[0]->Warning("CUSTOM unexpected.\n")
                     if (defined $_[1]);
-            new ForwardRegularEvent($_[0],
+            new CORBA::IDL::ForwardRegularEvent($_[0],
                     'idf'               =>  $_[3]
             );
         }
@@ -9857,7 +9382,7 @@ sub
 sub
 #line 2890 "Parser30.yp"
 {
-            new ForwardAbstractEvent($_[0],
+            new CORBA::IDL::ForwardAbstractEvent($_[0],
                     'idf'               =>  $_[3]
             );
         }
@@ -9903,7 +9428,7 @@ sub
 sub
 #line 2927 "Parser30.yp"
 {
-            new AbstractEvent($_[0],
+            new CORBA::IDL::AbstractEvent($_[0],
                     'idf'               =>  $_[3],
                     'inheritance'       =>  $_[4]
             );
@@ -9959,7 +9484,7 @@ sub
 sub
 #line 2971 "Parser30.yp"
 {
-            new RegularEvent($_[0],
+            new CORBA::IDL::RegularEvent($_[0],
                     'modifier'          =>  $_[1],
                     'idf'               =>  $_[3],
                     'inheritance'       =>  $_[4]
@@ -9985,14 +9510,14 @@ sub
 
 use warnings;
 
-our $VERSION = '2.60';
+our $VERSION = '2.61';
 our $IDL_VERSION = '3.0';
 
 sub BuildUnop
 {
     my ($op, $expr) = @_;
 
-    my $node = new UnaryOp($_[0],
+    my $node = new CORBA::IDL::UnaryOp($_[0],
             'op'    =>  $op
     );
     push @$expr, $node;
@@ -10003,7 +9528,7 @@ sub BuildBinop
 {
     my ($left, $op, $right) = @_;
 
-    my $node = new BinaryOp($_[0],
+    my $node = new CORBA::IDL::BinaryOp($_[0],
             'op'    =>  $op
     );
     push @$left, @$right;

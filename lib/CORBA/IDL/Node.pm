@@ -7,7 +7,9 @@ use warnings;
 
 package CORBA::IDL::Node;
 
-our $VERSION = '2.60';
+our $VERSION = '2.61';
+
+use UNIVERSAL;
 
 sub _Build {
     my $proto = shift;
@@ -29,6 +31,12 @@ sub new {
     bless($self, $class);
     $self->_Init($parser);      # specialized or default
     return $self
+}
+
+sub isa {
+    my $self = shift;
+    my ($type) = @_;
+    return UNIVERSAL::isa($self, 'CORBA::IDL::' . $type);
 }
 
 sub _Init {
@@ -55,9 +63,11 @@ sub line_stamp {
 
 sub getRef {
     my $self = shift;
+    my $class = ref $self;
+    $class = substr $class, rindex($class, ':') + 1;
     if (exists $self->{full}) {
-        if (       ref($self) eq 'Module'
-                or ref($self) =~ /^Forward/ ) {
+        if (       $class eq 'Module'
+                or $class =~ /^Forward/ ) {
             return $self;
         }
         else {
@@ -105,7 +115,7 @@ sub visit {
     my $visitor = shift;
     no strict "refs";
     while ($class ne 'CORBA::IDL::Node') {
-        my $func = 'visit' . $class;
+        my $func = 'visit' . substr($class, rindex($class, ':') + 1);
         if ($visitor->can($func)) {
             return $visitor->$func($self, @_);
         }
@@ -122,7 +132,7 @@ sub visitName {
     my $visitor = shift;
     no strict "refs";
     while ($class ne 'CORBA::IDL::Node') {
-        my $func = 'visitName' . $class;
+        my $func = 'visitName' . substr($class, rindex($class, ':') + 1);
         if ($visitor->can($func)) {
             return $visitor->$func($self, @_);
         }
@@ -138,7 +148,7 @@ sub visitName {
 #   3.5     OMG IDL Specification
 #
 
-package Specification;
+package CORBA::IDL::Specification;
 
 use base qw(CORBA::IDL::Node);
 
@@ -148,7 +158,7 @@ sub _Init {
     my %hash;
     foreach my $export (@{$self->{list_decl}}) {
         if (ref $export) {
-            unless (ref($export) =~ /^Forward/) {
+            unless (ref($export) =~ /^CORBA::IDL::Forward/) {
                 if ($export->isa('Module')) {
                     $hash{$export->{full}} = 1;
                 }
@@ -171,7 +181,7 @@ sub _Init {
 #   3.6     Import Declaration
 #
 
-package Import;
+package CORBA::IDL::Import;
 
 use base qw(CORBA::IDL::Node);
 
@@ -185,11 +195,11 @@ sub _Init {
 #   3.7     Module Declaration
 #
 
-package Modules;
+package CORBA::IDL::Modules;
 
 use base qw(CORBA::IDL::Node);
 
-package Module;
+package CORBA::IDL::Module;
 
 use base qw(CORBA::IDL::Node);
 
@@ -217,7 +227,7 @@ sub Configure {
     foreach my $module (@{$defn->{list_decl}}) {
         foreach my $export (@{$module->{list_decl}}) {
             if (ref $export) {
-                unless (ref($export) =~ /^Forward/) {
+                unless (ref($export) =~ /^CORBA::IDL::Forward/) {
                     if ($export->isa('Module')) {
                         $hash{$export->{full}} = 1;
                     }
@@ -241,7 +251,7 @@ sub Configure {
 #   3.8     Interface Declaration
 #
 
-package BaseInterface;
+package CORBA::IDL::BaseInterface;
 
 use base qw(CORBA::IDL::Node);
 
@@ -296,7 +306,7 @@ sub Configure {
     my @list;
     foreach my $export (@{$self->{list_decl}}) {
         if (ref $export) {
-            unless (ref($export) =~ /^Forward/) {
+            unless (ref($export) =~ /^CORBA::IDL::Forward/) {
                 foreach (@{$export->{list_decl}}) {
                     push @list, $_ if (defined $_);
                 }
@@ -320,6 +330,7 @@ sub _CheckNative {
 sub Lookup {
     my $proto = shift;
     my $class = ref($proto) || $proto;
+    $class = substr $class, rindex($class, ':') + 1;
     my ($parser, $name, $bypass) = @_;
     my $defn = $parser->YYData->{symbtab}->Lookup($name);
     if (defined $defn) {
@@ -341,7 +352,7 @@ sub Lookup {
 #   3.8.2   Interface Inheritance Specification
 #
 
-package InheritanceSpec;
+package CORBA::IDL::InheritanceSpec;
 
 use base qw(CORBA::IDL::Node);
 
@@ -388,13 +399,13 @@ sub _Init {
     }
 }
 
-package Interface;
+package CORBA::IDL::Interface;
 
-use base qw(BaseInterface);
+use base qw(CORBA::IDL::BaseInterface);
 
-package RegularInterface;
+package CORBA::IDL::RegularInterface;
 
-use base qw(Interface);
+use base qw(CORBA::IDL::Interface);
 
 sub _CheckInheritance {
     my $self = shift;
@@ -419,16 +430,16 @@ sub _CheckLocal {
     foreach (@{$self->{list_export}}) {
         my $defn = $parser->YYData->{symbtab}->Lookup($_);
         if      ($defn->isa('Attribute')) {
-            if (TypeDeclarator->IsaLocal($parser, $defn->{type})) {
+            if (CORBA::IDL::TypeDeclarator->IsaLocal($parser, $defn->{type})) {
                 $parser->Error("'$self->{idf}' is not local.\n");
             }
         }
         elsif ($defn->isa('Operation')) {
-            if (TypeDeclarator->IsaLocal($parser, $defn->{type})) {
+            if (CORBA::IDL::TypeDeclarator->IsaLocal($parser, $defn->{type})) {
                 $parser->Error("'$self->{idf}' is not local.\n");
             }
             foreach (@{$defn->{list_param}}) {
-                if (TypeDeclarator->IsaLocal($parser, $_->{type})) {
+                if (CORBA::IDL::TypeDeclarator->IsaLocal($parser, $_->{type})) {
                     $parser->Error("'$self->{idf}' is not local.\n");
                 }
             }
@@ -459,7 +470,7 @@ sub _CheckNative {
 #   3.8.4   Forward Declaration
 #
 
-package ForwardBaseInterface;
+package CORBA::IDL::ForwardBaseInterface;
 
 use base qw(CORBA::IDL::Node);
 
@@ -473,29 +484,29 @@ sub _Init {
     $parser->YYData->{symbtab}->InsertForward($self);
 }
 
-package ForwardInterface;
+package CORBA::IDL::ForwardInterface;
 
-use base qw(ForwardBaseInterface);
+use base qw(CORBA::IDL::ForwardBaseInterface);
 
-package ForwardRegularInterface;
+package CORBA::IDL::ForwardRegularInterface;
 
-use base qw(ForwardInterface);
+use base qw(CORBA::IDL::ForwardInterface);
 
-package ForwardAbstractInterface;
+package CORBA::IDL::ForwardAbstractInterface;
 
-use base qw(ForwardInterface);
+use base qw(CORBA::IDL::ForwardInterface);
 
-package ForwardLocalInterface;
+package CORBA::IDL::ForwardLocalInterface;
 
-use base qw(ForwardInterface);
+use base qw(CORBA::IDL::ForwardInterface);
 
 #
 #   3.8.6   Abstract Interface
 #
 
-package AbstractInterface;
+package CORBA::IDL::AbstractInterface;
 
-use base qw(Interface);
+use base qw(CORBA::IDL::Interface);
 
 sub _CheckInheritance {
     my $self = shift;
@@ -521,16 +532,16 @@ sub _CheckLocal {
     foreach (@{$self->{list_export}}) {
         my $defn = $parser->YYData->{symbtab}->Lookup($_);
         if      ($defn->isa('Attribute')) {
-            if (TypeDeclarator->IsaLocal($parser, $defn->{type})) {
+            if (CORBA::IDL::TypeDeclarator->IsaLocal($parser, $defn->{type})) {
                 $parser->Error("'$self->{idf}' is not local.\n");
             }
         }
         elsif ($defn->isa('Operation')) {
-            if (TypeDeclarator->IsaLocal($parser, $defn->{type})) {
+            if (CORBA::IDL::TypeDeclarator->IsaLocal($parser, $defn->{type})) {
                 $parser->Error("'$self->{idf}' is not local.\n");
             }
             foreach (@{$defn->{list_param}}) {
-                if (TypeDeclarator->IsaLocal($parser, $_->{type})) {
+                if (CORBA::IDL::TypeDeclarator->IsaLocal($parser, $_->{type})) {
                     $parser->Error("'$self->{idf}' is not local.\n");
                 }
             }
@@ -561,9 +572,9 @@ sub _CheckNative {
 #   3.8.7   Local Interface
 #
 
-package LocalInterface;
+package CORBA::IDL::LocalInterface;
 
-use base qw(Interface);
+use base qw(CORBA::IDL::Interface);
 
 sub _CheckInheritance {
     # A local interface may inherit from other local or unconstrained interfaces
@@ -581,16 +592,16 @@ sub _CheckLocal {
 #   3.9     Value Declaration
 #
 
-package Value;
+package CORBA::IDL::Value;
 
-use base qw(BaseInterface);
+use base qw(CORBA::IDL::BaseInterface);
 
 #   3.9.1   Regular Value Type
 #
 
-package RegularValue;
+package CORBA::IDL::RegularValue;
 
-use base qw(Value);
+use base qw(CORBA::IDL::Value);
 
 sub _CheckInheritance {
     my $self = shift;
@@ -634,10 +645,10 @@ sub Configure {
     $self->SUPER::Configure($parser, @_);
     my @list;
     foreach my $value_element (@{$self->{list_decl}}) {
-        next unless (ref $value_element eq 'StateMembers');
+        next unless (ref $value_element eq 'CORBA::IDL::StateMembers');
         foreach (@{$value_element->{list_decl}}) {
             push @list, $_;
-            $self->{deprecated} = 1 if (TypeDeclarator->IsDeprecated($parser, $_));
+            $self->{deprecated} = 1 if (CORBA::IDL::TypeDeclarator->IsDeprecated($parser, $_));
         }
     }
     $self->configure(list_member    =>  \@list);    # list of 'StateMember'
@@ -653,22 +664,22 @@ sub _CheckLocal {
 #   3.9.1.4 State Members
 #
 
-package StateMembers;
+package CORBA::IDL::StateMembers;
 
 use base qw(CORBA::IDL::Node);
 
 sub _Init {
     my $self = shift;
     my ($parser) = @_;
-    TypeDeclarator->CheckDeprecated($parser, $self->{type});
-    TypeDeclarator->CheckForward($parser, $self->{type});
+    CORBA::IDL::TypeDeclarator->CheckDeprecated($parser, $self->{type});
+    CORBA::IDL::TypeDeclarator->CheckForward($parser, $self->{type});
     my @list;
     foreach (@{$self->{list_expr}}) {
         my $member;
         my @array_size = @{$_};
         my $idf = shift @array_size;
         if (@array_size) {
-            $member = new StateMember($parser,
+            $member = new CORBA::IDL::StateMember($parser,
                     declspec        =>  $self->{declspec},
                     props           =>  $self->{props},
                     modifier        =>  $self->{modifier},
@@ -681,13 +692,13 @@ sub _Init {
                     if ($CORBA::IDL::Parser::IDL_VERSION ge '2.4');
         }
         else {
-            $member = new StateMember($parser,
+            $member = new CORBA::IDL::StateMember($parser,
                     declspec        =>  $self->{declspec},
                     props           =>  $self->{props},
                     modifier        =>  $self->{modifier},
                     type            =>  $self->{type},
                     idf             =>  $idf,
-                    deprecated      =>  TypeDeclarator->IsDeprecated($parser, $self->{type}),
+                    deprecated      =>  CORBA::IDL::TypeDeclarator->IsDeprecated($parser, $self->{type}),
             );
         }
         push @list, $member->{full};
@@ -695,14 +706,14 @@ sub _Init {
     $self->configure(list_decl  =>  \@list);
     # A local type may not appear as a parameter, attribute, return type, or exception
     # declaration of an unconstrained interface or as a state member of a valuetype.
-    if (TypeDeclarator->IsaLocal($parser, $self->{type})) {
+    if (CORBA::IDL::TypeDeclarator->IsaLocal($parser, $self->{type})) {
         my $idf = $self->{type}->{idf} if (exists $self->{type}->{idf});
         $idf ||= $self->{type};
         $parser->Error("'$idf' is local.\n");
     }
 }
 
-package StateMember;                    # modifier, idf, type[, array_size]
+package CORBA::IDL::StateMember;            # modifier, idf, type[, array_size]
 
 use base qw(CORBA::IDL::Node);
 
@@ -727,7 +738,7 @@ sub _Init {
 #   3.9.1.5 Initializers
 #
 
-package Initializer;
+package CORBA::IDL::Initializer;
 
 use base qw(CORBA::IDL::Node);
 
@@ -769,9 +780,9 @@ sub Configure {
 #
 #   3.9.2   Boxed Value Type
 #
-package BoxedValue;
+package CORBA::IDL::BoxedValue;
 
-use base qw(Value);
+use base qw(CORBA::IDL::Value);
 
 sub _Init {
     my $self = shift;
@@ -792,7 +803,7 @@ sub Configure {
     my $self = shift;
     my $parser = shift;
     $self->configure(@_);
-    my $type = TypeDeclarator->GetDefn($parser, $self->{type});
+    my $type = CORBA::IDL::TypeDeclarator->GetDefn($parser, $self->{type});
     if ($type->isa('Value')) {
         if ($CORBA::IDL::Parser::IDL_VERSION ge '3.0') {
             $parser->Error("$self->{type}->{idf} is a value type.\n");
@@ -801,7 +812,7 @@ sub Configure {
             $parser->Info("$self->{type}->{idf} is a value type.\n");
         }
     }
-    $self->{deprecated} = 1 if (TypeDeclarator->IsDeprecated($parser, $type));
+    $self->{deprecated} = 1 if (CORBA::IDL::TypeDeclarator->IsDeprecated($parser, $type));
     return $self;
 }
 
@@ -809,9 +820,9 @@ sub Configure {
 #   3.9.3   Abstract Value Type
 #
 
-package AbstractValue;
+package CORBA::IDL::AbstractValue;
 
-use base qw(Value);
+use base qw(CORBA::IDL::Value);
 
 sub _CheckInheritance {
     my $self = shift;
@@ -848,23 +859,23 @@ sub _CheckLocal {
 #   3.9.4   Value Forward Declaration
 #
 
-package ForwardValue;
+package CORBA::IDL::ForwardValue;
 
-use base qw(ForwardBaseInterface);
+use base qw(CORBA::IDL::ForwardBaseInterface);
 
-package ForwardRegularValue;
+package CORBA::IDL::ForwardRegularValue;
 
-use base qw(ForwardValue);
+use base qw(CORBA::IDL::ForwardValue);
 
-package ForwardAbstractValue;
+package CORBA::IDL::ForwardAbstractValue;
 
-use base qw(ForwardValue);
+use base qw(CORBA::IDL::ForwardValue);
 
 #
 #   3.10        Constant Declaration
 #
 
-package Expression;
+package CORBA::IDL::Expression;
 
 use base qw(CORBA::IDL::Node);
 
@@ -873,7 +884,7 @@ sub _Init {
     my ($parser) = @_;
     if (      ! exists $self->{type} ) {
         $self->configure(
-                type    =>  new IntegerType($parser,
+                type    =>  new CORBA::IDL::IntegerType($parser,
                                     value   =>  'unsigned long',
                                     auto    =>  1
                             )
@@ -886,7 +897,7 @@ sub _Init {
             if (      $self->{type}->isa('WideCharType')
                     and $expr->isa('CharacterLiteral') ) {
                 $self->{list_expr} = [
-                        new WideCharacterLiteral($parser,
+                        new CORBA::IDL::WideCharacterLiteral($parser,
                                 value   =>  $expr->{value}
                         )
                 ];
@@ -894,7 +905,7 @@ sub _Init {
             elsif (   $self->{type}->isa('WideStringType')
                     and $expr->isa('StringLiteral') ) {
                 $self->{list_expr} = [
-                        new WideStringLiteral($parser,
+                        new CORBA::IDL::WideStringLiteral($parser,
                                 value   =>  $expr->{value}
                         )
                 ];
@@ -930,7 +941,7 @@ sub Eval {
     my $self = shift;
     my ($parser) = @_;
     my @list_expr = @{$self->{list_expr}};      # create a copy
-    my $type = TypeDeclarator->GetEffectiveType($parser, $self->{type});
+    my $type = CORBA::IDL::TypeDeclarator->GetEffectiveType($parser, $self->{type});
     if (defined $type) {
         return _Eval($parser, $type, \@list_expr);
     }
@@ -1417,7 +1428,7 @@ sub _CheckRange {
     }
 }
 
-package Constant;
+package CORBA::IDL::Constant;
 
 use base qw(CORBA::IDL::Node);
 
@@ -1433,8 +1444,8 @@ sub _Init {
     $self->{_typeprefix} = $parser->YYData->{symbtab}->GetTypePrefix();
     $parser->YYData->{symbtab}->Insert($self);
     my $type = $self->{type};
-    TypeDeclarator->CheckDeprecated($parser, $type);
-    my $defn = TypeDeclarator->GetEffectiveType($parser, $type);
+    CORBA::IDL::TypeDeclarator->CheckDeprecated($parser, $type);
+    my $defn = CORBA::IDL::TypeDeclarator->GetEffectiveType($parser, $type);
     if (defined $defn) {
         if (        ! $defn->isa('IntegerType')
                 and ! $defn->isa('CharType')
@@ -1457,7 +1468,7 @@ sub _Init {
         $parser->Error(__PACKAGE__ . "::_Init ERROR_INTERNAL ($type).\n");
     }
     $self->configure(
-            value   =>  new Expression($parser,
+            value   =>  new CORBA::IDL::Expression($parser,
                                 type        =>  $defn,
                                 list_expr   =>  $self->{list_expr}
                         )
@@ -1468,6 +1479,7 @@ sub _Init {
 sub Lookup {
     my $proto = shift;
     my $class = ref($proto) || $proto;
+    $class = substr $class, rindex($class, ':') + 1;
     my ($parser, $name) = @_;
     my $defn = $parser->YYData->{symbtab}->Lookup($name);
     if (defined $defn) {
@@ -1482,11 +1494,11 @@ sub Lookup {
     }
 }
 
-package UnaryOp;
+package CORBA::IDL::UnaryOp;
 
 use base qw(CORBA::IDL::Node);
 
-package BinaryOp;
+package CORBA::IDL::BinaryOp;
 
 use base qw(CORBA::IDL::Node);
 
@@ -1494,47 +1506,47 @@ use base qw(CORBA::IDL::Node);
 #   3.2.5   Literals
 #
 
-package Literal;
+package CORBA::IDL::Literal;
 
 use base qw(CORBA::IDL::Node);
 
-package IntegerLiteral;
+package CORBA::IDL::IntegerLiteral;
 
-use base qw(Literal);
+use base qw(CORBA::IDL::Literal);
 
-package StringLiteral;
+package CORBA::IDL::StringLiteral;
 
-use base qw(Literal);
+use base qw(CORBA::IDL::Literal);
 
-package WideStringLiteral;
+package CORBA::IDL::WideStringLiteral;
 
-use base qw(Literal);
+use base qw(CORBA::IDL::Literal);
 
-package CharacterLiteral;
+package CORBA::IDL::CharacterLiteral;
 
-use base qw(Literal);
+use base qw(CORBA::IDL::Literal);
 
-package WideCharacterLiteral;
+package CORBA::IDL::WideCharacterLiteral;
 
-use base qw(Literal);
+use base qw(CORBA::IDL::Literal);
 
-package FixedPtLiteral;
+package CORBA::IDL::FixedPtLiteral;
 
-use base qw(Literal);
+use base qw(CORBA::IDL::Literal);
 
-package FloatingPtLiteral;
+package CORBA::IDL::FloatingPtLiteral;
 
-use base qw(Literal);
+use base qw(CORBA::IDL::Literal);
 
-package BooleanLiteral;
+package CORBA::IDL::BooleanLiteral;
 
-use base qw(Literal);
+use base qw(CORBA::IDL::Literal);
 
 #
 #   3.11    Type Declaration
 #
 
-package TypeDeclarators;
+package CORBA::IDL::TypeDeclarators;
 
 use base qw(CORBA::IDL::Node);
 
@@ -1548,15 +1560,15 @@ sub _Init {
         my $idf = shift @array_size;
         my $decl;
         if (@array_size) {
-            $decl = new TypeDeclarator($parser,
+            $decl = new CORBA::IDL::TypeDeclarator($parser,
                     type                =>  $self->{type},
                     idf                 =>  $idf,
                     array_size          =>  \@array_size
             );
-            TypeDeclarator->CheckDeprecated($parser, $self->{type});
+            CORBA::IDL::TypeDeclarator->CheckDeprecated($parser, $self->{type});
         }
         else {
-            $decl = new TypeDeclarator($parser,
+            $decl = new CORBA::IDL::TypeDeclarator($parser,
                     type                =>  $self->{type},
                     idf                 =>  $idf
             );
@@ -1577,7 +1589,7 @@ sub Configure {
     return $self;
 }
 
-package TypeDeclarator;
+package CORBA::IDL::TypeDeclarator;
 
 use base qw(CORBA::IDL::Node);
 
@@ -1593,13 +1605,14 @@ sub _Init {
     }
     $parser->YYData->{symbtab}->Insert($self);
     $parser->YYData->{curr_node} = $self;
-    $self->{local_type} = 1 if (TypeDeclarator->IsaLocal($parser, $self->{type}));
-    $self->{deprecated} = 1 if (TypeDeclarator->IsDeprecated($parser, $self->{type}));
+    $self->{local_type} = 1 if (CORBA::IDL::TypeDeclarator->IsaLocal($parser, $self->{type}));
+    $self->{deprecated} = 1 if (CORBA::IDL::TypeDeclarator->IsDeprecated($parser, $self->{type}));
 }
 
 sub Lookup {
     my $proto = shift;
     my $class = ref($proto) || $proto;
+    $class = substr $class, rindex($class, ':') + 1;
     my ($parser, $name) = @_;
     my $defn = $parser->YYData->{symbtab}->Lookup($name);
     if (defined $defn) {
@@ -1636,14 +1649,14 @@ sub GetEffectiveType {
     my $proto = shift;
     my $class = ref($proto) || $proto;
     my ($parser, $type) = @_;
-    my $defn = TypeDeclarator->GetDefn($parser, $type);
+    my $defn = CORBA::IDL::TypeDeclarator->GetDefn($parser, $type);
     unless (defined $defn) {
         $parser->Error(__PACKAGE__ . "::GetEffectiveType ERROR_INTERNAL ($type).\n");
         return undef;
     }
     while (     $defn->isa('TypeDeclarator')
             and ! exists $defn->{array_size} ) {
-        $defn = TypeDeclarator->GetDefn($parser, $defn->{type});
+        $defn = CORBA::IDL::TypeDeclarator->GetDefn($parser, $defn->{type});
         unless (defined $defn) {
             $parser->Error(__PACKAGE__ . "::GetEffectiveType ERROR_INTERNAL ($defn->{type}).\n");
             return undef;
@@ -1656,7 +1669,7 @@ sub CheckDeprecated {
     my $proto = shift;
     my $class = ref($proto) || $proto;
     my ($parser, $type) = @_;
-    my $defn = TypeDeclarator->GetDefn($parser, $type);
+    my $defn = CORBA::IDL::TypeDeclarator->GetDefn($parser, $type);
     return unless (defined $defn);
     if (       $defn->isa('StringType')
             or $defn->isa('WideStringType') ) {
@@ -1682,7 +1695,7 @@ sub IsDeprecated {
     my $proto = shift;
     my $class = ref($proto) || $proto;
     my ($parser, $type) = @_;
-    my $defn = TypeDeclarator->GetDefn($parser, $type);
+    my $defn = CORBA::IDL::TypeDeclarator->GetDefn($parser, $type);
     return (exists $defn->{deprecated} ? 1 : undef);
 }
 
@@ -1691,12 +1704,12 @@ sub CheckForward {
     my $class = ref($proto) || $proto;
 
     my ($parser, $type) = @_;
-    my $defn = TypeDeclarator->GetDefn($parser, $type);
+    my $defn = CORBA::IDL::TypeDeclarator->GetDefn($parser, $type);
     return unless (defined $defn);
     while (        $defn->isa('SequenceType')
                 or $defn->isa('TypeDeclarator') ) {
         last if (exists $defn->{array_size});
-        $defn = TypeDeclarator->GetDefn($parser, $defn->{type});
+        $defn = CORBA::IDL::TypeDeclarator->GetDefn($parser, $defn->{type});
         return unless (defined $defn);
     }
     if ($defn->isa('_ForwardConstructedType')) {
@@ -1710,13 +1723,13 @@ sub IsaLocal {
 
     my ($parser, $type) = @_;
     return undef unless ($type);
-    my $defn = TypeDeclarator->GetDefn($parser, $type);
+    my $defn = CORBA::IDL::TypeDeclarator->GetDefn($parser, $type);
     return exists $defn->{local_type} if ($defn);
     $parser->Error(__PACKAGE__ . "::IsaLocal ERROR_INTERNAL ($type).\n");
     return undef;
 }
 
-package NativeType;
+package CORBA::IDL::NativeType;
 
 use base qw(CORBA::IDL::Node);
 
@@ -1744,60 +1757,60 @@ sub Configure {
 #   3.11.1  Basic Types
 #
 
-package BasicType;
+package CORBA::IDL::BasicType;
 
 use base qw(CORBA::IDL::Node);
 
-package FloatingPtType;
+package CORBA::IDL::FloatingPtType;
 
-use base qw(BasicType);
+use base qw(CORBA::IDL::BasicType);
 
-package IntegerType;
+package CORBA::IDL::IntegerType;
 
-use base qw(BasicType);
+use base qw(CORBA::IDL::BasicType);
 
-package CharType;
+package CORBA::IDL::CharType;
 
-use base qw(BasicType);
+use base qw(CORBA::IDL::BasicType);
 
-package WideCharType;
+package CORBA::IDL::WideCharType;
 
-use base qw(BasicType);
+use base qw(CORBA::IDL::BasicType);
 
-package BooleanType;
+package CORBA::IDL::BooleanType;
 
-use base qw(BasicType);
+use base qw(CORBA::IDL::BasicType);
 
-package OctetType;
+package CORBA::IDL::OctetType;
 
-use base qw(BasicType);
+use base qw(CORBA::IDL::BasicType);
 
-package AnyType;
+package CORBA::IDL::AnyType;
 
-use base qw(BasicType);
+use base qw(CORBA::IDL::BasicType);
 
-package ObjectType;
+package CORBA::IDL::ObjectType;
 
-use base qw(BasicType);
+use base qw(CORBA::IDL::BasicType);
 
-package ValueBaseType;
+package CORBA::IDL::ValueBaseType;
 
-use base qw(BasicType);
+use base qw(CORBA::IDL::BasicType);
 
 #
 #   3.11.2  Constructed Types
 #
 
-package _ConstructedType;
+package CORBA::IDL::_ConstructedType;
 
 use base qw(CORBA::IDL::Node);
 
 #   3.11.2.1    Structures
 #
 
-package StructType;
+package CORBA::IDL::StructType;
 
-use base qw(_ConstructedType);
+use base qw(CORBA::IDL::_ConstructedType);
 
 sub _Init {
     my $self = shift;
@@ -1821,30 +1834,30 @@ sub Configure {
     foreach (@{$self->{list_expr}}) {
         foreach (@{$_->{list_member}}) {
             push @list, $_;
-            $self->{deprecated} = 1 if (TypeDeclarator->IsDeprecated($parser, $_));
+            $self->{deprecated} = 1 if (CORBA::IDL::TypeDeclarator->IsDeprecated($parser, $_));
         }
-        $self->{local_type} = 1 if (TypeDeclarator->IsaLocal($parser, $_->{type}));
+        $self->{local_type} = 1 if (CORBA::IDL::TypeDeclarator->IsaLocal($parser, $_->{type}));
     }
     $self->configure(list_member    =>  \@list);    # list of 'Member'
     return $self;
 }
 
-package Members;
+package CORBA::IDL::Members;
 
 use base qw(CORBA::IDL::Node);
 
 sub _Init {
     my $self = shift;
     my ($parser) = @_;
-    TypeDeclarator->CheckDeprecated($parser, $self->{type});
-    TypeDeclarator->CheckForward($parser, $self->{type});
+    CORBA::IDL::TypeDeclarator->CheckDeprecated($parser, $self->{type});
+    CORBA::IDL::TypeDeclarator->CheckForward($parser, $self->{type});
     my @list;
     foreach (@{$self->{list_expr}}) {
         my $member;
         my @array_size = @{$_};
         my $idf = shift @array_size;
         if (@array_size) {
-            $member = new Member($parser,
+            $member = new CORBA::IDL::Member($parser,
                     props           =>  $self->{props},
                     type            =>  $self->{type},
                     idf             =>  $idf,
@@ -1855,11 +1868,11 @@ sub _Init {
                     if ($CORBA::IDL::Parser::IDL_VERSION ge '2.4');
         }
         else {
-            $member = new Member($parser,
+            $member = new CORBA::IDL::Member($parser,
                     props           =>  $self->{props},
                     type            =>  $self->{type},
                     idf             =>  $idf,
-                    deprecated      =>  TypeDeclarator->IsDeprecated($parser, $self->{type}),
+                    deprecated      =>  CORBA::IDL::TypeDeclarator->IsDeprecated($parser, $self->{type}),
             );
         }
         push @list, $member->{full};
@@ -1867,7 +1880,7 @@ sub _Init {
     $self->configure(list_member    =>  \@list);
 }
 
-package Member;                         # idf, type[, array_size]
+package CORBA::IDL::Member;                         # idf, type[, array_size]
 
 use base qw(CORBA::IDL::Node);
 
@@ -1885,9 +1898,9 @@ sub _Init {
 #   3.11.2.2    Discriminated Unions
 #
 
-package UnionType;
+package CORBA::IDL::UnionType;
 
-use base qw(_ConstructedType);
+use base qw(CORBA::IDL::_ConstructedType);
 
 sub _Init {
     my $self = shift;
@@ -1908,7 +1921,7 @@ sub Configure {
     my $parser = shift;
     $self->configure(@_);
     my $dis = $self->{type};
-    my $defn = TypeDeclarator->GetEffectiveType($parser, $dis);
+    my $defn = CORBA::IDL::TypeDeclarator->GetEffectiveType($parser, $dis);
     if (defined $defn) {
         if (        ! $defn->isa('IntegerType')
                 and ! $defn->isa('CharType')
@@ -1925,19 +1938,19 @@ sub Configure {
     my @list_all;
     foreach my $case (@{$self->{list_expr}}) {
         my $elt = $case->{element};
-        $self->{local_type} = 1 if (TypeDeclarator->IsaLocal($parser, $elt->{type}));
-        $self->{deprecated} = 1 if (TypeDeclarator->IsDeprecated($parser, $elt->{value}));
+        $self->{local_type} = 1 if (CORBA::IDL::TypeDeclarator->IsaLocal($parser, $elt->{type}));
+        $self->{deprecated} = 1 if (CORBA::IDL::TypeDeclarator->IsDeprecated($parser, $elt->{value}));
         my @list;
         foreach (@{$case->{list_label}}) {
             my $key;
-            if (ref $_ eq 'Default') {
+            if (ref $_ eq 'CORBA::IDL::Default') {
                 $key = 'Default';
                 push @list, $_;
                 $self->configure(default    =>  $case);
             }
             else {
                 # now, type is known
-                my $cst = new Expression($parser,
+                my $cst = new CORBA::IDL::Expression($parser,
                         type                =>  $dis,
                         list_expr           =>  $_
                 );
@@ -1984,28 +1997,28 @@ sub Configure {
     return $self;
 }
 
-package Case;
+package CORBA::IDL::Case;
 
 use base qw(CORBA::IDL::Node);
 
-package Default;
+package CORBA::IDL::Default;
 
 use base qw(CORBA::IDL::Node);
 
-package Element;
+package CORBA::IDL::Element;
 
 use base qw(CORBA::IDL::Node);
 
 sub _Init {
     my $self = shift;
     my ($parser) = @_;
-    TypeDeclarator->CheckDeprecated($parser, $self->{type});
-    TypeDeclarator->CheckForward($parser, $self->{type});
+    CORBA::IDL::TypeDeclarator->CheckDeprecated($parser, $self->{type});
+    CORBA::IDL::TypeDeclarator->CheckForward($parser, $self->{type});
     my @array_size = @{$self->{list_expr}};
     my $idf = shift @array_size;
     my $value;
     if (@array_size) {
-        $value = new Member($parser,
+        $value = new CORBA::IDL::Member($parser,
                 type            =>  $self->{type},
                 idf             =>  $idf,
                 array_size      =>  \@array_size,
@@ -2015,10 +2028,10 @@ sub _Init {
                 if ($CORBA::IDL::Parser::IDL_VERSION ge '2.4');
     }
     else {
-        $value = new Member($parser,
+        $value = new CORBA::IDL::Member($parser,
                 type            =>  $self->{type},
                 idf             =>  $idf,
-                deprecated      =>  TypeDeclarator->IsDeprecated($parser, $self->{type}),
+                deprecated      =>  CORBA::IDL::TypeDeclarator->IsDeprecated($parser, $self->{type}),
         );
     }
     $self->configure(value  =>  $value->{full});    # 'Member'
@@ -2027,7 +2040,7 @@ sub _Init {
 #   3.11.2.3    Constructed Recursive Types and Forward Declarations
 #
 
-package _ForwardConstructedType;
+package CORBA::IDL::_ForwardConstructedType;
 
 use base qw(CORBA::IDL::Node);
 
@@ -2043,20 +2056,20 @@ sub _Init {
 
 }
 
-package ForwardStructType;
+package CORBA::IDL::ForwardStructType;
 
-use base qw(_ForwardConstructedType);
+use base qw(CORBA::IDL::_ForwardConstructedType);
 
-package ForwardUnionType;
+package CORBA::IDL::ForwardUnionType;
 
-use base qw(_ForwardConstructedType);
+use base qw(CORBA::IDL::_ForwardConstructedType);
 
 #   3.11.2.4    Enumerations
 #
 
-package EnumType;
+package CORBA::IDL::EnumType;
 
-use base qw(_ConstructedType);
+use base qw(CORBA::IDL::_ConstructedType);
 
 use constant ULONG_MAX      => 4294967295;
 
@@ -2103,7 +2116,7 @@ sub Configure {
     return $self;
 }
 
-package Enum;
+package CORBA::IDL::Enum;
 
 use base qw(CORBA::IDL::Node);
 
@@ -2122,34 +2135,34 @@ sub _Init {
 #   3.11.3  Template Types
 #
 
-package _TemplateType;
+package CORBA::IDL::_TemplateType;
 
 use base qw(CORBA::IDL::Node);
 
-package SequenceType;
+package CORBA::IDL::SequenceType;
 
-use base qw(_TemplateType);
+use base qw(CORBA::IDL::_TemplateType);
 
 sub _Init {
     my $self = shift;
     my ($parser) = @_;
     $self->line_stamp($parser);
     $parser->YYData->{symbtab}->InsertBogus($self);
-    TypeDeclarator->CheckDeprecated($parser, $self->{type});
-    $self->{local_type} = 1 if (TypeDeclarator->IsaLocal($parser, $self->{type}));
+    CORBA::IDL::TypeDeclarator->CheckDeprecated($parser, $self->{type});
+    $self->{local_type} = 1 if (CORBA::IDL::TypeDeclarator->IsaLocal($parser, $self->{type}));
 }
 
-package StringType;
+package CORBA::IDL::StringType;
 
-use base qw(_TemplateType);
+use base qw(CORBA::IDL::_TemplateType);
 
-package WideStringType;
+package CORBA::IDL::WideStringType;
 
-use base qw(_TemplateType);
+use base qw(CORBA::IDL::_TemplateType);
 
-package FixedPtType;
+package CORBA::IDL::FixedPtType;
 
-use base qw(_TemplateType);
+use base qw(CORBA::IDL::_TemplateType);
 
 sub _Init {
     my $self = shift;
@@ -2157,15 +2170,15 @@ sub _Init {
     $self->line_stamp($parser);
 }
 
-package FixedPtConstType;
+package CORBA::IDL::FixedPtConstType;
 
-use base qw(_TemplateType);
+use base qw(CORBA::IDL::_TemplateType);
 
 #
 #   3.12    Exception Declaration
 #
 
-package Exception;
+package CORBA::IDL::Exception;
 
 use base qw(CORBA::IDL::Node);
 
@@ -2192,7 +2205,7 @@ sub Configure {
         foreach (@{$_->{list_member}}) {
             push @list, $_;
         }
-        $self->{local_type} = 1 if (TypeDeclarator->IsaLocal($parser, $_->{type}));
+        $self->{local_type} = 1 if (CORBA::IDL::TypeDeclarator->IsaLocal($parser, $_->{type}));
     }
     $self->configure(list_member    =>  \@list);    # list of 'Member'
     return $self;
@@ -2201,6 +2214,7 @@ sub Configure {
 sub Lookup {
     my $proto = shift;
     my $class = ref($proto) || $proto;
+    $class = substr $class, rindex($class, ':') + 1;
     my ($parser, $name) = @_;
     my $defn = $parser->YYData->{symbtab}->Lookup($name);
     if (defined $defn) {
@@ -2218,7 +2232,7 @@ sub Lookup {
 #   3.13    Operation Declaration
 #
 
-package Operation;
+package CORBA::IDL::Operation;
 
 use base qw(CORBA::IDL::Node);
 
@@ -2233,8 +2247,8 @@ sub _Init {
     }
     $parser->YYData->{symbtab}->Insert($self);
     $parser->YYData->{unnamed_symbtab} = new CORBA::IDL::UnnamedSymbtab($parser);
-    TypeDeclarator->CheckDeprecated($parser, $type);
-    TypeDeclarator->CheckForward($parser, $type);
+    CORBA::IDL::TypeDeclarator->CheckDeprecated($parser, $type);
+    CORBA::IDL::TypeDeclarator->CheckForward($parser, $type);
     if (defined $parser->YYData->{curr_itf}) {
         $self->{itf} = $parser->YYData->{curr_itf}->{full};
         $parser->YYData->{curr_itf}->{hash_attribute_operation}{$self->{idf}} = $self->{full}
@@ -2298,7 +2312,7 @@ sub Configure {
     return $self;
 }
 
-package Parameter;
+package CORBA::IDL::Parameter;
 
 use base qw(CORBA::IDL::Node);
 
@@ -2312,8 +2326,8 @@ sub _Init {
             $parser->YYData->{unnamed_symbtab}->InsertUsed($1);
         }
     }
-    TypeDeclarator->CheckDeprecated($parser, $type);
-    TypeDeclarator->CheckForward($parser, $type);
+    CORBA::IDL::TypeDeclarator->CheckDeprecated($parser, $type);
+    CORBA::IDL::TypeDeclarator->CheckForward($parser, $type);
     $parser->YYData->{unnamed_symbtab}->Insert($self->{idf});
     if ($parser->YYData->{doc} ne q{}) {
         $self->{doc} = $parser->YYData->{doc};
@@ -2322,11 +2336,11 @@ sub _Init {
     $parser->YYData->{curr_node} = $self;
 }
 
-package VoidType;
+package CORBA::IDL::VoidType;
 
 use base qw(CORBA::IDL::Node);
 
-package Ellipsis;
+package CORBA::IDL::Ellipsis;
 
 use base qw(CORBA::IDL::Node);
 
@@ -2334,7 +2348,7 @@ use base qw(CORBA::IDL::Node);
 #   3.14    Attribute Declaration
 #
 
-package Attributes;
+package CORBA::IDL::Attributes;
 
 use base qw(CORBA::IDL::Node);
 
@@ -2343,7 +2357,7 @@ sub _Init {
     my ($parser) = @_;
     my @list;
     foreach (@{$self->{list_expr}}) {
-        my $attr = new Attribute($parser,
+        my $attr = new CORBA::IDL::Attribute($parser,
                 declspec            =>  $self->{declspec},
                 props               =>  $self->{props},
                 modifier            =>  $self->{modifier},
@@ -2357,7 +2371,7 @@ sub _Init {
     $self->configure(list_decl  =>  \@list);
 }
 
-package Attribute;
+package CORBA::IDL::Attribute;
 
 use base qw(CORBA::IDL::Node);
 
@@ -2379,7 +2393,7 @@ sub _Init {
         $parser->Error(__PACKAGE__ . "::new ERROR_INTERNAL.\n");
     }
     $parser->YYData->{curr_node} = $self;
-    my $op = new Operation($parser,
+    my $op = new CORBA::IDL::Operation($parser,
             type                =>  $self->{type},
             idf                 =>  '_get_' . $self->{idf}
     );
@@ -2391,8 +2405,8 @@ sub _Init {
             _get        =>  $op
     );
     unless (exists $self->{modifier}) {     # readonly
-        $op = new Operation($parser,
-                type            =>  new VoidType($parser,
+        $op = new CORBA::IDL::Operation($parser,
+                type            =>  new CORBA::IDL::VoidType($parser,
                                             value       =>  'void'
                                     ),
                 idf             =>  '_set_' . $self->{idf}
@@ -2400,7 +2414,7 @@ sub _Init {
         # unnamed_symbtab created
         $op->Configure($parser,
                 list_param      =>  [
-                                        new Parameter($parser,
+                                        new CORBA::IDL::Parameter($parser,
                                                 attr    =>  'in',
                                                 type    =>  $self->{type},
                                                 idf     =>  'new' . ucfirst $self->{idf}
@@ -2418,7 +2432,7 @@ sub _Init {
 #   3.15    Repository Identity Related Declarations
 #
 
-package TypeId;
+package CORBA::IDL::TypeId;
 
 use base qw(CORBA::IDL::Node);
 
@@ -2461,7 +2475,7 @@ sub _Init {
     }
 }
 
-package TypePrefix;
+package CORBA::IDL::TypePrefix;
 
 use base qw(CORBA::IDL::Node);
 
@@ -2501,13 +2515,13 @@ sub _Init {
 #   3.16    Event Declaration
 #
 
-package Event;
+package CORBA::IDL::Event;
 
-use base qw(Value);
+use base qw(CORBA::IDL::Value);
 
-package RegularEvent;
+package CORBA::IDL::RegularEvent;
 
-use base qw(Event);
+use base qw(CORBA::IDL::Event);
 
 sub _CheckInheritance {
     my $self = shift;
@@ -2525,9 +2539,9 @@ sub _CheckLocal {
     # declaration of a local interface or of a valuetype.
 }
 
-package AbstractEvent;
+package CORBA::IDL::AbstractEvent;
 
-use base qw(Event);
+use base qw(CORBA::IDL::Event);
 
 sub _CheckInheritance {
     # empty
@@ -2538,50 +2552,50 @@ sub _CheckLocal {
     # declaration of a local interface or of a valuetype.
 }
 
-package ForwardEvent;
+package CORBA::IDL::ForwardEvent;
 
-use base qw(ForwardValue);
+use base qw(CORBA::IDL::ForwardValue);
 
-package ForwardRegularEvent;
+package CORBA::IDL::ForwardRegularEvent;
 
-use base qw(ForwardEvent);
+use base qw(CORBA::IDL::ForwardEvent);
 
-package ForwardAbstractEvent;
+package CORBA::IDL::ForwardAbstractEvent;
 
-use base qw(ForwardEvent);
+use base qw(CORBA::IDL::ForwardEvent);
 
 #
 #   3.17    Component Declaration
 #
 
-package Component;
+package CORBA::IDL::Component;
 
-use base qw(BaseInterface);
+use base qw(CORBA::IDL::BaseInterface);
 
 sub _CheckInheritance {
 }
 
-package ForwardComponent;
+package CORBA::IDL::ForwardComponent;
 
-use base qw(ForwardBaseInterface);
+use base qw(CORBA::IDL::ForwardBaseInterface);
 
-package Provides;
-
-use base qw(CORBA::IDL::Node);
-
-package Uses;
+package CORBA::IDL::Provides;
 
 use base qw(CORBA::IDL::Node);
 
-package Emits;
+package CORBA::IDL::Uses;
 
 use base qw(CORBA::IDL::Node);
 
-package Publishes;
+package CORBA::IDL::Emits;
 
 use base qw(CORBA::IDL::Node);
 
-package Consumes;
+package CORBA::IDL::Publishes;
+
+use base qw(CORBA::IDL::Node);
+
+package CORBA::IDL::Consumes;
 
 use base qw(CORBA::IDL::Node);
 
@@ -2589,14 +2603,14 @@ use base qw(CORBA::IDL::Node);
 #   3.18    Home Declaration
 #
 
-package Home;
+package CORBA::IDL::Home;
 
-use base qw(BaseInterface);
+use base qw(CORBA::IDL::BaseInterface);
 
 sub _CheckInheritance {
 }
 
-package Factory;
+package CORBA::IDL::Factory;
 
 use base qw(CORBA::IDL::Node);
 
@@ -2635,7 +2649,7 @@ sub Configure {
     return $self;
 }
 
-package Finder;
+package CORBA::IDL::Finder;
 
 use base qw(CORBA::IDL::Node);
 
@@ -2674,7 +2688,7 @@ sub Configure {
     return $self;
 }
 
-package CodeFragment;
+package CORBA::IDL::CodeFragment;
 
 use base qw(CORBA::IDL::Node);
 

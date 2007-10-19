@@ -1,6 +1,6 @@
 
 PERL=perl
-YAPP=yapp -s -v
+YAPP=yapp -v
 CP=$(PERL) -MExtUtils::Command -e cp
 RM_F=$(PERL) -MExtUtils::Command -e rm_f
 
@@ -38,6 +38,6 @@ ParserXp.pm: ParserXp.yp
 	$(CP) Parser.pm ParserXp.pm
 
 clean:
-	$(RM_F) Parser*.pm
+	$(RM_F) Parser??.pm
 	$(RM_F) Parser*.output
 

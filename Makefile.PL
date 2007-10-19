@@ -8,6 +8,7 @@ WriteMakefile(
     'PREREQ_PM'     => {
                         'Digest::SHA1'  => 0,
                         'Math::BigInt'  => 1.66,
+                        'Parse::Yapp'   => 0,
     },
     'INSTALLDIRS'   => 'site',
     'EXE_FILES'     => [ 'bin/idl' ],

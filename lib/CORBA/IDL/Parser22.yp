@@ -58,7 +58,7 @@
 specification
 :   definitions
         {
-            $_[0]->YYData->{root} = new Specification($_[0],
+            $_[0]->YYData->{root} = new CORBA::IDL::Specification($_[0],
                     'list_decl'         =>  $_[1],
             );
         }
@@ -152,7 +152,7 @@ module
 module_header
 :   MODULE  IDENTIFIER
         {
-            new Module($_[0],
+            new CORBA::IDL::Module($_[0],
                     'idf'               =>  $_[2],
             );
         }
@@ -203,7 +203,7 @@ interface_dcl
 forward_dcl
 :   INTERFACE   IDENTIFIER
         {
-            new ForwardRegularInterface($_[0],
+            new CORBA::IDL::ForwardRegularInterface($_[0],
                     'idf'                   =>  $_[2]
             );
         }
@@ -218,7 +218,7 @@ forward_dcl
 interface_header
 :   INTERFACE   IDENTIFIER  interface_inheritance_spec
         {
-            new RegularInterface($_[0],
+            new CORBA::IDL::RegularInterface($_[0],
                     'idf'                   =>  $_[2],
                     'inheritance'           =>  $_[3]
             );
@@ -266,7 +266,7 @@ export
 interface_inheritance_spec
 :   ':' interface_names
         {
-            new InheritanceSpec($_[0],
+            new CORBA::IDL::InheritanceSpec($_[0],
                     'list_interface'        =>  $_[2]
             );
         }
@@ -294,7 +294,7 @@ interface_names
 interface_name
 :   scoped_name
         {
-                Interface->Lookup($_[0], $_[1]);
+                CORBA::IDL::Interface->Lookup($_[0], $_[1]);
         }
 ;
 
@@ -328,7 +328,7 @@ scoped_name
 const_dcl
 :   CONST   const_type  IDENTIFIER  '=' const_exp
         {
-            new Constant($_[0],
+            new CORBA::IDL::Constant($_[0],
                     'type'              =>  $_[2],
                     'idf'               =>  $_[3],
                     'list_expr'         =>  $_[5]
@@ -376,7 +376,7 @@ const_type
                                         #default action
 |   scoped_name
         {
-            TypeDeclarator->Lookup($_[0], $_[1]);
+            CORBA::IDL::TypeDeclarator->Lookup($_[0], $_[1]);
         }
 ;
 
@@ -487,7 +487,7 @@ primary_expr
 :   scoped_name
         {
             [
-                Constant->Lookup($_[0], $_[1])
+                CORBA::IDL::Constant->Lookup($_[0], $_[1])
             ];
         }
 |   literal
@@ -509,45 +509,45 @@ primary_expr
 literal
 :   INTEGER_LITERAL
         {
-            new IntegerLiteral($_[0],
+            new CORBA::IDL::IntegerLiteral($_[0],
                     'value'             =>  $_[1],
                     'lexeme'            =>  $_[0]->YYData->{lexeme}
             );
         }
 |   string_literal
         {
-            new StringLiteral($_[0],
+            new CORBA::IDL::StringLiteral($_[0],
                     'value'             =>  $_[1]
             );
         }
 |   wide_string_literal
         {
-            new WideStringLiteral($_[0],
+            new CORBA::IDL::WideStringLiteral($_[0],
                     'value'             =>  $_[1]
             );
         }
 |   CHARACTER_LITERAL
         {
-            new CharacterLiteral($_[0],
+            new CORBA::IDL::CharacterLiteral($_[0],
                     'value'             =>  $_[1]
             );
         }
 |   WIDE_CHARACTER_LITERAL
         {
-            new WideCharacterLiteral($_[0],
+            new CORBA::IDL::WideCharacterLiteral($_[0],
                     'value'             =>  $_[1]
             );
         }
 |   FIXED_PT_LITERAL
         {
-            new FixedPtLiteral($_[0],
+            new CORBA::IDL::FixedPtLiteral($_[0],
                     'value'             =>  $_[1],
                     'lexeme'            =>  $_[0]->YYData->{lexeme}
             );
         }
 |   FLOATING_PT_LITERAL
         {
-            new FloatingPtLiteral($_[0],
+            new CORBA::IDL::FloatingPtLiteral($_[0],
                     'value'             =>  $_[1],
                     'lexeme'            =>  $_[0]->YYData->{lexeme}
             );
@@ -578,13 +578,13 @@ wide_string_literal
 boolean_literal
 :   TRUE
         {
-            new BooleanLiteral($_[0],
+            new CORBA::IDL::BooleanLiteral($_[0],
                     'value'             =>  $_[1]
             );
         }
 |   FALSE
         {
-            new BooleanLiteral($_[0],
+            new CORBA::IDL::BooleanLiteral($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -594,7 +594,7 @@ boolean_literal
 positive_int_const
 :   const_exp
         {
-            new Expression($_[0],
+            new CORBA::IDL::Expression($_[0],
                     'list_expr'         =>  $_[1]
             );
         }
@@ -614,7 +614,7 @@ type_dcl
                                         #default action
 |   NATIVE      simple_declarator       /* 3.8.5    Native Types */
         {
-            new NativeType($_[0],
+            new CORBA::IDL::NativeType($_[0],
                     'idf'               =>  $_[2]
             );
         }
@@ -629,7 +629,7 @@ type_dcl
 type_declarator
 :   type_spec   declarators
         {
-            new TypeDeclarators($_[0],
+            new CORBA::IDL::TypeDeclarators($_[0],
                     'type'              =>  $_[1],
                     'list_expr'         =>  $_[2]
             );
@@ -652,12 +652,12 @@ simple_type_spec
                                         #default action
 |   scoped_name
         {
-            TypeDeclarator->Lookup($_[0], $_[1]);
+            CORBA::IDL::TypeDeclarator->Lookup($_[0], $_[1]);
         }
 |   VOID
         {
             $_[0]->Error("simple_type_spec expected.\n");
-            new VoidType($_[0],
+            new CORBA::IDL::VoidType($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -754,19 +754,19 @@ complex_declarator
 floating_pt_type
 :   FLOAT
         {
-            new FloatingPtType($_[0],
+            new CORBA::IDL::FloatingPtType($_[0],
                     'value'             =>  $_[1]
             );
         }
 |   DOUBLE
         {
-            new FloatingPtType($_[0],
+            new CORBA::IDL::FloatingPtType($_[0],
                     'value'             =>  $_[1]
             );
         }
 |   LONG    DOUBLE
         {
-            new FloatingPtType($_[0],
+            new CORBA::IDL::FloatingPtType($_[0],
                     'value'             =>  $_[1] . q{ } . $_[2]
             );
         }
@@ -794,7 +794,7 @@ signed_int
 signed_short_int
 :   SHORT
         {
-            new IntegerType($_[0],
+            new CORBA::IDL::IntegerType($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -804,7 +804,7 @@ signed_short_int
 signed_long_int
 :   LONG
         {
-            new IntegerType($_[0],
+            new CORBA::IDL::IntegerType($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -814,7 +814,7 @@ signed_long_int
 signed_longlong_int
 :   LONG    LONG
         {
-            new IntegerType($_[0],
+            new CORBA::IDL::IntegerType($_[0],
                     'value'             =>  $_[1] . q{ } . $_[2]
             );
         }
@@ -834,7 +834,7 @@ unsigned_int
 unsigned_short_int
 :   UNSIGNED    SHORT
         {
-            new IntegerType($_[0],
+            new CORBA::IDL::IntegerType($_[0],
                     'value'             =>  $_[1] . q{ } . $_[2]
             );
         }
@@ -844,7 +844,7 @@ unsigned_short_int
 unsigned_long_int
 :   UNSIGNED    LONG
         {
-            new IntegerType($_[0],
+            new CORBA::IDL::IntegerType($_[0],
                     'value'             =>  $_[1] . q{ } . $_[2]
             );
         }
@@ -854,7 +854,7 @@ unsigned_long_int
 unsigned_longlong_int
 :   UNSIGNED    LONG    LONG
         {
-            new IntegerType($_[0],
+            new CORBA::IDL::IntegerType($_[0],
                     'value'             =>  $_[1] . q{ } . $_[2] . q{ } . $_[3]
             );
         }
@@ -864,7 +864,7 @@ unsigned_longlong_int
 char_type
 :   CHAR
         {
-            new CharType($_[0],
+            new CORBA::IDL::CharType($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -874,7 +874,7 @@ char_type
 wide_char_type
 :   WCHAR
         {
-            new WideCharType($_[0],
+            new CORBA::IDL::WideCharType($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -884,7 +884,7 @@ wide_char_type
 boolean_type
 :   BOOLEAN
         {
-            new BooleanType($_[0],
+            new CORBA::IDL::BooleanType($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -894,7 +894,7 @@ boolean_type
 octet_type
 :   OCTET
         {
-            new OctetType($_[0],
+            new CORBA::IDL::OctetType($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -904,7 +904,7 @@ octet_type
 any_type
 :   ANY
         {
-            new AnyType($_[0],
+            new CORBA::IDL::AnyType($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -914,7 +914,7 @@ any_type
 object_type
 :   OBJECT
         {
-            new ObjectType($_[0],
+            new CORBA::IDL::ObjectType($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -941,7 +941,7 @@ struct_type
 struct_header
 :   STRUCT  IDENTIFIER
         {
-            new StructType($_[0],
+            new CORBA::IDL::StructType($_[0],
                     'idf'               =>  $_[2]
             );
         }
@@ -969,7 +969,7 @@ member_list
 member
 :   type_spec   declarators check_semicolon
         {
-            new Members($_[0],
+            new CORBA::IDL::Members($_[0],
                     'type'              =>  $_[1],
                     'list_expr'         =>  $_[2]
             );
@@ -1019,7 +1019,7 @@ union_type
 union_header
 :   UNION   IDENTIFIER
         {
-            new UnionType($_[0],
+            new CORBA::IDL::UnionType($_[0],
                     'idf'               =>  $_[2],
             );
         }
@@ -1042,7 +1042,7 @@ switch_type_spec
                                         #default action
 |   scoped_name
         {
-            TypeDeclarator->Lookup($_[0], $_[1]);
+            CORBA::IDL::TypeDeclarator->Lookup($_[0], $_[1]);
         }
 ;
 
@@ -1063,7 +1063,7 @@ switch_body
 case
 :   case_labels element_spec    check_semicolon
         {
-            new Case($_[0],
+            new CORBA::IDL::Case($_[0],
                     'list_label'        =>  $_[1],
                     'element'           =>  $_[2]
             );
@@ -1101,13 +1101,13 @@ case_label
         }
 |   DEFAULT     ':'
         {
-            new Default($_[0]);
+            new CORBA::IDL::Default($_[0]);
         }
 |   DEFAULT     error
         {
             $_[0]->Error("':' expected.\n");
             $_[0]->YYErrok();
-            new Default($_[0]);
+            new CORBA::IDL::Default($_[0]);
         }
 ;
 
@@ -1115,7 +1115,7 @@ case_label
 element_spec
 :   type_spec   declarator
         {
-            new Element($_[0],
+            new CORBA::IDL::Element($_[0],
                     'type'          =>  $_[1],
                     'list_expr'     =>  $_[2]
             );
@@ -1147,7 +1147,7 @@ enum_type
 enum_header
 :   ENUM    IDENTIFIER
         {
-            new EnumType($_[0],
+            new CORBA::IDL::EnumType($_[0],
                     'idf'               =>  $_[2],
             );
         }
@@ -1184,7 +1184,7 @@ enumerators
 enumerator
 :   IDENTIFIER
         {
-            new Enum($_[0],
+            new CORBA::IDL::Enum($_[0],
                     'idf'               =>  $_[1]
             );
         }
@@ -1194,7 +1194,7 @@ enumerator
 sequence_type
 :   SEQUENCE    '<' simple_type_spec    ',' positive_int_const  '>'
         {
-            new SequenceType($_[0],
+            new CORBA::IDL::SequenceType($_[0],
                     'value'             =>  $_[1],
                     'type'              =>  $_[3],
                     'max'               =>  $_[5]
@@ -1207,7 +1207,7 @@ sequence_type
         }
 |   SEQUENCE    '<' simple_type_spec    '>'
         {
-            new SequenceType($_[0],
+            new CORBA::IDL::SequenceType($_[0],
                     'value'             =>  $_[1],
                     'type'              =>  $_[3]
             );
@@ -1228,14 +1228,14 @@ sequence_type
 string_type
 :   STRING  '<' positive_int_const  '>'
         {
-            new StringType($_[0],
+            new CORBA::IDL::StringType($_[0],
                     'value'             =>  $_[1],
                     'max'               =>  $_[3]
             );
         }
 |   STRING
         {
-            new StringType($_[0],
+            new CORBA::IDL::StringType($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -1250,14 +1250,14 @@ string_type
 wide_string_type
 :   WSTRING '<' positive_int_const  '>'
         {
-            new WideStringType($_[0],
+            new CORBA::IDL::WideStringType($_[0],
                     'value'             =>  $_[1],
                     'max'               =>  $_[3]
             );
         }
 |   WSTRING
         {
-            new WideStringType($_[0],
+            new CORBA::IDL::WideStringType($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -1306,7 +1306,7 @@ fixed_array_size
 attr_dcl
 :   attr_mod    ATTRIBUTE   param_type_spec simple_declarators
         {
-            new Attributes($_[0],
+            new CORBA::IDL::Attributes($_[0],
                     'modifier'          =>  $_[1],
                     'type'              =>  $_[3],
                     'list_expr'         =>  $_[4]
@@ -1371,7 +1371,7 @@ except_dcl
 exception_header
 :   EXCEPTION   IDENTIFIER
         {
-            new Exception($_[0],
+            new CORBA::IDL::Exception($_[0],
                     'idf'               =>  $_[2],
             );
         }
@@ -1407,7 +1407,7 @@ op_dcl
 op_header
 :   op_mod  op_type_spec    IDENTIFIER
         {
-            new Operation($_[0],
+            new CORBA::IDL::Operation($_[0],
                     'modifier'          =>  $_[1],
                     'type'              =>  $_[2],
                     'idf'               =>  $_[3]
@@ -1439,7 +1439,7 @@ op_type_spec
                                         #default action
 |   VOID
         {
-            new VoidType($_[0],
+            new CORBA::IDL::VoidType($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -1503,7 +1503,7 @@ param_dcls
 param_dcl
 :   param_attribute param_type_spec simple_declarator
         {
-            new Parameter($_[0],
+            new CORBA::IDL::Parameter($_[0],
                     'attr'              =>  $_[1],
                     'type'              =>  $_[2],
                     'idf'               =>  $_[3]
@@ -1561,7 +1561,7 @@ exception_names
 exception_name
 :   scoped_name
         {
-            Exception->Lookup($_[0], $_[1]);
+            CORBA::IDL::Exception->Lookup($_[0], $_[1]);
         }
 ;
 
@@ -1629,7 +1629,7 @@ op_param_type_spec
                                         #default action
 |   scoped_name
         {
-            TypeDeclarator->Lookup($_[0], $_[1]);
+            CORBA::IDL::TypeDeclarator->Lookup($_[0], $_[1]);
         }
 ;
 
@@ -1637,7 +1637,7 @@ op_param_type_spec
 fixed_pt_type
 :   FIXED   '<' positive_int_const  ',' positive_int_const  '>'
         {
-            new FixedPtType($_[0],
+            new CORBA::IDL::FixedPtType($_[0],
                     'value'             =>  $_[1],
                     'd'                 =>  $_[3],
                     's'                 =>  $_[5]
@@ -1664,7 +1664,7 @@ fixed_pt_type
 fixed_pt_const_type
 :   FIXED
         {
-            new FixedPtConstType($_[0],
+            new CORBA::IDL::FixedPtConstType($_[0],
                     'value'             =>  $_[1]
             );
         }
@@ -1674,14 +1674,14 @@ fixed_pt_const_type
 
 use warnings;
 
-our $VERSION = '2.60';
+our $VERSION = '2.61';
 our $IDL_VERSION = '2.2';
 
 sub BuildUnop
 {
     my ($op, $expr) = @_;
 
-    my $node = new UnaryOp($_[0],
+    my $node = new CORBA::IDL::UnaryOp($_[0],
             'op'    =>  $op
     );
     push @$expr, $node;
@@ -1692,7 +1692,7 @@ sub BuildBinop
 {
     my ($left, $op, $right) = @_;
 
-    my $node = new BinaryOp($_[0],
+    my $node = new CORBA::IDL::BinaryOp($_[0],
             'op'    =>  $op
     );
     push @$left, @$right;

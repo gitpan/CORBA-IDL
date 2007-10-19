@@ -11,7 +11,7 @@ sub new {
     my $proto = shift;
     my $class = ref($proto) || $proto;
     my $self = {};
-    bless($self, $class);
+    bless $self, $class;
     my($symbtab, $classname, $full, $name) = @_;
     $self->{class} = $classname;
     $self->{full} = $full;
@@ -35,20 +35,20 @@ sub _Lookup {
 
 package CORBA::IDL::Symbtab;
 
-our $VERSION = '2.60';
+our $VERSION = '2.61';
 
 sub new {
     my $proto = shift;
     my $class = ref($proto) || $proto;
     my $self = {};
-    bless($self, $class);
+    bless $self, $class;
     my($parser) = @_;
     $self->{current_root} = q{};
     $self->{current_scope} = q{};
     $self->{parser} = $parser;
 
     $self->{scopes} = {
-        q{}     => new CORBA::IDL::Scope($self, 'Module', q{}, q{})
+        q{}     => new CORBA::IDL::Scope($self, 'CORBA::IDL::Module', q{}, q{})
     };
     $self->{prefix} = {};
     $self->{typeprefix} = {};
@@ -83,6 +83,7 @@ sub PushCurrentRoot {
     my($node) = @_;
     my $name = $node->{idf};
     my $class = ref $node;
+    $class = substr $class, rindex($class, ':') + 1;
 ##  print "PushCurrentRoot '$name' $class\n";
     $self->{parser}->Error("PushCurrentRoot: INTERNAL_ERROR ($class).\n")
             unless ($class eq 'Module');
@@ -109,14 +110,14 @@ sub PushCurrentRoot {
             $self->{msg} ||= "Identifier '$name' already exists.\n";
             $self->{parser}->Error($self->{msg});
             unless (exists $self->{scopes}->{$new_scope}) {
-                $self->{scopes}->{$new_scope} = new CORBA::IDL::Scope($self, $class, $new_scope, $name);
+                $self->{scopes}->{$new_scope} = new CORBA::IDL::Scope($self, ref $node, $new_scope, $name);
                 my $modules = bless {
                         idf                 => $name,
                         full                => $new_scope,
                         prefix              => $node->{prefix},
                         _typeprefix         => $node->{_typeprefix},
                         list_decl           => [ $node ],
-                }, 'Modules';
+                }, 'CORBA::IDL::Modules';
                 $modules->{typeprefix} = $node->{typeprefix}
                         if (exists $node->{typeprefix});
                 $modules->{declspec} = $node->{declspec}
@@ -128,14 +129,14 @@ sub PushCurrentRoot {
     else {
         $self->{scopes}->{$scope}->_Insert($name, bless({'scope' => $new_scope}, 'Entry'));
         $self->_CheckCMapping($new_scope);
-        $self->{scopes}->{$new_scope} = new CORBA::IDL::Scope($self, $class, $new_scope, $name);
+        $self->{scopes}->{$new_scope} = new CORBA::IDL::Scope($self, ref $node, $new_scope, $name);
         my $modules = bless {
                 idf                 => $name,
                 full                => $new_scope,
                 prefix              => $node->{prefix},
                 _typeprefix         => $node->{_typeprefix},
                 list_decl           => [ $node ],
-        }, 'Modules';
+        }, 'CORBA::IDL::Modules';
         $modules->{typeprefix} = $node->{typeprefix}
                 if (exists $node->{typeprefix});
         $modules->{declspec} = $node->{declspec}
@@ -184,6 +185,7 @@ sub PushCurrentScope {
     my($node) = @_;
     my $name = $node->{idf};
     my $class = ref $node;
+    $class = substr $class, rindex($class, ':') + 1;
 ##  print "PushCurrentScope '$name' $class\n";
     # Insert
     delete $self->{msg} if (exists $self->{msg});
@@ -228,14 +230,14 @@ sub PushCurrentScope {
             $node->{typeprefix} = $prev->{typeprefix}
                     if (exists $prev->{typeprefix});
             $self->{scopes}->{$scope}->_Insert($name, bless({'scope' => $new_scope}, 'Entry'));
-            $self->{scopes}->{$new_scope} = new CORBA::IDL::Scope($self, $class, $new_scope, $name);
+            $self->{scopes}->{$new_scope} = new CORBA::IDL::Scope($self, ref $node, $new_scope, $name);
             $self->{scopes}->{$new_scope}->_Insert($name, $node);
         }
         else {
             $self->{msg} ||= "Identifier '$name' already exists.\n";
             $self->{parser}->Error($self->{msg});
             unless (exists $self->{scopes}->{$new_scope}) {
-                $self->{scopes}->{$new_scope} = new CORBA::IDL::Scope($self, $class, $new_scope, $name);
+                $self->{scopes}->{$new_scope} = new CORBA::IDL::Scope($self, ref $node, $new_scope, $name);
                 $self->{scopes}->{$new_scope}->_Insert($name, $node);
             }
         }
@@ -243,7 +245,7 @@ sub PushCurrentScope {
     else {
         $self->{scopes}->{$scope}->_Insert($name, bless({'scope' => $new_scope}, 'Entry'));
         $self->_CheckCMapping($new_scope);
-        $self->{scopes}->{$new_scope} = new CORBA::IDL::Scope($self, $class, $new_scope, $name);
+        $self->{scopes}->{$new_scope} = new CORBA::IDL::Scope($self, ref $node, $new_scope, $name);
         $self->{scopes}->{$new_scope}->_Insert($name, $node);
     }
 
@@ -306,6 +308,7 @@ sub Insert {
             $prev = $self->{scopes}->{$prev->{scope}}->_Lookup($name);
         }
         my $class = ref $prev;
+        $class = substr $class, rindex($class, ':') + 1;
         if ($class =~ s/^Forward//) {
             if (ref $node ne $class) {
                 $self->{parser}->Error(
@@ -373,6 +376,7 @@ sub InsertForward {
     my $name = $node->{idf};
     return unless ($name);
     my $class = ref $node;
+    $class = substr $class, rindex($class, ':') + 1;
 ##  print "InsertForward '$name' '$node->{idf}'\n";
     delete $self->{msg} if (exists $self->{msg});
     my $scope = $self->{current_root} . $self->{current_scope};
@@ -382,9 +386,10 @@ sub InsertForward {
             $prev = $self->{scopes}->{$prev->{scope}}->_Lookup($name);
         }
         my $class = ref $prev;
+        $class = substr $class, rindex($class, ':') + 1;
         if ($class =~ /^Forward/) {
             # redeclaration
-            if (ref $node ne $class) {
+            if (ref $node ne ref $prev) {
                 $self->{parser}->Error(
                         "Definition of '$name' conflicts with previous declaration.\n");
                 return;
@@ -522,7 +527,7 @@ sub _Lookup {
     }
     else {
         # qualified name
-        my @list = split /::/,$name;
+        my @list = split /::/, $name;
         my $idf = pop @list;
         my $scoped_name = $name;
         $scoped_name =~ s/::[0-9A-Z_a-z]+$//;
@@ -764,15 +769,15 @@ sub Import {
     my $scope = eval('$main::' . $fullname);
     if (defined $scope and $scope->isa('CORBA::IDL::Scope')) {
         my $class = $scope->{class};
-        if (       $class eq 'Module'
-                or $class eq 'RegularInterface'
-                or $class eq 'LocalInterface'
-                or $class eq 'AbstractInterface'
-                or $class eq 'RegularValue'
-                or $class eq 'BoxedValue'
-                or $class eq 'AbstractValue'
-                or $class eq 'RegularEvent'
-                or $class eq 'AbstractEvent' ) {
+        if (       $class eq 'CORBA::IDL::Module'
+                or $class eq 'CORBA::IDL::RegularInterface'
+                or $class eq 'CORBA::IDL::LocalInterface'
+                or $class eq 'CORBA::IDL::AbstractInterface'
+                or $class eq 'CORBA::IDL::RegularValue'
+                or $class eq 'CORBA::IDL::BoxedValue'
+                or $class eq 'CORBA::IDL::AbstractValue'
+                or $class eq 'CORBA::IDL::RegularEvent'
+                or $class eq 'CORBA::IDL::AbstractEvent' ) {
             $self->{scopes}->{$node->{value}} = $scope;
             my $root = $node->{value};
             $root =~ s/::([0-9A-Z_a-z]+)$//;
@@ -871,7 +876,7 @@ sub new {
     my $class = ref($proto) || $proto;
     my($parser) = @_;
     my $self = {};
-    bless($self, $class);
+    bless $self, $class;
     $self->{parser} = $parser;
     $self->{entry} = {};
     return $self;

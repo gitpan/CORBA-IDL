@@ -1,5 +1,8 @@
 Revision history for Perl extension CORBA::IDL.
 
+2.61  Fri Oct 19 08:30:00 2007
+	- package refactoring (avoid PAUSE indexer errors)
+
 2.60  Fri Oct 12 08:30:00 2007
 	- package refactoring (not compatible with 2.4x version)
 	- some Perl Best Practices
