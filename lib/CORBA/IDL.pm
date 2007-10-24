@@ -3,7 +3,7 @@ use warnings;
 
 package CORBA::IDL;
 
-our $VERSION = '2.61';
+our $VERSION = '2.62';
 
 use CORBA::IDL::ParserFactory;
 

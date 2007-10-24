@@ -8,7 +8,7 @@ package CORBA::IDL::UidVisitor;
 use strict;
 use warnings;
 
-our $VERSION = '2.60';
+our $VERSION = '2.62';
 
 use Digest::SHA1 qw(sha1_hex);
 
@@ -222,11 +222,11 @@ sub visitUnionType {
     foreach my $case (@{$node->{list_expr}}) {
         my $elt = $self->_get_defn($case->{element});
         foreach my $label (@{$case->{list_label}}) {
-            if (ref $label eq 'Default') {
+            if (ref $label eq 'CORBA::IDL::Default') {
                 $uid_str .= '_default_';
             }
             else {
-                if (ref $label->{value} eq 'Enum') {
+                if (ref $label->{value} eq 'CORBA::IDL::Enum') {
                     $uid_str .= $label->{value}->{idf};
                 }
                 else {
