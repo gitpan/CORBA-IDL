@@ -1,5 +1,8 @@
 Revision history for Perl extension CORBA::IDL.
 
+2.63  Wed Mar 19 18:30:00 2008
+	- performance profiling
+
 2.62  Wed Oct 24 12:30:00 2007
 	- UidVisitor.pm : fix a regression (from 2.61)
 

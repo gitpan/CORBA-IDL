@@ -9,7 +9,7 @@ package CORBA::IDL::Lexer;
 use strict;
 use warnings;
 
-our $VERSION = '2.60';
+our $VERSION = '2.63';
 
 use Math::BigInt;
 use Math::BigFloat;
@@ -128,9 +128,7 @@ sub _Identifier {
 
     my $key = uc $ident;
     if (exists $parser->YYData->{keyword}{$key}) {
-        my $keywd = $parser->YYData->{keyword}{$key}[0];
-        my $version = $parser->YYData->{keyword}{$key}[1];
-        my $lang = $parser->YYData->{keyword}{$key}[2];
+        my ($keywd, $version, $lang) = @{$parser->YYData->{keyword}{$key}};
         if ($CORBA::IDL::Parser::IDL_VERSION ge $version) {
             if ($ident eq $keywd) {
                 return ($key, $ident);
@@ -157,7 +155,6 @@ sub _Identifier {
                     $parser->Info("'$ident' collides with future keyword '$keywd'.\n");
                 }
             }
-            return ('IDENTIFIER', $ident);
         }
     }
     return ('IDENTIFIER', $ident);
@@ -212,7 +209,7 @@ sub _CommentLexer {
                     last;
             s/^\*\///
                     and return;
-            s/^.//
+            s/^.[^*\n]*//
                     and last;
         }
     }
@@ -246,7 +243,7 @@ sub _DocLexer {
             s/^([ \t\f\013]+)//
                     and $parser->YYData->{doc} .= $1,
                     last;
-            s/^(.)//
+            s/^(.[\w \t]*)//
                     and $parser->YYData->{doc} .= $1,
                     $flag = 1,
                     last;
@@ -289,7 +286,7 @@ sub _DocAfterLexer {
             s/^([ \t\f\013]+)//
                     and $parser->YYData->{curr_node}->{doc} .= $1,
                     last;
-            s/^(.)//
+            s/^(.[\w \t]*)//
                     and $parser->YYData->{curr_node}->{doc} .= $1,
                     $flag = 1,
                     last;
@@ -313,7 +310,7 @@ sub _CodeLexer {
                         last;
             s/^%\}.*//
                     and return ('CODE_FRAGMENT', $frag);
-            s/^(.)//
+            s/^(.[^%\n]*)//
                     and $frag .= $1,
                         last;
         }

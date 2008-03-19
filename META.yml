@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:                CORBA-IDL
-version:             2.62
+version:             2.63
 abstract:            CORBA-IDL 3.0 parser
 license:             ~
 generated_by:        ExtUtils::MakeMaker version 6.3201

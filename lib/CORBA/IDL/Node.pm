@@ -7,12 +7,14 @@ use warnings;
 
 package CORBA::IDL::Node;
 
-our $VERSION = '2.61';
+our $VERSION = '2.63';
 
 use UNIVERSAL;
 
-sub _Build {
+sub new {
     my $proto = shift;
+    my $class = ref($proto) || $proto;
+    my $parser = shift;
     my %attr = @_;
     my $self = \%attr;
     foreach (keys %attr) {
@@ -20,23 +22,13 @@ sub _Build {
             delete $self->{$_};
         }
     }
+    bless($self, $class);
+    $self->_Init($parser);      # specialized or default
     return $self;
 }
 
-sub new {
-    my $proto = shift;
-    my $class = ref($proto) || $proto;
-    my $parser = shift;
-    my $self = _Build CORBA::IDL::Node(@_);
-    bless($self, $class);
-    $self->_Init($parser);      # specialized or default
-    return $self
-}
-
 sub isa {
-    my $self = shift;
-    my ($type) = @_;
-    return UNIVERSAL::isa($self, 'CORBA::IDL::' . $type);
+    return UNIVERSAL::isa(shift, 'CORBA::IDL::' . shift);
 }
 
 sub _Init {
@@ -113,7 +105,7 @@ sub visit {
     my $self = shift;
     my $class = ref $self;
     my $visitor = shift;
-    no strict "refs";
+    no strict 'refs';
     while ($class ne 'CORBA::IDL::Node') {
         my $func = 'visit' . substr($class, rindex($class, ':') + 1);
         if ($visitor->can($func)) {
@@ -130,7 +122,7 @@ sub visitName {
     my $self = shift;
     my $class = ref $self;
     my $visitor = shift;
-    no strict "refs";
+    no strict 'refs';
     while ($class ne 'CORBA::IDL::Node') {
         my $func = 'visitName' . substr($class, rindex($class, ':') + 1);
         if ($visitor->can($func)) {
@@ -1448,15 +1440,15 @@ sub _Init {
     my $defn = CORBA::IDL::TypeDeclarator->GetEffectiveType($parser, $type);
     if (defined $defn) {
         if (        ! $defn->isa('IntegerType')
+                and ! $defn->isa('EnumType')
+                and ! $defn->isa('OctetType')
                 and ! $defn->isa('CharType')
-                and ! $defn->isa('WideCharType')
+                and ! $defn->isa('StringType')
                 and ! $defn->isa('BooleanType')
                 and ! $defn->isa('FloatingPtType')
-                and ! $defn->isa('StringType')
+                and ! $defn->isa('WideCharType')
                 and ! $defn->isa('WideStringType')
-                and ! $defn->isa('FixedPtConstType')
-                and ! $defn->isa('OctetType')
-                and ! $defn->isa('EnumType') ) {
+                and ! $defn->isa('FixedPtConstType') ) {
             my $idf = $defn->{idf} if (exists $defn->{idf});
             $idf ||= $type->{idf} if (exists $type->{idf});
             $idf ||= $type;

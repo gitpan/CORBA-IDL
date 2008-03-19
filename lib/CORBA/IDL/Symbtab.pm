@@ -27,15 +27,14 @@ sub _Insert {
 
 sub _Lookup {
     my $self = shift;
-    my($name) = @_;
-    return $self->{entry}->{lc $name};
+    return $self->{entry}->{lc shift};
 }
 
 ##############################################################################
 
 package CORBA::IDL::Symbtab;
 
-our $VERSION = '2.61';
+our $VERSION = '2.63';
 
 sub new {
     my $proto = shift;
