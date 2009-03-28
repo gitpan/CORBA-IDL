@@ -9,7 +9,7 @@ package CORBA::IDL::Lexer;
 use strict;
 use warnings;
 
-our $VERSION = '2.63';
+our $VERSION = '2.64';
 
 use Math::BigInt;
 use Math::BigFloat;
@@ -372,7 +372,7 @@ sub Lexer {
         }
 
         for ($parser->YYData->{line}) {
-            s/^#\s+[\d]+\s+"<[^>]+>"\s*\n//                         # cpp 3.2.3 ("<build-in>", "<command line>")
+            s/^#\s+[\d]+\s+"<[^>]+>"\s*\d*\s*\n//                   # cpp 3.2.3 ("<build-in>", "<command line> [\d]")
                     and last;
 
             s/^#\s+([\d]+)\s+["<]([^\s">]+)[">]\s+([\d]+)\s*\n//    # cpp

@@ -1,5 +1,9 @@
 Revision history for Perl extension CORBA::IDL.
 
+2.64  Sat Mar 28 14:30:00 2009
+	- lexer.pm : add a patch for GCC preprocessor (thanks to Aaron Christensen)
+		idl --include=a.idl b.idl
+
 2.63  Wed Mar 19 18:30:00 2008
 	- performance profiling
 
